@@ -1,0 +1,20 @@
+\section{Related Work}
+
+\paragraph{Protein Structure Representation Learning}
+
+
+
+
+\paragraph{Protein Benchmarks} Several benchmarks have been proposed for evaluating the efficacy of learnt protein \emph{sequence} representations. However, \emph{structure-based} benchmarks are comparatively unaddressed. \citet{tape} developed the TAPE (Tasks assessing protein embeddings) benchmark, providing a large pre-training corpus of protein sequences curated from Pfam \cite{ElGebali2018}, as well as a collection of five supervised benchmark tasks assessing the ability of protein language models to predict structural qualities (contact prediction and secondary structure prediction), and functional properties (fluorescence and stability prediction). \citet{peer} developed the PEER (Protein Sequence Understanding) benchmark, focussing on multitask evaluation of protein sequence models. 
+
+\begin{enumerate}
+    \item X et al. developed FLIP
+    \item X et al developed Atom3D, the first benchmark designed around structure-based tasks.
+    \item TDC provides several datasets..
+    \item TorchProtein
+\end{enumerate}
+
+
+
+\paragraph{Denoising-based pre-training and Regularisation} 
+Several methods have been developed for pre-training GNNs, predominantly focussing on cases where 3D coordinate information is only implicitly encoded in the graph structures. In this work, we build on work by \citet{godwin2021simple} and \citet{zaidi2023pretraining} to investigate whether denoising-based auxillary and pre-training tasks are effective methods for pre-training geometric GNNs operating on protein structures.

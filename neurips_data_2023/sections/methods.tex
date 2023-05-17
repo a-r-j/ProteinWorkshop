@@ -1,0 +1,24 @@
+\section{Methods and Experimental Setup}
+\begin{itemize}
+    \item Paragraph justifying our choices of a subset of tasks and models
+\end{itemize}
+
+
+\paragraph{Architectures}
+We evaluate X geometric GNN architectures, spanning the range of message passing body order and tensor order. 
+
+
+\paragraph{Pre-training Dataset} For all pre-training tasks we use the \texttt{afdb\_rep\_v4} dataset compiled by \citet{BarrioHernandez2023}. This dataset contains 2.27 million representative structures, identified through large-scale structural-similarity based clustering of the 214 million structures contained in the AlphaFold Database \cite{Varadi2021} using FoldSeek \cite{vanKempen2023}. This dataset therefore provides a rich diversity of protein structures and is substantially larger than any other previously used structure-based pre-training corpus that we are aware of, whilst remaining of a size that is amenable to experimentation.
+
+\paragraph{Featurisation Schemes}
+The benchmark includes comprehensive featurisation schemes for both scalar and vector-valued feature computation. 
+
+
+\paragraph{Noising Schemes} For structure-based denoising we draw noise samples from a guassian distribution and scale by 0.1. For structure-based denoising, we use the mutation strategy and corrupt 25\% of the residues in each protein. When denoising is used as an auxillary task, we weight the loss with a coefficient $\lambda = 0.1$, similar to NoisyNodes \cite{godwin2021simple}.
+
+\paragraph{Training}
+We use a ReduceLRonPlateau learning rate scheduler for the downstream tasks with a patience of 5 epochs and a reduction factor of 0.6. For the pre-training tasks, we use a linear warmup with cosine decay schedule.
+
+
+
+\subsection{Baselines}
