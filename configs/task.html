@@ -1,0 +1,841 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', '');
+            
+        </script>
+    <meta property="og:title" content="Tasks" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="configs/task.html" />
+<meta property="og:site_name" content="Protein Workshop" />
+<meta property="og:description" content=",,,,,,, Denoising Tasks: Sequence Denoising ( sequence_denoising): Structure Denoising ( structure_denoising): Sequence & Structure Denoising ( sequence_structure_denoising): Torsional Denoising ( ..." />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="/None" />
+<meta property="og:image:alt" content=",,,,,,, Denoising Tasks: Sequence Denoising ( sequence_denoising): Structure Denoising ( structure_denoising): Sequence & Structure Denoising ( sequence_stru..." />
+<meta name="description" content=",,,,,,, Denoising Tasks: Sequence Denoising ( sequence_denoising): Structure Denoising ( structure_denoising): Sequence & Structure Denoising ( sequence_structure_denoising): Torsional Denoising ( ..." />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Features" href="features.html" /><link rel="prev" title="Models" href="model.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
+        <title>Tasks - Protein Workshop 0.0.1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-codeautolink.css?v=125d5c1c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Protein Workshop 0.0.1</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/workshop_icon.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Protein Workshop 0.0.1</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html#datasets">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html#models">Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart_component/pretrain.html">Pre-Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart_component/downstream.html">Downstream</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transforms.html">Transforms</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="framework_components/callbacks.html">Callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="framework_components/debug.html">Debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="framework_components/env.html">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="framework_components/logger.html">Loggers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="framework_components/hydra.html">Hydra Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="framework_components/extras.html">Extras</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml_components.html">ML Components</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of ML Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ml_components/trainer.html">Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ml_components/optimiser.html">Optimiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ml_components/scheduler.html">Schedulers</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.datasets.html">protein_workshop.datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.models.html">protein_workshop.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.tasks.html">protein_workshop.tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.features.html">protein_workshop.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.utils.html">protein_workshop.utils</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="tasks">
+<h1>Tasks<a class="headerlink" href="#tasks" title="Permalink to this heading">#</a></h1>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><figure class="align-default">
+<img alt="../_images/box_aux_tasks.png" src="../_images/box_aux_tasks.png" />
+</figure>
+</td>
+<td><figure class="align-default">
+<img alt="../_images/box_downstream_tasks.png" src="../_images/box_downstream_tasks.png" />
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To change the task, use a command with a format like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">task</span><span class="o">=</span>&lt;TASK_NAME&gt;<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gvp<span class="w"> </span>...
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;TASK_NAME&gt;</span></code> is one of the tasks listed below.</p>
+</div>
+<section id="denoising-tasks">
+<h2>Denoising Tasks<a class="headerlink" href="#denoising-tasks" title="Permalink to this heading">#</a></h2>
+<section id="sequence-denoising-sequence-denoising">
+<h3>Sequence Denoising (<code class="docutils literal notranslate"><span class="pre">sequence_denoising</span></code>)<a class="headerlink" href="#sequence-denoising-sequence-denoising" title="Permalink to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>configs/task/sequence_denoising.yaml
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /metrics</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">accuracy</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">f1_score</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perplexity</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">residue_type</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /transforms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove_missing_ca</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sequence_denoising</span>
+
+<span class="nt">dataset</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23</span>
+
+<span class="nt">callbacks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">early_stopping</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/residue_type/accuracy</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;max&quot;</span>
+<span class="w">  </span><span class="nt">model_checkpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/residue_type/accuracy</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;max&quot;</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sequence_denoising&quot;</span>
+<span class="w">  </span><span class="nt">classification_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;multiclass&quot;</span>
+<span class="w">  </span><span class="nt">metric_average</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;micro&quot;</span>
+
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">residue_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cross_entropy</span>
+<span class="w">  </span><span class="nt">label_smoothing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">residue_type</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">residue_type</span>
+</pre></div>
+</div>
+</section>
+<section id="structure-denoising-structure-denoising">
+<h3>Structure Denoising (<code class="docutils literal notranslate"><span class="pre">structure_denoising</span></code>)<a class="headerlink" href="#structure-denoising-structure-denoising" title="Permalink to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /metrics</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rmse</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pos_equiv</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /transforms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove_missing_ca</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">structure_denoising</span>
+
+<span class="nt">dataset</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+
+<span class="nt">callbacks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">early_stopping</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/loss/pos</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;min&quot;</span>
+<span class="w">  </span><span class="nt">model_checkpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/loss/pos</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;min&quot;</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;structure_denoising&quot;</span>
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">pos</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mse_loss</span>
+<span class="w">  </span><span class="nt">label_smoothing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pos</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pos</span>
+</pre></div>
+</div>
+</section>
+<section id="sequence-structure-denoising-sequence-structure-denoising">
+<h3>Sequence &amp; Structure Denoising (<code class="docutils literal notranslate"><span class="pre">sequence_structure_denoising</span></code>)<a class="headerlink" href="#sequence-structure-denoising-sequence-structure-denoising" title="Permalink to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /metrics</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rmse</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">accuracy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pos_equiv</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">residue_type</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /transforms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove_missing_ca</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">structure_denoising</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sequence_denoising</span>
+
+<span class="nt">dataset</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23</span>
+
+<span class="nt">callbacks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">early_stopping</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/loss/total</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;min&quot;</span>
+<span class="w">  </span><span class="nt">model_checkpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/loss/total</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;min&quot;</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sequence_structure_denoising&quot;</span>
+<span class="w">  </span><span class="nt">classification_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;multiclass&quot;</span>
+<span class="w">  </span><span class="nt">metric_average</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;micro&quot;</span>
+
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">pos</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mse_loss</span>
+<span class="w">    </span><span class="nt">residue_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cross_entropy</span>
+
+<span class="w">  </span><span class="nt">label_smoothing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pos</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">residue_type</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pos</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">residue_type</span>
+</pre></div>
+</div>
+</section>
+<section id="torsional-denoising-torsional-denoising">
+<h3>Torsional Denoising (<code class="docutils literal notranslate"><span class="pre">torsional_denoising</span></code>)<a class="headerlink" href="#torsional-denoising-torsional-denoising" title="Permalink to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /metrics</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rmse</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="c1">#- dihedrals</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">torsional_noise</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /transforms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove_missing_ca</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">torsional_denoising</span>
+
+<span class="nt">dataset</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+
+<span class="nt">callbacks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">early_stopping</span><span class="p">:</span>
+<span class="w">    </span><span class="c1">#monitor: val/loss/dihedrals</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/loss/torsional_noise</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;min&quot;</span>
+<span class="w">  </span><span class="nt">model_checkpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="c1">#monitor: val/loss/dihedrals</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/loss/torsional_noise</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;min&quot;</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;torsional_denoising&quot;</span>
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="c1">#dihedrals: mse_loss</span>
+<span class="w">    </span><span class="nt">torsional_noise</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mse_loss</span>
+<span class="w">  </span><span class="nt">label_smoothing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="c1">#- dihedrals # Or torsional_noise</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">torsional_noise</span><span class="w"> </span><span class="c1"># or dihedrals</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># - dihedrals</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">torsional_noise</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="node-level-tasks">
+<h2>Node-level Tasks<a class="headerlink" href="#node-level-tasks" title="Permalink to this heading">#</a></h2>
+<section id="protein-protein-interaction-site-prediction-ppi-site-prediction">
+<h3>Protein-Protein Interaction Site Prediction (<code class="docutils literal notranslate"><span class="pre">ppi_site_prediction</span></code>)<a class="headerlink" href="#protein-protein-interaction-site-prediction-ppi-site-prediction" title="Permalink to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /metrics</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">accuracy</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">f1_score</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">f1_max</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auprc</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rocauc</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node_label</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /transforms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove_missing_ca</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ppi_site_prediction</span>
+
+<span class="nt">dataset</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="nt">callbacks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">early_stopping</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/node_label/accuracy</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;max&quot;</span>
+<span class="w">  </span><span class="nt">model_checkpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/node_label/accuracy</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;max&quot;</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;classification&quot;</span>
+<span class="w">  </span><span class="nt">classification_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;binary&quot;</span>
+<span class="w">  </span><span class="nt">metric_average</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;macro&quot;</span>
+
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">node_label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bce</span>
+<span class="w">  </span><span class="nt">label_smoothing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;node_label&quot;</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;node_label&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="multiclass-node-classification-multiclass-node-classification">
+<h3>Multiclass Node Classification (<code class="docutils literal notranslate"><span class="pre">multiclass_node_classification</span></code>)<a class="headerlink" href="#multiclass-node-classification-multiclass-node-classification" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="plddt-prediction-plddt-prediction">
+<h3>pLDDT Prediction (<code class="docutils literal notranslate"><span class="pre">plddt_prediction</span></code>)<a class="headerlink" href="#plddt-prediction-plddt-prediction" title="Permalink to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /metrics</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rmse</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">b_factor</span>
+
+<span class="nt">dataset</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+
+<span class="nt">callbacks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">early_stopping</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/loss/b_factor</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;min&quot;</span>
+<span class="w">  </span><span class="nt">model_checkpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/loss/b_factor</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;min&quot;</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;plddt_prediction&quot;</span>
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">b_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mse_loss</span>
+<span class="w">  </span><span class="nt">label_smoothing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">b_factor</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">b_factor</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="edge-level-tasks">
+<h2>Edge-level Tasks<a class="headerlink" href="#edge-level-tasks" title="Permalink to this heading">#</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /metrics</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rmse</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">edge_distance</span>
+
+<span class="nt">dataset</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+
+<span class="nt">callbacks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">early_stopping</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/edge_distance/rmse</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;min&quot;</span>
+<span class="w">  </span><span class="nt">model_checkpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/edge_distance/rmse</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;min&quot;</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edge_distance_prediction&quot;</span>
+<span class="w">  </span><span class="nt">transform</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src.tasks.edge_distance_prediction.EdgeDistancePredictionTransform</span>
+<span class="w">    </span><span class="nt">num_samples</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">256</span>
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">edge_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mse_loss</span>
+<span class="w">  </span><span class="nt">label_smoothing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">edge_distance</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">edge_distance</span>
+</pre></div>
+</div>
+</section>
+<section id="aux-tasks">
+<h2>Aux Tasks<a class="headerlink" href="#aux-tasks" title="Permalink to this heading">#</a></h2>
+<img alt="Summary of auxiliary tasks" class="align-center" src="../_images/box_aux_tasks.png" />
+</section>
+<section id="auxiliary-tasks">
+<h2>Auxiliary Tasks<a class="headerlink" href="#auxiliary-tasks" title="Permalink to this heading">#</a></h2>
+<p>Auxiliary tasks define training objectives additional to the main training task.
+For instance, these can define auxiliary denoising objectives over sequence, coordinate or angle space.</p>
+<p>Auxiliary tasks are implemented by modifying the experiment config to inject the
+additional metrics, decoders and losses.</p>
+<section id="sequence-denoising-nn-sequence">
+<h3>Sequence Denoising (<code class="docutils literal notranslate"><span class="pre">nn_sequence</span></code>)<a class="headerlink" href="#sequence-denoising-nn-sequence" title="Permalink to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
+python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gvp<span class="w"> </span><span class="nv">task</span><span class="o">=</span>plddt_prediction<span class="w"> </span>+aux_task<span class="o">=</span>nn_sequence
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">configs/aux_task/nn_sequence.yaml</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_self_</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">residue_type</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/metrics@residue_type</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/task@losses@residue_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/transforms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove_missing_ca</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sequence_denoising</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">residue_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cross_entropy</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.dict.keys:task.losses}</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.dict.keys:task.losses}</span>
+<span class="w">  </span><span class="nt">aux_loss_coefficient</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">residue_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="structure-denoising-nn-structure-r3">
+<h3>Structure Denoising (<code class="docutils literal notranslate"><span class="pre">nn_structure_r3</span></code>)<a class="headerlink" href="#structure-denoising-nn-structure-r3" title="Permalink to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
+python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gvp<span class="w"> </span><span class="nv">task</span><span class="o">=</span>plddt_prediction<span class="w"> </span>+aux_task<span class="o">=</span>nn_structure_r3
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">configs/aux_task/nn_structure_r3.yaml</span><a class="headerlink" href="#id2" title="Permalink to this code">#</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_self_</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pos_equiv</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/metrics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/task@losses@pos</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/transforms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove_missing_ca</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">structure_denoising</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">pos</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mse_loss</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.dict.keys:task.losses}</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.dict.keys:task.losses}</span>
+<span class="nt">aux_loss_coefficient</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">pos</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="torsional-denoising-nn-structure-torsion">
+<h3>Torsional Denoising (<code class="docutils literal notranslate"><span class="pre">nn_structure_torsion</span></code>)<a class="headerlink" href="#torsional-denoising-nn-structure-torsion" title="Permalink to this heading">#</a></h3>
+<p>Noise is applied to the backbone torsion angles and Cartesian coordinates are recomputed using pNeRF and the uncorrupted bond
+lengths and angles prior to feature computation. Similarly to the coordinate denoising task, the model
+is then tasked with predicting either the per-residue angular noise or the original dihedral angles</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This will subset the data to only include the backbone atoms
+(N, Ca, C). The backbone oxygen can be placed with:
+<code class="xref py py-func docutils literal notranslate"><span class="pre">graphein.protein.tensor.reconstruction.place_fourth_coord()</span></code>.</p>
+<p>This will break, for example, sidechain torsion angle computation for
+the first few chi angles that are partially defined by backbone atoms.</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
+python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gvp<span class="w"> </span><span class="nv">task</span><span class="o">=</span>plddt_prediction<span class="w"> </span>+aux_task<span class="o">=</span>nn_structure_torsion
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">configs/aux_task/nn_structure_torsion.yaml</span><a class="headerlink" href="#id3" title="Permalink to this code">#</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_self_</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dihedrals</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/metrics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/task@losses@pos</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/transforms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove_missing_ca</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">torsional_denoising</span>
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">dihedrals</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mse_loss</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.dict.keys:task.losses}</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.dict.keys:task.losses}</span>
+<span class="nt">aux_loss_coefficient</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">pos</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="inverse-folding-inverse-folding">
+<h3>Inverse Folding (<code class="docutils literal notranslate"><span class="pre">inverse_folding</span></code>)<a class="headerlink" href="#inverse-folding-inverse-folding" title="Permalink to this heading">#</a></h3>
+<p>This adds an additional inverse folding objective to the model. I.e. the model is trained to predict the sequence of the input structure.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This will remove the residue-type node feature and sidechain torsion angles to avoid leakage of information from the target structure.</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
+python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gvp<span class="w"> </span><span class="nv">task</span><span class="o">=</span>plddt_prediction<span class="w"> </span>+aux_task<span class="o">=</span>inverse_folding
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">configs/aux_task/inverse_folding.yaml</span><a class="headerlink" href="#id4" title="Permalink to this code">#</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_self_</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">residue_type</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/metrics@pos</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/task@losses@pos</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">/transforms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove_missing_ca</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inverse_folding</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">residue_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cross_entropy</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.dict.keys:task.losses}</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.dict.keys:task.losses}</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="none-none">
+<h3>None (<code class="docutils literal notranslate"><span class="pre">none</span></code>)<a class="headerlink" href="#none-none" title="Permalink to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
+python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gvp<span class="w"> </span><span class="nv">task</span><span class="o">=</span>plddt_prediction
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="features.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Features</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="model.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Models</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Arian R. Jamasb
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Tasks</a><ul>
+<li><a class="reference internal" href="#denoising-tasks">Denoising Tasks</a><ul>
+<li><a class="reference internal" href="#sequence-denoising-sequence-denoising">Sequence Denoising (<code class="docutils literal notranslate"><span class="pre">sequence_denoising</span></code>)</a></li>
+<li><a class="reference internal" href="#structure-denoising-structure-denoising">Structure Denoising (<code class="docutils literal notranslate"><span class="pre">structure_denoising</span></code>)</a></li>
+<li><a class="reference internal" href="#sequence-structure-denoising-sequence-structure-denoising">Sequence &amp; Structure Denoising (<code class="docutils literal notranslate"><span class="pre">sequence_structure_denoising</span></code>)</a></li>
+<li><a class="reference internal" href="#torsional-denoising-torsional-denoising">Torsional Denoising (<code class="docutils literal notranslate"><span class="pre">torsional_denoising</span></code>)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#node-level-tasks">Node-level Tasks</a><ul>
+<li><a class="reference internal" href="#protein-protein-interaction-site-prediction-ppi-site-prediction">Protein-Protein Interaction Site Prediction (<code class="docutils literal notranslate"><span class="pre">ppi_site_prediction</span></code>)</a></li>
+<li><a class="reference internal" href="#multiclass-node-classification-multiclass-node-classification">Multiclass Node Classification (<code class="docutils literal notranslate"><span class="pre">multiclass_node_classification</span></code>)</a></li>
+<li><a class="reference internal" href="#plddt-prediction-plddt-prediction">pLDDT Prediction (<code class="docutils literal notranslate"><span class="pre">plddt_prediction</span></code>)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#edge-level-tasks">Edge-level Tasks</a></li>
+<li><a class="reference internal" href="#aux-tasks">Aux Tasks</a></li>
+<li><a class="reference internal" href="#auxiliary-tasks">Auxiliary Tasks</a><ul>
+<li><a class="reference internal" href="#sequence-denoising-nn-sequence">Sequence Denoising (<code class="docutils literal notranslate"><span class="pre">nn_sequence</span></code>)</a></li>
+<li><a class="reference internal" href="#structure-denoising-nn-structure-r3">Structure Denoising (<code class="docutils literal notranslate"><span class="pre">nn_structure_r3</span></code>)</a></li>
+<li><a class="reference internal" href="#torsional-denoising-nn-structure-torsion">Torsional Denoising (<code class="docutils literal notranslate"><span class="pre">nn_structure_torsion</span></code>)</a></li>
+<li><a class="reference internal" href="#inverse-folding-inverse-folding">Inverse Folding (<code class="docutils literal notranslate"><span class="pre">inverse_folding</span></code>)</a></li>
+<li><a class="reference internal" href="#none-none">None (<code class="docutils literal notranslate"><span class="pre">none</span></code>)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

@@ -1,0 +1,845 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark">
+        <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', '');
+            
+        </script>
+    <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
+        <title>src.models.base - Protein Workshop 0.0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-codeautolink.css?v=125d5c1c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">Protein Workshop 0.0.1</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../_static/workshop_icon.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Protein Workshop 0.0.1</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart_component/pretrain.html">Pre-Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart_component/downstream.html">Downstream</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/dataset.html">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/model.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/task.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/callbacks.html">Callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/debug.html">Debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/env.html">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/logger.html">Loggers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/hydra.html">Hydra Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/extras.html">Extras</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../ml_components.html">ML Components</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of ML Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../configs/ml_components/trainer.html">Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configs/ml_components/optimiser.html">Optimiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configs/ml_components/scheduler.html">Schedulers</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/src.datasets.html">protein_workshop.datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/src.models.html">protein_workshop.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/src.tasks.html">protein_workshop.tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/src.features.html">protein_workshop.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/src.utils.html">protein_workshop.utils</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for src.models.base</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">import</span> <span class="nn">hydra</span>
+<span class="kn">import</span> <span class="nn">lightning</span> <span class="k">as</span> <span class="nn">L</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
+<span class="kn">from</span> <span class="nn">graphein.protein.tensor.angles</span> <span class="kn">import</span> <span class="n">dihedrals</span>
+<span class="kn">from</span> <span class="nn">graphein.protein.tensor.data</span> <span class="kn">import</span> <span class="n">ProteinBatch</span><span class="p">,</span> <span class="n">get_random_protein</span>
+<span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">omegaconf</span> <span class="kn">import</span> <span class="n">DictConfig</span><span class="p">,</span> <span class="n">OmegaConf</span>
+<span class="kn">from</span> <span class="nn">src.models.utils</span> <span class="kn">import</span> <span class="n">get_loss</span>
+<span class="kn">from</span> <span class="nn">src.types</span> <span class="kn">import</span> <span class="n">EncoderOutput</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">ModelOutput</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.utils</span> <span class="kn">import</span> <span class="n">to_dense_batch</span>
+
+
+<div class="viewcode-block" id="BaseModel"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel">[docs]</a><span class="k">class</span> <span class="nc">BaseModel</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">DictConfig</span>
+    <span class="n">featuriser</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span>
+    <span class="n">losses</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span>
+    <span class="n">task_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span>
+    <span class="n">metric_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+<div class="viewcode-block" id="BaseModel.forward"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.forward">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement forward pass of model.</span>
+
+<span class="sd">        :param batch: Mini-batch of data.</span>
+<span class="sd">        :type batch: Batch</span>
+<span class="sd">        :return: Model output.</span>
+<span class="sd">        :rtype: torch.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+<div class="viewcode-block" id="BaseModel.training_step"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.training_step">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement training step.</span>
+
+<span class="sd">        :param batch: Mini-batch of data.</span>
+<span class="sd">        :type batch: Batch</span>
+<span class="sd">        :param batch_idx: Index of batch.</span>
+<span class="sd">        :type batch_idx: torch.Tensor</span>
+<span class="sd">        :return: Return loss.</span>
+<span class="sd">        :rtype: torch.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+<div class="viewcode-block" id="BaseModel.validation_step"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.validation_step">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement validation step.</span>
+
+<span class="sd">        :param batch: Mini-batch of data.</span>
+<span class="sd">        :type batch: Batch</span>
+<span class="sd">        :param batch_idx: Index of batch.</span>
+<span class="sd">        :type batch_idx: torch.Tensor</span>
+<span class="sd">        :return: Return loss.</span>
+<span class="sd">        :rtype: torch.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+<div class="viewcode-block" id="BaseModel.test_step"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.test_step">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement test step.</span>
+
+<span class="sd">        :param batch: Mini-batch of data.</span>
+<span class="sd">        :type batch: Batch</span>
+<span class="sd">        :param batch_idx: Index of batch.</span>
+<span class="sd">        :type batch_idx: torch.Tensor</span>
+<span class="sd">        :return: Return loss.</span>
+<span class="sd">        :rtype: torch.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+<div class="viewcode-block" id="BaseModel.featurise"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.featurise">[docs]</a>    <span class="k">def</span> <span class="nf">featurise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Applies the featuriser (``self.featuriser``) to a batch of data.</span>
+
+<span class="sd">        .. seealso::</span>
+<span class="sd">            :py:class:src.features.factory.ProteinFeaturiser</span>
+
+<span class="sd">        :param batch: Batch of data</span>
+<span class="sd">        :type batch: Union[Batch, ProteinBatch]</span>
+<span class="sd">        :return: Featurised batch</span>
+<span class="sd">        :rtype: Union[Batch, ProteinBatch]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">featuriser</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">task_transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">task_transform</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+<div class="viewcode-block" id="BaseModel.get_labels"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Label</span><span class="p">:</span>
+        <span class="n">labels</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">supervise_on</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;node_label&quot;</span><span class="p">:</span>
+                <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;node_label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">node_y</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">losses</span><span class="p">[</span><span class="s2">&quot;node_label&quot;</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BCEWithLogitsLoss</span><span class="p">):</span>
+                    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;node_label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">one_hot</span><span class="p">(</span>
+                        <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;node_label&quot;</span><span class="p">],</span>
+                        <span class="n">num_classes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;graph_label&quot;</span><span class="p">:</span>
+                <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;graph_label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">graph_y</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">losses</span><span class="p">[</span><span class="s2">&quot;graph_label&quot;</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BCEWithLogitsLoss</span><span class="p">):</span>
+                    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;graph_label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">one_hot</span><span class="p">(</span>
+                        <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;graph_label&quot;</span><span class="p">],</span>
+                        <span class="n">num_classes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;dihedrals&quot;</span><span class="p">:</span>
+                <span class="c1"># If we have dihedral labels in the batch, use those</span>
+                <span class="c1"># These will have been stored by the torsional denoising</span>
+                <span class="c1"># transform</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="s2">&quot;true_dihedrals&quot;</span><span class="p">):</span>
+                    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;dihedrals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">true_dihedrals</span>
+                <span class="c1"># If we have stored uncorrupted coords, use those to compute</span>
+                <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="s2">&quot;coords_uncorrupted&quot;</span><span class="p">):</span>
+                    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;dihedrals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dihedrals</span><span class="p">(</span>
+                        <span class="n">batch</span><span class="o">.</span><span class="n">coords_uncorrupted</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">batch</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                <span class="c1"># Otherwise, compute dihedrals from the batch coordinates</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;dihedrals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dihedrals</span><span class="p">(</span>
+                        <span class="n">batch</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">batch</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;torsional_noise&quot;</span><span class="p">:</span>
+                <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;torsional_noise&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">torsional_noise</span>
+            <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;residue_type&quot;</span><span class="p">:</span>
+                <span class="c1"># If we have stored uncorrupted labels, use those</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="s2">&quot;residue_type_uncorrupted&quot;</span><span class="p">):</span>
+                    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;residue_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">residue_type_uncorrupted</span>
+                <span class="c1"># Otherwise, use residue types</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;residue_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">residue_type</span>
+                <span class="c1"># If we have stored a mask, apply it</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="s2">&quot;sequence_corruption_mask&quot;</span><span class="p">):</span>
+                    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;residue_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;residue_type&quot;</span><span class="p">][</span>
+                        <span class="n">batch</span><span class="o">.</span><span class="n">sequence_corruption_mask</span>
+                    <span class="p">]</span>
+            <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;pos&quot;</span><span class="p">:</span>
+                <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">noise</span><span class="p">[</span>
+                    <span class="p">:,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:</span>
+                <span class="p">]</span>  <span class="c1"># TODO this is hardcoded to only handle CA</span>
+            <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;edge_distance&quot;</span><span class="p">:</span>
+                <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;edge_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">edge_distance_labels</span>
+            <span class="k">elif</span> <span class="n">output</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;b_factor&quot;</span><span class="p">,</span> <span class="s2">&quot;plddt&quot;</span><span class="p">}:</span>
+                <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;b_factor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">b_factor</span>
+
+        <span class="k">return</span> <span class="n">Label</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseModel.compute_loss"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.compute_loss">[docs]</a>    <span class="nd">@beartype</span>
+    <span class="k">def</span> <span class="nf">compute_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">:</span> <span class="n">ModelOutput</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute loss by iterating over all outputs.</span>
+
+<span class="sd">        In the case of multiple losses, the total loss is also included in the</span>
+<span class="sd">        output dictionary of losses.</span>
+
+<span class="sd">        :param y_hat: Output of model. This should be a dictionary of outputs</span>
+<span class="sd">            (torch.Tensor) indexed by the output name (str)</span>
+<span class="sd">        :type y_hat: ModelOutput</span>
+<span class="sd">        :param y: Labels. This should be a dictionary of labels (torch.Tensor)</span>
+<span class="sd">            indexed by the output name (str)</span>
+<span class="sd">        :type y: Label</span>
+<span class="sd">        :return: Dictionary of losses indexed by output name (str)</span>
+<span class="sd">        :rtype: Dict[str, torch.Tensor]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">(</span><span class="n">y_hat</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="c1"># Scale loss terms by coefficient</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task.aux_loss_coefficient&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">output</span><span class="p">,</span> <span class="n">coefficient</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">aux_loss_coefficient</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">loss</span><span class="p">[</span><span class="n">output</span><span class="p">]</span> <span class="o">=</span> <span class="n">coefficient</span> <span class="o">*</span> <span class="n">loss</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
+
+        <span class="n">loss</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">loss</span></div>
+
+<div class="viewcode-block" id="BaseModel.configure_optimizers"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.configure_optimizers">[docs]</a>    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># sourcery skip: extract-method</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Instantiating optimiser...&quot;</span><span class="p">)</span>
+        <span class="n">optimiser</span> <span class="o">=</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">optimiser</span><span class="p">)[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">optimiser</span><span class="p">)</span>
+        <span class="n">optimiser</span> <span class="o">=</span> <span class="n">optimiser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scheduler&quot;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Instantiating scheduler...&quot;</span><span class="p">)</span>
+            <span class="n">scheduler</span> <span class="o">=</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">optimiser</span><span class="p">)</span>
+            <span class="n">scheduler</span> <span class="o">=</span> <span class="n">OmegaConf</span><span class="o">.</span><span class="n">to_container</span><span class="p">(</span><span class="n">scheduler</span><span class="p">)</span>
+            <span class="n">scheduler</span><span class="p">[</span><span class="s2">&quot;scheduler&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scheduler</span><span class="p">[</span><span class="s2">&quot;scheduler&quot;</span><span class="p">](</span><span class="n">optimizer</span><span class="o">=</span><span class="n">optimiser</span><span class="p">)</span>
+            <span class="n">optimiser_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;optimizer&quot;</span><span class="p">:</span> <span class="n">optimiser</span><span class="p">,</span> <span class="s2">&quot;lr_scheduler&quot;</span><span class="p">:</span> <span class="n">scheduler</span><span class="p">}</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimiser configuration: </span><span class="si">{</span><span class="n">optimiser_config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">optimiser_config</span>
+        <span class="k">return</span> <span class="n">optimiser</span></div>
+
+    <span class="k">def</span> <span class="nf">_build_output_decoders</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleDict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiate output decoders.</span>
+
+<span class="sd">        Decoders are instantiated from their respective config files.</span>
+
+<span class="sd">        Decoders are stored in :py:class:`nn.ModuleDict`, indexed by output name.</span>
+
+<span class="sd">        :return: ModuleDict of decoders indexed by output name</span>
+<span class="sd">        :rtype: nn.ModuleDict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">decoders</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleDict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">output_head</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">output_head</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Building </span><span class="si">{</span><span class="n">output_head</span><span class="si">}</span><span class="s2"> decoder. Output dim </span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;out_dim&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+            <span class="n">decoders</span><span class="p">[</span><span class="n">output_head</span><span class="p">]</span> <span class="o">=</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">decoders</span>
+
+<div class="viewcode-block" id="BaseModel.configure_losses"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.configure_losses">[docs]</a>    <span class="k">def</span> <span class="nf">configure_losses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]:</span>
+        <span class="c1"># weight_loss = False</span>
+        <span class="c1"># if weight_loss:</span>
+        <span class="c1">#    logger.info(&quot;Using class weights to weight loss&quot;)</span>
+        <span class="c1">#    weights = torch.tensor(self.dataset.class_weights).float().cuda()</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#    weights = None</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">get_loss</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">label_smoothing</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">loss_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="BaseModel.on_after_batch_transfer"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.on_after_batch_transfer">[docs]</a>    <span class="k">def</span> <span class="nf">on_after_batch_transfer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">],</span> <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Featurise batch **after** it has been transferred to the correct device.</span>
+
+<span class="sd">        :param batch: Batch of data</span>
+<span class="sd">        :type batch: Batch</span>
+<span class="sd">        :param dataloader_idx: Index of dataloader</span>
+<span class="sd">        :type dataloader_idx: int</span>
+<span class="sd">        :return: Featurised batch</span>
+<span class="sd">        :rtype: Union[Batch, ProteinBatch]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">featurise</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseModel.configure_metrics"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.configure_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">configure_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiates metrics from config.</span>
+
+<span class="sd">        Metrics are Torchmetrics Objects :py:class:`torchmetrics.Metric`</span>
+<span class="sd">        (see `torchmetrics &lt;https://torchmetrics.readthedocs.io/en/latest/&gt;`_)</span>
+
+<span class="sd">        Metrics are set as model attributes as:</span>
+
+<span class="sd">        ``{stage}_{output}_{metric_name}`` (e.g. ``train_residue_type_f1_score``)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">CLASSIFICATION_METRICS</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;f1_score&quot;</span><span class="p">,</span> <span class="s2">&quot;auprc&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="s2">&quot;f1_max&quot;</span><span class="p">}</span>
+        <span class="n">REGRESSION_METRICS</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mse&quot;</span><span class="p">,</span> <span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="s2">&quot;r2&quot;</span><span class="p">,</span> <span class="s2">&quot;rmse&quot;</span><span class="p">}</span>
+        <span class="n">CONTINUOUS_OUTPUTS</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;b_factor&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;plddt&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;pos&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dihedrals&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;torsional_noise&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">CATEGORICAL_OUTPUTS</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;residue_type&quot;</span><span class="p">}</span>
+
+        <span class="n">metric_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">metric_conf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">}:</span>
+                    <span class="n">metric</span> <span class="o">=</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">metric_conf</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;residue_type&quot;</span><span class="p">:</span>
+                        <span class="n">metric</span><span class="o">.</span><span class="n">num_classes</span> <span class="o">=</span> <span class="mi">23</span>
+                        <span class="n">metric</span><span class="o">.</span><span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;multiclass&quot;</span>
+
+                    <span class="c1"># Skip incompatible metrics</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">output</span> <span class="ow">in</span> <span class="n">CONTINUOUS_OUTPUTS</span>
+                        <span class="ow">and</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">CLASSIFICATION_METRICS</span>
+                    <span class="p">):</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Skipping classification metric </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2"> for output </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2"> as output is continuous&quot;</span>
+                        <span class="p">)</span>
+                        <span class="k">continue</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">output</span> <span class="ow">in</span> <span class="n">CATEGORICAL_OUTPUTS</span>
+                        <span class="ow">and</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">REGRESSION_METRICS</span>
+                    <span class="p">):</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Skipping regression metric </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2"> for output </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2"> as output is categorical&quot;</span>
+                        <span class="p">)</span>
+                        <span class="k">continue</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span>
+            <span class="n">metric_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;metric_names&quot;</span><span class="p">,</span> <span class="n">metric_names</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseModel.log_metrics"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BaseModel.log_metrics">[docs]</a>    <span class="nd">@beartype</span>
+    <span class="k">def</span> <span class="nf">log_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">:</span> <span class="n">ModelOutput</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Label</span><span class="p">,</span> <span class="n">stage</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logs metrics to logger.</span>
+
+<span class="sd">        :param loss: Dictionary of losses indexed by output name (str)</span>
+<span class="sd">        :type loss: Dict[str, torch.Tensor]</span>
+<span class="sd">        :param y_hat: Output of model. This should be a dictionary of outputs</span>
+<span class="sd">            indexed by the output name (str)</span>
+<span class="sd">        :type y_hat: ModelOutput</span>
+<span class="sd">        :param y: Labels. This should be a dictionary of labels (torch.Tensor)</span>
+<span class="sd">            indexed by the output name (str)</span>
+<span class="sd">        :type y: Label</span>
+<span class="sd">        :param stage: Stage of training (``&quot;train&quot;``, ``&quot;val&quot;``, ``&quot;test&quot;``)</span>
+<span class="sd">        :type stage: str</span>
+<span class="sd">        :param batch: Batch of data</span>
+<span class="sd">        :type batch: Batch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Log loss</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">loss</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">/loss/</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">prog_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Log metrics</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_names</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">metric</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">pred</span> <span class="o">=</span> <span class="n">y_hat</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
+                        <span class="n">target</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
+
+                        <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="s2">&quot;perplexity&quot;</span><span class="p">:</span>
+                            <span class="n">pred</span> <span class="o">=</span> <span class="n">to_dense_batch</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">batch</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="n">target</span> <span class="o">=</span> <span class="n">to_dense_batch</span><span class="p">(</span>
+                                <span class="n">target</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">batch</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">100</span>
+                            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="c1"># This is a hack for MSE-type metrics which fail on e.g. [4,1] &amp; [4]</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">val</span> <span class="o">=</span> <span class="n">metric</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                            <span class="n">val</span> <span class="o">=</span> <span class="n">metric</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">prog_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">True</span>
+                        <span class="p">)</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">):</span>
+                        <span class="k">continue</span></div></div>
+
+
+<div class="viewcode-block" id="BenchMarkModel"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BenchMarkModel">[docs]</a><span class="k">class</span> <span class="nc">BenchMarkModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">DictConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">cfg</span>
+
+        <span class="c1"># self.encoder = get_protein_encoder(cfg)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Instantiating encoder...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">=</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">encoder</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Instantiating decoders...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_output_decoders</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Instantiating losses...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">losses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">configure_losses</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">losses</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using losses: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">losses</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task.aux_loss_coefficient&quot;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Using aux loss coefficient: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">aux_loss_coefficient</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Not using aux loss scaling&quot;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Configuring metrics...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">configure_metrics</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metric_names</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Instantiating featuriser...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">featuriser</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">=</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">featuriser</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Instantiating task transform...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">task_transform</span> <span class="o">=</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task.transform&quot;</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">task_transform</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_hyperparameters</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">example_input_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_example_batch</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_create_example_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinBatch</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates an example batch for model inspection (including</span>
+<span class="sd">        featurisation and transformation as specified by the config).</span>
+
+<span class="sd">        :return: Example batch of data, featurised and transformed as specified</span>
+<span class="sd">            by the config.</span>
+<span class="sd">        :rtype: ProteinBatch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">proteins</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">get_random_protein</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">proteins</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">batch</span> <span class="o">=</span> <span class="n">ProteinBatch</span><span class="o">.</span><span class="n">from_data_list</span><span class="p">(</span><span class="n">proteins</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">featurise</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BenchMarkModel.forward"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BenchMarkModel.forward">[docs]</a>    <span class="nd">@beartype</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ModelOutput</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Implements the forward pass of the model.</span>
+
+
+<span class="sd">        1. Apply the model encoder (``self.encoder``) to the batch of data.</span>
+<span class="sd">        2. (Optionally) apply any transformations to the encoder output</span>
+<span class="sd">        (:py:meth:`BaseModel.transform_encoder_output`)</span>
+<span class="sd">        3. Iterate over the decoder heads (``self.decoder``) and apply each</span>
+<span class="sd">        decoder to the relevant part of the encoder output.</span>
+<span class="sd">        4. (Optionally) apply any post-processing to the model output.</span>
+<span class="sd">        (:py:meth:`BaseModel.compute_output`)</span>
+
+<span class="sd">        :param batch: Mini-batch of data.</span>
+<span class="sd">        :type batch: Union[Batch, ProteinBatch]</span>
+<span class="sd">        :return: Model output.</span>
+<span class="sd">        :rtype: ModelOutput</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span><span class="p">:</span> <span class="n">EncoderOutput</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_encoder_output</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">output_head</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">[</span><span class="n">output_head</span><span class="p">],</span> <span class="s2">&quot;requires_pos&quot;</span><span class="p">):</span>
+                    <span class="n">output</span><span class="p">[</span><span class="n">output_head</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">[</span><span class="n">output_head</span><span class="p">](</span>
+                        <span class="n">edge_index</span><span class="o">=</span><span class="n">batch</span><span class="o">.</span><span class="n">edge_index</span><span class="p">,</span>
+                        <span class="n">scalar_features</span><span class="o">=</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;node_embedding&quot;</span><span class="p">],</span>
+                        <span class="n">pos</span><span class="o">=</span><span class="n">batch</span><span class="o">.</span><span class="n">pos</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">emb_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">[</span>
+                        <span class="n">output_head</span>
+                    <span class="p">]</span><span class="o">.</span><span class="n">input</span>  <span class="c1"># node_embedding or graph_embedding</span>
+                    <span class="n">output</span><span class="p">[</span><span class="n">output_head</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">[</span><span class="n">output_head</span><span class="p">](</span><span class="n">output</span><span class="p">[</span><span class="n">emb_type</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_output</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BenchMarkModel.transform_encoder_output"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BenchMarkModel.transform_encoder_output">[docs]</a>    <span class="nd">@beartype</span>
+    <span class="k">def</span> <span class="nf">transform_encoder_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">EncoderOutput</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EncoderOutput</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modifies graph encoder output.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;edge_distance&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;edge_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;node_embedding&quot;</span><span class="p">][</span><span class="n">batch</span><span class="o">.</span><span class="n">node_mask</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;node_embedding&quot;</span><span class="p">][</span><span class="n">batch</span><span class="o">.</span><span class="n">node_mask</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                <span class="p">],</span>
+                <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
+<div class="viewcode-block" id="BenchMarkModel.compute_output"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BenchMarkModel.compute_output">[docs]</a>    <span class="nd">@beartype</span>
+    <span class="k">def</span> <span class="nf">compute_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">ModelOutput</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelOutput</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes output from model output.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;dihedrals&quot;</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># Normalize output so each pair of sin(ang) and cos(ang) sum to 1.</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;dihedrals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
+                <span class="n">output</span><span class="p">[</span><span class="s2">&quot;dihedrals&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="c1"># If we have a mask, apply it</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="s2">&quot;sequence_corruption_mask&quot;</span><span class="p">):</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;residue_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s2">&quot;residue_type&quot;</span><span class="p">][</span>
+                <span class="n">batch</span><span class="o">.</span><span class="n">sequence_corruption_mask</span>
+            <span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
+    <span class="nd">@beartype</span>
+    <span class="k">def</span> <span class="nf">_do_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">stage</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a training/validation/test step.</span>
+
+<span class="sd">        1. Obtains labels from :py:meth:`get_labels`</span>
+<span class="sd">        2. Computes model output :py:meth:`forward`</span>
+<span class="sd">        3. Computes loss :py:meth:`compute_loss`</span>
+<span class="sd">        4. Logs metrics :py:meth:`log_metrics`</span>
+
+<span class="sd">        Returns the total loss.</span>
+
+<span class="sd">        :param batch: Mini-batch of data.</span>
+<span class="sd">        :type batch: Batch</span>
+<span class="sd">        :param batch_idx: Index of batch.</span>
+<span class="sd">        :type batch_idx: int</span>
+<span class="sd">        :param stage: Stage of training (``&quot;train&quot;``, ``&quot;val&quot;``, ``&quot;test&quot;``)</span>
+<span class="sd">        :type stage: Literal[&quot;train&quot;, &quot;val&quot;, &quot;test&quot;]</span>
+<span class="sd">        :return: Loss</span>
+<span class="sd">        :rtype: torch.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_labels</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+
+        <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_loss</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">stage</span><span class="p">,</span> <span class="n">batch</span><span class="o">=</span><span class="n">batch</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="BenchMarkModel.training_step"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BenchMarkModel.training_step">[docs]</a>    <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">],</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform training step.</span>
+
+<span class="sd">        1. Obtains labels from :py:meth:`get_labels`</span>
+<span class="sd">        2. Computes model output :py:meth:`forward`</span>
+<span class="sd">        3. Computes loss :py:meth:`compute_loss`</span>
+<span class="sd">        4. Logs metrics :py:meth:`log_metrics`</span>
+
+<span class="sd">        Returns the total loss.</span>
+
+<span class="sd">        :param batch: Mini-batch of data.</span>
+<span class="sd">        :type batch: Batch</span>
+<span class="sd">        :param batch_idx: Index of batch.</span>
+<span class="sd">        :type batch_idx: int</span>
+<span class="sd">        :return: Loss</span>
+<span class="sd">        :rtype: torch.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_step</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BenchMarkModel.validation_step"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BenchMarkModel.validation_step">[docs]</a>    <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">],</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform validation step.</span>
+
+<span class="sd">        1. Obtains labels from :py:meth:`get_labels`</span>
+<span class="sd">        2. Computes model output :py:meth:`forward`</span>
+<span class="sd">        3. Computes loss :py:meth:`compute_loss`</span>
+<span class="sd">        4. Logs metrics :py:meth:`log_metrics`</span>
+
+<span class="sd">        Returns the total loss.</span>
+
+<span class="sd">        :param batch: Mini-batch of data.</span>
+<span class="sd">        :type batch: Batch</span>
+<span class="sd">        :param batch_idx: Index of batch.</span>
+<span class="sd">        :type batch_idx: int</span>
+<span class="sd">        :return: Loss</span>
+<span class="sd">        :rtype: torch.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_step</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BenchMarkModel.test_step"><a class="viewcode-back" href="../../../modules/src.models.html#src.models.base.BenchMarkModel.test_step">[docs]</a>    <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">],</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform test step.</span>
+
+<span class="sd">        1. Obtains labels from :py:meth:`get_labels`</span>
+<span class="sd">        2. Computes model output :py:meth:`forward`</span>
+<span class="sd">        3. Computes loss :py:meth:`compute_loss`</span>
+<span class="sd">        4. Logs metrics :py:meth:`log_metrics`</span>
+
+<span class="sd">        Returns the total loss.</span>
+
+<span class="sd">        :param batch: Mini-batch of data.</span>
+<span class="sd">        :type batch: Batch</span>
+<span class="sd">        :param batch_idx: Index of batch.</span>
+<span class="sd">        :type batch_idx: int</span>
+<span class="sd">        :return: Loss</span>
+<span class="sd">        :rtype: torch.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_step</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Arian R. Jamasb
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/tabs.js?v=3ee01567"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

@@ -1,0 +1,9 @@
+Quickstart
+---------------------
+
+.. toctree::
+    :maxdepth: 3
+    :glob:
+
+    quickstart_component/pretrain
+    quickstart_component/downstream

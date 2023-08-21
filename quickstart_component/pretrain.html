@@ -1,0 +1,484 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', '');
+            
+        </script>
+    <meta property="og:title" content="Pre-Training" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="quickstart_component/pretrain.html" />
+<meta property="og:site_name" content="Protein Workshop" />
+<meta property="og:description" content="To get up and running quickly, the following widgets can be used to configure commands to run various functions of the benchmark." />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="/_images/social_previews/summary_quickstart_component_pretrain_70a154d1.png" />
+<meta property="og:image:alt" content="To get up and running quickly, the following widgets can be used to configure commands to run various functions of the benchmark." />
+<meta name="description" content="To get up and running quickly, the following widgets can be used to configure commands to run various functions of the benchmark." />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Downstream" href="downstream.html" /><link rel="prev" title="Quickstart" href="../quickstart.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
+        <title>Pre-Training - Protein Workshop 0.0.1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-codeautolink.css?v=125d5c1c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Protein Workshop 0.0.1</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/workshop_icon.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Protein Workshop 0.0.1</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../quickstart.html">Quickstart</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Pre-Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="downstream.html">Downstream</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../configs/dataset.html">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/model.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/task.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/callbacks.html">Callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/debug.html">Debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/env.html">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/logger.html">Loggers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/hydra.html">Hydra Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/extras.html">Extras</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml_components.html">ML Components</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of ML Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configs/ml_components/trainer.html">Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/ml_components/optimiser.html">Optimiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/ml_components/scheduler.html">Schedulers</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.datasets.html">protein_workshop.datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.models.html">protein_workshop.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.tasks.html">protein_workshop.tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.features.html">protein_workshop.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.utils.html">protein_workshop.utils</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="pre-training">
+<h1>Pre-Training<a class="headerlink" href="#pre-training" title="Permalink to this heading">#</a></h1>
+<p>To get up and running quickly, the following widgets can be used to configure commands to run various functions of the benchmark.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The widgets provide only a subset of options. For example, any dataset can be used for pre-training, but only a few are available in the widget. For more options, see the <cite>Configuration</cite> section.</p>
+</div>
+<style>
+    .quick-start-pt {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      margin-bottom: 20px;
+    }
+
+    .title-column {
+      flex-grow: 0;
+    }
+
+    .content-column {
+      flex-grow: 1;
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+
+    .title-column div, .row div {
+      white-space: nowrap;
+    }
+
+    .title-column div {
+      padding: 14px 10px 12px 0;
+      font-weight: 700;
+    }
+
+    .row div {
+      flex-grow: 1;
+      text-align: center;
+      margin: 2px;
+      padding: 12px 0 10px 0;
+      background: #e3e3e3;
+      cursor: pointer;
+    }
+
+    .row div.selected {
+      background: rgba(59,155,239,0.7);
+      color: #ffffff;
+    }
+
+    #command {
+      margin: 2px;
+      padding: 12px 10px 10px 10px;
+    }
+
+    #command pre {
+      padding: 0;
+      margin: 0;
+      white-space: pre-wrap;
+    }
+
+  </style>
+
+  <div class="quick-start-pt">
+    <div class="title-column">
+      <div>Model</div>
+      <div>Pretraining Task</div>
+      <div>Dataset</div>
+      <div>Features</div>
+      <div>Aux Task</div>
+      <div>Run:</div>
+    </div>
+    <div class="content-column">
+      <div class="row" id="model"></div>
+      <div class="row" id="task"></div>
+      <div class="row" id="datasets"></div>
+      <div class="row" id="features"></div>
+      <div class="row" id="auxtask"></div>
+      <div class="row" id="command"><pre></pre></div>
+    </div>
+  </div>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script>
+    var modelList = [
+      ['schnet', "SchNet"],
+      ['dimenetpp', 'DimeNet'],
+      ['egnn', 'EGNN'],
+      ['gvp', "GVP"],
+      ['gcpnet', 'GCPNet'],
+      ['tfn', 'TFN'],
+      ['mace', 'MACE']
+    ];
+
+    var taskList = [
+      ['inverse_folding', 'Inverse Folding'],
+      ['structure_denoising', 'Structure Denoising'],
+      ['torsional_denoising', 'Torsional Denoising'],
+      ['sequence_denoising', "Seq. Denoising"],
+      ['plddt_prediction', 'pLDDT Pred.']
+    ];
+
+    var datasetList = [
+      ['astral', 'ASTRAL'],
+      ['cath', 'CATH'],
+      ['afdb_rep_v4', 'AFDB (clustered)'],
+      ['esm_atlas', "ESM Atlas"],
+      ['pdb', "PDB"],
+      ['afdb_uniprot_v4', "UniProt"],
+      ['afdb_swissprot_v4', "SwissProt"]
+    ];
+
+    var featureList = [
+      ["ca_base", "CA only"],
+      ["ca_seq", "Ca + Seq."],
+      ["ca_angles", "Ca + Virt. Angles"],
+      ["ca_bb", "Backbone"],
+      ["ca_sc", "Backbone + Sidechain Torsion"],
+    ];
+
+    var auxTaskList = [
+      ["none", "None"],
+      ['inverse_folding', 'Inverse Folding'],
+      ['structure_denoising', 'Structure Denoising'],
+      ['torsional_denoising', 'Torsional Denoising'],
+      ['sequence_denoising', "Seq. Denoising"],
+      ['plddt_prediction', 'pLDDT Prediction']
+    ];
+
+    modelList.forEach(x => $("#model").append(`<div id="${x[0]}">${x[1]}</div>`));
+    taskList.forEach(x => $("#task").append(`<div id="${x[0]}">${x[1]}</div>`));
+    datasetList.forEach(x => $("#datasets").append(`<div id="${x[0]}">${x[1]}</div>`));
+    featureList.forEach(x => $("#features").append(`<div id="${x[0]}">${x[1]}</div>`));
+    auxTaskList.forEach(x => $("#auxtask").append(`<div id="${x[0]}">${x[1]}</div>`));
+
+    function updateCommand() {
+      var model = $("#command").attr("model");
+      var task = $("#command").attr("task");
+      var datasets = $("#command").attr("datasets");
+      var features = $("#command").attr("features");
+      var auxtask = $("#command").attr("auxtask");
+
+      $("#command pre").text(`python src/train.py encoder=${$("#command").attr("model")} task=${$("#command").attr("task")} dataset=${$("#command").attr("datasets")} features=${$("#command").attr("features")} +aux_task=${$("#command").attr("auxtask")}`);
+    }
+
+    $(".quick-start-pt .content-column .row div").click(function() {
+      $(this).parent().children().removeClass("selected");
+      $(this).addClass("selected");
+      $("#command").attr($(this).parent().attr("id"), $(this).attr("id"));
+      updateCommand();
+    });
+
+    $("#model").children().get(0).click();
+    $("#task").children().get(0).click();
+    $("#datasets").children().get(6).click();
+    $("#features").children().get(2).click();
+    $("#auxtask").children().get(0).click();
+
+  </script>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="downstream.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Downstream</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../quickstart.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Quickstart</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Arian R. Jamasb
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

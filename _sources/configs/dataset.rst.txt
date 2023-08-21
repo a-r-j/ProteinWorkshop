@@ -1,0 +1,241 @@
+Dataset
+---------
+
+.. image:: ../_static/box_datasets.png
+  :alt: Summary of dataset sources
+  :align: center
+  :width: 400
+
+To switch between different datasets, simply change the `dataset` argument in the launch command. For example:
+
+.. code-block:: bash
+
+    python src/train.py encoder=gear_net dataset=<DATASET_NAME> task=inverse_folding
+
+Where ``<DATASET_NAME>`` is given by bracketed name in the listing below. For example, the dataset name for CATH is ``cath``.
+
+
+.. note::
+    To change encoder hyperparameters, either
+
+    1. Edit the config file directly, or
+    2. Provide commands in the form:
+
+    .. code-block:: bash
+
+        python src/train.py encoder=<encoder_name> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
+
+
+
+Unlabelled Datasets
+===================
+
+
+.. mdinclude:: ../../../README.md
+    :start-line: 138
+    :end-line: 153
+
+
+ASTRAL (``astral``)
+^^^^^^^^^^^^^^^^^^^^
+
+ASTRAL provides compendia of protein domain structures, regions of proteins that
+can maintain their structure and function independently of the rest of the protein. Domains typically
+exhibit highly-specific functions and can be considered structural building blocks of proteins.
+
+.. literalinclude:: ../../../configs/dataset/astral.yaml
+    :language: yaml
+    :caption: configs/dataset/astral.yaml
+
+
+CATH (``cath``)
+^^^^^^^^^^^^^^^^^
+.. literalinclude:: ../../../configs/dataset/cath.yaml
+    :language: yaml
+    :caption: configs/dataset/cath.yaml
+
+PDB (``pdb``)
+^^^^^^^^^^^^^^^^^
+.. literalinclude:: ../../../configs/dataset/pdb.yaml
+    :language: yaml
+    :caption: configs/dataset/pdb.yaml
+
+
+AFdb Rep. v4 (``afdb_rep_v4``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This is a dataset of approx. 3m protein structures from the alphafold database
+collated by , following structural clustering with FoldSeek.
+
+.. literalinclude:: ../../../configs/dataset/afdb_rep_v4.yaml
+    :language: yaml
+    :caption: configs/dataset/afdb_rep_v4.yaml
+
+
+AFdb Dark Proteome (``afdb_rep_dark_v4``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/afdb_rep_dark_v4.yaml
+    :language: yaml
+    :caption: configs/dataset/afdb_rep_dark_v4.yaml
+
+
+ESM Atlas (``esmatlas_v2023_02``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/esmatlas_v2023_02.yaml
+    :language: yaml
+    :caption: configs/dataset/esmatlas_v2023_02.yaml
+
+ESM Atlas (High Quality) (``highquality_clust30``)
+
+.. literalinclude:: ../../../configs/dataset/highquality_clust30.yaml
+    :language: yaml
+    :caption: configs/dataset/highquality_clust30.yaml
+
+
+UniProt (Alphafold) (``afdb_uniprot_v4``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/afdb_uniprot_v4.yaml
+    :language: yaml
+    :caption: configs/dataset/afdb_uniprot_v4.yaml
+
+
+SwissProt (Alphafold) (``afdb_swissprot_v4``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/afdb_swissprot_v4.yaml
+    :language: yaml
+    :caption: configs/dataset/afdb_swissprot_v4.yaml
+
+
+
+Species-Specific Datasets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO
+
+
+Graph-level Datasets
+=============================
+
+Antibody Developability (``antibody_developability``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Therapeutic antibodies must be optimised for favourable
+physicochemical properties in addition to target binding affinity and specificity
+to be viable development candidates. Consequently, this task frames prediction of antibody
+developability as a binary graph classification task indicating whether a given antibody is developable
+
+Dataset: We adopt the antibody developability dataset originally curated from SabDab by TDC.
+
+Impact: From a benchmarking perspective, this task is important as it enables targeted performance
+assessment of models on a specific (immunoglobulin) fold, providing insight into whether general-
+purpose structure-based encoders can be applicable to fold-specific tasks.
+
+.. literalinclude:: ../../../configs/dataset/antibody_developability.yaml
+    :language: yaml
+    :caption: configs/dataset/antibody_developability.yaml
+
+
+Atom3D Mutation Stability Prediction (``atom3d_msp``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/atom3d_msp.yaml
+    :language: yaml
+    :caption: configs/dataset/atom3d_msp.yaml
+
+Atom3D Protein Structure Ranking (``atom3d_psr``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/atom3d_psr.yaml
+    :language: yaml
+    :caption: configs/dataset/atom3d_psr.yaml
+
+
+Deep Sea Classification (``deep_sea_proteins``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. literalinclude:: ../../../configs/dataset/deep_sea_proteins.yaml
+    :language: yaml
+    :caption: configs/dataset/deepsea.yaml
+
+Enzyme Commission Number Prediction (``ec_reaction``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/ec_reaction.yaml
+    :language: yaml
+    :caption: configs/dataset/ec_reaction.yaml
+
+Fold Classification (``fold-family``, ``fold-superfamily``, ``fold-fold``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This is a multiclass graph classification task where each protein, G, is mapped to a
+label y ∈ {1, . . . , 1195} denoting the fold class.
+Dataset: We adopt the fold classification dataset originally curated from SCOP 1.75 by Hermosilla et al. In
+particular, this dataset contains three distinct test splits across which we average a method’s results.
+Impact: The utility of this task is that it serves as a litmus test for the ability of a model to distinguish
+different structural folds. It stands to reason that models that perform poorly on distinguishing fold
+classes likely learn limited or low-quality structural representations.214
+Metric: We report the micro-average accuracy.
+
+
+.. literalinclude:: ../../../configs/dataset/fold_family.yaml
+    :language: yaml
+    :caption: configs/dataset/fold_family.yaml
+
+Gene Ontology (``go-bp``, ``go-cc``, ``go-mf``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. literalinclude:: ../../../configs/dataset/go-bp.yaml
+    :language: yaml
+    :caption: configs/dataset/go-bp.yaml / configs/dataset/go-cc.yaml / configs/dataset/go-mf.yaml
+
+
+Node-level Datasets
+=============================
+
+Atom3D Residue Prediction (``atom3d_res``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/atom3d_res.yaml
+    :language: yaml
+    :caption: configs/dataset/atom3d_res.yaml
+
+CCPDB Ligand Binding (``ccpdb_ligand``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/ccpdb_ligands.yaml
+    :language: yaml
+    :caption: configs/dataset/ccpdb_ligand.yaml
+
+CCPDB Metal Binding (``ccpdb_metal``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/ccpdb_metal.yaml
+    :language: yaml
+    :caption: configs/dataset/ccpdb_metal.yaml
+
+CCPDB Nucleic Acid Binding (``ccpdb_nucleic``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/ccpdb_nucleic.yaml
+    :language: yaml
+    :caption: configs/dataset/ccpdb_nucleic.yaml
+
+
+CCPDB Nucleotide Binding (``ccpdb_nucleotides``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/dataset/ccpdb_nucleotides.yaml
+    :language: yaml
+    :caption: configs/dataset/ccpdb_nucleotides.yaml
+
+
+Post Translational Modifications (``ptm``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. literalinclude:: ../../../configs/dataset/ptm.yaml
+    :language: yaml
+    :caption: configs/dataset/ptm.yaml
+
+
+PPI Site Prediction (``masif_site``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. literalinclude:: ../../../configs/dataset/masif_site.yaml
+    :language: yaml
+    :caption: configs/dataset/masif_site.yaml

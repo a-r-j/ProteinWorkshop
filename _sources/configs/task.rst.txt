@@ -1,0 +1,165 @@
+Tasks
+----------------
+
+.. list-table::
+
+   * - .. figure:: ../_static/box_aux_tasks.png
+     - .. figure:: ../_static/box_downstream_tasks.png
+
+
+.. note::
+    To change the task, use a command with a format like:
+
+    .. code-block:: bash
+
+        python src/train.py task=<TASK_NAME> dataset=cath encoder=gvp ...
+
+    Where ``<TASK_NAME>`` is one of the tasks listed below.
+
+
+Denoising Tasks
+================
+
+Sequence Denoising (``sequence_denoising``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+    configs/task/sequence_denoising.yaml
+
+.. literalinclude:: ../../../configs/task/sequence_denoising.yaml
+   :language: yaml
+
+Structure Denoising (``structure_denoising``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/task/structure_denoising.yaml
+   :language: yaml
+
+Sequence & Structure Denoising (``sequence_structure_denoising``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/task/sequence_structure_denoising.yaml
+   :language: yaml
+
+Torsional Denoising (``torsional_denoising``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/task/torsional_denoising.yaml
+   :language: yaml
+
+
+Node-level Tasks
+================
+
+
+Protein-Protein Interaction Site Prediction (``ppi_site_prediction``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/task/ppi_site_prediction.yaml
+   :language: yaml
+
+
+Multiclass Node Classification (``multiclass_node_classification``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/task/muliclass_node_classification.yaml
+   :language: yaml
+
+pLDDT Prediction (``plddt_prediction``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../../../configs/task/plddt_prediction.yaml
+   :language: yaml
+
+
+Edge-level Tasks
+================
+
+.. literalinclude:: ../../../configs/task/edge_distance_prediction.yaml
+   :language: yaml
+
+
+
+Aux Tasks
+================
+
+.. image:: ../_static/box_aux_tasks.png
+  :alt: Summary of auxiliary tasks
+  :align: center
+
+.. mdinclude:: ../../../configs/aux_task/README.md
+
+Sequence Denoising (``nn_sequence``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+    # Example:
+    python src/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=nn_sequence
+
+.. literalinclude:: ../../../configs/aux_task/nn_sequence.yaml
+    :language: yaml
+    :caption: configs/aux_task/nn_sequence.yaml
+
+Structure Denoising (``nn_structure_r3``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+    # Example:
+    python src/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=nn_structure_r3
+
+.. literalinclude:: ../../../configs/aux_task/nn_structure_r3.yaml
+    :language: yaml
+    :caption: configs/aux_task/nn_structure_r3.yaml
+
+Torsional Denoising (``nn_structure_torsion``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Noise is applied to the backbone torsion angles and Cartesian coordinates are recomputed using pNeRF and the uncorrupted bond
+lengths and angles prior to feature computation. Similarly to the coordinate denoising task, the model
+is then tasked with predicting either the per-residue angular noise or the original dihedral angles
+
+.. warning::
+    This will subset the data to only include the backbone atoms
+    (N, Ca, C). The backbone oxygen can be placed with:
+    :py:func:`graphein.protein.tensor.reconstruction.place_fourth_coord`.
+
+    This will break, for example, sidechain torsion angle computation for
+    the first few chi angles that are partially defined by backbone atoms.
+
+.. code-block:: bash
+
+    # Example:
+    python src/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=nn_structure_torsion
+
+.. literalinclude:: ../../../configs/aux_task/nn_structure_torsion.yaml
+    :language: yaml
+    :caption: configs/aux_task/nn_structure_torsion.yaml
+
+Inverse Folding (``inverse_folding``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This adds an additional inverse folding objective to the model. I.e. the model is trained to predict the sequence of the input structure.
+
+.. warning::
+
+    This will remove the residue-type node feature and sidechain torsion angles to avoid leakage of information from the target structure.
+
+.. code-block:: bash
+
+    # Example:
+    python src/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=inverse_folding
+
+.. literalinclude:: ../../../configs/aux_task/inverse_folding.yaml
+    :language: yaml
+    :caption: configs/aux_task/inverse_folding.yaml
+
+None (``none``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+    # Example:
+    python src/train.py dataset=cath encoder=gvp task=plddt_prediction

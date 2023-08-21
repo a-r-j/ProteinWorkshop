@@ -1,0 +1,13 @@
+Installation
+================
+
+.. note::
+
+    This package is not yet available on PyPI. You can install it from GitHub
+    using pip. We are working on better distribution. Until then, please use the following instructions:
+
+
+
+.. mdinclude:: ../../README.md
+    :start-line: 28
+    :end-line: 54
