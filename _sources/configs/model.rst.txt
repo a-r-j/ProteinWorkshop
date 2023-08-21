@@ -21,15 +21,17 @@ Where ``<ENCODER_NAME>`` is given by bracketed name in the listing below. For ex
     1. Edit the config file directly, or
     2. Provide commands in the form:
 
-        .. code-block:: bash
+    .. code-block:: bash
 
-            python src/train.py encoder=<ENCODER_NAME> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
-
-The following structural encoders are currently supported:
+        python src/train.py encoder=<ENCODER_NAME> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
 
 
 Invariant Encoders
 =============================
+
+.. mdinclude:: ../../../README.md
+    :start-line: 126
+    :end-line: 133
 
 :py:class:`SchNet <src.models.graph_encoders.schnet.SchNetModel>` (``schnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -110,6 +112,10 @@ where :math:`\mathrm{FC(\cdot)}` denotes a linear transformation upon the messag
 Vector-Equivariant Encoders
 =============================
 
+.. mdinclude:: ../../../README.md
+    :start-line: 137
+    :end-line: 144
+
 :py:class:`EGNN <src.models.graph_encoders.egnn.EGNNModel>` (``egnn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -133,7 +139,7 @@ We consider E(3) equivariant GNN layers proposed by Satorras et al. (2021) which
     :caption: configs/encoder/gvp.yaml
 
 
-:py:class:`GVP <src.models.graph_encoders.gcpnet.GCPNetModel>` (``gcpnet``)
+:py:class:`GCPNet <src.models.graph_encoders.gcpnet.GCPNetModel>` (``gcpnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 GCPNet is an SE(3) equivariant architecture that jointly learns scalar and vector-valued features from geometric protein structure inputs and, through the use of geometry-complete frame embeddings, sensitises its predictions to account for potential changes induced by the effects of molecular chirality on protein structure. In contrast to the original GCPNet formulation presented in Morehead et al. (2022), the implementation we provide in the benchmark incorporates the architectural enhancements proposed in Morehead et al. (2023) which include the addition of a scalar message attention gate (i.e., :math:`f_{a}(\cdot)``) and a simplified structure for the model's geometric graph convolution layers (i.e., :math:`f_{n}(\cdot)`). With geometry-complete graph convolution in mind, for node :math:`i` and layer :math:`t`, scalar edge features :math:`\vs_{e^{ij}}^{(t)}` and vector edge features :math:`\vv_{e^{ij}}^{(t)}` are used along with scalar node features :math:`\vs_{n^{i}}^{(t)}` and vector node features :math:`\vv_{n^{i}}^{(t)}` to update each node feature type as:
@@ -159,8 +165,14 @@ where the geometry-complete and chirality-sensitive local frames for node :math:
 Tensor-Equivariant Encoders
 =============================
 
+.. mdinclude:: ../../../README.md
+    :start-line: 145
+    :end-line: 150
+
+
 :py:class:`Tensor Field Networks <src.models.graph_encoders.tfn.TensorProductModel>` (``tfn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Tensor Field Networks are E(3) or SE(3) equivariant GNNs that have been successfully used in protein structure prediction (Baek et al., 2021) and protein-ligand docking (Corso et al., 2022).
 These models use higher order spherical tensors :math:`\tilde \vh_{i,l} \in \mathbb{R}^{2l+1 \times f}` as node features, starting from order :math:`l = 0` up to arbitrary :math:`l = L`.
 The first two orders correspond to scalar features :math:`\vs_i` and vector features :math:`\vec{\vv}_i`, respectively.
@@ -181,6 +193,7 @@ where the weights :math:`\vw` of the tensor product are computed via a learnt ra
 
 :py:class:`Multi-Atomic Cluster Expansion <src.models.graph_encoders.mace.MACEModel>` (``mace``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 MACE (Batatia et al., 2022) is a higher order E(3) or SE(3) equivariant GNN originally developed for molecular dynamics simulations.
 MACE provides an efficient approach to computing high body order equivariant features in the Tensor Field Network framework via Atomic Cluster Expansion:
 They first aggregate neighbourhood features analogous to the node update equation for TFN above (the :math:`A` functions in Batatia et al. (2022) (eq.9)) and then take :math:`k-1` repeated self-tensor products of these neighbourhood features. 

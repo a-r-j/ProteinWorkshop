@@ -61,7 +61,7 @@ Models
 These objects orchestrate model training and validation logic. The :py:class:`src.models.base.BaseModel` class is a subclass of :py:class:`pytorch_lightning.LightningModule`.
 The :py:class:`src.models.base.BenchMarkModel` class is a subclass of :py:class:`src.models.base.BaseModel` and is used as the primary orchestrator in the framework.
 
-To use a different structural encoder, the user should overwrite :py:attribute:`src.models.base.BenchMarkModel.encoder` with a new encoder class. The encoder class should be a subclass of :py:class:`torch.nn.Module` and should implement the following methods:
+To use a different structural encoder, the user should overwrite :py:attr:`src.models.base.BenchMarkModel.encoder` with a new encoder class. The encoder class should be a subclass of :py:class:`torch.nn.Module` and should implement the following methods:
 
 - :py:meth:`torch.nn.Module.forward`
 

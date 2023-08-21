@@ -24,7 +24,7 @@
 <meta property="og:image:alt" content="Base Classes: Pre-Training Datasets: Node-level Datasets: Graph-level Datasets: FLIP: Utils:" />
 <meta name="description" content="Base Classes: Pre-Training Datasets: Node-level Datasets: Graph-level Datasets: FLIP: Utils:" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="protein_workshop.models" href="src.models.html" /><link rel="prev" title="Schedulers" href="../configs/ml_components/scheduler.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="protein_workshop.models" href="src.models.html" /><link rel="prev" title="protein_workshop.train" href="src.train.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
         <title>protein_workshop.datasets - Protein Workshop 0.0.1</title>
@@ -186,6 +186,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html#datasets">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html#models">Models</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/downstream.html">Downstream</a></li>
@@ -198,6 +200,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../configs/model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configs/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/callbacks.html">Callbacks</a></li>
@@ -217,6 +220,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="src.train.html">protein_workshop.train</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">protein_workshop.datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="src.models.html">protein_workshop.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="src.tasks.html">protein_workshop.tasks</a></li>
@@ -505,58 +509,6 @@ must be present in order to skip processing.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">raw_file_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#src.datasets.base.ProteinDataset.raw_file_names" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the files in the <code class="xref py py-obj docutils literal notranslate"><span class="pre">self.raw_dir</span></code> folder that must
 be present in order to skip downloading.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="src.datasets.base.SequenceDataset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.datasets.base.</span></span><span class="sig-name descname"><span class="pre">SequenceDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fasta_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_representative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/os.html#os.PathLike" title="(in Python v3.11)"><span class="pre">PathLike</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_transform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'fasta'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_structure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/datasets/base.html#SequenceDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.datasets.base.SequenceDataset" title="Permalink to this definition">#</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="src.datasets.base.SequenceDataset.embed">
-<span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embed_model:</span> <span class="pre">~torch.nn.modules.module.Module</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">esm2_t33_650M_UR50D&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_idx:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/datasets/base.html#SequenceDataset.embed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.datasets.base.SequenceDataset.embed" title="Permalink to this definition">#</a></dt>
-<dd><p>Embeds sequences using ESM-2 model. Embeddings are saved in the
-embeddings directory or returned.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.datasets.base.SequenceDataset.fold">
-<span class="sig-name descname"><span class="pre">fold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fold_model=&lt;function</span> <span class="pre">esmfold_v1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/datasets/base.html#SequenceDataset.fold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.datasets.base.SequenceDataset.fold" title="Permalink to this definition">#</a></dt>
-<dd><p>Fold sequences using ESM-1b model.</p>
-<p>PDB files are saved in the structure directory or returned.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.datasets.base.SequenceDataset.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.data.Data.html#torch_geometric.data.Data" title="(in pytorch_geometric v2.4.0)"><span class="pre">Data</span></a></span></span><a class="reference internal" href="../_modules/src/datasets/base.html#SequenceDataset.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.datasets.base.SequenceDataset.get" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns PyTorch Geometric Data object for a given index, with structure if present.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>idx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index to retrieve.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>PyTorch Geometric Data object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.datasets.base.SequenceDataset.len">
-<span class="sig-name descname"><span class="pre">len</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/src/datasets/base.html#SequenceDataset.len"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.datasets.base.SequenceDataset.len" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the number of graphs stored in the dataset.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.datasets.base.SequenceDataset.process">
-<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/datasets/base.html#SequenceDataset.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.datasets.base.SequenceDataset.process" title="Permalink to this definition">#</a></dt>
-<dd><p>Processes the dataset to the <code class="xref py py-obj docutils literal notranslate"><span class="pre">self.processed_dir</span></code> folder.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="src.datasets.base.SequenceDataset.processed_file_names">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">processed_file_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#src.datasets.base.SequenceDataset.processed_file_names" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the files in the <code class="xref py py-obj docutils literal notranslate"><span class="pre">self.processed_dir</span></code> folder that
-must be present in order to skip processing.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1342,14 +1294,14 @@ may contain structures too.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../configs/ml_components/scheduler.html">
+          <a class="prev-page" href="src.train.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Schedulers</div>
+                <div class="title">protein_workshop.train</div>
                 
               </div>
             </a>
@@ -1407,15 +1359,6 @@ may contain structures too.</p>
 <li><a class="reference internal" href="#src.datasets.base.ProteinDataset.process"><code class="docutils literal notranslate"><span class="pre">ProteinDataset.process()</span></code></a></li>
 <li><a class="reference internal" href="#src.datasets.base.ProteinDataset.processed_file_names"><code class="docutils literal notranslate"><span class="pre">ProteinDataset.processed_file_names</span></code></a></li>
 <li><a class="reference internal" href="#src.datasets.base.ProteinDataset.raw_file_names"><code class="docutils literal notranslate"><span class="pre">ProteinDataset.raw_file_names</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#src.datasets.base.SequenceDataset"><code class="docutils literal notranslate"><span class="pre">SequenceDataset</span></code></a><ul>
-<li><a class="reference internal" href="#src.datasets.base.SequenceDataset.embed"><code class="docutils literal notranslate"><span class="pre">SequenceDataset.embed()</span></code></a></li>
-<li><a class="reference internal" href="#src.datasets.base.SequenceDataset.fold"><code class="docutils literal notranslate"><span class="pre">SequenceDataset.fold()</span></code></a></li>
-<li><a class="reference internal" href="#src.datasets.base.SequenceDataset.get"><code class="docutils literal notranslate"><span class="pre">SequenceDataset.get()</span></code></a></li>
-<li><a class="reference internal" href="#src.datasets.base.SequenceDataset.len"><code class="docutils literal notranslate"><span class="pre">SequenceDataset.len()</span></code></a></li>
-<li><a class="reference internal" href="#src.datasets.base.SequenceDataset.process"><code class="docutils literal notranslate"><span class="pre">SequenceDataset.process()</span></code></a></li>
-<li><a class="reference internal" href="#src.datasets.base.SequenceDataset.processed_file_names"><code class="docutils literal notranslate"><span class="pre">SequenceDataset.processed_file_names</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#src.datasets.base.pair_data"><code class="docutils literal notranslate"><span class="pre">pair_data()</span></code></a></li>

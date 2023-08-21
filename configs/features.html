@@ -17,12 +17,12 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="configs/features.html" />
 <meta property="og:site_name" content="Protein Workshop" />
-<meta property="og:description" content="Summary of featurisation schemes Part of the goal of the benchmark is to investigate the impact of the degree to which increasing granularity of structural detail affects performance. To achieve th..." />
+<meta property="og:description" content="Summary of featurisation schemes Generic Supervised Tasks: Generic supervised tasks can be applied broadly across datasets. The labels are directly extracted from the PDB structures. These are like..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_configs_features_1499ea8b.png" />
-<meta property="og:image:alt" content="Summary of featurisation schemes Part of the goal of the benchmark is to investigate the impact of the degree to which increasing granularity of structural d..." />
-<meta name="description" content="Summary of featurisation schemes Part of the goal of the benchmark is to investigate the impact of the degree to which increasing granularity of structural detail affects performance. To achieve th..." />
+<meta property="og:image" content="/_images/social_previews/summary_configs_features_80a0cbe2.png" />
+<meta property="og:image:alt" content="Summary of featurisation schemes Generic Supervised Tasks: Generic supervised tasks can be applied broadly across datasets. The labels are directly extracted..." />
+<meta name="description" content="Summary of featurisation schemes Generic Supervised Tasks: Generic supervised tasks can be applied broadly across datasets. The labels are directly extracted from the PDB structures. These are like..." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Transforms" href="transforms.html" /><link rel="prev" title="Tasks" href="task.html" />
 
@@ -186,6 +186,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html#datasets">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html#models">Models</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/downstream.html">Downstream</a></li>
@@ -198,6 +200,7 @@
 <li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="task.html">Tasks</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="framework_components/callbacks.html">Callbacks</a></li>
@@ -217,6 +220,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.train.html">protein_workshop.train</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/src.datasets.html">protein_workshop.datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/src.models.html">protein_workshop.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/src.tasks.html">protein_workshop.tasks</a></li>
@@ -259,6 +263,34 @@
           <section id="features">
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this heading">#</a></h1>
 <a class="reference internal image-reference" href="../_images/box_featurisation_schemes.png"><img alt="Summary of featurisation schemes" class="align-center" src="../_images/box_featurisation_schemes.png" style="width: 400px;" /></a>
+<section id="generic-supervised-tasks">
+<h2>Generic Supervised Tasks<a class="headerlink" href="#generic-supervised-tasks" title="Permalink to this heading">#</a></h2>
+<p>Generic supervised tasks can be applied broadly across datasets. The labels are directly extracted from the PDB structures.</p>
+<p>These are likely to be most frequently used with the <cite>``pdb`</cite> &lt;<a class="reference external" href="https://github.com/a-r-j/protein_workshop/blob/main/configs/dataset/pdb.yaml">https://github.com/a-r-j/protein_workshop/blob/main/configs/dataset/pdb.yaml</a>&gt;`_ dataset class which wraps the <a class="reference external" href="https://colab.research.google.com/github/a-r-j/graphein/blob/master/notebooks/creating_datasets_from_the_pdb.ipynb">PDB Dataset curator</a> from <a class="reference external" href="https://github.com/a-r-j/graphein">Graphein</a>.</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Requires</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">binding_site_prediction</span></code></p></td>
+<td><p>Predict ligand binding residues</p></td>
+<td><p>HETATM ligands (for training)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ppi_site_prediction</span></code></p></td>
+<td><p>Predict protein binding residues</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">graph_y</span></code> attribute in data objects specifying the desired chain to select interactions for (for training)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="featurisation-schemes">
+<h1>Featurisation Schemes<a class="headerlink" href="#featurisation-schemes" title="Permalink to this heading">#</a></h1>
 <p>Part of the goal of the benchmark is to investigate the impact of the degree to which increasing granularity of structural detail affects performance. To achieve this, we provide several featurisation schemes for protein structures.</p>
 <section id="invariant-node-features">
 <h2>Invariant Node Features<a class="headerlink" href="#invariant-node-features" title="Permalink to this heading">#</a></h2>
@@ -330,57 +362,6 @@
 </section>
 <section id="invariant-edge-features">
 <h2>Invariant Edge Features<a class="headerlink" href="#invariant-edge-features" title="Permalink to this heading">#</a></h2>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Name</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Dimensionality</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">edge_distance</span></code></p></td>
-<td><p>Euclidean distance between source and target nodes</p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">node_features</span></code></p></td>
-<td><p>Concatenated scalar node features of the source and target nodes</p></td>
-<td><p>Number of scalar node features $times 2$</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">edge_type</span></code></p></td>
-<td><p>Type annotation for each edge</p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sequence_distance</span></code></p></td>
-<td><p>Sequence-based distance between source and target nodes</p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pos_emb</span></code></p></td>
-<td><p>Structured Transformer-inspired positional embedding of $i - j$ for source node $i$ and target node $j$</p></td>
-<td><p>16</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="equivariant-edge-features">
-<h2>Equivariant Edge Features<a class="headerlink" href="#equivariant-edge-features" title="Permalink to this heading">#</a></h2>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Name</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Dimensionality</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">edge_vectors</span></code></p></td>
-<td><p>Edge directional vectors (unit-normalized)</p></td>
-<td><p>1</p></td>
-</tr>
-</tbody>
-</table>
-</div>
 <section id="default-features">
 <h3>Default Features<a class="headerlink" href="#default-features" title="Permalink to this heading">#</a></h3>
 </section>
@@ -546,11 +527,14 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Features</a><ul>
+<li><a class="reference internal" href="#generic-supervised-tasks">Generic Supervised Tasks</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#featurisation-schemes">Featurisation Schemes</a><ul>
 <li><a class="reference internal" href="#invariant-node-features">Invariant Node Features</a></li>
 <li><a class="reference internal" href="#equivariant-node-features">Equivariant Node Features</a></li>
 <li><a class="reference internal" href="#edge-construction">Edge Construction</a></li>
-<li><a class="reference internal" href="#invariant-edge-features">Invariant Edge Features</a></li>
-<li><a class="reference internal" href="#equivariant-edge-features">Equivariant Edge Features</a><ul>
+<li><a class="reference internal" href="#invariant-edge-features">Invariant Edge Features</a><ul>
 <li><a class="reference internal" href="#default-features">Default Features</a></li>
 </ul>
 </li>

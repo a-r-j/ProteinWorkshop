@@ -174,6 +174,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html#datasets">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html#models">Models</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../quickstart_component/downstream.html">Downstream</a></li>
@@ -186,6 +188,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/callbacks.html">Callbacks</a></li>
@@ -205,6 +208,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/src.train.html">protein_workshop.train</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/src.datasets.html">protein_workshop.datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/src.models.html">protein_workshop.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/src.tasks.html">protein_workshop.tasks</a></li>
@@ -245,7 +249,7 @@
         <article role="main">
           <h1>Source code for src.features.representation</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Literal</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
@@ -286,9 +290,33 @@
     <span class="k">return</span> <span class="n">coords</span><span class="p">,</span> <span class="n">residue_index</span><span class="p">,</span> <span class="n">atom_type</span></div>
 
 
-<span class="nd">@jaxtyped</span>
+<div class="viewcode-block" id="transform_representation"><a class="viewcode-back" href="../../../modules/src.features.html#src.features.representation.transform_representation">[docs]</a><span class="nd">@jaxtyped</span>
 <span class="nd">@beartype</span>
-<span class="k">def</span> <span class="nf">transform_representation</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Batch</span><span class="p">,</span> <span class="n">representation_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Batch</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">transform_representation</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Batch</span><span class="p">,</span> <span class="n">representation_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;CA&quot;</span><span class="p">,</span> <span class="s2">&quot;BB&quot;</span><span class="p">,</span> <span class="s2">&quot;FA&quot;</span><span class="p">,</span> <span class="s2">&quot;BB_SC&quot;</span><span class="p">,</span> <span class="s2">&quot;CA_SC&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Batch</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory method to transform a batch into a specified representation.</span>
+
+<span class="sd">    The ``AtomTensor`` (i.e. ``batch.coords`` with shape</span>
+<span class="sd">    (:math:`|V| \times 37 \times 3`) is manipulated to produce the corresponding</span>
+<span class="sd">    number of nodes according to the desired node representation.</span>
+
+<span class="sd">    - ``CA`` simply selects the :math:`C_\alpha` atoms as nodes</span>
+<span class="sd">        (i.e. ``batch.coords[:, 1, :]``)</span>
+<span class="sd">    - ``BB`` selects and unravels the four backbone atoms</span>
+<span class="sd">        (:math:`N, C_\alpha, C, O`) as nodes. Existing node features are tiled</span>
+<span class="sd">        over the backbone atom nodes on a per-residue basis.</span>
+<span class="sd">    - ``FA`` unravels all the a``AtomTensor`` to result in a full-atom graph,</span>
+<span class="sd">        i.e. each atom in the structure becomes a node in the graph. Existing</span>
+<span class="sd">        node features are tiled over the atom nodes on a per-residue basis.</span>
+
+<span class="sd">    :param x: A minibatch of data</span>
+<span class="sd">    :type x: Batch</span>
+<span class="sd">    :param representation_type: _description_</span>
+<span class="sd">    :type representation_type: Literal[&quot;CA&quot;, &quot;BB&quot;, &quot;FA&quot;, &quot;BB_SC&quot;, &quot;CA_SC&quot;]</span>
+<span class="sd">    :raises ExperimentConfigurationError: _description_</span>
+<span class="sd">    :return: _description_</span>
+<span class="sd">    :rtype: Batch</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">representation_type</span> <span class="o">==</span> <span class="s2">&quot;CA&quot;</span><span class="p">:</span>
         <span class="n">x</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">coords</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
         <span class="k">return</span> <span class="n">x</span>
@@ -304,7 +332,7 @@
         <span class="k">raise</span> <span class="n">ExperimentConfigurationError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Unsupported granularity type: </span><span class="se">\</span>
 <span class="s2">            </span><span class="si">{</span><span class="n">representation_type</span><span class="si">}</span><span class="s2">. Must be one of [CA, BB, BB_SC, FA]&quot;</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
 
 <span class="nd">@beartype</span>
@@ -418,7 +446,7 @@
 
 <div class="viewcode-block" id="coarsen_sidechain"><a class="viewcode-back" href="../../../modules/src.features.html#src.features.representation.coarsen_sidechain">[docs]</a><span class="nd">@beartype</span>
 <span class="k">def</span> <span class="nf">coarsen_sidechain</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Data</span><span class="p">,</span> <span class="n">aggr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CoordTensor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;Returns tensor of sidechain centroids: L x 3&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns tensor of sidechain centroids: L x 3&quot;&quot;&quot;</span>
     <span class="c1"># sourcery skip: remove-unnecessary-else, swap-if-else-branches</span>
     <span class="c1"># Compute mean sidechain position</span>
     <span class="n">sc_points</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">coords</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span>

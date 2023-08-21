@@ -41,6 +41,7 @@ Welcome to Protein Workshop's documentation!
    :hidden:
    :caption: API Reference
 
+   modules/src.train
    modules/src.datasets
    modules/src.models
    modules/src.tasks

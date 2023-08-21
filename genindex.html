@@ -187,6 +187,7 @@
 <li class="toctree-l1"><a class="reference internal" href="configs/model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/callbacks.html">Callbacks</a></li>
@@ -206,6 +207,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/src.train.html">protein_workshop.train</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/src.datasets.html">protein_workshop.datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/src.models.html">protein_workshop.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/src.tasks.html">protein_workshop.tasks</a></li>
@@ -381,13 +383,11 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="modules/src.features.html#src.features.edge_features.EDGE_FEATURES">EDGE_FEATURES (in module src.features.edge_features)</a>
 </li>
-        <li><a href="modules/src.tasks.html#src.tasks.edge_distance_prediction.EdgeDistancePredictionTransform">EdgeDistancePredictionTransform (class in src.tasks.edge_distance_prediction)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="modules/src.models.html#src.models.graph_encoders.egnn.EGNNModel">EGNNModel (class in src.models.graph_encoders.egnn)</a>
+        <li><a href="modules/src.tasks.html#src.tasks.edge_distance_prediction.EdgeDistancePredictionTransform">EdgeDistancePredictionTransform (class in src.tasks.edge_distance_prediction)</a>
 </li>
-        <li><a href="modules/src.datasets.html#src.datasets.base.SequenceDataset.embed">embed() (src.datasets.base.SequenceDataset method)</a>
+        <li><a href="modules/src.models.html#src.models.graph_encoders.egnn.EGNNModel">EGNNModel (class in src.models.graph_encoders.egnn)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -413,12 +413,8 @@
         </ul></li>
         <li><a href="modules/src.datasets.html#src.datasets.flip_datamodule.FLIPDatamodule">FLIPDatamodule (class in src.datasets.flip_datamodule)</a>
 </li>
-        <li><a href="modules/src.datasets.html#src.datasets.base.SequenceDataset.fold">fold() (src.datasets.base.SequenceDataset method)</a>
-</li>
         <li><a href="modules/src.datasets.html#src.datasets.fold_classification.FoldClassificationDataModule">FoldClassificationDataModule (class in src.datasets.fold_classification)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="modules/src.features.html#src.features.factory.ProteinFeaturiser.forward">forward() (src.features.factory.ProteinFeaturiser method)</a>
 
         <ul>
@@ -455,14 +451,10 @@
 </li>
         <li><a href="modules/src.datasets.html#src.datasets.go.GeneOntologyDataset">GeneOntologyDataset (class in src.datasets.go)</a>
 </li>
-        <li><a href="modules/src.datasets.html#src.datasets.base.ProteinDataset.get">get() (src.datasets.base.ProteinDataset method)</a>
-
-        <ul>
-          <li><a href="modules/src.datasets.html#src.datasets.base.SequenceDataset.get">(src.datasets.base.SequenceDataset method)</a>
-</li>
-        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="modules/src.datasets.html#src.datasets.base.ProteinDataset.get">get() (src.datasets.base.ProteinDataset method)</a>
+</li>
         <li><a href="modules/src.features.html#src.features.representation.get_full_atom_coords">get_full_atom_coords() (in module src.features.representation)</a>
 </li>
         <li><a href="modules/src.models.html#src.models.base.BaseModel.get_labels">get_labels() (src.models.base.BaseModel method)</a>
@@ -480,15 +472,11 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="modules/src.datasets.html#src.datasets.base.ProteinDataset.len">len() (src.datasets.base.ProteinDataset method)</a>
-
-        <ul>
-          <li><a href="modules/src.datasets.html#src.datasets.base.SequenceDataset.len">(src.datasets.base.SequenceDataset method)</a>
 </li>
-        </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="modules/src.models.html#src.models.base.BaseModel.log_metrics">log_metrics() (src.models.base.BaseModel method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="modules/src.models.html#src.models.base.BaseModel.losses">losses (src.models.base.BaseModel attribute)</a>
 
         <ul>
@@ -504,7 +492,11 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="modules/src.models.html#id4">main() (in module src.models.graph_encoders.gcpnet)</a>, <a href="modules/src.models.html#id9">[1]</a>, <a href="modules/src.models.html#src.models.graph_encoders.gcpnet.main">[2]</a>
+
+        <ul>
+          <li><a href="modules/src.train.html#src.train.main">(in module src.train)</a>
 </li>
+        </ul></li>
         <li><a href="modules/src.models.html#src.models.base.BaseModel.metric_names">metric_names (src.models.base.BaseModel attribute)</a>
 
         <ul>
@@ -573,6 +565,8 @@
 </li>
           <li><a href="modules/src.tasks.html#module-src.tasks.torsional_denoising">src.tasks.torsional_denoising</a>
 </li>
+          <li><a href="modules/src.train.html#module-src.train">src.train</a>
+</li>
         </ul></li>
     </ul></td>
   </tr></table>
@@ -631,17 +625,9 @@
         <li><a href="modules/src.models.html#src.models.base.BenchMarkModel.prepare_data_per_node">prepare_data_per_node (src.models.base.BenchMarkModel attribute)</a>
 </li>
         <li><a href="modules/src.datasets.html#src.datasets.base.ProteinDataset.process">process() (src.datasets.base.ProteinDataset method)</a>
-
-        <ul>
-          <li><a href="modules/src.datasets.html#src.datasets.base.SequenceDataset.process">(src.datasets.base.SequenceDataset method)</a>
 </li>
-        </ul></li>
         <li><a href="modules/src.datasets.html#src.datasets.base.ProteinDataset.processed_file_names">processed_file_names (src.datasets.base.ProteinDataset property)</a>
-
-        <ul>
-          <li><a href="modules/src.datasets.html#src.datasets.base.SequenceDataset.processed_file_names">(src.datasets.base.SequenceDataset property)</a>
 </li>
-        </ul></li>
         <li><a href="modules/src.datasets.html#src.datasets.base.ProteinDataModule">ProteinDataModule (class in src.datasets.base)</a>
 </li>
         <li><a href="modules/src.datasets.html#src.datasets.base.ProteinDataset">ProteinDataset (class in src.datasets.base)</a>
@@ -699,8 +685,6 @@
         <li><a href="modules/src.models.html#src.models.graph_encoders.schnet.SchNetModel">SchNetModel (class in src.models.graph_encoders.schnet)</a>
 </li>
         <li><a href="modules/src.features.html#src.features.edges.sequence_edges">sequence_edges() (in module src.features.edges)</a>
-</li>
-        <li><a href="modules/src.datasets.html#src.datasets.base.SequenceDataset">SequenceDataset (class in src.datasets.base)</a>
 </li>
         <li><a href="modules/src.tasks.html#src.tasks.sequence_denoising.SequenceNoiseTransform">SequenceNoiseTransform (class in src.tasks.sequence_denoising)</a>
 </li>
@@ -803,8 +787,6 @@
           <li><a href="modules/src.features.html#module-src.features.sequence_features">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     src.features.utils
 
@@ -812,6 +794,8 @@
           <li><a href="modules/src.features.html#module-src.features.utils">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     src.models.base
 
@@ -917,6 +901,13 @@
           <li><a href="modules/src.tasks.html#module-src.tasks.torsional_denoising">module</a>
 </li>
         </ul></li>
+        <li>
+    src.train
+
+        <ul>
+          <li><a href="modules/src.train.html#module-src.train">module</a>
+</li>
+        </ul></li>
         <li><a href="modules/src.tasks.html#src.tasks.structural_denoising.StructuralNoiseTransform">StructuralNoiseTransform (class in src.tasks.structural_denoising)</a>
 </li>
     </ul></td>
@@ -999,6 +990,8 @@
           <li><a href="modules/src.datasets.html#src.datasets.go.GeneOntologyDataset.train_dataset">(src.datasets.go.GeneOntologyDataset method)</a>
 </li>
         </ul></li>
+        <li><a href="modules/src.train.html#src.train.train_model">train_model() (in module src.train)</a>
+</li>
         <li><a href="modules/src.models.html#src.models.base.BenchMarkModel.training">training (src.models.base.BenchMarkModel attribute)</a>
 
         <ul>
@@ -1022,6 +1015,8 @@
 </li>
         </ul></li>
         <li><a href="modules/src.models.html#src.models.base.BenchMarkModel.transform_encoder_output">transform_encoder_output() (src.models.base.BenchMarkModel method)</a>
+</li>
+        <li><a href="modules/src.features.html#src.features.representation.transform_representation">transform_representation() (in module src.features.representation)</a>
 </li>
     </ul></td>
   </tr></table>

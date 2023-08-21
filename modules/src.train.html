@@ -13,19 +13,21 @@
             gtag('config', '');
             
         </script>
-    <meta property="og:title" content="<no title>" />
+    <meta property="og:title" content="protein_workshop.train" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="configs/aux_task.html" />
+<meta property="og:url" content="modules/src.train.html" />
 <meta property="og:site_name" content="Protein Workshop" />
+<meta property="og:description" content="Main module to load and train the model. This should be the program entry point." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_configs_aux_task_59a2aad4.png" />
-<meta property="og:image:alt" content="" />
+<meta property="og:image" content="/_images/social_previews/summary_modules_src.train_9e36820c.png" />
+<meta property="og:image:alt" content="Main module to load and train the model. This should be the program entry point." />
+<meta name="description" content="Main module to load and train the model. This should be the program entry point." />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="protein_workshop.datasets" href="src.datasets.html" /><link rel="prev" title="Schedulers" href="../configs/ml_components/scheduler.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
-        <title>&lt;no title&gt; - Protein Workshop 0.0.1</title>
+        <title>protein_workshop.train - Protein Workshop 0.0.1</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -156,7 +158,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -194,36 +196,36 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="task.html">Tasks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="features.html#featurisation-schemes">Featurisation Schemes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/dataset.html">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/model.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/task.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="framework_components/callbacks.html">Callbacks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="framework_components/debug.html">Debug</a></li>
-<li class="toctree-l2"><a class="reference internal" href="framework_components/env.html">Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="framework_components/logger.html">Loggers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="framework_components/hydra.html">Hydra Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="framework_components/extras.html">Extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/callbacks.html">Callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/debug.html">Debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/env.html">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/logger.html">Loggers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/hydra.html">Hydra Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/extras.html">Extras</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../ml_components.html">ML Components</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of ML Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="ml_components/trainer.html">Trainer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ml_components/optimiser.html">Optimiser</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ml_components/scheduler.html">Schedulers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/ml_components/trainer.html">Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/ml_components/optimiser.html">Optimiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configs/ml_components/scheduler.html">Schedulers</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules/src.train.html">protein_workshop.train</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/src.datasets.html">protein_workshop.datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/src.models.html">protein_workshop.models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/src.tasks.html">protein_workshop.tasks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/src.features.html">protein_workshop.features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/src.utils.html">protein_workshop.utils</a></li>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">protein_workshop.train</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src.datasets.html">protein_workshop.datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src.models.html">protein_workshop.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src.tasks.html">protein_workshop.tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src.features.html">protein_workshop.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src.utils.html">protein_workshop.utils</a></li>
 </ul>
 
 </div>
@@ -252,20 +254,84 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          
+          <section id="module-src.train">
+<span id="protein-workshop-train"></span><h1>protein_workshop.train<a class="headerlink" href="#module-src.train" title="Permalink to this heading">#</a></h1>
+<p>Main module to load and train the model. This should be the program entry
+point.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.train.main">
+<span class="sig-prename descclassname"><span class="pre">src.train.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DictConfig</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/src/train.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.train.main" title="Permalink to this definition">#</a></dt>
+<dd><p>Load and validate the hydra config.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.train.train_model">
+<span class="sig-prename descclassname"><span class="pre">src.train.</span></span><span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DictConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://pytorch.org/docs/master/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><span class="pre">Module</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/train.html#train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.train.train_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Trains a model from a config.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">encoder</span></code> is provided, it is used instead of the one specified in the
+config.</p>
+<ol class="arabic simple">
+<li><p>The datamodule is instantiated from <code class="docutils literal notranslate"><span class="pre">cfg.dataset.datamodule</span></code>.</p></li>
+<li><p>The callbacks are instantiated from <code class="docutils literal notranslate"><span class="pre">cfg.callbacks</span></code>.</p></li>
+<li><p>The logger is instantiated from <code class="docutils literal notranslate"><span class="pre">cfg.logger</span></code>.</p></li>
+<li><p>The trainer is instantiated from <code class="docutils literal notranslate"><span class="pre">cfg.trainer</span></code>.</p></li>
+<li><dl class="simple">
+<dt>(Optional) If the config contains a scheduler, the number of training steps is</dt><dd><p>inferred from the datamodule and devices and set in the scheduler.</p>
+</dd>
+</dl>
+</li>
+<li><p>The model is instantiated from <code class="docutils literal notranslate"><span class="pre">cfg.model</span></code>.</p></li>
+</ol>
+<p>7. The datamodule is setup and a dummy forward pass is run to initialise
+lazy layers for accurate parameter counts.
+8. Hyperparameters are logged to wandb if a logger is present.
+9. The model is compiled if <code class="docutils literal notranslate"><span class="pre">cfg.compile</span></code> is True.
+10. The model is trained if <code class="docutils literal notranslate"><span class="pre">cfg.task_name</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;train&quot;</span></code>.
+11. The model is tested if <code class="docutils literal notranslate"><span class="pre">cfg.test</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cfg</strong> (<em>DictConfig</em>) – DictConfig containing the config for the experiment</p></li>
+<li><p><strong>encoder</strong> (<em>Optional</em><em>[</em><em>nn.Module</em><em>]</em>) – Optional encoder to use instead of the one specified in
+the config</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="src.datasets.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">protein_workshop.datasets</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../configs/ml_components/scheduler.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Schedulers</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -284,8 +350,28 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">protein_workshop.train</a><ul>
+<li><a class="reference internal" href="#src.train.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#src.train.train_model"><code class="docutils literal notranslate"><span class="pre">train_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

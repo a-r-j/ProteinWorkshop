@@ -20,7 +20,7 @@
 <meta content="The benchmark is constructed in a modular fashion, with each module configured via a.yaml config using Hydra. The predominant ingredients are: Datasets: The benchmark supports a variety of datasets..." property="og:description"/>
 <meta content="1146" property="og:image:width"/>
 <meta content="600" property="og:image:height"/>
-<meta content="/None" property="og:image"/>
+<meta content="/_images/social_previews/summary_overview_39ddfc77.png" property="og:image"/>
 <meta content="The benchmark is constructed in a modular fashion, with each module configured via a.yaml config using Hydra. The predominant ingredients are: Datasets: The..." property="og:image:alt"/>
 <meta content="The benchmark is constructed in a modular fashion, with each module configured via a.yaml config using Hydra. The predominant ingredients are: Datasets: The benchmark supports a variety of datasets..." name="description"/>
 <meta content="summary_large_image" name="twitter:card"/>
@@ -179,6 +179,7 @@
 <li class="toctree-l1"><a class="reference internal" href="configs/model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/callbacks.html">Callbacks</a></li>
@@ -198,6 +199,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/src.train.html">protein_workshop.train</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/src.datasets.html">protein_workshop.datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/src.models.html">protein_workshop.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/src.tasks.html">protein_workshop.tasks</a></li>
@@ -281,7 +283,7 @@ and <a class="reference external" href="https://pytorch-geometric.readthedocs.io
 <h2><a class="reference internal" href="modules/src.models.html#src.models.base.BaseModel" title="src.models.base.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BaseModel</span></code></a> and <a class="reference internal" href="modules/src.models.html#src.models.base.BenchMarkModel" title="src.models.base.BenchMarkModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BenchMarkModel</span></code></a> Base classes<a class="headerlink" href="#src-models-base-basemodel-and-src-models-base-benchmarkmodel-base-classes" title="Permalink to this heading">#</a></h2>
 <p>These objects orchestrate model training and validation logic. The <a class="reference internal" href="modules/src.models.html#src.models.base.BaseModel" title="src.models.base.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BaseModel</span></code></a> class is a subclass of <code class="xref py py-class docutils literal notranslate"><span class="pre">pytorch_lightning.LightningModule</span></code>.
 The <a class="reference internal" href="modules/src.models.html#src.models.base.BenchMarkModel" title="src.models.base.BenchMarkModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BenchMarkModel</span></code></a> class is a subclass of <a class="reference internal" href="modules/src.models.html#src.models.base.BaseModel" title="src.models.base.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BaseModel</span></code></a> and is used as the primary orchestrator in the framework.</p>
-<p>To use a different structural encoder, the user should overwrite <a href="#id1"><span class="problematic" id="id2">:py:attribute:`src.models.base.BenchMarkModel.encoder`</span></a> with a new encoder class. The encoder class should be a subclass of <a class="reference external" href="https://pytorch.org/docs/master/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> and should implement the following methods:</p>
+<p>To use a different structural encoder, the user should overwrite <code class="xref py py-attr docutils literal notranslate"><span class="pre">src.models.base.BenchMarkModel.encoder</span></code> with a new encoder class. The encoder class should be a subclass of <a class="reference external" href="https://pytorch.org/docs/master/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> and should implement the following methods:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pytorch.org/docs/master/generated/torch.nn.Module.html#torch.nn.Module.forward" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.nn.Module.forward()</span></code></a></p></li>
 </ul>

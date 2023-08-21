@@ -186,6 +186,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html#datasets">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html#models">Models</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/downstream.html">Downstream</a></li>
@@ -198,6 +200,7 @@
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="framework_components/callbacks.html">Callbacks</a></li>
@@ -217,6 +220,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.train.html">protein_workshop.train</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/src.datasets.html">protein_workshop.datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/src.models.html">protein_workshop.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/src.tasks.html">protein_workshop.tasks</a></li>
@@ -267,20 +271,60 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>To change encoder hyperparameters, either</p>
-<ol class="arabic">
+<ol class="arabic simple">
 <li><p>Edit the config file directly, or</p></li>
-<li><p>Provide commands in the form:</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>&lt;ENCODER_NAME&gt;<span class="w"> </span>encoder.num_layer<span class="o">=</span><span class="m">3</span><span class="w"> </span>encoder.readout<span class="o">=</span>mean<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">task</span><span class="o">=</span>inverse_folding
+<li><p>Provide commands in the form:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>&lt;ENCODER_NAME&gt;<span class="w"> </span>encoder.num_layer<span class="o">=</span><span class="m">3</span><span class="w"> </span>encoder.readout<span class="o">=</span>mean<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">task</span><span class="o">=</span>inverse_folding
 </pre></div>
 </div>
-</div></blockquote>
-</li>
-</ol>
 </div>
-<p>The following structural encoders are currently supported:</p>
 <section id="invariant-encoders">
 <h2>Invariant Encoders<a class="headerlink" href="#invariant-encoders" title="Permalink to this heading">#</a></h2>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Protein Specific</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GearNet</span></code></p></td>
+<td><p><a class="reference external" href="https://arxiv.org/pdf/2203.06125">Zhang et al.</a></p></td>
+<td><dl class="field-list simple">
+<dt class="field-odd">heavy_check_mark<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ProNet</span></code></p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/2207.12600">Wang et al.</a></p></td>
+<td><dl class="field-list simple">
+<dt class="field-odd">heavy_check_mark<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DimeNet++</span></code></p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/2011.14115">Gasteiger et al.</a></p></td>
+<td><dl class="field-list simple">
+<dt class="field-odd">x<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SchNet</span></code></p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/1706.08566">Schütt et al.</a></p></td>
+<td><dl class="field-list simple">
+<dt class="field-odd">x<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <section id="schnet-schnet">
 <h3><a class="reference internal" href="../modules/src.models.html#src.models.graph_encoders.schnet.SchNetModel" title="src.models.graph_encoders.schnet.SchNetModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchNet</span></code></a> (<code class="docutils literal notranslate"><span class="pre">schnet</span></code>)<a class="headerlink" href="#schnet-schnet" title="Permalink to this heading">#</a></h3>
 <p>SchNet is one of the most popular and simplest instantiation of E(3) invariant message passing GNNs. SchNet constructs messages through element-wise multiplication of scalar features modulated by a radial filter conditioned on the pairwise distance <span class="math notranslate nohighlight">\(\Vert \vec{\vx}_{ij} \Vert`\)</span> between two neighbours.
@@ -409,6 +453,42 @@ enable more direct architectural comparisons.</p>
 </section>
 <section id="vector-equivariant-encoders">
 <h2>Vector-Equivariant Encoders<a class="headerlink" href="#vector-equivariant-encoders" title="Permalink to this heading">#</a></h2>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Protein Specific</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GCPNet</span></code></p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/2211.02504">Morehead et al.</a></p></td>
+<td><dl class="field-list simple">
+<dt class="field-odd">heavy_check_mark<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GVP-GNN</span></code></p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/2009.01411">Jing et al.</a></p></td>
+<td><dl class="field-list simple">
+<dt class="field-odd">heavy_check_mark<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">EGNN</span></code></p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/2102.09844">Satorras et al.</a></p></td>
+<td><dl class="field-list simple">
+<dt class="field-odd">x<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <section id="egnn-egnn">
 <h3><a class="reference internal" href="../modules/src.models.html#src.models.graph_encoders.egnn.EGNNModel" title="src.models.graph_encoders.egnn.EGNNModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">EGNN</span></code></a> (<code class="docutils literal notranslate"><span class="pre">egnn</span></code>)<a class="headerlink" href="#egnn-egnn" title="Permalink to this heading">#</a></h3>
 <p>We consider E(3) equivariant GNN layers proposed by Satorras et al. (2021) which updates both scalar features <span class="math notranslate nohighlight">\(\vs_i\)</span> as well as node coordinates <span class="math notranslate nohighlight">\(\vec{\vx}_{i}\)</span>, as follows:</p>
@@ -452,8 +532,8 @@ enable more direct architectural comparisons.</p>
 </div>
 </div>
 </section>
-<section id="gvp-gcpnet">
-<h3><a class="reference internal" href="../modules/src.models.html#id5" title="src.models.graph_encoders.gcpnet.GCPNetModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">GVP</span></code></a> (<code class="docutils literal notranslate"><span class="pre">gcpnet</span></code>)<a class="headerlink" href="#gvp-gcpnet" title="Permalink to this heading">#</a></h3>
+<section id="gcpnet-gcpnet">
+<h3><a class="reference internal" href="../modules/src.models.html#id5" title="src.models.graph_encoders.gcpnet.GCPNetModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">GCPNet</span></code></a> (<code class="docutils literal notranslate"><span class="pre">gcpnet</span></code>)<a class="headerlink" href="#gcpnet-gcpnet" title="Permalink to this heading">#</a></h3>
 <p>GCPNet is an SE(3) equivariant architecture that jointly learns scalar and vector-valued features from geometric protein structure inputs and, through the use of geometry-complete frame embeddings, sensitises its predictions to account for potential changes induced by the effects of molecular chirality on protein structure. In contrast to the original GCPNet formulation presented in Morehead et al. (2022), the implementation we provide in the benchmark incorporates the architectural enhancements proposed in Morehead et al. (2023) which include the addition of a scalar message attention gate (i.e., <span class="math notranslate nohighlight">\(f_{a}(\cdot)`\)</span>) and a simplified structure for the model’s geometric graph convolution layers (i.e., <span class="math notranslate nohighlight">\(f_{n}(\cdot)\)</span>). With geometry-complete graph convolution in mind, for node <span class="math notranslate nohighlight">\(i\)</span> and layer <span class="math notranslate nohighlight">\(t\)</span>, scalar edge features <span class="math notranslate nohighlight">\(\vs_{e^{ij}}^{(t)}\)</span> and vector edge features <span class="math notranslate nohighlight">\(\vv_{e^{ij}}^{(t)}\)</span> are used along with scalar node features <span class="math notranslate nohighlight">\(\vs_{n^{i}}^{(t)}\)</span> and vector node features <span class="math notranslate nohighlight">\(\vv_{n^{i}}^{(t)}\)</span> to update each node feature type as:</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -546,6 +626,34 @@ enable more direct architectural comparisons.</p>
 </section>
 <section id="tensor-equivariant-encoders">
 <h2>Tensor-Equivariant Encoders<a class="headerlink" href="#tensor-equivariant-encoders" title="Permalink to this heading">#</a></h2>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Protein Specific</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Tensor</span> <span class="pre">Field</span> <span class="pre">Network</span></code></p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/2210.01776">Corso et al.</a></p></td>
+<td><dl class="field-list simple">
+<dt class="field-odd">question<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Multi-ACE</span></code></p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/2206.07697">Batatia et al.</a></p></td>
+<td><dl class="field-list simple">
+<dt class="field-odd">x<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <section id="tensor-field-networks-tfn">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span> <span class="pre">Field</span> <span class="pre">Networks</span></code> (<code class="docutils literal notranslate"><span class="pre">tfn</span></code>)<a class="headerlink" href="#tensor-field-networks-tfn" title="Permalink to this heading">#</a></h3>
 <p>Tensor Field Networks are E(3) or SE(3) equivariant GNNs that have been successfully used in protein structure prediction (Baek et al., 2021) and protein-ligand docking (Corso et al., 2022).
@@ -678,7 +786,7 @@ In our formalism, this corresponds to:</p>
 <li><a class="reference internal" href="#vector-equivariant-encoders">Vector-Equivariant Encoders</a><ul>
 <li><a class="reference internal" href="#egnn-egnn"><code class="xref py py-class docutils literal notranslate"><span class="pre">EGNN</span></code> (<code class="docutils literal notranslate"><span class="pre">egnn</span></code>)</a></li>
 <li><a class="reference internal" href="#gvp-gvp"><code class="xref py py-class docutils literal notranslate"><span class="pre">GVP</span></code> (<code class="docutils literal notranslate"><span class="pre">gvp</span></code>)</a></li>
-<li><a class="reference internal" href="#gvp-gcpnet"><code class="xref py py-class docutils literal notranslate"><span class="pre">GVP</span></code> (<code class="docutils literal notranslate"><span class="pre">gcpnet</span></code>)</a></li>
+<li><a class="reference internal" href="#gcpnet-gcpnet"><code class="xref py py-class docutils literal notranslate"><span class="pre">GCPNet</span></code> (<code class="docutils literal notranslate"><span class="pre">gcpnet</span></code>)</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#tensor-equivariant-encoders">Tensor-Equivariant Encoders</a><ul>

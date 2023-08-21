@@ -17,12 +17,12 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="configs/task.html" />
 <meta property="og:site_name" content="Protein Workshop" />
-<meta property="og:description" content=",,,,,,, Denoising Tasks: Sequence Denoising ( sequence_denoising): Structure Denoising ( structure_denoising): Sequence & Structure Denoising ( sequence_structure_denoising): Torsional Denoising ( ..." />
+<meta property="og:description" content=",,,,,,, Task configs are ‘high-level’ configs which configure the transforms outputs, losses and metrics of the model. Specific training objects are achieved through the use of/configs/transform. D..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/None" />
-<meta property="og:image:alt" content=",,,,,,, Denoising Tasks: Sequence Denoising ( sequence_denoising): Structure Denoising ( structure_denoising): Sequence & Structure Denoising ( sequence_stru..." />
-<meta name="description" content=",,,,,,, Denoising Tasks: Sequence Denoising ( sequence_denoising): Structure Denoising ( structure_denoising): Sequence & Structure Denoising ( sequence_structure_denoising): Torsional Denoising ( ..." />
+<meta property="og:image" content="/_images/social_previews/summary_configs_task_7435e27d.png" />
+<meta property="og:image:alt" content=",,,,,,, Task configs are ‘high-level’ configs which configure the transforms outputs, losses and metrics of the model. Specific training objects are achieved..." />
+<meta name="description" content=",,,,,,, Task configs are ‘high-level’ configs which configure the transforms outputs, losses and metrics of the model. Specific training objects are achieved through the use of/configs/transform. D..." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Features" href="features.html" /><link rel="prev" title="Models" href="model.html" />
 
@@ -200,6 +200,7 @@
 <li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="framework_components/callbacks.html">Callbacks</a></li>
@@ -219,6 +220,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/src.train.html">protein_workshop.train</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/src.datasets.html">protein_workshop.datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/src.models.html">protein_workshop.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/src.tasks.html">protein_workshop.tasks</a></li>
@@ -275,6 +277,8 @@
 </tbody>
 </table>
 </div>
+<p>Task configs are ‘high-level’ configs which configure the transforms outputs, losses and metrics of the model.</p>
+<p>Specific training objects are achieved through the use of <span class="xref std std-doc">/configs/transform</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>To change the task, use a command with a format like:</p>
@@ -283,10 +287,21 @@
 </div>
 <p>Where <code class="docutils literal notranslate"><span class="pre">&lt;TASK_NAME&gt;</span></code> is one of the tasks listed below.</p>
 </div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-doc">/configs/transform</span></p>
+</div>
 <section id="denoising-tasks">
 <h2>Denoising Tasks<a class="headerlink" href="#denoising-tasks" title="Permalink to this heading">#</a></h2>
 <section id="sequence-denoising-sequence-denoising">
 <h3>Sequence Denoising (<code class="docutils literal notranslate"><span class="pre">sequence_denoising</span></code>)<a class="headerlink" href="#sequence-denoising-sequence-denoising" title="Permalink to this heading">#</a></h3>
+<p>This config trains a model to predict the original identies of the corrupted residues in a protein sequence.</p>
+<p>The corruption is configured by the <code class="xref py py-class docutils literal notranslate"><span class="pre">sequence</span> <span class="pre">noise</span> <span class="pre">transform</span> <span class="pre">&lt;src.tasks.sequence_denoising.SequenceNoiseTransform</span></code>&gt;, which can be configured to apply masking or mutation
+corruptions in various amounts to the input sequence.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../modules/src.tasks.html#src.tasks.sequence_denoising.SequenceNoiseTransform" title="src.tasks.sequence_denoising.SequenceNoiseTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.tasks.sequence_denoising.SequenceNoiseTransform</span></code></a></p>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>configs/task/sequence_denoising.yaml
 </pre></div>
 </div>
@@ -332,6 +347,13 @@
 </section>
 <section id="structure-denoising-structure-denoising">
 <h3>Structure Denoising (<code class="docutils literal notranslate"><span class="pre">structure_denoising</span></code>)<a class="headerlink" href="#structure-denoising-structure-denoising" title="Permalink to this heading">#</a></h3>
+<p>This config trains a model to predict the original Cartesian coordinates of the corrupted residues in a protein structure.</p>
+<p>Noise is applied to the Cartesian coordinates and the model is tasked with predicting either the per-residue Cartesian noise or the original Cartesian coordinates.</p>
+<p>The corruption is configured by the <code class="xref py py-class docutils literal notranslate"><span class="pre">structure</span> <span class="pre">noise</span> <span class="pre">transform</span> <span class="pre">&lt;src.tasks.structure_denoising.StructureNoiseTransform</span></code>&gt;`, which can be configured to apply uniform or gaussian random noise in various amounts to the input structure.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">src.tasks.structure_denoising.StructureNoiseTransform</span></code></p>
+</div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -368,6 +390,13 @@
 </section>
 <section id="sequence-structure-denoising-sequence-structure-denoising">
 <h3>Sequence &amp; Structure Denoising (<code class="docutils literal notranslate"><span class="pre">sequence_structure_denoising</span></code>)<a class="headerlink" href="#sequence-structure-denoising-sequence-structure-denoising" title="Permalink to this heading">#</a></h3>
+<p>This config trains a model to predict the original identies of the corrupted residues in a protein sequence and the original Cartesian coordinates of the corrupted residues in a protein structure.</p>
+<p>This config demonstrates how we can compose transforms in a modular fashion to create new training regimes.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../modules/src.tasks.html#src.tasks.sequence_denoising.SequenceNoiseTransform" title="src.tasks.sequence_denoising.SequenceNoiseTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.tasks.sequence_denoising.SequenceNoiseTransform</span></code></a>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">src.tasks.structure_denoising.StructureNoiseTransform</span></code></p>
+</div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -414,6 +443,12 @@
 </section>
 <section id="torsional-denoising-torsional-denoising">
 <h3>Torsional Denoising (<code class="docutils literal notranslate"><span class="pre">torsional_denoising</span></code>)<a class="headerlink" href="#torsional-denoising-torsional-denoising" title="Permalink to this heading">#</a></h3>
+<p>This config trains a model to predict the original dihedral angles of the corrupted residues in a protein structure.</p>
+<p>The torsional noise transform applies noise in dihedral angle space. The cartesian coordinates are the recomputed using pNeRF to enable structure-based featurisation.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../modules/src.tasks.html#src.tasks.torsional_denoising.TorsionalNoiseTransform" title="src.tasks.torsional_denoising.TorsionalNoiseTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.tasks.torsional_denoising.TorsionalNoiseTransform</span></code></a></p>
+</div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -506,6 +541,12 @@
 </section>
 <section id="plddt-prediction-plddt-prediction">
 <h3>pLDDT Prediction (<code class="docutils literal notranslate"><span class="pre">plddt_prediction</span></code>)<a class="headerlink" href="#plddt-prediction-plddt-prediction" title="Permalink to this heading">#</a></h3>
+<p>This config specifies a self-supervision task to predict the per-residue pLDDT score of each node.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This task requires the input data to have a <code class="docutils literal notranslate"><span class="pre">b_factor</span></code> attribute.</p>
+<p>If the input structure are not predicted structures, this task will be a B factor prediction task.</p>
+</div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -540,6 +581,15 @@
 </section>
 <section id="edge-level-tasks">
 <h2>Edge-level Tasks<a class="headerlink" href="#edge-level-tasks" title="Permalink to this heading">#</a></h2>
+<section id="edge-distance-prediction-edge-distance-prediction">
+<h3>Edge Distance Prediction (<code class="docutils literal notranslate"><span class="pre">edge_distance_prediction</span></code>)<a class="headerlink" href="#edge-distance-prediction-edge-distance-prediction" title="Permalink to this heading">#</a></h3>
+<p>This config specifies a self-supervision task to predict the pairwise distance between two nodes.</p>
+<p>We first sample <code class="docutils literal notranslate"><span class="pre">num_samples</span></code> edges randomly from the input batch. We then
+construct a mask to remove the sampled edges from the batch. We store the
+masked node indices and their pairwise distance as <code class="docutils literal notranslate"><span class="pre">batch.node_mask</span></code> and
+<code class="docutils literal notranslate"><span class="pre">batch.edge_distance_labels</span></code>, respectively. Finally, it masks the edges
+(and their attributes) using the constructed mask and returns the modified
+batch. The distance is then predicted from the concantenated node embeddings of the two nodes.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -574,9 +624,6 @@
 </pre></div>
 </div>
 </section>
-<section id="aux-tasks">
-<h2>Aux Tasks<a class="headerlink" href="#aux-tasks" title="Permalink to this heading">#</a></h2>
-<img alt="Summary of auxiliary tasks" class="align-center" src="../_images/box_aux_tasks.png" />
 </section>
 <section id="auxiliary-tasks">
 <h2>Auxiliary Tasks<a class="headerlink" href="#auxiliary-tasks" title="Permalink to this heading">#</a></h2>
@@ -584,6 +631,10 @@
 For instance, these can define auxiliary denoising objectives over sequence, coordinate or angle space.</p>
 <p>Auxiliary tasks are implemented by modifying the experiment config to inject the
 additional metrics, decoders and losses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Aux tasks are specified with the following syntax:</p>
+</div>
 <section id="sequence-denoising-nn-sequence">
 <h3>Sequence Denoising (<code class="docutils literal notranslate"><span class="pre">nn_sequence</span></code>)<a class="headerlink" href="#sequence-denoising-nn-sequence" title="Permalink to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
@@ -804,8 +855,10 @@ python<span class="w"> </span>src/train.py<span class="w"> </span><span class="n
 <li><a class="reference internal" href="#plddt-prediction-plddt-prediction">pLDDT Prediction (<code class="docutils literal notranslate"><span class="pre">plddt_prediction</span></code>)</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#edge-level-tasks">Edge-level Tasks</a></li>
-<li><a class="reference internal" href="#aux-tasks">Aux Tasks</a></li>
+<li><a class="reference internal" href="#edge-level-tasks">Edge-level Tasks</a><ul>
+<li><a class="reference internal" href="#edge-distance-prediction-edge-distance-prediction">Edge Distance Prediction (<code class="docutils literal notranslate"><span class="pre">edge_distance_prediction</span></code>)</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#auxiliary-tasks">Auxiliary Tasks</a><ul>
 <li><a class="reference internal" href="#sequence-denoising-nn-sequence">Sequence Denoising (<code class="docutils literal notranslate"><span class="pre">nn_sequence</span></code>)</a></li>
 <li><a class="reference internal" href="#structure-denoising-nn-structure-r3">Structure Denoising (<code class="docutils literal notranslate"><span class="pre">nn_structure_r3</span></code>)</a></li>
