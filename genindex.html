@@ -172,9 +172,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html#datasets">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html#models">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Architectural Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/downstream.html">Downstream</a></li>
@@ -183,11 +181,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="configs/templates.html">Config Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/callbacks.html">Callbacks</a></li>
@@ -422,11 +420,17 @@
 </li>
           <li><a href="modules/src.models.html#src.models.base.BenchMarkModel.forward">(src.models.base.BenchMarkModel method)</a>
 </li>
+          <li><a href="modules/src.models.html#src.models.decoders.mlp_decoder.LinearSkipBlock.forward">(src.models.decoders.mlp_decoder.LinearSkipBlock method)</a>
+</li>
+          <li><a href="modules/src.models.html#src.models.decoders.mlp_decoder.MLPDecoder.forward">(src.models.decoders.mlp_decoder.MLPDecoder method)</a>
+</li>
+          <li><a href="modules/src.models.html#src.models.decoders.mlp_decoder.PositionDecoder.forward">(src.models.decoders.mlp_decoder.PositionDecoder method)</a>
+</li>
           <li><a href="modules/src.models.html#src.models.graph_encoders.dimenetpp.DimeNetPPModel.forward">(src.models.graph_encoders.dimenetpp.DimeNetPPModel method)</a>
 </li>
           <li><a href="modules/src.models.html#src.models.graph_encoders.egnn.EGNNModel.forward">(src.models.graph_encoders.egnn.EGNNModel method)</a>
 </li>
-          <li><a href="modules/src.models.html#id1">(src.models.graph_encoders.gcpnet.GCPNetModel method)</a>, <a href="modules/src.models.html#id6">[1]</a>, <a href="modules/src.models.html#src.models.graph_encoders.gcpnet.GCPNetModel.forward">[2]</a>
+          <li><a href="modules/src.models.html#id1">(src.models.graph_encoders.gcpnet.GCPNetModel method)</a>, <a href="modules/src.models.html#id5">[1]</a>, <a href="modules/src.models.html#src.models.graph_encoders.gcpnet.GCPNetModel.forward">[2]</a>
 </li>
           <li><a href="modules/src.models.html#src.models.graph_encoders.gear_net.GearNet.forward">(src.models.graph_encoders.gear_net.GearNet method)</a>
 </li>
@@ -443,7 +447,7 @@
   <h2>G</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="modules/src.models.html#id0">GCPNetModel (class in src.models.graph_encoders.gcpnet)</a>, <a href="modules/src.models.html#id5">[1]</a>, <a href="modules/src.models.html#src.models.graph_encoders.gcpnet.GCPNetModel">[2]</a>
+        <li><a href="modules/src.models.html#id0">GCPNetModel (class in src.models.graph_encoders.gcpnet)</a>, <a href="modules/src.models.html#id4">[1]</a>, <a href="modules/src.models.html#src.models.graph_encoders.gcpnet.GCPNetModel">[2]</a>
 </li>
         <li><a href="modules/src.models.html#src.models.graph_encoders.gear_net.GearNet.gear_net_edge_features">gear_net_edge_features() (src.models.graph_encoders.gear_net.GearNet method)</a>
 </li>
@@ -473,10 +477,12 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="modules/src.datasets.html#src.datasets.base.ProteinDataset.len">len() (src.datasets.base.ProteinDataset method)</a>
 </li>
-        <li><a href="modules/src.models.html#src.models.base.BaseModel.log_metrics">log_metrics() (src.models.base.BaseModel method)</a>
+        <li><a href="modules/src.models.html#src.models.decoders.mlp_decoder.LinearSkipBlock">LinearSkipBlock (class in src.models.decoders.mlp_decoder)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="modules/src.models.html#src.models.base.BaseModel.log_metrics">log_metrics() (src.models.base.BaseModel method)</a>
+</li>
         <li><a href="modules/src.models.html#src.models.base.BaseModel.losses">losses (src.models.base.BaseModel attribute)</a>
 
         <ul>
@@ -491,18 +497,14 @@
   <h2>M</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="modules/src.models.html#id4">main() (in module src.models.graph_encoders.gcpnet)</a>, <a href="modules/src.models.html#id9">[1]</a>, <a href="modules/src.models.html#src.models.graph_encoders.gcpnet.main">[2]</a>
-
-        <ul>
-          <li><a href="modules/src.train.html#src.train.main">(in module src.train)</a>
-</li>
-        </ul></li>
         <li><a href="modules/src.models.html#src.models.base.BaseModel.metric_names">metric_names (src.models.base.BaseModel attribute)</a>
 
         <ul>
           <li><a href="modules/src.models.html#src.models.base.BenchMarkModel.metric_names">(src.models.base.BenchMarkModel attribute)</a>
 </li>
         </ul></li>
+        <li><a href="modules/src.models.html#src.models.decoders.mlp_decoder.MLPDecoder">MLPDecoder (class in src.models.decoders.mlp_decoder)</a>
+</li>
         <li>
     module
 
@@ -536,6 +538,8 @@
           <li><a href="modules/src.features.html#module-src.features.utils">src.features.utils</a>
 </li>
           <li><a href="modules/src.models.html#module-src.models.base">src.models.base</a>
+</li>
+          <li><a href="modules/src.models.html#module-src.models.decoders.mlp_decoder">src.models.decoders.mlp_decoder</a>
 </li>
           <li><a href="modules/src.models.html#module-src.models.graph_encoders.dimenetpp">src.models.graph_encoders.dimenetpp</a>
 </li>
@@ -622,6 +626,8 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="modules/src.models.html#src.models.decoders.mlp_decoder.PositionDecoder">PositionDecoder (class in src.models.decoders.mlp_decoder)</a>
+</li>
         <li><a href="modules/src.models.html#src.models.base.BenchMarkModel.prepare_data_per_node">prepare_data_per_node (src.models.base.BenchMarkModel attribute)</a>
 </li>
         <li><a href="modules/src.datasets.html#src.datasets.base.ProteinDataset.process">process() (src.datasets.base.ProteinDataset method)</a>
@@ -663,7 +669,7 @@
         <ul>
           <li><a href="modules/src.models.html#src.models.graph_encoders.egnn.EGNNModel.required_batch_attributes">(src.models.graph_encoders.egnn.EGNNModel property)</a>
 </li>
-          <li><a href="modules/src.models.html#id2">(src.models.graph_encoders.gcpnet.GCPNetModel property)</a>, <a href="modules/src.models.html#id7">[1]</a>, <a href="modules/src.models.html#src.models.graph_encoders.gcpnet.GCPNetModel.required_batch_attributes">[2]</a>
+          <li><a href="modules/src.models.html#id2">(src.models.graph_encoders.gcpnet.GCPNetModel property)</a>, <a href="modules/src.models.html#id6">[1]</a>, <a href="modules/src.models.html#src.models.graph_encoders.gcpnet.GCPNetModel.required_batch_attributes">[2]</a>
 </li>
           <li><a href="modules/src.models.html#src.models.graph_encoders.gear_net.GearNet.required_batch_attributes">(src.models.graph_encoders.gear_net.GearNet property)</a>
 </li>
@@ -801,6 +807,13 @@
 
         <ul>
           <li><a href="modules/src.models.html#module-src.models.base">module</a>
+</li>
+        </ul></li>
+        <li>
+    src.models.decoders.mlp_decoder
+
+        <ul>
+          <li><a href="modules/src.models.html#module-src.models.decoders.mlp_decoder">module</a>
 </li>
         </ul></li>
         <li>
@@ -995,11 +1008,17 @@
         <li><a href="modules/src.models.html#src.models.base.BenchMarkModel.training">training (src.models.base.BenchMarkModel attribute)</a>
 
         <ul>
+          <li><a href="modules/src.models.html#src.models.decoders.mlp_decoder.LinearSkipBlock.training">(src.models.decoders.mlp_decoder.LinearSkipBlock attribute)</a>
+</li>
+          <li><a href="modules/src.models.html#src.models.decoders.mlp_decoder.MLPDecoder.training">(src.models.decoders.mlp_decoder.MLPDecoder attribute)</a>
+</li>
+          <li><a href="modules/src.models.html#src.models.decoders.mlp_decoder.PositionDecoder.training">(src.models.decoders.mlp_decoder.PositionDecoder attribute)</a>
+</li>
           <li><a href="modules/src.models.html#src.models.graph_encoders.dimenetpp.DimeNetPPModel.training">(src.models.graph_encoders.dimenetpp.DimeNetPPModel attribute)</a>
 </li>
           <li><a href="modules/src.models.html#src.models.graph_encoders.egnn.EGNNModel.training">(src.models.graph_encoders.egnn.EGNNModel attribute)</a>
 </li>
-          <li><a href="modules/src.models.html#id3">(src.models.graph_encoders.gcpnet.GCPNetModel attribute)</a>, <a href="modules/src.models.html#id8">[1]</a>, <a href="modules/src.models.html#src.models.graph_encoders.gcpnet.GCPNetModel.training">[2]</a>
+          <li><a href="modules/src.models.html#id3">(src.models.graph_encoders.gcpnet.GCPNetModel attribute)</a>, <a href="modules/src.models.html#id7">[1]</a>, <a href="modules/src.models.html#src.models.graph_encoders.gcpnet.GCPNetModel.training">[2]</a>
 </li>
           <li><a href="modules/src.models.html#src.models.graph_encoders.gear_net.GearNet.training">(src.models.graph_encoders.gear_net.GearNet attribute)</a>
 </li>

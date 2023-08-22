@@ -17,14 +17,14 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="quickstart.html" />
 <meta property="og:site_name" content="Protein Workshop" />
-<meta property="og:description" content="Pre-Training, Downstream." />
+<meta property="og:description" content="Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task: Finetuning a model: Finetuning a model additionally requires specification of a check..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_quickstart_e652ecdf.png" />
-<meta property="og:image:alt" content="Pre-Training, Downstream." />
-<meta name="description" content="Pre-Training, Downstream." />
+<meta property="og:image" content="/_images/social_previews/summary_quickstart_6224b6fe.png" />
+<meta property="og:image:alt" content="Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task: Finetuning a model: Finetuning a model additi..." />
+<meta name="description" content="Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task: Finetuning a model: Finetuning a model additionally requires specification of a check..." />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Pre-Training" href="quickstart_component/pretrain.html" /><link rel="prev" title="Overview" href="overview.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Pre-Training" href="quickstart_component/pretrain.html" /><link rel="prev" title="Architectural Overview" href="overview.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
         <title>Quickstart - Protein Workshop 0.0.1</title>
@@ -158,7 +158,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -185,9 +185,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html#datasets">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html#models">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Architectural Overview</a></li>
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Quickstart</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/downstream.html">Downstream</a></li>
@@ -196,11 +194,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="configs/templates.html">Config Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/callbacks.html">Callbacks</a></li>
@@ -254,7 +252,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -262,12 +260,65 @@
         <article role="main">
           <section id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading">#</a></h1>
+<p>Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gnn<span class="w"> </span><span class="nv">task</span><span class="o">=</span>inverse_folding
+</pre></div>
+</div>
+<section id="finetuning-a-model">
+<h2>Finetuning a model<a class="headerlink" href="#finetuning-a-model" title="Permalink to this heading">#</a></h2>
+<p>Finetuning a model additionally requires specification of a checkpoint.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>src/finetune.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gnn<span class="w"> </span><span class="nv">task</span><span class="o">=</span>inverse_folding<span class="w"> </span><span class="nv">ckpt_path</span><span class="o">=</span>PATH/TO/CHECKPOINT
+</pre></div>
+</div>
+<section id="running-a-sweep-experiment">
+<h3>Running a sweep/experiment<a class="headerlink" href="#running-a-sweep-experiment" title="Permalink to this heading">#</a></h3>
+<p>We can make use of the hydra wandb sweeper plugin to configure experiments as sweeps, allowing searches over hyperparameters, architectures, pre-training/auxiliary tasks and datasets.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">configs/sweep/</span></code> for examples.</p>
+<ol class="arabic">
+<li><p>Create the sweep with weights and biases</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wandb<span class="w"> </span>sweep<span class="w"> </span>configs/sweep/sweep_config.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Launch job workers</p></li>
+</ol>
+<p>With wandb:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wandb<span class="w"> </span>agent<span class="w"> </span>ligands/lightning-hydra-template/2wwtt7oy<span class="w"> </span>--count<span class="w"> </span><span class="m">8</span>
+</pre></div>
+</div>
+<p>Or an example SLURM submission script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBATCH --nodes 1</span>
+<span class="c1">#SBATCH --ntasks-per-node=1</span>
+<span class="c1">#SBATCH --gres=gpu:1</span>
+<span class="c1">#SBATCH --array=0-32</span>
+
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+conda<span class="w"> </span>activate<span class="w">  </span>protein_workshop
+
+wandb<span class="w"> </span>agent<span class="w"> </span>ligands/protein_workshop-src/2wwtt7oy<span class="w"> </span>--count<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="embedding-a-dataset">
+<h2>Embedding a dataset<a class="headerlink" href="#embedding-a-dataset" title="Permalink to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>src/embed.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gnn<span class="w"> </span><span class="nv">ckpt_path</span><span class="o">=</span>PATH/TO/CHECKPOINT
+</pre></div>
+</div>
+<section id="verify-a-config">
+<h3>Verify a config<a class="headerlink" href="#verify-a-config" title="Permalink to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>src/validate_config.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">features</span><span class="o">=</span>full_atom<span class="w"> </span><span class="nv">task</span><span class="o">=</span>inverse_folding
+</pre></div>
+</div>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart_component/downstream.html">Downstream</a></li>
 </ul>
 </div>
+</section>
+</section>
 </section>
 
         </article>
@@ -291,7 +342,7 @@
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Overview</div>
+                <div class="title">Architectural Overview</div>
                 
               </div>
             </a>
@@ -313,8 +364,34 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Quickstart</a><ul>
+<li><a class="reference internal" href="#finetuning-a-model">Finetuning a model</a><ul>
+<li><a class="reference internal" href="#running-a-sweep-experiment">Running a sweep/experiment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#embedding-a-dataset">Embedding a dataset</a><ul>
+<li><a class="reference internal" href="#verify-a-config">Verify a config</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

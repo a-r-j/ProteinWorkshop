@@ -32,16 +32,19 @@ Unlabelled Datasets
 
 
 .. mdinclude:: ../../../README.md
-    :start-line: 155
-    :end-line: 169
+    :start-line: 176
+    :end-line: 188
 
 
 :py:class:`ASTRAL <src.datasets.astral.AstralDataModule>` (``astral``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-ASTRAL provides compendia of protein domain structures, regions of proteins that
+**Dataset description**: ASTRAL provides compendia of protein domain structures, regions of proteins that
 can maintain their structure and function independently of the rest of the protein. Domains typically
 exhibit highly-specific functions and can be considered structural building blocks of proteins.
+
+**Splitting criteria**: The identity parameter (``95`` or ``40``) allows the user to select the sequence identity threshold. From this,
+data are split randomly.
 
 .. literalinclude:: ../../../configs/dataset/astral.yaml
     :language: yaml
@@ -50,12 +53,36 @@ exhibit highly-specific functions and can be considered structural building bloc
 
 :py:class:`CATH <src.datasets.cath.CATHDataModule>` (``cath``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Dataset Description** The dataset is a partition of the CATH 4.2 40% non-redundant set of proteins, up to 500 residues in length curated by Ingraham et al.
+
+**Task**: This dataset is typically used with the ``inverse_folding`` task.
+
+**Impact**: Inverse folding is a task that is of interest to the protein design community. The ability to generate sequences that fold into a given structure is a key step in the design of novel proteins with desired functions.
+
+**Splitting Criteria**: Splits are performed by randomly assigning CATH topology classifications (CAT) codes to each split, resulting
+in a 80/10/10 train/val/test split. Redundant entries are removed from the train and val splits. Test chains are filtered
+such there is no CAT overlap with the train and val splits. Similarly, the val split is filtered such that there is no CAT
+overlap with the train or test split. This results in 18,024 / 608 / 608 chains in the train / val / test splits respectively.
+
+.. seealso::
+
+    In a supervised setting, this dataset is typically used with the ``inverse_folding`` task.
+
 .. literalinclude:: ../../../configs/dataset/cath.yaml
     :language: yaml
     :caption: configs/dataset/cath.yaml
 
 :py:class:`PDB <src.datasets.pdb_dataset.PDBDataModule>` (``pdb``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Dataset description**: This is a configurable dataset that enables the user to specify particular subsets of the PDB for custom purposes.
+Users can creates datasets on the basis of the presence or absence of certain sets of ligands/co-factors, length, number of experimental chains, resolution etc.
+For more details, refer to the `Graphein tutoraial <https://colab.research.google.com/github/a-r-j/graphein/blob/master/notebooks/creating_datasets_from_the_pdb.ipynb>`_.
+
+**Splitting criteria**: Splits can be performed on the base of sequence identity and/or deposition date (i.e. temporal splits).
+
+**Task**: This dataset is typically used with the ``ppi_site_prediction`` and ``binding_site_prediction`` tasks.
 
 .. seealso::
     :py:class:`src.datasets.pdb_dataset.PDBData`
@@ -65,10 +92,9 @@ exhibit highly-specific functions and can be considered structural building bloc
     :caption: configs/dataset/pdb.yaml
 
 
-
 :py:class:`AFdb Rep. v4 <graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule>` (``afdb_rep_v4``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This is a dataset of approx. 3m protein structures from the alphafold database
+This is a dataset of approx. 3m protein structures from the AlphaFold database
 collated by , following structural clustering with FoldSeek.
 
 .. literalinclude:: ../../../configs/dataset/afdb_rep_v4.yaml
@@ -126,14 +152,14 @@ Graph-level Datasets
 
 :py:class:`Antibody Developability <src.datasets.antibody_developability.AntibodyDevelopabilityDataModule>` (``antibody_developability``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Therapeutic antibodies must be optimised for favourable
+**Dataset description**: Therapeutic antibodies must be optimised for favourable
 physicochemical properties in addition to target binding affinity and specificity
 to be viable development candidates. Consequently, this task frames prediction of antibody
 developability as a binary graph classification task indicating whether a given antibody is developable
 
-Dataset: We adopt the antibody developability dataset originally curated from SabDab by TDC.
+**Dataset**: We adopt the antibody developability dataset originally curated from SabDab by TDC.
 
-Impact: From a benchmarking perspective, this task is important as it enables targeted performance
+**Impact**: From a benchmarking perspective, this task is important as it enables targeted performance
 assessment of models on a specific (immunoglobulin) fold, providing insight into whether general-
 purpose structure-based encoders can be applicable to fold-specific tasks.
 
@@ -277,6 +303,7 @@ CCPDB Nucleotide Binding (``ccpdb_nucleotides``)
 
 Post Translational Modifications (``ptm``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 .. literalinclude:: ../../../configs/dataset/ptm.yaml
     :language: yaml
     :caption: configs/dataset/ptm.yaml
@@ -285,13 +312,16 @@ Post Translational Modifications (``ptm``)
 PPI Site Prediction (``masif_site``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We use the dataset of experimental structures curated from the PDB by Gainza et al.
+**Dataset description**: We use the dataset of experimental structures curated from the PDB by Gainza et al.
 and retain the original splits, though we modify the labelling scheme to be based on inter-atomic
-proximity (3.5 Å), which can be user-defined, rather than solvent exclusion.
-
+proximity (3.5 Å), which can be user-defined in the task configuration, rather than solvent exclusion.
 The dataset is composed by selecting PPI pairs from the PRISM list of nonredundant proteins,
-the ZDock benchmark, PDBBind and SabDab. Splits are performed using CD-HIT and structural splits
+the ZDock benchmark, PDBBind and SabDab.
+
+**Splitting criteria**: Splits are performed using CD-HIT and structural splits
 are performed using TM-algin.
+
+**Impact**: Accurate prediction of protein binding sites is important for understanding protein function and 
 
 
 .. literalinclude:: ../../../configs/dataset/masif_site.yaml

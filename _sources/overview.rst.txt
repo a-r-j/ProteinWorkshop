@@ -1,5 +1,5 @@
-Overview
------------
+Architectural Overview
+-----------------------
 
 
 The benchmark is constructed in a modular fashion, with each module configured via a ``.yaml`` config using `Hydra <https://hydra.cc/docs/intro/>`_.
@@ -13,7 +13,7 @@ The predominant ingredients are:
 
 
 Datasets
------------
+==========
 
 :py:class:`Protein <graphein.protein.tensor.data.Protein>` and :py:class:`ProteinBatch <<graphein.protein.tensor.data.ProteinBatch>` Data structures
 ================================================================================================================================================================================================
@@ -53,7 +53,7 @@ The methods :py:meth:`src.datasets.base.ProteinDataModule.download` :py:meth:`sr
 
 
 Models
----------
+==========
 
 :py:class:`src.models.base.BaseModel` and :py:class:`src.models.base.BenchMarkModel` Base classes
 ==============================================================================================================

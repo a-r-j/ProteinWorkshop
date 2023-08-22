@@ -185,9 +185,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html#datasets">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html#models">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Architectural Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/downstream.html">Downstream</a></li>
@@ -196,11 +194,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Config Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="framework_components/callbacks.html">Callbacks</a></li>
@@ -533,7 +531,7 @@ enable more direct architectural comparisons.</p>
 </div>
 </section>
 <section id="gcpnet-gcpnet">
-<h3><a class="reference internal" href="../modules/src.models.html#id5" title="src.models.graph_encoders.gcpnet.GCPNetModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">GCPNet</span></code></a> (<code class="docutils literal notranslate"><span class="pre">gcpnet</span></code>)<a class="headerlink" href="#gcpnet-gcpnet" title="Permalink to this heading">#</a></h3>
+<h3><a class="reference internal" href="../modules/src.models.html#id4" title="src.models.graph_encoders.gcpnet.GCPNetModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">GCPNet</span></code></a> (<code class="docutils literal notranslate"><span class="pre">gcpnet</span></code>)<a class="headerlink" href="#gcpnet-gcpnet" title="Permalink to this heading">#</a></h3>
 <p>GCPNet is an SE(3) equivariant architecture that jointly learns scalar and vector-valued features from geometric protein structure inputs and, through the use of geometry-complete frame embeddings, sensitises its predictions to account for potential changes induced by the effects of molecular chirality on protein structure. In contrast to the original GCPNet formulation presented in Morehead et al. (2022), the implementation we provide in the benchmark incorporates the architectural enhancements proposed in Morehead et al. (2023) which include the addition of a scalar message attention gate (i.e., <span class="math notranslate nohighlight">\(f_{a}(\cdot)`\)</span>) and a simplified structure for the model’s geometric graph convolution layers (i.e., <span class="math notranslate nohighlight">\(f_{n}(\cdot)\)</span>). With geometry-complete graph convolution in mind, for node <span class="math notranslate nohighlight">\(i\)</span> and layer <span class="math notranslate nohighlight">\(t\)</span>, scalar edge features <span class="math notranslate nohighlight">\(\vs_{e^{ij}}^{(t)}\)</span> and vector edge features <span class="math notranslate nohighlight">\(\vv_{e^{ij}}^{(t)}\)</span> are used along with scalar node features <span class="math notranslate nohighlight">\(\vs_{n^{i}}^{(t)}\)</span> and vector node features <span class="math notranslate nohighlight">\(\vv_{n^{i}}^{(t)}\)</span> to update each node feature type as:</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -719,6 +717,30 @@ In our formalism, this corresponds to:</p>
 </div>
 </section>
 </section>
+<section id="decoder-models">
+<h2>Decoder Models<a class="headerlink" href="#decoder-models" title="Permalink to this heading">#</a></h2>
+<p>Decoder models are used to predict the target property from the learned representation.</p>
+<p>Decoder configs are dictionaries indexed by the name of the output to which they are applied.</p>
+<p>These are configured in the task config. See <a class="reference internal" href="task.html"><span class="doc">Tasks</span></a> for more details.</p>
+<p>For example, the <code class="docutils literal notranslate"><span class="pre">residue_type</span></code> decoder:</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="task.html"><span class="doc">Tasks</span></a></p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">configs/decoder/residue_type.yaml</span><a class="headerlink" href="#id10" title="Permalink to this code">#</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">residue_type</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;src.models.decoders.mlp_decoder.MLPDecoder&quot;</span>
+<span class="w">  </span><span class="nt">hidden_dim</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">128</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">128</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">dropout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"> </span><span class="c1"># dropout rate</span>
+<span class="w">  </span><span class="nt">activations</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;relu&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;relu&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;none&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">skip</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;concat&quot;</span><span class="w"> </span><span class="c1"># Or sum/False</span>
+<span class="w">  </span><span class="nt">out_dim</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;node_embedding&quot;</span>
+</pre></div>
+</div>
+</div>
+</section>
 </section>
 
         </article>
@@ -794,6 +816,7 @@ In our formalism, this corresponds to:</p>
 <li><a class="reference internal" href="#multi-atomic-cluster-expansion-mace"><code class="xref py py-class docutils literal notranslate"><span class="pre">Multi-Atomic</span> <span class="pre">Cluster</span> <span class="pre">Expansion</span></code> (<code class="docutils literal notranslate"><span class="pre">mace</span></code>)</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#decoder-models">Decoder Models</a></li>
 </ul>
 </li>
 </ul>

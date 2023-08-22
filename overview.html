@@ -13,20 +13,20 @@
             gtag('config', '');
             
         </script>
-<meta content="Overview" property="og:title"/>
+<meta content="Architectural Overview" property="og:title"/>
 <meta content="website" property="og:type"/>
 <meta content="overview.html" property="og:url"/>
 <meta content="Protein Workshop" property="og:site_name"/>
 <meta content="The benchmark is constructed in a modular fashion, with each module configured via a.yaml config using Hydra. The predominant ingredients are: Datasets: The benchmark supports a variety of datasets..." property="og:description"/>
 <meta content="1146" property="og:image:width"/>
 <meta content="600" property="og:image:height"/>
-<meta content="/_images/social_previews/summary_overview_39ddfc77.png" property="og:image"/>
+<meta content="/_images/social_previews/summary_overview_b49b1f09.png" property="og:image"/>
 <meta content="The benchmark is constructed in a modular fashion, with each module configured via a.yaml config using Hydra. The predominant ingredients are: Datasets: The..." property="og:image:alt"/>
 <meta content="The benchmark is constructed in a modular fashion, with each module configured via a.yaml config using Hydra. The predominant ingredients are: Datasets: The benchmark supports a variety of datasets..." name="description"/>
 <meta content="summary_large_image" name="twitter:card"/>
 <link href="genindex.html" rel="index" title="Index"/><link href="search.html" rel="search" title="Search"/><link href="quickstart.html" rel="next" title="Quickstart"/><link href="tutorials.html" rel="prev" title="Tutorials"/>
 <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
-<title>Overview - Protein Workshop 0.0.1</title>
+<title>Architectural Overview - Protein Workshop 0.0.1</title>
 <link href="_static/pygments.css?v=362ab14a" rel="stylesheet" type="text/css"/>
 <link href="_static/styles/furo.css?v=135e06be" rel="stylesheet" type="text/css"/>
 <link href="_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
@@ -141,7 +141,7 @@
 <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
 </button>
 </div>
-<label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+<label class="toc-overlay-icon toc-header-icon" for="__toc">
 <div class="visually-hidden">Toggle table of contents sidebar</div>
 <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
 </label>
@@ -164,9 +164,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#datasets">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#models">Models</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Architectural Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/downstream.html">Downstream</a></li>
@@ -175,11 +173,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="configs/templates.html">Config Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/callbacks.html">Callbacks</a></li>
@@ -229,14 +227,14 @@
 <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
 </button>
 </div>
-<label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+<label class="toc-overlay-icon toc-content-icon" for="__toc">
 <div class="visually-hidden">Toggle table of contents sidebar</div>
 <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
 </label>
 </div>
 <article role="main">
-<section id="overview">
-<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h1>
+<section id="architectural-overview">
+<h1>Architectural Overview<a class="headerlink" href="#architectural-overview" title="Permalink to this heading">#</a></h1>
 <p>The benchmark is constructed in a modular fashion, with each module configured via a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> config using <a class="reference external" href="https://hydra.cc/docs/intro/">Hydra</a>.</p>
 <p>The predominant ingredients are:</p>
 <ul class="simple">
@@ -245,9 +243,9 @@
 <li><p><strong>Tasks</strong>: The benchmark supports a variety of tasks, described in <a class="reference internal" href="configs/task.html"><span class="doc">Tasks</span></a> and documented in <a class="reference internal" href="modules/src.tasks.html"><span class="doc">protein_workshop.tasks</span></a></p></li>
 <li><p><strong>Features</strong>: The benchmark supports a variety of features, described in <a class="reference internal" href="configs/features.html"><span class="doc">Features</span></a> and documented in <a class="reference internal" href="modules/src.features.html"><span class="doc">protein_workshop.features</span></a></p></li>
 </ul>
-</section>
 <section id="datasets">
-<h1>Datasets<a class="headerlink" href="#datasets" title="Permalink to this heading">#</a></h1>
+<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this heading">#</a></h2>
+</section>
 <section id="protein-and-proteinbatch-data-structures">
 <h2><code class="xref py py-class docutils literal notranslate"><span class="pre">Protein</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">ProteinBatch</span></code> Data structures<a class="headerlink" href="#protein-and-proteinbatch-data-structures" title="Permalink to this heading">#</a></h2>
 <p>We make extensive use of Graphein for data processing and featurisation in the framework.
@@ -276,9 +274,9 @@ and <a class="reference external" href="https://pytorch-geometric.readthedocs.io
 <p>The methods <a class="reference internal" href="modules/src.datasets.html#src.datasets.base.ProteinDataModule.train_dataloader" title="src.datasets.base.ProteinDataModule.train_dataloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">src.datasets.base.ProteinDataModule.train_dataloader()</span></code></a>, <a class="reference internal" href="modules/src.datasets.html#src.datasets.base.ProteinDataModule.val_dataloader" title="src.datasets.base.ProteinDataModule.val_dataloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">src.datasets.base.ProteinDataModule.val_dataloader()</span></code></a> and <a class="reference internal" href="modules/src.datasets.html#src.datasets.base.ProteinDataModule.test_dataloader" title="src.datasets.base.ProteinDataModule.test_dataloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">src.datasets.base.ProteinDataModule.test_dataloader()</span></code></a> should return a <code class="xref py py-class docutils literal notranslate"><span class="pre">from</span> <span class="pre">graphein.protein.tensor.dataloader.ProteinDataLoader</span></code> object, which is used to represent a dataloader for a dataset of proteins.</p>
 <p>The methods <a class="reference internal" href="modules/src.datasets.html#src.datasets.base.ProteinDataModule.download" title="src.datasets.base.ProteinDataModule.download"><code class="xref py py-meth docutils literal notranslate"><span class="pre">src.datasets.base.ProteinDataModule.download()</span></code></a> <a class="reference internal" href="modules/src.datasets.html#src.datasets.base.ProteinDataModule.parse_dataset" title="src.datasets.base.ProteinDataModule.parse_dataset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">src.datasets.base.ProteinDataModule.parse_dataset()</span></code></a>, handles all of the dataset-specific logic for downloading, and parsing labels, ids/filenames and chains.</p>
 </section>
-</section>
 <section id="models">
-<h1>Models<a class="headerlink" href="#models" title="Permalink to this heading">#</a></h1>
+<h2>Models<a class="headerlink" href="#models" title="Permalink to this heading">#</a></h2>
+</section>
 <section id="src-models-base-basemodel-and-src-models-base-benchmarkmodel-base-classes">
 <h2><a class="reference internal" href="modules/src.models.html#src.models.base.BaseModel" title="src.models.base.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BaseModel</span></code></a> and <a class="reference internal" href="modules/src.models.html#src.models.base.BenchMarkModel" title="src.models.base.BenchMarkModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BenchMarkModel</span></code></a> Base classes<a class="headerlink" href="#src-models-base-basemodel-and-src-models-base-benchmarkmodel-base-classes" title="Permalink to this heading">#</a></h2>
 <p>These objects orchestrate model training and validation logic. The <a class="reference internal" href="modules/src.models.html#src.models.base.BaseModel" title="src.models.base.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BaseModel</span></code></a> class is a subclass of <code class="xref py py-class docutils literal notranslate"><span class="pre">pytorch_lightning.LightningModule</span></code>.
@@ -340,7 +338,28 @@ The <a class="reference internal" href="modules/src.models.html#src.models.base.
 </div>
 </footer>
 </div>
-<aside class="toc-drawer no-toc">
+<aside class="toc-drawer">
+<div class="toc-sticky toc-scroll">
+<div class="toc-title-container">
+<span class="toc-title">
+            On this page
+          </span>
+</div>
+<div class="toc-tree-container">
+<div class="toc-tree">
+<ul>
+<li><a class="reference internal" href="#">Architectural Overview</a><ul>
+<li><a class="reference internal" href="#datasets">Datasets</a></li>
+<li><a class="reference internal" href="#protein-and-proteinbatch-data-structures"><code class="xref py py-class docutils literal notranslate"><span class="pre">Protein</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">ProteinBatch</span></code> Data structures</a></li>
+<li><a class="reference internal" href="#proteindatamodule-base-classes"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProteinDataModule</span></code> Base classes</a></li>
+<li><a class="reference internal" href="#models">Models</a></li>
+<li><a class="reference internal" href="#src-models-base-basemodel-and-src-models-base-benchmarkmodel-base-classes"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BaseModel</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BenchMarkModel</span></code> Base classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </aside>
 </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>

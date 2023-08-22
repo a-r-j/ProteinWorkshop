@@ -9,7 +9,7 @@ Tasks
 
 Task configs are 'high-level' configs which configure the transforms outputs, losses and metrics of the model.
 
-Specific training objects are achieved through the use of :doc:`/configs/transform`.
+Specific training objects are achieved through the use of :doc:`/configs/transforms`.
 
 .. note::
     To change the task, use a command with a format like:
@@ -21,7 +21,7 @@ Specific training objects are achieved through the use of :doc:`/configs/transfo
     Where ``<TASK_NAME>`` is one of the tasks listed below.
 
 .. seealso::
-    :doc:`/configs/transform`
+    :doc:`/configs/transforms`
 
 Denoising Tasks
 ================
@@ -43,7 +43,8 @@ corruptions in various amounts to the input sequence.
     configs/task/sequence_denoising.yaml
 
 .. literalinclude:: ../../../configs/task/sequence_denoising.yaml
-   :language: yaml
+    :language: yaml
+    :caption: configs/task/sequence_denoising.yaml
 
 Structure Denoising (``structure_denoising``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -59,6 +60,7 @@ The corruption is configured by the :py:class:`structure noise transform <src.ta
 
 .. literalinclude:: ../../../configs/task/structure_denoising.yaml
    :language: yaml
+   :caption: configs/task/structure_denoising.yaml
 
 Sequence & Structure Denoising (``sequence_structure_denoising``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -73,6 +75,7 @@ This config demonstrates how we can compose transforms in a modular fashion to c
 
 .. literalinclude:: ../../../configs/task/sequence_structure_denoising.yaml
    :language: yaml
+   :caption: configs/task/sequence_structure_denoising.yaml
 
 Torsional Denoising (``torsional_denoising``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -85,7 +88,8 @@ The torsional noise transform applies noise in dihedral angle space. The cartesi
     :py:class:`src.tasks.torsional_denoising.TorsionalNoiseTransform`
 
 .. literalinclude:: ../../../configs/task/torsional_denoising.yaml
-   :language: yaml
+    :language: yaml
+    :caption: configs/task/torsional_denoising.yaml
 
 
 Node-level Tasks
@@ -96,7 +100,20 @@ Protein-Protein Interaction Site Prediction (``ppi_site_prediction``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: ../../../configs/task/ppi_site_prediction.yaml
+    :language: yaml
+    :caption: configs/task/ppi_site_prediction.yaml
+
+
+Ligand Binding Site Prediction (``binding_site_identification``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. seealso::
+    :py:class:`src.tasks.binding_site_identification.BindingSiteIdentificationTransform`
+
+.. literalinclude:: ../../../configs/task/binding_site_identification.yaml
    :language: yaml
+   :caption: configs/task/binding_site_identification.yaml
+
 
 
 Multiclass Node Classification (``multiclass_node_classification``)
@@ -104,6 +121,7 @@ Multiclass Node Classification (``multiclass_node_classification``)
 
 .. literalinclude:: ../../../configs/task/muliclass_node_classification.yaml
    :language: yaml
+   :caption: configs/task/muliclass_node_classification.yaml
 
 pLDDT Prediction (``plddt_prediction``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -117,6 +135,7 @@ This config specifies a self-supervision task to predict the per-residue pLDDT s
 
 .. literalinclude:: ../../../configs/task/plddt_prediction.yaml
    :language: yaml
+   :caption: configs/task/plddt_prediction.yaml
 
 
 Edge-level Tasks
@@ -136,6 +155,7 @@ batch. The distance is then predicted from the concantenated node embeddings of 
 
 .. literalinclude:: ../../../configs/task/edge_distance_prediction.yaml
    :language: yaml
+   :caption: configs/task/edge_distance_prediction.yaml
 
 
 .. mdinclude:: ../../../configs/aux_task/README.md

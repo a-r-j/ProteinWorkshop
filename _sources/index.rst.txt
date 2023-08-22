@@ -27,6 +27,7 @@ Welcome to Protein Workshop's documentation!
    :hidden:
    :caption: Default Configs
 
+   configs/templates
    configs/dataset
    configs/model
    configs/task

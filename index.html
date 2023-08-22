@@ -17,12 +17,12 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="index.html" />
 <meta property="og:site_name" content="Protein Workshop" />
-<meta property="og:description" content="Overview of the Protein Workshop This repository provides the code for the protein structure representation learning benchmark detailed in the paper Evaluating Representation Learning on the Protei..." />
+<meta property="og:description" content="Project Status: Active – The project has reached a stable, usable state and is being actively developed. License: MIT Docs Contents:: Installation, Tutorials- Training a New Model, Evaluating a pre..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_index_3a8d266c.png" />
-<meta property="og:image:alt" content="Overview of the Protein Workshop This repository provides the code for the protein structure representation learning benchmark detailed in the paper Evaluati..." />
-<meta name="description" content="Overview of the Protein Workshop This repository provides the code for the protein structure representation learning benchmark detailed in the paper Evaluating Representation Learning on the Protei..." />
+<meta property="og:image" content="/_images/social_previews/summary_index_b5b0e67d.png" />
+<meta property="og:image:alt" content="Project Status: Active – The project has reached a stable, usable state and is being actively developed. License: MIT Docs Contents:: Installation, Tutorials..." />
+<meta name="description" content="Project Status: Active – The project has reached a stable, usable state and is being actively developed. License: MIT Docs Contents:: Installation, Tutorials- Training a New Model, Evaluating a pre..." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation" href="installation.html" />
 
@@ -185,9 +185,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html#datasets">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html#models">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Architectural Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/downstream.html">Downstream</a></li>
@@ -196,11 +194,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="configs/templates.html">Config Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/callbacks.html">Callbacks</a></li>
@@ -262,27 +260,30 @@
         <article role="main">
           <section id="welcome-to-protein-workshop-s-documentation">
 <h1>Welcome to Protein Workshop’s documentation!<a class="headerlink" href="#welcome-to-protein-workshop-s-documentation" title="Permalink to this heading">#</a></h1>
-<a class="reference external image-reference" href="https://github.com/a-r-j/protein_workshop/blob/docstrings/img/overview.png"><img alt="Overview of the Protein Workshop" src="https://github.com/a-r-j/protein_workshop/blob/docstrings/img/overview.png" /></a>
-<p>This repository provides the code for the protein structure representation learning benchmark detailed in the paper <em>Evaluating Representation Learning on the Protein Universe</em>.</p>
-<p>In the benchmark, we implement numerous featurisation schemes, datasets for self-supervised pre-training and downstream evaluation, pre-training tasks, and auxiliary tasks.</p>
+<a class="reference external image-reference" href="https://www.repostatus.org/#active"><img alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed." src="https://www.repostatus.org/badges/latest/active.svg" /></a>
+<a class="reference external image-reference" href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
+<a class="reference external image-reference" href="https://www.proteins.sh"><img alt="Docs" src="https://assets.readthedocs.org/static/projects/badges/passing-flat.svg" /></a>
+<p><span class="raw-html-m2r"><a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a></span></p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html#datasets">Datasets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#protein-and-proteinbatch-data-structures"><code class="xref py py-class docutils literal notranslate"><span class="pre">Protein</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">ProteinBatch</span></code> Data structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#proteindatamodule-base-classes"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProteinDataModule</span></code> Base classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials.html#id1">Training a New Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials.html#evaluating-a-pre-trained-model">Evaluating a pre-trained Model</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html#models">Models</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Architectural Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#datasets">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#protein-and-proteinbatch-data-structures"><code class="xref py py-class docutils literal notranslate"><span class="pre">Protein</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">ProteinBatch</span></code> Data structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#proteindatamodule-base-classes"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProteinDataModule</span></code> Base classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#models">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#src-models-base-basemodel-and-src-models-base-benchmarkmodel-base-classes"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BaseModel</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BenchMarkModel</span></code> Base classes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quickstart_component/pretrain.html">Pre-Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart_component/downstream.html">Downstream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#finetuning-a-model">Finetuning a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#embedding-a-dataset">Embedding a dataset</a></li>
 </ul>
 </li>
 </ul>

@@ -17,12 +17,12 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="configs/task.html" />
 <meta property="og:site_name" content="Protein Workshop" />
-<meta property="og:description" content=",,,,,,, Task configs are ‘high-level’ configs which configure the transforms outputs, losses and metrics of the model. Specific training objects are achieved through the use of/configs/transform. D..." />
+<meta property="og:description" content=",,,,,,, Task configs are ‘high-level’ configs which configure the transforms outputs, losses and metrics of the model. Specific training objects are achieved through the use of Transforms. Denoisin..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
 <meta property="og:image" content="/_images/social_previews/summary_configs_task_7435e27d.png" />
 <meta property="og:image:alt" content=",,,,,,, Task configs are ‘high-level’ configs which configure the transforms outputs, losses and metrics of the model. Specific training objects are achieved..." />
-<meta name="description" content=",,,,,,, Task configs are ‘high-level’ configs which configure the transforms outputs, losses and metrics of the model. Specific training objects are achieved through the use of/configs/transform. D..." />
+<meta name="description" content=",,,,,,, Task configs are ‘high-level’ configs which configure the transforms outputs, losses and metrics of the model. Specific training objects are achieved through the use of Transforms. Denoisin..." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Features" href="features.html" /><link rel="prev" title="Models" href="model.html" />
 
@@ -185,9 +185,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html#datasets">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html#models">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Architectural Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/downstream.html">Downstream</a></li>
@@ -196,11 +194,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Config Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="framework_components/callbacks.html">Callbacks</a></li>
@@ -278,7 +276,7 @@
 </table>
 </div>
 <p>Task configs are ‘high-level’ configs which configure the transforms outputs, losses and metrics of the model.</p>
-<p>Specific training objects are achieved through the use of <span class="xref std std-doc">/configs/transform</span>.</p>
+<p>Specific training objects are achieved through the use of <a class="reference internal" href="transforms.html"><span class="doc">Transforms</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>To change the task, use a command with a format like:</p>
@@ -289,7 +287,7 @@
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><span class="xref std std-doc">/configs/transform</span></p>
+<p><a class="reference internal" href="transforms.html"><span class="doc">Transforms</span></a></p>
 </div>
 <section id="denoising-tasks">
 <h2>Denoising Tasks<a class="headerlink" href="#denoising-tasks" title="Permalink to this heading">#</a></h2>
@@ -305,6 +303,8 @@ corruptions in various amounts to the input sequence.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>configs/task/sequence_denoising.yaml
 </pre></div>
 </div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">configs/task/sequence_denoising.yaml</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -344,6 +344,7 @@ corruptions in various amounts to the input sequence.</p>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">residue_type</span>
 </pre></div>
 </div>
+</div>
 </section>
 <section id="structure-denoising-structure-denoising">
 <h3>Structure Denoising (<code class="docutils literal notranslate"><span class="pre">structure_denoising</span></code>)<a class="headerlink" href="#structure-denoising-structure-denoising" title="Permalink to this heading">#</a></h3>
@@ -354,6 +355,8 @@ corruptions in various amounts to the input sequence.</p>
 <p class="admonition-title">See also</p>
 <p><code class="xref py py-class docutils literal notranslate"><span class="pre">src.tasks.structure_denoising.StructureNoiseTransform</span></code></p>
 </div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">configs/task/structure_denoising.yaml</span><a class="headerlink" href="#id2" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -387,6 +390,7 @@ corruptions in various amounts to the input sequence.</p>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pos</span>
 </pre></div>
 </div>
+</div>
 </section>
 <section id="sequence-structure-denoising-sequence-structure-denoising">
 <h3>Sequence &amp; Structure Denoising (<code class="docutils literal notranslate"><span class="pre">sequence_structure_denoising</span></code>)<a class="headerlink" href="#sequence-structure-denoising-sequence-structure-denoising" title="Permalink to this heading">#</a></h3>
@@ -397,6 +401,8 @@ corruptions in various amounts to the input sequence.</p>
 <p><a class="reference internal" href="../modules/src.tasks.html#src.tasks.sequence_denoising.SequenceNoiseTransform" title="src.tasks.sequence_denoising.SequenceNoiseTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.tasks.sequence_denoising.SequenceNoiseTransform</span></code></a>
 <code class="xref py py-class docutils literal notranslate"><span class="pre">src.tasks.structure_denoising.StructureNoiseTransform</span></code></p>
 </div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">configs/task/sequence_structure_denoising.yaml</span><a class="headerlink" href="#id3" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -440,6 +446,7 @@ corruptions in various amounts to the input sequence.</p>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">residue_type</span>
 </pre></div>
 </div>
+</div>
 </section>
 <section id="torsional-denoising-torsional-denoising">
 <h3>Torsional Denoising (<code class="docutils literal notranslate"><span class="pre">torsional_denoising</span></code>)<a class="headerlink" href="#torsional-denoising-torsional-denoising" title="Permalink to this heading">#</a></h3>
@@ -449,6 +456,8 @@ corruptions in various amounts to the input sequence.</p>
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="../modules/src.tasks.html#src.tasks.torsional_denoising.TorsionalNoiseTransform" title="src.tasks.torsional_denoising.TorsionalNoiseTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.tasks.torsional_denoising.TorsionalNoiseTransform</span></code></a></p>
 </div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">configs/task/torsional_denoising.yaml</span><a class="headerlink" href="#id4" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -488,12 +497,15 @@ corruptions in various amounts to the input sequence.</p>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">torsional_noise</span>
 </pre></div>
 </div>
+</div>
 </section>
 </section>
 <section id="node-level-tasks">
 <h2>Node-level Tasks<a class="headerlink" href="#node-level-tasks" title="Permalink to this heading">#</a></h2>
 <section id="protein-protein-interaction-site-prediction-ppi-site-prediction">
 <h3>Protein-Protein Interaction Site Prediction (<code class="docutils literal notranslate"><span class="pre">ppi_site_prediction</span></code>)<a class="headerlink" href="#protein-protein-interaction-site-prediction-ppi-site-prediction" title="Permalink to this heading">#</a></h3>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">configs/task/ppi_site_prediction.yaml</span><a class="headerlink" href="#id5" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -535,6 +547,64 @@ corruptions in various amounts to the input sequence.</p>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;node_label&quot;</span>
 </pre></div>
 </div>
+</div>
+</section>
+<section id="ligand-binding-site-prediction-binding-site-identification">
+<h3>Ligand Binding Site Prediction (<code class="docutils literal notranslate"><span class="pre">binding_site_identification</span></code>)<a class="headerlink" href="#ligand-binding-site-prediction-binding-site-identification" title="Permalink to this heading">#</a></h3>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">src.tasks.binding_site_identification.BindingSiteIdentificationTransform</span></code></p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">configs/task/binding_site_identification.yaml</span><a class="headerlink" href="#id6" title="Permalink to this code">#</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
+
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /metrics</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">accuracy</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">f1_score</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auprc</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rocauc</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /decoder</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node_label</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">override /transforms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove_missing_ca</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">binding_site_prediction</span>
+
+<span class="nt">transforms</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">binding_site_prediction</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">hetatms</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">HOH</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">SO4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">PEG</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Types of hetatms to be considered as binding sites</span>
+<span class="w">    </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.5</span><span class="w"> </span><span class="c1"># Threshold for binding site prediction</span>
+<span class="w">    </span><span class="nt">ca_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"> </span><span class="c1"># Whether to use only CA atoms for assigning labels</span>
+<span class="w">    </span><span class="nt">multilabel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"> </span><span class="c1"># Whether to use multilabel or binary labels</span>
+
+<span class="nt">dataset</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"> </span><span class="c1"># This needs to match the number of hetatms above</span>
+
+<span class="nt">callbacks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">early_stopping</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/node_label/accuracy</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;max&quot;</span>
+<span class="w">  </span><span class="nt">model_checkpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">monitor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">val/node_label/accuracy</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;max&quot;</span>
+
+<span class="nt">task</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;binding_site_identification&quot;</span>
+<span class="w">  </span><span class="nt">classification_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;multilabel&quot;</span><span class="w"> </span><span class="c1"># Check this aligns with binding site config above</span>
+<span class="w">  </span><span class="nt">metric_average</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;macro&quot;</span>
+
+<span class="w">  </span><span class="nt">losses</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">node_label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cross_entropy</span><span class="w"> </span><span class="c1"># Check this aligns with binding site config above</span>
+<span class="w">  </span><span class="nt">label_smoothing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;node_label&quot;</span>
+<span class="w">  </span><span class="nt">supervise_on</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;node_label&quot;</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="multiclass-node-classification-multiclass-node-classification">
 <h3>Multiclass Node Classification (<code class="docutils literal notranslate"><span class="pre">multiclass_node_classification</span></code>)<a class="headerlink" href="#multiclass-node-classification-multiclass-node-classification" title="Permalink to this heading">#</a></h3>
@@ -547,6 +617,8 @@ corruptions in various amounts to the input sequence.</p>
 <p>This task requires the input data to have a <code class="docutils literal notranslate"><span class="pre">b_factor</span></code> attribute.</p>
 <p>If the input structure are not predicted structures, this task will be a B factor prediction task.</p>
 </div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">configs/task/plddt_prediction.yaml</span><a class="headerlink" href="#id7" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -577,6 +649,7 @@ corruptions in various amounts to the input sequence.</p>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">b_factor</span>
 </pre></div>
 </div>
+</div>
 </section>
 </section>
 <section id="edge-level-tasks">
@@ -590,6 +663,8 @@ masked node indices and their pairwise distance as <code class="docutils literal
 <code class="docutils literal notranslate"><span class="pre">batch.edge_distance_labels</span></code>, respectively. Finally, it masks the edges
 (and their attributes) using the constructed mask and returns the modified
 batch. The distance is then predicted from the concantenated node embeddings of the two nodes.</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">configs/task/edge_distance_prediction.yaml</span><a class="headerlink" href="#id8" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -623,6 +698,7 @@ batch. The distance is then predicted from the concantenated node embeddings of 
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">edge_distance</span>
 </pre></div>
 </div>
+</div>
 </section>
 </section>
 <section id="auxiliary-tasks">
@@ -641,8 +717,8 @@ additional metrics, decoders and losses.</p>
 python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gvp<span class="w"> </span><span class="nv">task</span><span class="o">=</span>plddt_prediction<span class="w"> </span>+aux_task<span class="o">=</span>nn_sequence
 </pre></div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">configs/aux_task/nn_sequence.yaml</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">configs/aux_task/nn_sequence.yaml</span><a class="headerlink" href="#id9" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -673,8 +749,8 @@ python<span class="w"> </span>src/train.py<span class="w"> </span><span class="n
 python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gvp<span class="w"> </span><span class="nv">task</span><span class="o">=</span>plddt_prediction<span class="w"> </span>+aux_task<span class="o">=</span>nn_structure_r3
 </pre></div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">configs/aux_task/nn_structure_r3.yaml</span><a class="headerlink" href="#id2" title="Permalink to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">configs/aux_task/nn_structure_r3.yaml</span><a class="headerlink" href="#id10" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -716,8 +792,8 @@ the first few chi angles that are partially defined by backbone atoms.</p>
 python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gvp<span class="w"> </span><span class="nv">task</span><span class="o">=</span>plddt_prediction<span class="w"> </span>+aux_task<span class="o">=</span>nn_structure_torsion
 </pre></div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">configs/aux_task/nn_structure_torsion.yaml</span><a class="headerlink" href="#id3" title="Permalink to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">configs/aux_task/nn_structure_torsion.yaml</span><a class="headerlink" href="#id11" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -752,8 +828,8 @@ python<span class="w"> </span>src/train.py<span class="w"> </span><span class="n
 python<span class="w"> </span>src/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>gvp<span class="w"> </span><span class="nv">task</span><span class="o">=</span>plddt_prediction<span class="w"> </span>+aux_task<span class="o">=</span>inverse_folding
 </pre></div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">configs/aux_task/inverse_folding.yaml</span><a class="headerlink" href="#id4" title="Permalink to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">configs/aux_task/inverse_folding.yaml</span><a class="headerlink" href="#id12" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># @package _global_</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
@@ -851,6 +927,7 @@ python<span class="w"> </span>src/train.py<span class="w"> </span><span class="n
 </li>
 <li><a class="reference internal" href="#node-level-tasks">Node-level Tasks</a><ul>
 <li><a class="reference internal" href="#protein-protein-interaction-site-prediction-ppi-site-prediction">Protein-Protein Interaction Site Prediction (<code class="docutils literal notranslate"><span class="pre">ppi_site_prediction</span></code>)</a></li>
+<li><a class="reference internal" href="#ligand-binding-site-prediction-binding-site-identification">Ligand Binding Site Prediction (<code class="docutils literal notranslate"><span class="pre">binding_site_identification</span></code>)</a></li>
 <li><a class="reference internal" href="#multiclass-node-classification-multiclass-node-classification">Multiclass Node Classification (<code class="docutils literal notranslate"><span class="pre">multiclass_node_classification</span></code>)</a></li>
 <li><a class="reference internal" href="#plddt-prediction-plddt-prediction">pLDDT Prediction (<code class="docutils literal notranslate"><span class="pre">plddt_prediction</span></code>)</a></li>
 </ul>

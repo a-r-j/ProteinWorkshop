@@ -101,3 +101,12 @@ Multi-Atomic Cluster Expansion (``mace``)
     :members:
     :undoc-members:
     :show-inheritance:
+
+
+Decoders
+=============================
+
+.. automodule:: src.models.decoders.mlp_decoder
+    :members:
+    :undoc-members:
+    :show-inheritance:

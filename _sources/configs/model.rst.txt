@@ -30,8 +30,8 @@ Invariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 126
-    :end-line: 133
+    :start-line: 144
+    :end-line: 152
 
 :py:class:`SchNet <src.models.graph_encoders.schnet.SchNetModel>` (``schnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -113,8 +113,8 @@ Vector-Equivariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 137
-    :end-line: 144
+    :start-line: 156
+    :end-line: 162
 
 :py:class:`EGNN <src.models.graph_encoders.egnn.EGNNModel>` (``egnn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -166,8 +166,8 @@ Tensor-Equivariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 145
-    :end-line: 150
+    :start-line: 164
+    :end-line: 169
 
 
 :py:class:`Tensor Field Networks <src.models.graph_encoders.tfn.TensorProductModel>` (``tfn``)
@@ -208,3 +208,22 @@ In our formalism, this corresponds to:
 .. literalinclude:: ../../../configs/encoder/mace.yaml
     :language: yaml
     :caption: configs/encoder/mace.yaml
+
+
+Decoder Models
+=============================
+
+Decoder models are used to predict the target property from the learned representation.
+
+Decoder configs are dictionaries indexed by the name of the output to which they are applied.
+
+These are configured in the task config. See :doc:`/configs/task` for more details.
+
+For example, the ``residue_type`` decoder:
+
+.. seealso::
+    :doc:`/configs/task`
+
+.. literalinclude:: ../../../configs/decoder/residue_type.yaml
+    :language: yaml
+    :caption: configs/decoder/residue_type.yaml

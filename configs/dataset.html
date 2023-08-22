@@ -24,7 +24,7 @@
 <meta property="og:image:alt" content="Summary of dataset sources To switch between different datasets, simply change the dataset argument in the launch command. For example: Where<DATASET_NAME> i..." />
 <meta name="description" content="Summary of dataset sources To switch between different datasets, simply change the dataset argument in the launch command. For example: Where<DATASET_NAME> is given by bracketed name in the listing..." />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Models" href="model.html" /><link rel="prev" title="Downstream" href="../quickstart_component/downstream.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Models" href="model.html" /><link rel="prev" title="Config Templates" href="templates.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
         <title>Dataset - Protein Workshop 0.0.1</title>
@@ -185,9 +185,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html#datasets">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html#models">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Architectural Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart_component/downstream.html">Downstream</a></li>
@@ -196,11 +194,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Config Templates</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="framework_components/callbacks.html">Callbacks</a></li>
@@ -281,7 +279,6 @@
 </div>
 <section id="unlabelled-datasets">
 <h2>Unlabelled Datasets<a class="headerlink" href="#unlabelled-datasets" title="Permalink to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">MMTF</span></code> files, which are significantly smaller in size than conventional <code class="docutils literal notranslate"><span class="pre">.pdb</span></code> or <code class="docutils literal notranslate"><span class="pre">.cif</span></code> file.</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
 <thead>
@@ -332,7 +329,7 @@
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cath</span></code></p></td>
 <td><p><a class="reference external" href="https://www.cathdb.info/">CATH</a> 4.2 40% split by CATH topologies.</p></td>
 <td><p><a class="reference external" href="https://www.mit.edu/~vgarg/GenerativeModelsForProteinDesign.pdf">Ingraham et al.</a></p></td>
-<td></td>
+<td><p>~18k chains</p></td>
 <td></td>
 <td><p><a class="reference external" href="http://cathdb.info/">CC-BY 4.0</a></p></td>
 </tr>
@@ -362,9 +359,11 @@
 </div>
 <section id="astral-astral">
 <h3><a class="reference internal" href="../modules/src.datasets.html#src.datasets.astral.AstralDataModule" title="src.datasets.astral.AstralDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">ASTRAL</span></code></a> (<code class="docutils literal notranslate"><span class="pre">astral</span></code>)<a class="headerlink" href="#astral-astral" title="Permalink to this heading">#</a></h3>
-<p>ASTRAL provides compendia of protein domain structures, regions of proteins that
+<p><strong>Dataset description</strong>: ASTRAL provides compendia of protein domain structures, regions of proteins that
 can maintain their structure and function independently of the rest of the protein. Domains typically
 exhibit highly-specific functions and can be considered structural building blocks of proteins.</p>
+<p><strong>Splitting criteria</strong>: The identity parameter (<code class="docutils literal notranslate"><span class="pre">95</span></code> or <code class="docutils literal notranslate"><span class="pre">40</span></code>) allows the user to select the sequence identity threshold. From this,
+data are split randomly.</p>
 <div class="literal-block-wrapper docutils container" id="id17">
 <div class="code-block-caption"><span class="caption-text">configs/dataset/astral.yaml</span><a class="headerlink" href="#id17" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
@@ -386,6 +385,17 @@ exhibit highly-specific functions and can be considered structural building bloc
 </section>
 <section id="cath-cath">
 <h3><a class="reference internal" href="../modules/src.datasets.html#src.datasets.cath.CATHDataModule" title="src.datasets.cath.CATHDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">CATH</span></code></a> (<code class="docutils literal notranslate"><span class="pre">cath</span></code>)<a class="headerlink" href="#cath-cath" title="Permalink to this heading">#</a></h3>
+<p><strong>Dataset Description</strong> The dataset is a partition of the CATH 4.2 40% non-redundant set of proteins, up to 500 residues in length curated by Ingraham et al.</p>
+<p><strong>Task</strong>: This dataset is typically used with the <code class="docutils literal notranslate"><span class="pre">inverse_folding</span></code> task.</p>
+<p><strong>Impact</strong>: Inverse folding is a task that is of interest to the protein design community. The ability to generate sequences that fold into a given structure is a key step in the design of novel proteins with desired functions.</p>
+<p><strong>Splitting Criteria</strong>: Splits are performed by randomly assigning CATH topology classifications (CAT) codes to each split, resulting
+in a 80/10/10 train/val/test split. Redundant entries are removed from the train and val splits. Test chains are filtered
+such there is no CAT overlap with the train and val splits. Similarly, the val split is filtered such that there is no CAT
+overlap with the train or test split. This results in 18,024 / 608 / 608 chains in the train / val / test splits respectively.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>In a supervised setting, this dataset is typically used with the <code class="docutils literal notranslate"><span class="pre">inverse_folding</span></code> task.</p>
+</div>
 <div class="literal-block-wrapper docutils container" id="id18">
 <div class="code-block-caption"><span class="caption-text">configs/dataset/cath.yaml</span><a class="headerlink" href="#id18" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
@@ -405,6 +415,11 @@ exhibit highly-specific functions and can be considered structural building bloc
 </section>
 <section id="pdb-pdb">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">PDB</span></code> (<code class="docutils literal notranslate"><span class="pre">pdb</span></code>)<a class="headerlink" href="#pdb-pdb" title="Permalink to this heading">#</a></h3>
+<p><strong>Dataset description</strong>: This is a configurable dataset that enables the user to specify particular subsets of the PDB for custom purposes.
+Users can creates datasets on the basis of the presence or absence of certain sets of ligands/co-factors, length, number of experimental chains, resolution etc.
+For more details, refer to the <a class="reference external" href="https://colab.research.google.com/github/a-r-j/graphein/blob/master/notebooks/creating_datasets_from_the_pdb.ipynb">Graphein tutoraial</a>.</p>
+<p><strong>Splitting criteria</strong>: Splits can be performed on the base of sequence identity and/or deposition date (i.e. temporal splits).</p>
+<p><strong>Task</strong>: This dataset is typically used with the <code class="docutils literal notranslate"><span class="pre">ppi_site_prediction</span></code> and <code class="docutils literal notranslate"><span class="pre">binding_site_prediction</span></code> tasks.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><code class="xref py py-class docutils literal notranslate"><span class="pre">src.datasets.pdb_dataset.PDBData</span></code></p>
@@ -441,7 +456,7 @@ exhibit highly-specific functions and can be considered structural building bloc
 </section>
 <section id="afdb-rep-v4-afdb-rep-v4">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">AFdb</span> <span class="pre">Rep.</span> <span class="pre">v4</span></code> (<code class="docutils literal notranslate"><span class="pre">afdb_rep_v4</span></code>)<a class="headerlink" href="#afdb-rep-v4-afdb-rep-v4" title="Permalink to this heading">#</a></h3>
-<p>This is a dataset of approx. 3m protein structures from the alphafold database
+<p>This is a dataset of approx. 3m protein structures from the AlphaFold database
 collated by , following structural clustering with FoldSeek.</p>
 <div class="literal-block-wrapper docutils container" id="id20">
 <div class="code-block-caption"><span class="caption-text">configs/dataset/afdb_rep_v4.yaml</span><a class="headerlink" href="#id20" title="Permalink to this code">#</a></div>
@@ -600,12 +615,12 @@ collated by , following structural clustering with FoldSeek.</p>
 <h2>Graph-level Datasets<a class="headerlink" href="#graph-level-datasets" title="Permalink to this heading">#</a></h2>
 <section id="antibody-developability-antibody-developability">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">Antibody</span> <span class="pre">Developability</span></code> (<code class="docutils literal notranslate"><span class="pre">antibody_developability</span></code>)<a class="headerlink" href="#antibody-developability-antibody-developability" title="Permalink to this heading">#</a></h3>
-<p>Therapeutic antibodies must be optimised for favourable
+<p><strong>Dataset description</strong>: Therapeutic antibodies must be optimised for favourable
 physicochemical properties in addition to target binding affinity and specificity
 to be viable development candidates. Consequently, this task frames prediction of antibody
 developability as a binary graph classification task indicating whether a given antibody is developable</p>
-<p>Dataset: We adopt the antibody developability dataset originally curated from SabDab by TDC.</p>
-<p>Impact: From a benchmarking perspective, this task is important as it enables targeted performance
+<p><strong>Dataset</strong>: We adopt the antibody developability dataset originally curated from SabDab by TDC.</p>
+<p><strong>Impact</strong>: From a benchmarking perspective, this task is important as it enables targeted performance
 assessment of models on a specific (immunoglobulin) fold, providing insight into whether general-
 purpose structure-based encoders can be applicable to fold-specific tasks.</p>
 <div class="literal-block-wrapper docutils container" id="id26">
@@ -916,12 +931,14 @@ classes likely learn limited or low-quality structural representations.214</p>
 </section>
 <section id="ppi-site-prediction-masif-site">
 <h3>PPI Site Prediction (<code class="docutils literal notranslate"><span class="pre">masif_site</span></code>)<a class="headerlink" href="#ppi-site-prediction-masif-site" title="Permalink to this heading">#</a></h3>
-<p>We use the dataset of experimental structures curated from the PDB by Gainza et al.
+<p><strong>Dataset description</strong>: We use the dataset of experimental structures curated from the PDB by Gainza et al.
 and retain the original splits, though we modify the labelling scheme to be based on inter-atomic
-proximity (3.5 Å), which can be user-defined, rather than solvent exclusion.</p>
-<p>The dataset is composed by selecting PPI pairs from the PRISM list of nonredundant proteins,
-the ZDock benchmark, PDBBind and SabDab. Splits are performed using CD-HIT and structural splits
+proximity (3.5 Å), which can be user-defined in the task configuration, rather than solvent exclusion.
+The dataset is composed by selecting PPI pairs from the PRISM list of nonredundant proteins,
+the ZDock benchmark, PDBBind and SabDab.</p>
+<p><strong>Splitting criteria</strong>: Splits are performed using CD-HIT and structural splits
 are performed using TM-algin.</p>
+<p><strong>Impact</strong>: Accurate prediction of protein binding sites is important for understanding protein function and</p>
 <div class="literal-block-wrapper docutils container" id="id39">
 <div class="code-block-caption"><span class="caption-text">configs/dataset/masif_site.yaml</span><a class="headerlink" href="#id39" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
@@ -957,14 +974,14 @@ are performed using TM-algin.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../quickstart_component/downstream.html">
+          <a class="prev-page" href="templates.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Downstream</div>
+                <div class="title">Config Templates</div>
                 
               </div>
             </a>

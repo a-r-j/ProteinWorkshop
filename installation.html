@@ -17,12 +17,12 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="installation.html" />
 <meta property="og:site_name" content="Protein Workshop" />
-<meta property="og:description" content="Install Mamba, Install dependencies and project, Configure paths in.env. See`.env.example`` < https://github.com/a-r-j/protein_workshop/blob/main/.env.example>`_ for an example., Download PDB data:." />
+<meta property="og:description" content="Install dependencies and project, Configure paths in.env. See`.env.example`` < https://github.com/a-r-j/protein_workshop/blob/main/.env.example>`_ for an example., Download PDB data:." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_installation_3c44ea39.png" />
-<meta property="og:image:alt" content="Install Mamba, Install dependencies and project, Configure paths in.env. See`.env.example`` < https://github.com/a-r-j/protein_workshop/blob/main/.env.exampl..." />
-<meta name="description" content="Install Mamba, Install dependencies and project, Configure paths in.env. See`.env.example`` < https://github.com/a-r-j/protein_workshop/blob/main/.env.example>`_ for an example., Download PDB data:." />
+<meta property="og:image" content="/_images/social_previews/summary_installation_a501b89c.png" />
+<meta property="og:image:alt" content="Install dependencies and project, Configure paths in.env. See`.env.example`` < https://github.com/a-r-j/protein_workshop/blob/main/.env.example>`_ for an exa..." />
+<meta name="description" content="Install dependencies and project, Configure paths in.env. See`.env.example`` < https://github.com/a-r-j/protein_workshop/blob/main/.env.example>`_ for an example., Download PDB data:." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorials" href="tutorials.html" /><link rel="prev" title="Welcome to Protein Workshop’s documentation!" href="index.html" />
 
@@ -185,9 +185,7 @@
 <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html#datasets">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html#models">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Architectural Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/downstream.html">Downstream</a></li>
@@ -196,11 +194,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="configs/templates.html">Config Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/callbacks.html">Callbacks</a></li>
@@ -267,15 +265,19 @@
 <p>This package is not yet available on PyPI. You can install it from GitHub
 using pip. We are working on better distribution. Until then, please use the following instructions:</p>
 </div>
-<ol class="arabic">
-<li><p>Install Mamba</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget<span class="w"> </span><span class="s2">&quot;https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-</span><span class="k">$(</span>uname<span class="k">)</span><span class="s2">-</span><span class="k">$(</span>uname<span class="w"> </span>-m<span class="k">)</span><span class="s2">.sh&quot;</span>
-bash<span class="w"> </span>Mambaforge-<span class="k">$(</span>uname<span class="k">)</span>-<span class="k">$(</span>uname<span class="w"> </span>-m<span class="k">)</span>.sh<span class="w">  </span><span class="c1"># accept all terms and install to the default location</span>
-rm<span class="w"> </span>Mambaforge-<span class="k">$(</span>uname<span class="k">)</span>-<span class="k">$(</span>uname<span class="w"> </span>-m<span class="k">)</span>.sh<span class="w">  </span><span class="c1"># (optionally) remove installer after using it</span>
-<span class="nb">source</span><span class="w"> </span>~/.bashrc<span class="w">  </span><span class="c1"># alternatively, one can restart their shell session to achieve the same result as this line</span>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="configs/framework_components/env.html"><span class="doc">Environment</span></a></p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```bash
+wget &quot;https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh&quot;
+bash Mambaforge-$(uname)-$(uname -m).sh  # accept all terms and install to the default location
+rm Mambaforge-$(uname)-$(uname -m).sh  # (optionally) remove installer after using it
+source ~/.bashrc  # alternatively, one can restart their shell session to achieve the same result as this line
+```
 </pre></div>
 </div>
-</li>
+<ol class="arabic">
 <li><p>Install dependencies and project</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mamba<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment.yaml
 conda<span class="w"> </span>activate<span class="w"> </span>protein_workshop

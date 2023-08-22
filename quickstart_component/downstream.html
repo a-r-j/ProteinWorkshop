@@ -24,7 +24,7 @@
 <meta property="og:image:alt" content="To get up and running quickly, the following widgets can be used to configure commands to run various functions of the benchmark." />
 <meta name="description" content="To get up and running quickly, the following widgets can be used to configure commands to run various functions of the benchmark." />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Dataset" href="../configs/dataset.html" /><link rel="prev" title="Pre-Training" href="pretrain.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Config Templates" href="../configs/templates.html" /><link rel="prev" title="Pre-Training" href="pretrain.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
         <title>Downstream - Protein Workshop 0.0.1</title>
@@ -185,9 +185,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html#datasets">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html#models">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Architectural Overview</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../quickstart.html">Quickstart</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Downstream</a></li>
@@ -196,11 +194,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../configs/templates.html">Config Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configs/dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configs/model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configs/features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../configs/features.html#featurisation-schemes">Featurisation Schemes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configs/transforms.html">Transforms</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/callbacks.html">Callbacks</a></li>
@@ -329,7 +327,7 @@
     <div class="title-column">
       <div>Training Regime</div>
       <div>Model</div>
-      <div>(Pre-)Training Task</div>
+      <div>Task</div>
       <div>Dataset</div>
       <div>Features</div>
       <div>Aux Task</div>
@@ -349,7 +347,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script>
     var schemeList = [
-      ["pretrain", "Pretrained"],
+      ["finetune", "Pretrained"],
       ["train", "Untrained"]
     ]
 
@@ -365,20 +363,23 @@
 
     var taskList = [
       ['inverse_folding', 'Inverse Folding'],
-      ['structure_denoising', 'Structure Denoising'],
-      ['torsional_denoising', 'Torsional Denoising'],
-      ['sequence_denoising', "Seq. Denoising"],
+      ['binding_site_identification', 'Pocket pred.'],
+      ['ppi_site_prediction', "PPI Site pred."],
+      ['multiclass_graph_classification', 'MC Graph Classif.'],
+      ['multiplt_graph_classification', 'ML Graph Classif.'],
+      ['multiclass_node_classification', "Node Classif."],
       ['plddt_prediction', 'pLDDT Pred.']
     ];
 
     var datasetList = [
-      ['astral', 'ASTRAL'],
-      ['cath', 'CATH'],
-      ['afdb_rep_v4', 'AFDB (clustered)'],
-      ['esm_atlas', "ESM Atlas"],
-      ['pdb', "PDB"],
-      ['afdb_uniprot_v4', "UniProt"],
-      ['afdb_swissprot_v4', "SwissProt"]
+      ['masif_site', 'PPI'],
+      ['[fold-fold, fold-family, fold-superfamily]', 'Fold3D'],
+      ['[go-bp, go-cc, go-mf]', "GO"],
+      ['ptm', "PTM Pred"],
+      ['[ccpdb-ligands, ccpdb_metal, ccpdb_nucleic, ccpdb_nucleotides]', "CCPDB"],
+      ['[atom3d_res, atom3d_psr, atom3d_msp]', "Atom3D"],
+      ['deep_sea_proteins', "Deep Sea"],
+      ['antibody_developability', 'Ab Dev.']
     ];
 
     var featureList = [
@@ -413,7 +414,27 @@
       var features = $("#command").attr("features");
       var auxtask = $("#command").attr("auxtask");
 
-      $("#command pre").text(`python src/${$("#command").attr("scheme")}.py encoder=${$("#command").attr("model")} task=${$("#command").attr("task")} dataset=${$("#command").attr("datasets")} features=${$("#command").attr("features")} +aux_task=${$("#command").attr("auxtask")}`);
+
+      // Pre-text
+      if (datasets?.includes("[")) {
+        $("#command pre").text(`# This dataset contains multiple splits. Choose one from the list provided in the command. \n`);
+      } else {
+        $("#command pre").text(``);
+      }
+
+      if (scheme == "finetune") {
+        $("#command pre").append(`# Make sure to specify a checkpoint with ckpt_path: \n`);
+      }
+
+      if (task == "ppi_site_prediction" & datasets != "masif_site") {
+        $("#command pre").text(`# The ppi_site_prediction task is currently only supported on the masif_site dataset. \n`);
+      } else {
+      $("#command pre").append(`python src/${$("#command").attr("scheme")}.py encoder=${$("#command").attr("model")} task=${$("#command").attr("task")} dataset=${$("#command").attr("datasets")} features=${$("#command").attr("features")} +aux_task=${$("#command").attr("auxtask")}`);
+      }
+
+     if (scheme == "finetune") {
+        $("#command pre").append(` ckpt_path=PATH_TO_CHECKPOINT`);
+      }
     }
 
     $(".quick-start-ds .content-column .row div").click(function() {
@@ -437,12 +458,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../configs/dataset.html">
+          <a class="next-page" href="../configs/templates.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Dataset</div>
+                <div class="title">Config Templates</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
