@@ -68,11 +68,11 @@ Configuration files to run the experiments described in the manuscript are provi
 We provide a three-part tutorial series of Jupyter notebooks to provide users with examples
 of how to use and extend the `Protein Workshop`, as outlined below.
 
-1. [Training a new model](https://github.com/a-r-j/ProteinWorkshop/blob/notebooks/training_new_model_tutorial.ipynb)
-2. [Customizing an existing dataset](https://github.com/a-r-j/ProteinWorkshop/blob/notebooks/customizing_existing_dataset_tutorial.ipynb)
-3. [Adding a new dataset](https://github.com/a-r-j/ProteinWorkshop/blob/notebooks/adding_new_dataset_tutorial.ipynb)
-4. [Adding a new model](https://github.com/a-r-j/ProteinWorkshop/blob/notebooks/adding_new_model_tutorial.ipynb)
-5. [Adding a new task](https://github.com/a-r-j/ProteinWorkshop/blob/notebooks/adding_new_task_tutorial.ipynb)
+1. [Training a new model](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/training_new_model_tutorial.ipynb)
+2. [Customizing an existing dataset](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/customizing_existing_dataset_tutorial.ipynb)
+3. [Adding a new dataset](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/adding_new_dataset_tutorial.ipynb)
+4. [Adding a new model](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/adding_new_model_tutorial.ipynb)
+5. [Adding a new task](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/adding_new_task_tutorial.ipynb)
 
 ### Quickstart
 
