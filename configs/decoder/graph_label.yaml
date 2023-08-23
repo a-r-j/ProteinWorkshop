@@ -1,0 +1,8 @@
+graph_label:
+  _target_: "src.models.decoders.mlp_decoder.MLPDecoder"
+  hidden_dim: [512, 512, 512]
+  dropout: 0.0 # dropout rate
+  activations: ["relu", "relu", "relu", "none"]
+  skip: "concat" # Or sum/False
+  out_dim: ${dataset.num_classes}
+  input: "graph_embedding"

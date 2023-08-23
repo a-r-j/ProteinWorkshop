@@ -1,0 +1,154 @@
+<style>
+    .quick-start-pt {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      margin-bottom: 20px;
+    }
+
+    .title-column {
+      flex-grow: 0;
+    }
+
+    .content-column {
+      flex-grow: 1;
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+
+    .title-column div, .row div {
+      white-space: nowrap;
+    }
+
+    .title-column div {
+      padding: 14px 10px 12px 0;
+      font-weight: 700;
+    }
+
+    .row div {
+      flex-grow: 1;
+      text-align: center;
+      margin: 2px;
+      padding: 12px 0 10px 0;
+      background: #e3e3e3;
+      cursor: pointer;
+    }
+
+    .row div.selected {
+      background: rgba(59,155,239,0.7);
+      color: #ffffff;
+    }
+
+    #command {
+      margin: 2px;
+      padding: 12px 10px 10px 10px;
+    }
+
+    #command pre {
+      padding: 0;
+      margin: 0;
+      white-space: pre-wrap;
+    }
+
+  </style>
+
+  <div class="quick-start-pt">
+    <div class="title-column">
+      <div>Model</div>
+      <div>Pretraining Task</div>
+      <div>Dataset</div>
+      <div>Features</div>
+      <div>Aux Task</div>
+      <div>Run:</div>
+    </div>
+    <div class="content-column">
+      <div class="row" id="model"></div>
+      <div class="row" id="task"></div>
+      <div class="row" id="datasets"></div>
+      <div class="row" id="features"></div>
+      <div class="row" id="auxtask"></div>
+      <div class="row" id="command"><pre></pre></div>
+    </div>
+  </div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script>
+    var modelList = [
+      ['schnet', "SchNet"],
+      ['dimenetpp', 'DimeNet'],
+      ['egnn', 'EGNN'],
+      ['gvp', "GVP"],
+      ['gcpnet', 'GCPNet'],
+      ['tfn', 'TFN'],
+      ['mace', 'MACE']
+    ];
+
+    var taskList = [
+      ['inverse_folding', 'Inverse Folding'],
+      ['structure_denoising', 'Structure Denoising'],
+      ['torsional_denoising', 'Torsional Denoising'],
+      ['sequence_denoising', "Seq. Denoising"],
+      ['plddt_prediction', 'pLDDT Pred.']
+    ];
+
+    var datasetList = [
+      ['astral', 'ASTRAL'],
+      ['cath', 'CATH'],
+      ['afdb_rep_v4', 'AFDB (clustered)'],
+      ['esm_atlas', "ESM Atlas"],
+      ['pdb', "PDB"],
+      ['afdb_uniprot_v4', "UniProt"],
+      ['afdb_swissprot_v4', "SwissProt"]
+    ];
+
+    var featureList = [
+      ["ca_base", "CA only"],
+      ["ca_seq", "Ca + Seq."],
+      ["ca_angles", "Ca + Virt. Angles"],
+      ["ca_bb", "Backbone"],
+      ["ca_sc", "Backbone + Sidechain Torsion"],
+    ];
+
+    var auxTaskList = [
+      ["none", "None"],
+      ['inverse_folding', 'Inverse Folding'],
+      ['structure_denoising', 'Structure Denoising'],
+      ['torsional_denoising', 'Torsional Denoising'],
+      ['sequence_denoising', "Seq. Denoising"],
+      ['plddt_prediction', 'pLDDT Prediction']
+    ];
+
+    modelList.forEach(x => $("#model").append(`<div id="${x[0]}">${x[1]}</div>`));
+    taskList.forEach(x => $("#task").append(`<div id="${x[0]}">${x[1]}</div>`));
+    datasetList.forEach(x => $("#datasets").append(`<div id="${x[0]}">${x[1]}</div>`));
+    featureList.forEach(x => $("#features").append(`<div id="${x[0]}">${x[1]}</div>`));
+    auxTaskList.forEach(x => $("#auxtask").append(`<div id="${x[0]}">${x[1]}</div>`));
+
+    function updateCommand() {
+      var model = $("#command").attr("model");
+      var task = $("#command").attr("task");
+      var datasets = $("#command").attr("datasets");
+      var features = $("#command").attr("features");
+      var auxtask = $("#command").attr("auxtask");
+
+      $("#command pre").text(`python src/train.py encoder=${$("#command").attr("model")} task=${$("#command").attr("task")} dataset=${$("#command").attr("datasets")} features=${$("#command").attr("features")} +aux_task=${$("#command").attr("auxtask")}`);
+    }
+
+    $(".quick-start-pt .content-column .row div").click(function() {
+      $(this).parent().children().removeClass("selected");
+      $(this).addClass("selected");
+      $("#command").attr($(this).parent().attr("id"), $(this).attr("id"));
+      updateCommand();
+    });
+
+    $("#model").children().get(0).click();
+    $("#task").children().get(0).click();
+    $("#datasets").children().get(6).click();
+    $("#features").children().get(2).click();
+    $("#auxtask").children().get(0).click();
+
+  </script>

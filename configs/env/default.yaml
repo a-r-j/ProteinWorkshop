@@ -1,0 +1,33 @@
+# @package _global_
+env:
+  # You can set these in your `.env` file at the top-level dir of the project to avoid
+  # these from being logged explicitly, or add them here directly (in which case they will
+  # show up in the logged config.)
+  paths:
+    root_dir: ${oc.env:ROOT_DIR}
+    data: ${oc.env:DATA_PATH}
+    output_dir: ${hydra:runtime.output_dir}
+    # path to working directory
+    work_dir: ${hydra:runtime.cwd}
+    # path to logging directory
+    log_dir: ${env.paths.root_dir}/logs/
+    scratch: ${oc.env:SCRATCH_PATH}
+    runs: ${oc.env:RUNS_PATH}
+    run_dir: ${env.paths.runs}/${name}/${env.init_time}
+
+  wandb:
+    entity: ${oc.env:WANDB_ENTITY}
+    project: ${oc.env:WANDB_PROJECT}
+    resolve: False
+
+  python:
+    version: ${python_version:micro}
+
+  init_time: ${now:%y-%m-%d_%H:%M:%S}
+
+# Hydra config overrides:
+hydra:
+  run:
+    dir: ${env.paths.run_dir}
+  sweep:
+    dir: ${env.paths.run_dir}

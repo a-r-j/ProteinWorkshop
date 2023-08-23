@@ -1,0 +1,4 @@
+torsional_denoising:
+  _target_: src.tasks.torsional_denoising.TorsionalNoiseTransform
+  corruption_rate: 0.1 # How much noise to apply
+  corruption_strategy: "gaussian" # Whether to use a 'gaussian' or 'uniform' distribution

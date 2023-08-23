@@ -1,0 +1,17 @@
+datamodule:
+  _target_: graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule
+  data_dir: ${env.paths.data}/afdb_rep_dark_v4/
+  database: "afdb_rep_dark_v4"
+  batch_size: 32
+  num_workers: 4
+
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+
+  pin_memory: True
+  use_graphein: True
+  transform: ${transforms}
+
+dataset_name: "afdb_rep_dark_v4"
+num_classes: None # number of classes

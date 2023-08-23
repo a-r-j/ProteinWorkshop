@@ -1,0 +1,3 @@
+perplexity:
+  _target_: torchmetrics.Perplexity
+  ignore_index: -100

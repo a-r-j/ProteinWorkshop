@@ -1,0 +1,10 @@
+datamodule:
+  _target_: src.datasets.atom3d_datamodule.ATOM3DDataModule
+  task: PSR
+  data_dir: ${env.paths.data}/ATOM3D
+  max_units: 0
+  unit: edge
+  batch_size: 1
+  num_workers: 4
+  pin_memory: false
+num_classes: 1

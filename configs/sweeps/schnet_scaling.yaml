@@ -1,0 +1,75 @@
+program: src/finetune.py
+name: schnet_scaling
+method: grid
+metric: # Does not matter, as we are using sweep to run the experiment.
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  task:
+    values: [multiclass_graph_classification]
+
+  dataset:
+    value: fold_fold
+
+  encoder:
+    value: schnet
+
+  optimiser.optimizer.lr:
+    value: 0.0001
+
+  features:
+    value: ca_angles
+
+  scheduler:
+    values: [plateau]
+
+  extras.enforce_tags:
+    values: [False]
+
+  #+aux_task:
+  #  values: [none, nn_sequence, nn_structure_torsion]
+
+  trainer.max_epochs:
+    value: 150
+
+  # We dont want to freeze the encoder
+  finetune.encoder.freeze:
+    value: False
+
+  # Just used for checkpoint selection
+  +_pre_train_task:
+    values: [
+        #inverse_folding, # Inverse folding doesn't use residue_type features!
+        sequence_denoising,
+        plddt_prediction,
+        torsional_denoising,
+        structure_denoising,
+      ]
+
+  # Uses checkpoint_root/pretrain_task/encoder/features/last.ckpt
+  ckpt_path:
+    values:
+      [
+        "/home/atj39/github/protein-workshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/epoch_0.ckpt",
+        "/home/atj39/github/protein-workshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/epoch_1.ckpt",
+        "/home/atj39/github/protein-workshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/epoch_2.ckpt",
+        "/home/atj39/github/protein-workshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/epoch_3.ckpt",
+        "/home/atj39/github/protein-workshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/epoch_4.ckpt",
+        "/home/atj39/github/protein-workshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/epoch_5.ckpt",
+        "/home/atj39/github/protein-workshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/epoch_6.ckpt",
+        "/home/atj39/github/protein-workshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/epoch_7.ckpt",
+        "/home/atj39/github/protein-workshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/epoch_8.ckpt",
+        "/home/atj39/github/protein-workshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/epoch_9.ckpt",
+      ]
+
+  +test:
+    value: True
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}

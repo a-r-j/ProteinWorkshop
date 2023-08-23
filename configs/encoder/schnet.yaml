@@ -1,0 +1,13 @@
+_target_: src.models.graph_encoders.schnet.SchNetModel
+hidden_channels: 512
+out_dim: 32
+num_layers: 6
+num_filters: 128
+num_gaussians: 50
+cutoff: 10.0
+max_num_neighbors: 32
+readout: "add"
+dipole: False
+mean: null
+std: null
+atomref: null

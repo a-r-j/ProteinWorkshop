@@ -1,0 +1,2 @@
+auprc:
+  _target_: src.metrics.auprc.AUPRC

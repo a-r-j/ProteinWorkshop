@@ -1,0 +1,31 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - accuracy
+      - f1_score
+      - f1_max
+  - override /decoder:
+      - node_label
+
+callbacks:
+  early_stopping:
+    monitor: val/node_label/accuracy
+    mode: "max"
+  model_checkpoint:
+    monitor: val/node_label/accuracy
+    mode: "max"
+
+task:
+  task: "classification"
+  classification_type: "multiclass"
+  metric_average: "micro"
+
+  losses:
+    node_label: cross_entropy
+  label_smoothing: 0.0
+
+  output:
+    - "node_label"
+  supervise_on:
+    - "node_label"

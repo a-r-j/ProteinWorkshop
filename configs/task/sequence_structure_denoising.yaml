@@ -1,0 +1,41 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - rmse
+      - accuracy
+  - override /decoder:
+      - pos_equiv
+      - residue_type
+  - override /transforms:
+      - remove_missing_ca
+      - structure_denoising
+      - sequence_denoising
+
+dataset:
+  num_classes: 23
+
+callbacks:
+  early_stopping:
+    monitor: val/loss/total
+    mode: "min"
+  model_checkpoint:
+    monitor: val/loss/total
+    mode: "min"
+
+task:
+  task: "sequence_structure_denoising"
+  classification_type: "multiclass"
+  metric_average: "micro"
+
+  losses:
+    pos: mse_loss
+    residue_type: cross_entropy
+
+  label_smoothing: 0.0
+  output:
+    - pos
+    - residue_type
+  supervise_on:
+    - pos
+    - residue_type

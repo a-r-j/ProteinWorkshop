@@ -1,0 +1,37 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - accuracy
+      - f1_score
+      - perplexity
+  - override /decoder:
+      - residue_type
+  - override /transforms:
+      - remove_missing_ca
+      - sequence_denoising
+
+dataset:
+  num_classes: 23
+
+callbacks:
+  early_stopping:
+    monitor: val/residue_type/accuracy
+    mode: "max"
+  model_checkpoint:
+    monitor: val/residue_type/accuracy
+    mode: "max"
+
+task:
+  task: "sequence_denoising"
+  classification_type: "multiclass"
+  metric_average: "micro"
+
+  losses:
+    residue_type: cross_entropy
+  label_smoothing: 0.0
+
+  output:
+    - residue_type
+  supervise_on:
+    - residue_type

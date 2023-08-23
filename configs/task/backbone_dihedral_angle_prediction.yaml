@@ -1,0 +1,31 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - rmse
+  - override /decoder:
+      - dihedrals
+  - override /transforms:
+      - remove_missing_ca
+      - backbone_dihedral_angles
+
+dataset:
+  num_classes: 6
+
+callbacks:
+  early_stopping:
+    monitor: val/dihedrals/rmse
+    mode: "min"
+  model_checkpoint:
+    monitor: val/dihedrals/rmse
+    mode: "min"
+
+task:
+  task: "backbone_dihedral_angle_prediction"
+  losses:
+    dihedrals: mse_loss
+  label_smoothing: 0.0
+  output:
+    - dihedrals
+  supervise_on:
+    - dihedrals

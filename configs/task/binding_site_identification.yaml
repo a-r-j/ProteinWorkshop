@@ -1,0 +1,45 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - accuracy
+      - f1_score
+      - auprc
+      - rocauc
+  - override /decoder:
+      - node_label
+  - override /transforms:
+      - remove_missing_ca
+      - binding_site_prediction
+
+transforms:
+  binding_site_prediction:
+    hetatms: [HOH, SO4, PEG] # Types of hetatms to be considered as binding sites
+    threshold: 3.5 # Threshold for binding site prediction
+    ca_only: False # Whether to use only CA atoms for assigning labels
+    multilabel: True # Whether to use multilabel or binary labels
+
+dataset:
+  num_classes: 3 # This needs to match the number of hetatms above
+
+callbacks:
+  early_stopping:
+    monitor: val/node_label/accuracy
+    mode: "max"
+  model_checkpoint:
+    monitor: val/node_label/accuracy
+    mode: "max"
+
+task:
+  task: "binding_site_identification"
+  classification_type: "multilabel" # Check this aligns with binding site config above
+  metric_average: "macro"
+
+  losses:
+    node_label: cross_entropy # Check this aligns with binding site config above
+  label_smoothing: 0.0
+
+  output:
+    - "node_label"
+  supervise_on:
+    - "node_label"

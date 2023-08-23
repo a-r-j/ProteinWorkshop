@@ -1,0 +1,10 @@
+_target_: src.models.graph_encoders.gnn.GNNModel
+model_name: "GCN"
+layer_types: ["GCN", "GCN"]
+n_hid: [128, 128] # number of hidden units
+activations: ["relu", "relu"]
+dropout: 0.0
+readout: "sum"
+edge_types: 1 # These are overwritten in config validation
+edge_weight: False # These are overwritten in config validation
+edge_features: False # These are overwritten in config validation

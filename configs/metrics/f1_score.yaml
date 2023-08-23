@@ -1,0 +1,5 @@
+f1_score:
+  _target_: torchmetrics.F1Score
+  average: "macro"
+  num_classes: ${dataset.num_classes} # set the number of classes if necessary
+  task: ${task.classification_type}

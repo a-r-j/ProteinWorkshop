@@ -1,0 +1,31 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - rmse
+  - override /decoder:
+      - edge_distance
+
+dataset:
+  num_classes: 1
+
+callbacks:
+  early_stopping:
+    monitor: val/edge_distance/rmse
+    mode: "min"
+  model_checkpoint:
+    monitor: val/edge_distance/rmse
+    mode: "min"
+
+task:
+  task: "edge_distance_prediction"
+  transform:
+    _target_: src.tasks.edge_distance_prediction.EdgeDistancePredictionTransform
+    num_samples: 256
+  losses:
+    edge_distance: mse_loss
+  label_smoothing: 0.0
+  output:
+    - edge_distance
+  supervise_on:
+    - edge_distance

@@ -1,0 +1,4 @@
+sequence_denoising:
+  _target_: src.tasks.ppi_site_prediction.BindingSiteTransform
+  radius: 3.5 #Maximum distance between chains to be considered as interacting
+  ca_only: False #Whether to use only the alpha carbon atoms for determining interactions

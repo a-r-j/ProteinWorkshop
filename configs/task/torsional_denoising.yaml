@@ -1,0 +1,37 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - rmse
+  - override /decoder:
+      #- dihedrals
+      - torsional_noise
+  - override /transforms:
+      - remove_missing_ca
+      - torsional_denoising
+
+dataset:
+  num_classes: null
+
+callbacks:
+  early_stopping:
+    #monitor: val/loss/dihedrals
+    monitor: val/loss/torsional_noise
+    mode: "min"
+  model_checkpoint:
+    #monitor: val/loss/dihedrals
+    monitor: val/loss/torsional_noise
+    mode: "min"
+
+task:
+  task: "torsional_denoising"
+  losses:
+    #dihedrals: mse_loss
+    torsional_noise: mse_loss
+  label_smoothing: 0.0
+  output:
+    #- dihedrals # Or torsional_noise
+    - torsional_noise # or dihedrals
+  supervise_on:
+    # - dihedrals
+    - torsional_noise

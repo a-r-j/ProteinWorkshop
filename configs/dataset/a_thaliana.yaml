@@ -1,0 +1,16 @@
+datamodule:
+  _target_: graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule
+  data_dir: ${env.paths.data}/a_thaliana/ # path to data directory
+  database: "a_thaliana" # Name of the foldcomp database.
+  batch_size: 32 # Batch size for the dataloader
+  num_workers: 4 # Number of workers for the dataloader
+
+  train_split: 0.8 # Fraction of data to use for training
+  val_split: 0.1 # Fraction of data to use for validation
+  test_split: 0.1 # Fraction of data to use for testing
+
+  pin_memory: True # Whether to pin memory for the dataloader
+  use_graphein: True # Whether to use graphein to load the data
+  transform: ${transforms} # Transformations to apply to the data
+dataset_name: "a_thaliana" # Name of the dataset
+num_classes: None # number of classes

@@ -1,0 +1,20 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - /decoder:
+      - residue_type
+  - /metrics@residue_type:
+  - /task@losses@residue_type: null
+  - /transforms:
+      - remove_missing_ca
+      - sequence_denoising
+
+task:
+  losses:
+    residue_type: cross_entropy
+
+  output: ${oc.dict.keys:task.losses}
+  supervise_on: ${oc.dict.keys:task.losses}
+  aux_loss_coefficient:
+    residue_type: 0.1

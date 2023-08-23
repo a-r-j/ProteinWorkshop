@@ -1,0 +1,11 @@
+datamodule:
+  _target_: src.datasets.atom3d_datamodule.ATOM3DDataModule
+  task: PPI
+  data_dir: ${env.paths.data}/ATOM3D
+  ppi_split: DIPS-split
+  max_units: 0
+  unit: edge
+  batch_size: 8
+  num_workers: 6
+  pin_memory: false
+num_classes: 2

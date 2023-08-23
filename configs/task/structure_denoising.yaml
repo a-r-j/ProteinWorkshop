@@ -1,0 +1,31 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - rmse
+  - override /decoder:
+      - pos_equiv
+  - override /transforms:
+      - remove_missing_ca
+      - structure_denoising
+
+dataset:
+  num_classes: null
+
+callbacks:
+  early_stopping:
+    monitor: val/loss/pos
+    mode: "min"
+  model_checkpoint:
+    monitor: val/loss/pos
+    mode: "min"
+
+task:
+  task: "structure_denoising"
+  losses:
+    pos: mse_loss
+  label_smoothing: 0.0
+  output:
+    - pos
+  supervise_on:
+    - pos

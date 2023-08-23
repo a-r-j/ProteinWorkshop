@@ -1,0 +1,4 @@
+remove_missing_ca:
+  _target_: src.tasks.remove_missing_ca.RemoveMissingCa
+  fill_value: 1e-5 # Value used to indicate missing atoms
+  ca_idx: 1 # Index of CA atoms in the AtomTensor

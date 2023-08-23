@@ -1,0 +1,64 @@
+program: src/finetune.py
+method: grid
+name: pretrained_ppi_prediction
+metric: # Does not matter, as we are using sweep to run the experiment.
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  task:
+    values: [ppi_site_prediction]
+
+  dataset:
+    values: [masif_site]
+
+  encoder:
+    values: [schnet, dimenet_plus_plus, egnn, gcpnet, gear_net_edge]
+
+  optimiser.optimizer.lr:
+    values: [0.0001]
+
+  features:
+    values: [ca_angles, ca_bb]
+
+  scheduler:
+    values: [plateau]
+
+  extras.enforce_tags:
+    value: False
+
+  trainer.max_epochs:
+    value: 150
+
+  # We don't want to freeze the encoder
+  finetune.encoder.freeze:
+    value: False
+
+  # Just used for checkpoint selection
+  +_pre_train_task:
+    values: [
+        inverse_folding,
+        sequence_denoising,
+        #plddt_prediction,
+        torsional_denoising,
+        structure_denoising,
+      ]
+
+  # Uses checkpoint_root/pretrain_task/encoder/features/last.ckpt
+  ckpt_path:
+    values:
+      [
+        #"/home/arj39/rds/hpc-work/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/last.ckpt",
+        ???
+      ]
+
+  +test:
+    value: True
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}

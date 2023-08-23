@@ -1,0 +1,11 @@
+_target_: src.models.graph_encoders.gvp.GVPGNNModel
+s_dim: 128  # Dimension of the node state embeddings
+v_dim: 16  # Dimension of the node vector embeddings
+s_dim_edge: 32  # Dimension of the edge scalar embeddings
+v_dim_edge: 1  # Dimension of the edge vector embeddings
+r_max: 10.0  # Maximum distance for Bessel basis functions
+num_bessel: 8  # Number of Bessel basis functions
+num_polynomial_cutoff: 8 #  Number of polynomial cutoff basis functions
+num_layers: 5  # Number of layers in the model
+pool: "sum"  # Global pooling method to be used
+residual: True  # Whether to use residual connections

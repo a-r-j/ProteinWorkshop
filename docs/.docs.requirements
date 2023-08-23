@@ -1,0 +1,17 @@
+ipython
+furo
+m2r2
+nbsphinx
+nbsphinx-link
+nbstripout
+pandoc
+pydocstyle
+sphinx
+sphinx-copybutton
+sphinx-inline-tabs
+sphinx_mdinclude
+sphinxext-opengraph
+sphinxcontrib-gtagjs
+sphinxcontrib-jquery
+watermark
+sphinx_codeautolink

@@ -1,0 +1,39 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - accuracy
+      - f1_score
+      - f1_max
+      - auprc
+      - rocauc
+  - override /decoder:
+      - node_label
+  - override /transforms:
+      - remove_missing_ca
+      - ppi_site_prediction
+
+dataset:
+  num_classes: 2
+
+callbacks:
+  early_stopping:
+    monitor: val/node_label/accuracy
+    mode: "max"
+  model_checkpoint:
+    monitor: val/node_label/accuracy
+    mode: "max"
+
+task:
+  task: "classification"
+  classification_type: "binary"
+  metric_average: "macro"
+
+  losses:
+    node_label: bce
+  label_smoothing: 0.0
+
+  output:
+    - "node_label"
+  supervise_on:
+    - "node_label"

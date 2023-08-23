@@ -1,0 +1,30 @@
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  _partial_: true
+  mode: min
+  factor: 0.6
+  patience: 5
+  verbose: True
+
+# The unit of the scheduler's step size, could also be 'step'.
+# 'epoch' updates the scheduler on epoch end whereas 'step'
+# updates it after a optimizer update.
+interval: "epoch"
+
+# How many epochs/steps should pass between calls to
+# `scheduler.step()`. 1 corresponds to updating the learning
+# rate after every epoch/step.
+frequency: 1
+
+# Metric to to monitor for schedulers like `ReduceLROnPlateau`
+monitor: "val/loss/total" # TODO
+
+# If set to `True`, will enforce that the value specified 'monitor'
+# is available when the scheduler is updated, thus stopping
+# training if not found. If set to `False`, it will only produce a warning
+strict: True
+
+# If using the `LearningRateMonitor` callback to monitor the
+# learning rate progress, this keyword can be used to specify
+# a custom logged name
+name: learning_rate

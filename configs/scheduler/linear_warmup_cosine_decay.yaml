@@ -1,0 +1,33 @@
+scheduler:
+  _target_: flash.core.optimizers.LinearWarmupCosineAnnealingLR
+  _partial_: true
+  warmup_epochs: 1
+  warmup_start_lr: 0.0
+  max_epochs: ${trainer.max_epochs}
+
+# The unit of the scheduler's step size, could also be 'step'.
+# 'epoch' updates the scheduler on epoch end whereas 'step'
+# updates it after a optimizer update.
+
+# It is recommended to call step() for LinearWarmupCosineAnnealingLR
+# after each iteration as calling it after each epoch will keep the starting
+# lr at warmup_start_lr for the first epoch which is 0 in most cases.
+interval: "step"
+
+# How many epochs/steps should pass between calls to
+# `scheduler.step()`. 1 corresponds to updating the learning
+# rate after every epoch/step.
+frequency: 1
+
+# Metric to to monitor for schedulers like `ReduceLROnPlateau`
+monitor: "val/loss/total"
+
+# If set to `True`, will enforce that the value specified 'monitor'
+# is available when the scheduler is updated, thus stopping
+# training if not found. If set to `False`, it will only produce a warning
+strict: True
+
+# If using the `LearningRateMonitor` callback to monitor the
+# learning rate progress, this keyword can be used to specify
+# a custom logged name
+name: learning_rate

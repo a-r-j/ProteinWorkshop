@@ -1,0 +1,8 @@
+pos:
+  _target_: "src.models.decoders.mlp_decoder.MLPDecoder"
+  hidden_dim: [128, 128]
+  dropout: 0.0 # dropout rate
+  activations: ["relu", "relu", "none"]
+  skip: "concat" # Or sum/False
+  out_dim: 3
+  input: "node_embedding"

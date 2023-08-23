@@ -1,0 +1,11 @@
+datamodule:
+  _target_: src.datasets.atom3d_datamodule.ATOM3DDataModule
+  task: RES
+  data_dir: ${env.paths.data}/ATOM3D
+  res_split: cath-topology
+  max_units: 0
+  unit: edge
+  batch_size: 1
+  num_workers: 4
+  pin_memory: false
+num_classes: 20

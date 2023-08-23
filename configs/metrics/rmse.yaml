@@ -1,0 +1,3 @@
+rmse:
+  _target_: torchmetrics.MeanSquaredError
+  squared: False

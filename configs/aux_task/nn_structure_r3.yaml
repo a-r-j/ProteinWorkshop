@@ -1,0 +1,20 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - /decoder:
+      - pos_equiv
+  - /metrics: null
+  - /task@losses@pos: null
+  - /transforms:
+      - remove_missing_ca
+      - structure_denoising
+
+task:
+  losses:
+    pos: mse_loss
+
+  output: ${oc.dict.keys:task.losses}
+  supervise_on: ${oc.dict.keys:task.losses}
+aux_loss_coefficient:
+  pos: 0.1

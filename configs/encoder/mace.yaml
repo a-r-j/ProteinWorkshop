@@ -1,0 +1,13 @@
+_target_: src.models.graph_encoders.mace.MACEModel
+r_max: 10.0
+num_bessel: 8
+num_polynomial_cutoff: 5
+max_ell: 2
+correlation: 3
+num_layers: 4
+emb_dim: 64
+mlp_dim: 256
+aggr: "sum"
+pool: "sum"
+residual: True
+batch_norm: True

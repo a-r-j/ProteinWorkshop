@@ -1,0 +1,41 @@
+program: src/train.py
+method: grid
+metric: # Does not matter, as we are using sweep to run the experiment.
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  task:
+    values: [multiclass_graph_classification]
+
+  dataset:
+    values: [go-mf, go-bp, go-cc]
+
+  encoder:
+    values: [schnet, dimenet_plus_plus, gearnet_edge, egnn, gcpnet, tfn, mace]
+
+  optimiser.optimizer.lr:
+    values: [0.0001, 0.001]
+
+  features:
+    values: [ca_base, ca_seq, ca_angles, ca_bb, ca_sc]
+
+  scheduler:
+    values: [plateau]
+
+  extras.enforce_tags:
+    values: [False]
+
+  +aux_task:
+    values: [none, nn_sequence, nn_structure_torsion]
+
+  trainer.max_epochs:
+    value: 150
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}

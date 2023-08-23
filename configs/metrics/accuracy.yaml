@@ -1,0 +1,6 @@
+accuracy:
+  _target_: torchmetrics.Accuracy
+  task: ${task.classification_type}
+  average: ${task.metric_average}
+  num_classes: ${dataset.num_classes}
+  top_k: 1

@@ -1,0 +1,14 @@
+_target_: src.features.factory.ProteinFeaturiser
+representation: CA
+scalar_node_features:
+  - amino_acid_one_hot
+vector_node_features: ["orientation"]
+edge_types:
+  - knn_10
+  - eps_8
+scalar_edge_features:
+  - edge_distance
+  - edge_type
+  - node_features
+  - sequence_distance
+vector_edge_features: ["edge_vectors"]

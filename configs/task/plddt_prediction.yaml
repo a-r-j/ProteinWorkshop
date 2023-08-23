@@ -1,0 +1,28 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - rmse
+  - override /decoder:
+      - b_factor
+
+dataset:
+  num_classes: 1
+
+callbacks:
+  early_stopping:
+    monitor: val/loss/b_factor
+    mode: "min"
+  model_checkpoint:
+    monitor: val/loss/b_factor
+    mode: "min"
+
+task:
+  task: "plddt_prediction"
+  losses:
+    b_factor: mse_loss
+  label_smoothing: 0.0
+  output:
+    - b_factor
+  supervise_on:
+    - b_factor

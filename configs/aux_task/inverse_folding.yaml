@@ -1,0 +1,18 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - /decoder:
+      - residue_type
+  - /metrics@pos: null
+  - /task@losses@pos: null
+  - /transforms:
+      - remove_missing_ca
+      - inverse_folding
+
+task:
+  losses:
+    residue_type: cross_entropy
+
+  output: ${oc.dict.keys:task.losses}
+  supervise_on: ${oc.dict.keys:task.losses}
