@@ -5,7 +5,7 @@
 [![Docs](https://assets.readthedocs.org/static/projects/badges/passing-flat.svg)](https://www.proteins.sh)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
-![Overview of the Protein Workshop](https://github.com/a-r-j/protein_workshop/blob/docstrings/img/overview.png)
+![Overview of the Protein Workshop](https://github.com/a-r-j/ProteinWorkshop/blob/docstrings/img/overview.png)
 
 [Documentation](https://www.proteins.sh)
 
@@ -55,7 +55,7 @@ Configuration files to run the experiments described in the manuscript are provi
     pip install -e .
     ```
 
-3. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/protein_workshop/blob/main/.env.example) for an example.
+3. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example) for an example.
 
 4. Download PDB data:
 
@@ -68,11 +68,11 @@ Configuration files to run the experiments described in the manuscript are provi
 We provide a three-part tutorial series of Jupyter notebooks to provide users with examples
 of how to use and extend the `Protein Workshop`, as outlined below.
 
-1. [Training a new model](https://github.com/a-r-j/protein_workshop/blob/docstrings/notebooks/training_new_model_tutorial.ipynb)
-2. [Customizing an existing dataset](https://github.com/a-r-j/protein_workshop/blob/docstrings/notebooks/customizing_existing_dataset_tutorial.ipynb)
-3. [Adding a new dataset](https://github.com/a-r-j/protein_workshop/blob/docstrings/notebooks/adding_new_dataset_tutorial.ipynb)
-4. [Adding a new model](https://github.com/a-r-j/protein_workshop/blob/docstrings/notebooks/adding_new_model_tutorial.ipynb)
-5. [Adding a new task](https://github.com/a-r-j/protein_workshop/blob/docstrings/notebooks/adding_new_task_tutorial.ipynb)
+1. [Training a new model](https://github.com/a-r-j/ProteinWorkshop/blob/docstrings/notebooks/training_new_model_tutorial.ipynb)
+2. [Customizing an existing dataset](https://github.com/a-r-j/ProteinWorkshop/blob/docstrings/notebooks/customizing_existing_dataset_tutorial.ipynb)
+3. [Adding a new dataset](https://github.com/a-r-j/ProteinWorkshop/blob/docstrings/notebooks/adding_new_dataset_tutorial.ipynb)
+4. [Adding a new model](https://github.com/a-r-j/ProteinWorkshop/blob/docstrings/notebooks/adding_new_model_tutorial.ipynb)
+5. [Adding a new task](https://github.com/a-r-j/ProteinWorkshop/blob/docstrings/notebooks/adding_new_task_tutorial.ipynb)
 
 ### Quickstart
 
@@ -246,7 +246,7 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 
 Generic supervised tasks can be applied broadly across datasets. The labels are directly extracted from the PDB structures.
 
-These are likely to be most frequently used with the [`pdb`](https://github.com/a-r-j/protein_workshop/blob/main/configs/dataset/pdb.yaml) dataset class which wraps the [PDB Dataset curator](https://colab.research.google.com/github/a-r-j/graphein/blob/master/notebooks/creating_datasets_from_the_pdb.ipynb) from [Graphein](https://github.com/a-r-j/graphein).
+These are likely to be most frequently used with the [`pdb`](https://github.com/a-r-j/ProteinWorkshop/blob/main/configs/dataset/pdb.yaml) dataset class which wraps the [PDB Dataset curator](https://colab.research.google.com/github/a-r-j/graphein/blob/master/notebooks/creating_datasets_from_the_pdb.ipynb) from [Graphein](https://github.com/a-r-j/graphein).
 
 | Name      | Description   | Requires |
 | ----------- | ----------- | ----------- |
