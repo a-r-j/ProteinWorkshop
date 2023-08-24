@@ -2,8 +2,8 @@ Environment
 ------------
 
 .. mdinclude:: ../../../../README.md
-    :start-line: 46
-    :end-line: 48
+    :start-line: 57
+    :end-line: 59
 
 .. literalinclude:: ../../../../.env.example
     :language: bash

@@ -9,7 +9,7 @@ Welcome to Protein Workshop's documentation!
 
 .. mdinclude:: ../../README.md
     :start-line: 1
-    :end-line: 7
+    :end-line: 16
 
 
 .. toctree::
