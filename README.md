@@ -9,7 +9,7 @@
 
 [Documentation](https://www.proteins.sh)
 
-This repository provides the code for the protein structure representation learning benchmark detailed in the paper *Evaluating Representation Learning on the Protein Universe*.
+This repository provides the code for the protein structure representation learning benchmark detailed in the paper *Evaluating Representation Learning on the Protein Structure Universe*.
 
 In the benchmark, we implement numerous [featurisation](https://www.proteins.sh/configs/features) schemes, [datasets](https://www.proteins.sh/configs/dataset) for [self-supervised pre-training](https://proteins.sh/quickstart_component/pretrain.html) and [downstream evaluation](https://proteins.sh/quickstart_component/downstream.html), [pre-training](https://proteins.sh/configs/task) tasks, and [auxiliary tasks](https://proteins.sh/configs/task.html#auxiliary-tasks).
 
@@ -65,7 +65,7 @@ Configuration files to run the experiments described in the manuscript are provi
 
 ## Tutorials
 
-We provide a three-part tutorial series of Jupyter notebooks to provide users with examples
+We provide a five-part tutorial series of Jupyter notebooks to provide users with examples
 of how to use and extend the `Protein Workshop`, as outlined below.
 
 1. [Training a new model](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/training_new_model_tutorial.ipynb)
@@ -145,10 +145,10 @@ python src/validate_config.py dataset=cath features=full_atom task=inverse_foldi
 
 | Name      | Source   | Protein Specific |
 | ----------- | ----------- | ----------- |
-| `GearNet`| [Zhang et al.](https://arxiv.org/pdf/2203.06125) | :heavy_check_mark: |
-| `ProNet`   | [Wang et al.](https://arxiv.org/abs/2207.12600) | :heavy_check_mark: |
-| `DimeNet++`   | [Gasteiger et al.](https://arxiv.org/abs/2011.14115) | :x: |
-| `SchNet`   | [Schütt et al.](https://arxiv.org/abs/1706.08566) | :x: |
+| `GearNet`| [Zhang et al.](https://arxiv.org/pdf/2203.06125) | ✓ |
+| `ProNet`   | [Wang et al.](https://arxiv.org/abs/2207.12600) | ✓ |
+| `DimeNet++`   | [Gasteiger et al.](https://arxiv.org/abs/2011.14115) | ✗ |
+| `SchNet`   | [Schütt et al.](https://arxiv.org/abs/1706.08566) | ✗ |
 
 ### Equivariant Graph Encoders
 
@@ -156,16 +156,16 @@ python src/validate_config.py dataset=cath features=full_atom task=inverse_foldi
 
 | Name      |  Source | Protein Specific |
 | ----------- |  ----------- | --------- |
-| `GCPNet`   | [Morehead et al.](https://arxiv.org/abs/2211.02504) | :heavy_check_mark:
-| `GVP-GNN` | [Jing et al.](https://arxiv.org/abs/2009.01411) | :heavy_check_mark:
-| `EGNN`  | [Satorras et al.](https://arxiv.org/abs/2102.09844) | :x:
+| `GCPNet`   | [Morehead et al.](https://arxiv.org/abs/2211.02504) | ✓
+| `GVP-GNN` | [Jing et al.](https://arxiv.org/abs/2009.01411) | ✓
+| `EGNN`  | [Satorras et al.](https://arxiv.org/abs/2102.09844) | ✗
 
 #### (Tensor-type)
 
 | Name      |  Source | Protein Specific |
 | ----------- |  ----------- | --------- |
-| `Tensor Field Network` | [Corso et al.](https://arxiv.org/abs/2210.01776) | :question:
-| `Multi-ACE` | [Batatia et al.](https://arxiv.org/abs/2206.07697) | :x:
+| `Tensor Field Network` | [Corso et al.](https://arxiv.org/abs/2210.01776) | ❓
+| `Multi-ACE` | [Batatia et al.](https://arxiv.org/abs/2206.07697) | ✗
 
 ## Datasets
 
