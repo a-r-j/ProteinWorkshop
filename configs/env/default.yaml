@@ -11,7 +11,6 @@ env:
     work_dir: ${hydra:runtime.cwd}
     # path to logging directory
     log_dir: ${env.paths.root_dir}/logs/
-    scratch: ${oc.env:SCRATCH_PATH}
     runs: ${oc.env:RUNS_PATH}
     run_dir: ${env.paths.runs}/${name}/${env.init_time}
 

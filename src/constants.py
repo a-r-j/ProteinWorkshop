@@ -22,9 +22,6 @@ dotenv.load_dotenv(PROJECT_PATH / ".env")
 DATA_PATH = os.environ.get("DATA_PATH")
 """Root path to the data directory. """
 
-SCRATCH_PATH = os.environ.get("SCRATCH_PATH")
-"""Path to the scratch directory."""
-
 # ---------------- HYDRA CONSTANTS ----------------
 HYDRA_CONFIG_PATH = PROJECT_PATH / "configs"
 
