@@ -82,7 +82,7 @@ class GearNet(nn.Module):
 
         if self.num_angle_bin:
             log.info("Using Edge Message Passing")
-            self.edge_input_dim = self.get_num_edge_features()
+            self.edge_input_dim = self._get_num_edge_features()
             self.edge_dims = [self.edge_input_dim] + self.dims[:-1]
             self.spatial_line_graph = gear_net.SpatialLineGraph(self.num_angle_bin)
             self.edge_layers = nn.ModuleList()
