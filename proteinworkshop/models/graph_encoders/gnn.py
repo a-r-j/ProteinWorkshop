@@ -1,48 +1,45 @@
-from typing import List, Union
+from typing import List, Literal, Set, Union
 
 import torch.nn as nn
 from beartype import beartype
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import jaxtyped
+from proteinworkshop.models.utils import get_activations, get_aggregation
+from proteinworkshop.types import ActivationType, EncoderOutput, GNNLayerType
 from torch_geometric.data import Batch
 from torch_geometric.nn import (GATConv, GATv2Conv, GCNConv, RGATConv,
                                 RGCNConv, Sequential, TransformerConv)
 from torch_geometric.nn.conv import MessagePassing
 
-from proteinworkshop.models.utils import get_activations, get_aggregation
-from proteinworkshop.types import ActivationType, EncoderOutput, GNNLayerType
-
 
 def get_gnn_layer(layer: GNNLayerType) -> MessagePassing:
     """Returns a GNN layer.
 
-    Args:
-        layer: Name of the layer.
-
-    Returns:
-        A GNN layer.
+    :param layer: Name of the layer.
+    :type layer: GNNLayerType
+    :return: A GNN layer.
+    :rtype: MessagePassing
     """
     if layer == "GCN":
-        return GCNConv # type: ignore
+        return GCNConv  # type: ignore
     elif layer == "GATv2":
-        return GATv2Conv # type: ignore
+        return GATv2Conv  # type: ignore
     elif layer == "GAT":
-        return GATConv # type: ignore
+        return GATConv  # type: ignore
     elif layer == "GRAPH_TRANSFORMER":
-        return TransformerConv # type: ignore
+        return TransformerConv  # type: ignore
     elif layer == "RGCN":
-        return RGCNConv # type: ignore
+        return RGCNConv  # type: ignore
     elif layer == "RGAT":
-        return RGATConv # type: ignore
+        return RGATConv  # type: ignore
     else:
         raise ValueError(f"Unknown layer: {layer}")
-
 
 
 class GNNModel(nn.Module):
     def __init__(
         self,
-        model_name: str,
+        model_name: GNNLayerType,
         layer_types: List[GNNLayerType],
         n_hid: List[int],
         activations: List[ActivationType],
@@ -52,6 +49,30 @@ class GNNModel(nn.Module):
         edge_weight: bool = False,
         edge_features: bool = False,
     ):
+        """Initializes a GNN encoder with the provided parameters.
+
+        :param model_name: Name of the GNN layer to use.
+        :type model_name: GNNLayerType
+        :param layer_types: List of GNN layer types.
+        :type layer_types: List[GNNLayerType]
+        :param n_hid: List of hidden dimensions. Must be the same length as
+            ``layer_types``.
+        :type n_hid: List[int]
+        :param activations: List of activation functions. Must be the same
+            length as ``layer_types``.
+        :type activations: List[ActivationType]
+        :param dropout: Amount of dropout to apply.
+        :type dropout: float
+        :param readout: Readout function to use.
+        :type readout: str
+        :param edge_types: Number of edge types, defaults to ``1``.
+        :type edge_types: int, optional
+        :param edge_weight: Whether to use edge weights, defaults to ``False``.
+        :type edge_weight: bool, optional
+        :param edge_features: Whether to use edge features, defaults to
+            ``False``.
+        :type edge_features: bool, optional
+        """
         super().__init__()
         self.model_name = model_name
         self.layer_types = layer_types
@@ -59,17 +80,14 @@ class GNNModel(nn.Module):
         self.activations = activations
         self.dropout = dropout
 
-        self.edge_types = edge_types # TODO in config validation
-        self.edge_weight = edge_weight # TODO in config validation
-        self.edge_features = edge_features # TODO in config validation
+        self.edge_types = edge_types  # TODO in config validation
+        self.edge_weight = edge_weight  # TODO in config validation
+        self.edge_features = edge_features  # TODO in config validation
 
         self.layers = self._build_gnn_encoder()
         self.readout = get_aggregation(readout)
 
-
-    def _build_gnn_encoder(
-        self
-        ) -> nn.Sequential:
+    def _build_gnn_encoder(self) -> nn.Sequential:
         """Builds a GNN encoder."""
         assert len(self.n_hid) == len(
             self.activations
@@ -115,17 +133,33 @@ class GNNModel(nn.Module):
         return Sequential(input_str, gnn_layers)
 
     @property
-    def required_batch_attributes(self) -> List[str]:
+    def required_batch_attributes(self) -> Set[str]:
+        """Required batch attributes for this encoder.
+
+        If edge_weight is ``True``, then the required batch attributes are:
+        * ``x``, ``edge_index``, ``edge_weight``, ``batch``
+
+        If edge_types is ``True``, then the required batch attributes are:
+        * ``x``, ``edge_index``, ``edge_attr``, ``batch``
+
+        Otherwise, the required batch attributes are:
+        * ``x``, ``edge_index``, ``batch``
+
+        :return: Set of required attributes
+        :rtype: Set[str]
+        """
+
         if self.edge_weight:
-            return ["x", "edge_index", "edge_weight", "batch"]
+            return {"x", "edge_index", "edge_weight", "batch"}
         elif self.edge_types:
-            return ["x", "edge_index", "edge_attr", "batch"]
+            return {"x", "edge_index", "edge_attr", "batch"}
         else:
-            return ["x", "edge_index", "batch"]
+            return {"x", "edge_index", "batch"}
 
     @jaxtyped
     @beartype
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
+        """Implements the forward pass of the GNN encoder."""
         if self.edge_weight:
             x, edge_index, edge_weight = batch.x, batch.edge_index, batch.edge_weight
             emb = self.layers(x, edge_index, edge_weight)
@@ -136,16 +170,17 @@ class GNNModel(nn.Module):
             x, edge_index = batch.x, batch.edge_index
             emb = self.layers(x, edge_index)
 
-        return {
-            "node_embedding": emb,
-            "graph_embedding": self.readout(emb, batch.batch),
-        }
+        return EncoderOutput(
+            {
+                "node_embedding": emb,
+                "graph_embedding": self.readout(emb, batch.batch),
+            }
+        )
 
 
 if __name__ == "__main__":
     import omegaconf
     from hydra.utils import instantiate
-
     from proteinworkshop import constants
 
     config_path = constants.PROJECT_PATH / "configs" / "encoder" / "gcn.yaml"
