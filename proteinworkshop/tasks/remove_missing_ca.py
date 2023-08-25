@@ -24,13 +24,6 @@ class RemoveMissingCa(T.BaseTransform):
         self.ca_idx = ca_idx
 
     def __call__(self, data):
-        """Remove residues with missing CA atoms from a protein structure.
-
-        :param data: Protein data object.
-        :type data: Protein
-        :return: Protein data object with missing residues removed.
-        :rtype: Protein
-        """
         # Check for missing CA atoms
         # If there are no missing CA atoms, return the data
         mask = data.coords[:, self.ca_idx, 0] != self.fill_value
