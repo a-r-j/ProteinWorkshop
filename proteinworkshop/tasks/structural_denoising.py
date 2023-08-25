@@ -9,13 +9,6 @@ from torch_geometric.transforms import BaseTransform
 
 
 class StructuralNoiseTransform(BaseTransform):
-    """Adds noise to the coordinates of a protein structure.
-
-    :param corruption_rate: Rate of corruption to apply to the coordinates.
-    :type corruption_rate: float
-    :param corruption_strategy: Strategy to use for corruption.
-    :type corruption_strategy: Literal["uniform", "gaussian"]
-    """
     def __init__(
         self,
         corruption_rate: float,
@@ -60,7 +53,7 @@ if __name__ == "__main__":
     from graphein.protein.tensor.data import get_random_protein
 
     p = get_random_protein()
-    task = StructuralNoiseTransform(corrution_rate=5, corruption_strategy="uniform")
+    task = StructuralNoiseTransform(corruption_rate=5, corruption_strategy="uniform")
 
     def rmsd(x, y):
         return torch.sqrt(torch.mean((x - y) ** 2))

@@ -5,44 +5,13 @@ import omegaconf
 import pandas as pd
 from graphein.ml.datasets import PDBManager
 from loguru import logger as log
-from src.datasets.base import ProteinDataModule, ProteinDataset
-from src.datasets.utils import download_pdb_mmtf
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+from proteinworkshop.datasets.utils import download_pdb_mmtf
 from torch_geometric.data import Dataset
 from torch_geometric.loader import DataLoader
 
 
 class PDBData:
-    """Data module for PDB dataset.
-    
-    :fraction: Fraction of dataset to use.
-    :type fraction: float
-    :min_length: Minimum length of protein sequence.
-    :type min_length: int
-    :max_length: Maximum length of protein sequence.
-    :type max_length: int
-    :molecule_type: Molecule type of protein.
-    :type molecule_type: str
-    :experiment_types: List of experiment types.
-    :type experiment_types: List[str]
-    :oligomeric_min: Minimum oligomeric state.
-    :type oligomeric_min: int
-    :oligomeric_max: Maximum oligomeric state.
-    :type oligomeric_max: int
-    :best_resolution: Best resolution to use.
-    :type best_resolution: float
-    :worst_resolution: Worst resolution to use.
-    :type worst_resolution: float
-    :has_ligands: List of ligands to include.
-    :type has_ligands: List[str]
-    :remove_ligands: List of ligands to remove.
-    :type remove_ligands: List[str]
-    :remove_non_standard_residues: Whether to remove non-standard residues.
-    :type remove_non_standard_residues: bool
-    :remove_pdb_unavailable: Whether to remove PDBs that are unavailable.
-    :type remove_pdb_unavailable: bool
-    :split_sizes: List of split sizes.
-    :type split_sizes: List[float]
-    """
     def __init__(
         self,
         fraction: float,
@@ -76,7 +45,6 @@ class PDBData:
         self.split_sizes = split_sizes
 
     def create_dataset(self):
-        """Create PDB dataset from PDBManager."""
         log.info(f"Initializing PDBManager in {self.path}...")
         pdb_manager = PDBManager(root_dir=self.path)
         num_chains = len(pdb_manager.df)
@@ -152,23 +120,6 @@ class PDBData:
 
 
 class PDBDataModule(ProteinDataModule):
-    """Data module for PDB dataset.
-    
-    :path: Path to dataset.
-    :type path: str
-    :pdb_dataset: PDB dataset.
-    :type pdb_dataset: PDBData
-    :transforms: List of transforms to apply to dataset.
-    :type transforms: List[Callable]
-    :in_memory: Whether to load dataset in memory.
-    :type in_memory: bool
-    :batch_size: Batch size.
-    :type batch_size: int
-    :num_workers: Number of workers.
-    :type num_workers: int
-    :pin_memory: Whether to pin memory.
-    :type pin_memory: bool
-    """
     def __init__(
         self,
         path: Optional[str] = None,
@@ -265,7 +216,7 @@ if __name__ == "__main__":
 
     import hydra
     import omegaconf
-    from src import constants
+    from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
         constants.PROJECT_PATH / "configs" / "dataset" / "pdb.yaml"

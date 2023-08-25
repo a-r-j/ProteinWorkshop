@@ -7,7 +7,7 @@ import pandas as pd
 import torch_geometric
 from graphein.protein.utils import read_fasta
 from loguru import logger as log
-from src.datasets.base import ProteinDataModule
+from proteinworkshop.datasets.base import ProteinDataModule
 from tqdm import tqdm
 
 
@@ -16,15 +16,6 @@ def str2bool(v: str) -> bool:
 
 
 class FLIPDatamodule(ProteinDataModule):
-    """Data module for FLIP dataset.
-    
-    :param root: Path to store data.
-    :type root: str
-    :param dataset_name: Name of dataset.
-    :type dataset_name: str
-    :param split: Split to use.
-    :type split: str
-    """
     def __init__(self, root: str, dataset_name: str, split: str) -> None:
         self.root = Path(root)
         os.makedirs(self.root / dataset_name, exist_ok=True)
@@ -35,7 +26,6 @@ class FLIPDatamodule(ProteinDataModule):
         self.data_fname = self.root / dataset_name / f"{split}.fasta"
 
     def download(self, overwrite: bool = False):
-        """Download FLIP dataset."""
         req = urllib.request.Request(
             self.DATA_URL,
             headers={"User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64)"},
@@ -54,7 +44,6 @@ class FLIPDatamodule(ProteinDataModule):
             )
 
     def parse_dataset(self, split: str) -> pd.DataFrame:
-        """Parse FLIP dataset into a dataframe."""
         log.info("Parsing dataset...")
         fasta_dict = read_fasta(self.data_fname)
         records = []

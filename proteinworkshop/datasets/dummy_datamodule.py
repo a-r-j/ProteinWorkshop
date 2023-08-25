@@ -1,24 +1,21 @@
-import os
-import pathlib
-from typing import Callable, Iterable, Optional, Union
-
 import omegaconf
-import pandas as pd
-import wget
+from typing import Optional, Union, Iterable, Callable
+import os
+
+from .base import ProteinDataset, ProteinDataModule
 from graphein.protein.tensor.dataloader import ProteinDataLoader
-from loguru import logger as log
-from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+import pathlib
 
 
-class Metal3DDataModule(ProteinDataModule):
+class DummyDataModule(ProteinDataModule):
     def __init__(
         self,
         path: str,
-        pdb_dir: Optional[Union[str, os.PathLike]] = None,
+        pdb_dir: Optional[str] = None,
         format: str = "mmtf",
         in_memory: bool = False,
         transforms: Optional[Iterable[Callable]] = None,
-        batch_size: int = 32,
+        batch_size: int = 8,
         num_workers: int = 0,
         pin_memory: bool = True,
         obsolete_strategy: str = "drop",  # Or replace
@@ -47,8 +44,6 @@ class Metal3DDataModule(ProteinDataModule):
 
         self.obsolete_strategy = obsolete_strategy
 
-        self.BASE_URL = "https://raw.githubusercontent.com/lcbc-epfl/metal-site-prediction/main/data/"
-
     def setup(self, stage: Optional[str] = None):
         self.download()
 
@@ -59,46 +54,18 @@ class Metal3DDataModule(ProteinDataModule):
         pass
 
     def download(self):
-        if not os.path.exists(self.root_dir / "train.txt"):
-            log.info(
-                f"Downloading training data from {self.BASE_URL} to {self.root_dir}"
-            )
-            wget.download(f"{self.BASE_URL}train.txt", str(self.root_dir / "train.txt"))
-        if not os.path.exists(self.root_dir / "val.txt"):
-            log.info(
-                f"Downloading training data from {self.BASE_URL} to {self.root_dir}"
-            )
-            wget.download(f"{self.BASE_URL}val.txt", str(self.root_dir / "val.txt"))
-        if not os.path.exists(self.root_dir / "test.txt"):
-            log.info(
-                f"Downloading training data from {self.BASE_URL} to {self.root_dir}"
-            )
-            wget.download(f"{self.BASE_URL}test.txt", str(self.root_dir / "test.txt"))
+        pass
 
-    def parse_dataset(self, split: str) -> pd.DataFrame:
-        df = pd.read_csv(self.root_dir / f"{split}.txt", header=None)
-        df.columns = ["pdb"]
-        df.pdb = df.pdb.str.lower()
-        log.info(f"Found {len(df)} structures in {split} split")
-
-        if self.obsolete_strategy == "drop":
-            log.info("Removing obsolete PDBS")
-            df = df.loc[~df["pdb"].isin(list(self.obsolete_pdbs.keys()))]
-            log.info(
-                f"Found {len(df)} structures in {split} split after removing obsolete PDBS"
-            )
-        else:
-            raise NotImplementedError
-
-        return df
+    def parse_dataset(self, split: str):
+        pass
 
     def _get_dataset(self, split: str) -> ProteinDataset:
-        df = self.parse_dataset(split)
+        pdb_codes = ["3eiy", "4hhb"] * 16
         return ProteinDataset(
             root=str(self.root_dir),
             pdb_dir=str(self.pdb_dir),
-            pdb_codes=list(df["pdb"]),
-            chains=["all"] * len(df),  # Get all chains
+            pdb_codes=pdb_codes,
+            chains=["all"] * len(pdb_codes),  # Get all chains
             transform=self.transform,
             format=self.format,
             in_memory=self.in_memory,

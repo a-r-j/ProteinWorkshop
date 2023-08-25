@@ -12,31 +12,10 @@ try:
 except ImportError:
     log.warning("Dependency TDC not installed. Run: pip install PyTDC")
 
-from src.datasets.base import ProteinDataModule, ProteinDataset
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
 class AntibodyDevelopabilityDataModule(ProteinDataModule):
-    """
-    Data module for antibody developability dataset.
-    :param path: Path to store data.
-    :type path: str
-    :param pdb_dir: Path to directory containing PDB files.
-    :type pdb_dir: str
-    :param batch_size: Batch size for dataloaders.
-    :type batch_size: int
-    :param num_workers: Number of workers for dataloaders.
-    :type num_workers: int
-    :param pin_memory: Whether to pin memory for dataloaders.
-    :type pin_memory: bool
-    :param in_memory: Whether to load the entire dataset into memory.
-    :type in_memory: bool
-    :param format: Format to load PDB files in.
-    :type format: str
-    :param obsolete_strategy: How to handle obsolete PDB structures.
-    :type obsolete_strategy: str
-    :param transforms: List of transforms to apply to dataset.
-    :type transforms: Optional[List[Callable]]
-    """
     def __init__(
         self,
         path: str,
@@ -81,13 +60,6 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
         pass
 
     def parse_dataset(self):
-        """
-<<<<<<< HEAD
-        Parses the dataset and splits into train/valid/test."""
-=======
-        Parses the dataset and splits into train/valid/test splits.
-        """
->>>>>>> 1f4bbf8 (Add some docstrings)
         data = Develop("SAbDab_Chen", path=self.root)
         data = data.get_split()
 
@@ -112,18 +84,6 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
                 )
 
     def _get_dataset(self, split: str) -> ProteinDataset:
-        """
-<<<<<<< HEAD
-        Returns a :class:`~graphein.protein.ProteinDataset` for a given split."""
-=======
-        Returns a :class:`~graphein.protein.ProteinDataset` for a given split.
-
-        :param split: Split to return dataset for.
-        :type split: str
-        :return: Dataset for given split.
-        :rtype: ProteinDataset
-        """
->>>>>>> 1f4bbf8 (Add some docstrings)
         if not hasattr(self, f"{split}_data"):
             self.parse_dataset()
         data = getattr(self, f"{split}_data")

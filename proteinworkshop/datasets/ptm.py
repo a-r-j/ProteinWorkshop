@@ -13,30 +13,13 @@ import torch
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from graphein.protein.utils import download_alphafold_structure
 from loguru import logger as log
-from src.datasets.base import ProteinDataModule, ProteinDataset
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 from torch_geometric.data import Dataset
 from tqdm import tqdm
 from tqdm.contrib.concurrent import process_map
 
 
 class PTMDataModule(ProteinDataModule):
-    """Data module for PTM dataset.
-    
-    :param path: Path to store data.
-    :type path: str
-    :param batch_size: Batch size for dataloaders.
-    :type batch_size: int
-    :param dataset_name: PTM dataset name.
-    :type dataset_name: str
-    :param in_memory: Whether to load the entire dataset into memory.
-    :type in_memory: bool
-    :param pin_memory: Whether to pin memory for dataloaders.
-    :type pin_memory: bool
-    :param num_workers: Number of workers for dataloaders.
-    :type num_workers: int
-    :param transforms: List of transforms to apply to dataset.
-    :type transforms: Optional[List[Callable]]
-    """
     def __init__(
         self,
         path: str,
@@ -115,7 +98,6 @@ class PTMDataModule(ProteinDataModule):
         pass
 
     def setup(self, stage: Optional[str] = None):
-        """ Downloads and prepares dataset."""
         self.download_dataset()
         for split in {"train", "val", "test"}:
             data = self.parse_dataset(split)
@@ -147,7 +129,6 @@ class PTMDataModule(ProteinDataModule):
         self.download_dataset()
 
     def download_structures(self, data: pd.DataFrame):
-        """Downloads PDB structures for a given dataset split."""
         uniprot_ids = list(data["uniprot_id"].unique())
         to_download = [
             id for id in uniprot_ids if not os.path.exists(self.pdb_dir / f"{id}.pdb")
@@ -177,7 +158,6 @@ class PTMDataModule(ProteinDataModule):
             raise NotImplementedError
 
     def parse_dataset(self, split: str) -> pd.DataFrame:
-        """Parses PTM dataset into a dataframe."""
         data = json.load(open(self.root / f"PTM_{split}.json", "r"))
         data = pd.DataFrame.from_records(data).T
         data["uniprot_id"] = data.index
@@ -193,7 +173,6 @@ class PTMDataModule(ProteinDataModule):
         return data
 
     def parse_labels(self, df: pd.DataFrame):
-        """Parses PTM labels into a dictionary of tensors."""
         labels = df["label"].values
         labels = [
             torch.zeros((length, len(self.SITE_TYPES)))
