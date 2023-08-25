@@ -5,7 +5,7 @@
 [![Docs](https://assets.readthedocs.org/static/projects/badges/passing-flat.svg)](https://www.proteins.sh)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
-![Overview of the Protein Workshop](https://github.com/a-r-j/ProteinWorkshop/blob/main/img/overview.png)
+![Overview of the Protein Workshop](https://github.com/a-r-j/ProteinWorkshop/blob/main/docs/source/_static/workshop_overview.png)
 
 [Documentation](https://www.proteins.sh)
 
