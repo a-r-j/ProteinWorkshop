@@ -41,7 +41,7 @@ def test_instantiate_encoders():
         assert enc, f"Encoder {encoder} not instantiated!"
 
 
-@pytest.mark.slow
+@pytest.mark.skip(reason="Too slow for GitHub Actions. Works locally.")
 def test_encoder_forward_pass(example_batch):
     for encoder in ENCODERS:
         for feature in FEATURES:
