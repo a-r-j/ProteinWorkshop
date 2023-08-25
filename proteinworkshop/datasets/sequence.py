@@ -20,41 +20,13 @@ except:
         "ESM not installed. If you are using a sequence dataset this will be required to fold structures. See: https://github.com/facebookresearch/esm#quickstart"
     )
 
-from src.features.sequence_features import amino_acid_one_hot
+from proteinworkshop.features.sequence_features import amino_acid_one_hot
 
 verbose(False)
 from torch_geometric.data import Data
 
 
 class SequenceDataset(Dataset):
-    """Dataset class for working with Sequence Datasets. 
-    Provides utilities for batch folding and embedding with ESM(Fold).
-    
-    :param fasta_file: Path to fasta file containing sequences.
-    :type fasta_file: Optional[str], optional
-    :param seq_representative: Sequence ID of representative sequence to fold/embed.
-    :type seq_representative: Optional[Union[str, os.PathLike]], optional
-    :param root: Root directory to save embeddings and structures.
-    :type root: Optional[str], optional
-    :param graph_labels: List of graph-level labels.
-    :type graph_labels: Optional[List[torch.Tensor]], optional
-    :param node_labels: List of node-level labels.
-    :type node_labels: Optional[List[torch.Tensor]], optional
-    :param transform: List of transforms to apply to dataset.
-    :type transform: Optional[List[Callable]], optional
-    :param pre_transform: Transform to apply to dataset.
-    :type pre_transform: Optional[Callable], optional
-    :param pre_filter: Filter to apply to dataset.
-    :type pre_filter: Optional[Callable], optional
-    :param overwrite: Whether to overwrite existing embeddings/structures.
-    :type overwrite: bool, optional
-    :param format: Format of fasta file.
-    :type format: str, optional
-    :param use_embeddings: Whether to use embeddings.
-    :type use_embeddings: bool, optional
-    :param use_structure: Whether to use structures.
-    :type use_structure: bool, optional
-    """
     def __init__(
         self,
         fasta_file: Optional[str] = None,
@@ -70,6 +42,8 @@ class SequenceDataset(Dataset):
         use_embeddings: bool = True,
         use_structure: bool = True,
     ):
+        """Dataset class for working with Sequence Datasets. Provides utilities
+        for batch folding and embedding with ESM(Fold)."""
         self.root = root if root is not None else os.getcwd()
         if not os.path.exists(self.root):
             os.makedirs(self.root)

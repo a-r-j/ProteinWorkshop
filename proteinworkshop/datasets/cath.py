@@ -9,31 +9,10 @@ import omegaconf
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
-from src.datasets.base import ProteinDataModule, ProteinDataset
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
 class CATHDataModule(ProteinDataModule):
-    """Data module for CATH dataset.
-    
-    :param path: Path to store data.
-    :type path: str
-    :param batch_size: Batch size for dataloaders.
-    :type batch_size: int
-    :param format: Format to load PDB files in. 
-    :type format: str
-    :param pdb_dir: Path to directory containing PDB files.
-    :type pdb_dir: str
-    :param pin_memory: Whether to pin memory for dataloaders.
-    :type pin_memory: bool
-    :param in_memory: Whether to load the entire dataset into memory.
-    :type in_memory: bool
-    :param num_workers: Number of workers for dataloaders.
-    :type num_workers: int
-    :param dataset_fraction: Fraction of dataset to use.
-    :type dataset_fraction: float
-    :param transforms: List of transforms to apply to dataset.
-    :type transforms: Optional[List[Callable]]
-    """
     def __init__(
         self,
         path: str,
@@ -91,7 +70,6 @@ class CATHDataModule(ProteinDataModule):
 
     @functools.lru_cache
     def parse_dataset(self) -> Dict[str, List[str]]:
-        """Parses the dataset and splits into train/valid/test."""
         fpath = self.data_dir / "chain_set_splits.json"
 
         with open(fpath, "r") as file:
@@ -217,7 +195,7 @@ if __name__ == "__main__":
 
     import hydra
     import omegaconf
-    from src import constants
+    from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
         constants.PROJECT_PATH / "configs" / "dataset" / "cath.yaml"

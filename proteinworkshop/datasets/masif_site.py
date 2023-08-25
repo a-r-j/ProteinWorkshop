@@ -7,37 +7,10 @@ import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
 from sklearn.model_selection import train_test_split
-from src.datasets.base import ProteinDataModule, ProteinDataset
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
 class MaSIFPPISP(ProteinDataModule):
-    """Data module for MaSIF-PPISP dataset.
-
-    :param path: Path to store data.
-    :type path: str
-    :param pdb_dir: Path to directory containing PDB files.
-    :type pdb_dir: str
-    :param batch_size: Batch size for dataloaders.
-    :type batch_size: int
-    :param dataset_fraction: Fraction of dataset to use.
-    :type dataset_fraction: float
-    :param format: Format to load PDB files in.
-    :type format: str
-    :param obsolete: How to handle obsolete PDB structures.
-    :type obsolete: str
-    :param val_fraction: Fraction of dataset to use for validation.
-    :type val_fraction: float
-    :param in_memory: Whether to load the entire dataset into memory.
-    :type in_memory: bool
-    :param pin_memory: Whether to pin memory for dataloaders.
-    :type pin_memory: bool
-    :param num_workers: Number of workers for dataloaders.
-    :type num_workers: int
-    :param shuffle_labels: Whether to shuffle labels.
-    :type shuffle_labels: bool
-    :param transforms: List of transforms to apply to dataset.
-    :type transforms: Optional[List[Callable]]
-    """
     def __init__(
         self,
         path: str,
@@ -89,7 +62,6 @@ class MaSIFPPISP(ProteinDataModule):
         pass
 
     def download(self):
-        """Download the dataset from the LPDI-EPFL GitHub repository."""
         if not os.path.exists(self.path / "training.txt"):
             logger.info(f"Downloading training data from {self.TRAIN_DATA_URL}")
             wget.download(
@@ -210,7 +182,7 @@ class MaSIFPPISP(ProteinDataModule):
 
 if __name__ == "__main__":
     import hydra
-    from src import constants
+    from proteinworkshop import constants
 
     config = omegaconf.OmegaConf.load("../../configs/dataset/masif_site.yaml")
     config.datamodule.path = pathlib.Path(constants.DATA_PATH) / "MasifSite"  # type: ignore

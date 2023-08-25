@@ -17,19 +17,13 @@ class RemoveMissingCa(T.BaseTransform):
             attribute of the Protein data object. By default this is 1, as the
             coords attribute is of shape ``(N, 37, 3)`` where ``N`` is the
             number of residues.
-        :type ca_idx: int, optional
         """
         self.fill_value = fill_value
         self.ca_idx = ca_idx
 
     def __call__(self, data):
-        """Remove residues with missing CA atoms from a protein structure.
-
-        :param data: Protein data object.
-        :type data: Protein
-        :return: Protein data object with missing residues removed.
-        :rtype: Protein
-        """
+        # Check for missing CA atoms
+        # If there are no missing CA atoms, return the data
         mask = data.coords[:, self.ca_idx, 0] != self.fill_value
         if torch.all(mask):
             return data

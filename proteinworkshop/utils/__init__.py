@@ -34,17 +34,13 @@ class EMA(Callback):
     When training a model, this callback will maintain moving averages of the trained parameters.
     When evaluating, we use the moving averages copy of the trained parameters.
     When saving, we save an additional set of parameters with the prefix `ema`.
-
-    :param decay: Decay rate for EMA.
-    :type decay: float
-    :param apply_ema_every_n_steps: How often to apply EMA.
-    :type apply_ema_every_n_steps: int
-    :param start_step: Step to start applying EMA.
-    :type start_step: int
-    :save_ema_weights_in_callback_state: Whether to save EMA weights in callback state.
-    :type save_ema_weights_in_callback_state: bool
-    :param evaluate_ema_weights_instead: Whether to evaluate EMA weights instead of the original weights.
-    :type evaluate_ema_weights_instead: bool
+    Args:
+        decay: The exponential decay used when calculating the moving average. Has to be between 0-1.
+        apply_ema_every_n_steps: Apply EMA every n global steps.
+        start_step: Start applying EMA from ``start_step`` global step onwards.
+        save_ema_weights_in_callback_state: Enable saving EMA weights in callback state.
+        evaluate_ema_weights_instead: Validate the EMA weights instead of the original weights.
+            Note this means that when saving the model, the validation metrics are calculated with the EMA weights.
 
     Adapted from: https://github.com/NVIDIA/NeMo/blob/main/nemo/collections/common/callbacks/ema.py
     """
@@ -74,7 +70,6 @@ class EMA(Callback):
         self.decay = decay
 
     def on_train_start(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule") -> None:
-        """Called when the train begins. Creates a copy of the model's weights.""" 
         log.info("Creating EMA weights copy.")
         if self._ema_model_weights is None:
             self._ema_model_weights = [p.detach().clone() for p in pl_module.state_dict().values()]
@@ -83,13 +78,11 @@ class EMA(Callback):
         self._overflow_buf = torch.IntTensor([0]).to(pl_module.device)
 
     def ema(self, pl_module: "pl.LightningModule") -> None:
-        """Updates EMA weights."""
         if apex_available and pl_module.device.type == "cuda":
             return self.apply_multi_tensor_ema(pl_module)
         return self.apply_ema(pl_module)
 
     def apply_multi_tensor_ema(self, pl_module: "pl.LightningModule") -> None:
-        """Applies EMA using NVIDIA's apex.amp_C.multi_tensor_axpby()."""
         model_weights = list(pl_module.state_dict().values())
         amp_C.multi_tensor_axpby(
             65536,
@@ -101,7 +94,6 @@ class EMA(Callback):
         )
 
     def apply_ema(self, pl_module: "pl.LightningModule") -> None:
-        """Applies EMA using PyTorch operations."""
         for orig_weight, ema_weight in zip(list(pl_module.state_dict().values()), self._ema_model_weights):
             if ema_weight.data.dtype != torch.long and orig_weight.data.dtype != torch.long:
                 # ensure that non-trainable parameters (e.g., feature distributions) are not included in EMA weight averaging
@@ -110,37 +102,21 @@ class EMA(Callback):
                 ema_weight.sub_(diff)
 
     def should_apply_ema(self, step: int) -> bool:
-        """Checks whether EMA should be applied."""
         return step != self._cur_step and step >= self.start_step and step % self.apply_ema_every_n_steps == 0
 
     def on_train_batch_end(
         self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", outputs: STEP_OUTPUT, batch: Any, batch_idx: int
     ) -> None:
-        """Applies EMA at the end of each training batch.
-        
-        :param trainer: The trainer object.
-        :type trainer: pl.Trainer
-        :param pl_module: The LightningModule.
-        :type pl_module: pl.LightningModule
-        :param outputs: The outputs of the training step.
-        :type outputs: STEP_OUTPUT
-        :param batch: The current batch.
-        :type batch: Any
-        :param batch_idx: The current batch index.
-        :type batch_idx: int
-        """
         if self.should_apply_ema(trainer.global_step):
             self._cur_step = trainer.global_step
             self.ema(pl_module)
 
     def state_dict(self) -> Dict[str, Any]:
-        """Returns the state of the callback as a dictionary."""
         if self.save_ema_weights_in_callback_state:
             return dict(cur_step=self._cur_step, ema_weights=self._ema_model_weights)
         return dict(cur_step=self._cur_step)
 
     def load_state_dict(self, state_dict: Dict[str, Any]) -> None:
-        """Loads the state of the callback from the given `state_dict`."""
         self._cur_step = state_dict["cur_step"]
         # when loading within apps such as NeMo, EMA weights will be loaded by the experiment manager separately
         if self._ema_model_weights is None:
@@ -150,15 +126,6 @@ class EMA(Callback):
     def on_load_checkpoint(
         self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", checkpoint: Dict[str, Any]
     ) -> None:
-        """Called when restoring a model checkpoint. Loads the EMA weights if they are available.
-        
-        :param trainer: The trainer object.
-        :type trainer: pl.Trainer
-        :param pl_module: The LightningModule.
-        :type pl_module: pl.LightningModule
-        :param checkpoint: The checkpoint to load from.
-        :type checkpoint: Dict[str, Any]
-        """
         checkpoint_callback = trainer.checkpoint_callback
 
         if trainer.ckpt_path and checkpoint_callback is not None:
@@ -197,19 +164,11 @@ class EMA(Callback):
                 )
 
     def replace_model_weights(self, pl_module: "pl.LightningModule") -> None:
-        """Replaces the model weights with the EMA weights.
-        
-        :param pl_module: The LightningModule.
-        :type pl_module: pl.LightningModule"""
         self._weights_buffer = [p.detach().clone().to("cpu") for p in pl_module.state_dict().values()]
         new_state_dict = {k: v for k, v in zip(pl_module.state_dict().keys(), self._ema_model_weights)}
         pl_module.load_state_dict(new_state_dict)
 
     def restore_original_weights(self, pl_module: "pl.LightningModule") -> None:
-        """Restores the original model weights.
-        
-        :param pl_module: The LightningModule.
-        :type pl_module: pl.LightningModule"""
         state_dict = pl_module.state_dict()
         new_state_dict = {k: v for k, v in zip(state_dict.keys(), self._weights_buffer)}
         pl_module.load_state_dict(new_state_dict)
@@ -217,7 +176,6 @@ class EMA(Callback):
 
     @property
     def ema_initialized(self) -> bool:
-        """Returns whether the EMA weights have been initialized."""
         return self._ema_model_weights is not None
 
     def on_validation_start(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule") -> None:
@@ -258,7 +216,6 @@ class EMAModelCheckpoint(ModelCheckpoint):
         return ema_callback
 
     def _save_checkpoint(self, trainer: "pl.Trainer", filepath: str) -> None:
-        """Saves the checkpoint to the given filepath."""
         super()._save_checkpoint(trainer, filepath)
         ema_callback = self._get_ema_callback(trainer)
         if ema_callback is not None:
@@ -271,5 +228,4 @@ class EMAModelCheckpoint(ModelCheckpoint):
             ema_callback.restore_original_weights(trainer.lightning_module)
 
     def _ema_format_filepath(self, filepath: str) -> str:
-        """Formats the filepath for the EMA checkpoint."""
         return filepath.replace(self.FILE_EXTENSION, f"-EMA{self.FILE_EXTENSION}")

@@ -3,7 +3,7 @@ from typing import List, Set, Union
 import torch
 from graphein.protein.tensor.data import Protein
 from scipy import spatial
-from src.features.representation import get_full_atom_coords
+from proteinworkshop.features.representation import get_full_atom_coords
 from torch_geometric import transforms
 from torch_geometric.data import Data
 

@@ -10,7 +10,7 @@ import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
 from loguru import logger as log
-from src.datasets.base import ProteinDataModule, ProteinDataset
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
 def flatten_dir(dir: os.PathLike):
@@ -26,27 +26,6 @@ def flatten_dir(dir: os.PathLike):
 
 
 class FoldClassificationDataModule(ProteinDataModule):
-    """Data module for Fold Classification dataset.
-
-    :param path: Path to store data.
-    :type path: str
-    :param split: Split to use.
-    :type split: str
-    :param batch_size: Batch size for dataloaders.
-    :type batch_size: int
-    :param pin_memory: Whether to pin memory for dataloaders.
-    :type pin_memory: bool
-    :param num_workers: Number of workers for dataloaders.
-    :type num_workers: int
-    :param dataset_fraction: Fraction of dataset to use.
-    :type dataset_fraction: float
-    :param shuffle_labels: Whether to shuffle labels.
-    :type shuffle_labels: bool
-    :param transforms: List of transforms to apply to dataset.
-    :type transforms: Optional[Iterable[Callable]]
-    :param in_memory: Whether to load the entire dataset into memory.
-    :type in_memory: bool
-    """
     def __init__(
         self,
         path: str,
@@ -146,7 +125,6 @@ class FoldClassificationDataModule(ProteinDataModule):
             log.info("Found SCOPe structures in: ")  # TODO
 
     def parse_class_map(self) -> Dict[str, str]:
-        """Parses the class map file to a dictionary."""
         log.info(f"Reading labels from: {self.data_dir / 'class_map.txt'}")
         class_map = pd.read_csv(self.data_dir / "class_map.txt", sep="\t", header=None)
         return dict(class_map.values)
@@ -262,7 +240,7 @@ class FoldClassificationDataModule(ProteinDataModule):
 if __name__ == "__main__":
     import hydra
     import omegaconf
-    from src import constants
+    from proteinworkshop import constants
 
     # Fold Dataset
     cfg = omegaconf.OmegaConf.load(

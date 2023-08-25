@@ -8,36 +8,11 @@ import torch
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
-from src.datasets.base import ProteinDataModule, ProteinDataset
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 from torch_geometric.data import Dataset
 
 
 class EnzymeCommissionReactionDataset(ProteinDataModule):
-    """Data module for Enzyme Commission Reaction dataset.
-
-    :param path: Path to store data.
-    :type path: str
-    :param batch_size: Batch size for dataloaders.
-    :type batch_size: int
-    :param pdb_dir: Path to directory containing PDB files.
-    :type pdb_dir: str
-    :param format: Format to load PDB files in.
-    :type format: str
-    :param obsolete: How to handle obsolete PDB structures.
-    :type obsolete: str
-    :param in_memory: Whether to load the entire dataset into memory.
-    :type in_memory: bool
-    :param pin_memory: Whether to pin memory for dataloaders.
-    :type pin_memory: bool
-    :param num_workers: Number of workers for dataloaders.
-    :type num_workers: int
-    :param dataset_fraction: Fraction of dataset to use.
-    :type dataset_fraction: float
-    :param shuffle_labels: Whether to shuffle labels.
-    :type shuffle_labels: bool
-    :param transforms: List of transforms to apply to dataset.
-    :type transforms: Optional[List[Callable]]
-    """
     def __init__(
         self,
         path: str,
@@ -93,7 +68,6 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
         pass
 
     def download(self):  # sourcery skip: move-assign
-        """Downloads the dataset to the data directory."""
         if not os.path.exists(self.TEST_FNAME):
             logger.info(f"Downloading training data to {self.data_dir}...")
             wget.download(self.TRAIN_URL, out=str(self.data_dir))
@@ -111,7 +85,6 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
             wget.download(self.LABELS_URL, out=str(self.data_dir))
 
     def parse_labels(self) -> Dict[str, str]:
-        """Parses the class map file to a dictionary."""
         class_map = pd.read_csv(
             self.data_dir / "chain_functions.txt", sep=",", header=None
         )
@@ -223,7 +196,7 @@ if __name__ == "__main__":
 
     import hydra
     import omegaconf
-    from src import constants
+    from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
         constants.PROJECT_PATH / "configs" / "dataset" / "ec.yaml"

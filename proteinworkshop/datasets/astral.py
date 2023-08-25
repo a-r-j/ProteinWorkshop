@@ -12,36 +12,11 @@ from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
 from loguru import logger as log
 from sklearn.model_selection import train_test_split
-from src.datasets.base import ProteinDataModule, ProteinDataset
-from src.datasets.utils import flatten_dir
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+from proteinworkshop.datasets.utils import flatten_dir
 
 
 class AstralDataModule(ProteinDataModule):
-    """Data module for ASTRAL dataset.
-
-    :param path: Path to store data.
-    :type path: str
-    :param batch_size: Batch size for dataloaders.
-    :type batch_size: int
-    :param pin_memory: Whether to pin memory for dataloaders.
-    :type pin_memory: bool
-    :param num_workers: Number of workers for dataloaders.
-    :type num_workers: int
-    :param release: ASTRAL release to use.
-    :type release: str
-    :param identity: ASTRAL identity to use.
-    :type identity: str
-    :param dataset_fraction: Fraction of dataset to use.
-    :type dataset_fraction: float
-    :param transforms: List of transforms to apply to dataset.
-    :type transforms: Optional[List[Callable]]
-    :param in_memory: Whether to load the entire dataset into memory.
-    :type in_memory: bool
-    :param train_val_test: Train/val/test split.
-    :type train_val_test: List[float]
-    :param overwrite: Whether to overwrite existing data.
-    :type overwrite: bool
-    """
     def __init__(
         self,
         path: str,
@@ -124,7 +99,6 @@ class AstralDataModule(ProteinDataModule):
             log.info("Found SCOPe structures in: ")  # TODO
 
     def parse_class_map(self) -> Dict[str, str]:
-        """Parses the class map from the ASTRAL dataset."""
         log.info(f"Reading labels from: {self.data_dir / 'class_map.txt'}")
         class_map = pd.read_csv(self.data_dir / "class_map.txt", sep="\t", header=None)
         return dict(class_map.values)
@@ -133,7 +107,6 @@ class AstralDataModule(ProteinDataModule):
         self.download()
 
     def parse_dataset(self, split: str) -> List[str]:
-        """ Parses the dataset and splits into train/valid/test."""
         # If we've already split, return the split data
         if hasattr(self, f"{split}_ids"):
             return getattr(self, f"{split}_ids")
@@ -160,7 +133,6 @@ class AstralDataModule(ProteinDataModule):
         return getattr(self, f"{split}_ids")
 
     def _get_dataset(self, split: str) -> ProteinDataset:
-        """Returns a :class:`~graphein.protein.ProteinDataset` for a given split."""
         ids = self.parse_dataset(split)
         return ProteinDataset(
             root=str(self.data_dir),
