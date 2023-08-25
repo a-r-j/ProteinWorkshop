@@ -38,26 +38,36 @@ Configuration files to run the experiments described in the manuscript are provi
 
 ## Installation
 
-1. Install Mamba
+Below, we outline how one may set up a virtual environment for the `ProteinWorkshop`. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Windows and macOS are currently not officially supported.
+
+1. Install `poetry` for dependency management using its [installation instructions](https://python-poetry.org/docs/)
+
+2. Install project dependencies
 
     ```bash
-    wget "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
-    bash Mambaforge-$(uname)-$(uname -m).sh  # accept all terms and install to the default location
-    rm Mambaforge-$(uname)-$(uname -m).sh  # (optionally) remove installer after using it
-    source ~/.bashrc  # alternatively, one can restart their shell session to achieve the same result as this line
+    poetry install
     ```
 
-2. Install dependencies and project
+3. Activate the newly-created virtual environment following `poetry`'s [usage documentation](https://python-poetry.org/docs/basic-usage/)
 
     ```bash
-    mamba env create -f environment.yaml
-    conda activate protein_workshop
-    pip install -e .
+      # activate the environment on a `posix`-like (e.g., macOS or Linux) system
+      source $(poetry env info --path)/bin/activate
+    ```
+    ```powershell
+      # activate the environment on a `Windows`-like system
+      & ((poetry env info --path) + "\Scripts\activate.ps1")
+    ```
+    ```bash
+      # if desired, deactivate the environment
+      deactivate
     ```
 
-3. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example) for an example.
+4. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
 
-4. Download PDB data:
+5. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example) for an example.
+
+6. Download PDB data:
 
     ```bash
     python scripts/download_pdb_mmtf.py
