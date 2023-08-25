@@ -6,7 +6,7 @@ datamodule:
   pin_memory: True # Pin memory for dataloader
   num_workers: 8 # Number of workers for dataloader
   obsolete_strategy: "drop"
-  format: "mmtf" # Format of the raw PDB/MMTF files
+  format: "mmtf.gz" # Format of the raw PDB/MMTF files
   transforms: ${transforms}
 
 num_classes: 2 # Number of classes in the dataset
