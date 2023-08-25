@@ -49,6 +49,7 @@ jobs:
           poe install-torch-sparse
           poe install-torch-scatter
           poe install-torch-spline-conv
+          poe install-torchdrug
 
       - name: Run tests
         run: |
