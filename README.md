@@ -65,6 +65,11 @@ Below, we outline how one may set up a virtual environment for the `ProteinWorks
 
 4. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
 
+    ```bash
+    # hint: to see the list of dependencies that are currently installed in the environment, run:
+    poetry show
+    ```
+
 5. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example) for an example.
 
 6. Download PDB data:
@@ -124,20 +129,20 @@ With wandb:
 
 Or an example SLURM submission script:
 
-```bash
-#!/bin/bash
-#SBATCH --nodes 1
-#SBATCH --ntasks-per-node=1
-#SBATCH --gres=gpu:1
-#SBATCH --array=0-32
+  ```bash
+  #!/bin/bash
+  #SBATCH --nodes 1
+  #SBATCH --ntasks-per-node=1
+  #SBATCH --gres=gpu:1
+  #SBATCH --array=0-32
 
-source ~/.bashrc
-conda activate protein_workshop
+  source ~/.bashrc
+  source $(poetry env info --path)/bin/activate
 
-wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 1
-```
+  wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 1
+  ```
 
-3. Reproduce the sweeps performed in the manuscript
+Reproduce the sweeps performed in the manuscript:
 
 ```bash
 # reproduce the baseline tasks sweep (i.e., those performed without pre-training each model)
@@ -167,7 +172,7 @@ wandb agent mywandbgroup/ProteinWorkshop/2gwtt7oy --count 8
 python proteinworkshop/embed.py dataset=cath encoder=gnn ckpt_path=PATH/TO/CHECKPOINT
 ```
 
-### Verify a config
+#### Verify a config
 
 ```bash
 python proteinworkshop/validate_config.py dataset=cath features=full_atom task=inverse_folding
@@ -223,24 +228,24 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 <details>
   <summary>Additionally, we provide several species-specific compilations</summary>
 
-| Name            | Description   | Source | Size |
-| ----------------| ----------- | ------ | ------ |
-| `a_thaliana`    | _Arabidopsis thaliana_ proteome | AlphaFold2|
-| `c_albicans`    | _Candida albicans_ proteome | AlphaFold2|
-| `c_elegans`     | _Caenorhabditis elegans_ proteome        | AlphaFold2       | |
-| `d_discoideum`  | _Dictyostelium discoideum_ proteome | AlphaFold2| |
-| `d_melanogaster`  | [_Drosophila melanogaster_](https://www.uniprot.org/taxonomy/7227) proteome        | AlphaFold2        | |
-| `d_rerio`  | [_Danio rerio_](https://www.uniprot.org/taxonomy/7955) proteome        | AlphaFold2        | |
-| `e_coli`  | Text        |  AlphaFold2       | |
-| `g_max`  | Text        | AlphaFold2        | |
-| `h_sapiens`  | Text        |  AlphaFold2       | |
-| `m_jannaschii`  | Text        |  AlphaFold2       | |
-| `m_musculus`  | Text        |   AlphaFold2      | |
-| `o_sativa`  | Text        |   AlphaFold2      | |
-| `r_norvegicus`  | Text        |   AlphaFold2      | |
-| `s_cerevisiae`  | Text        |   AlphaFold2      | |
-| `s_pombe`  | Text        |  AlphaFold2       | |
-| `z_mays`  | Text        |   AlphaFold2      | |
+  | Name            | Description   | Source | Size |
+  | ----------------| ----------- | ------ | ------ |
+  | `a_thaliana`    | _Arabidopsis thaliana_ proteome | AlphaFold2|
+  | `c_albicans`    | _Candida albicans_ proteome | AlphaFold2|
+  | `c_elegans`     | _Caenorhabditis elegans_ proteome        | AlphaFold2       | |
+  | `d_discoideum`  | _Dictyostelium discoideum_ proteome | AlphaFold2| |
+  | `d_melanogaster`  | [_Drosophila melanogaster_](https://www.uniprot.org/taxonomy/7227) proteome        | AlphaFold2        | |
+  | `d_rerio`  | [_Danio rerio_](https://www.uniprot.org/taxonomy/7955) proteome        | AlphaFold2        | |
+  | `e_coli`  | Text        |  AlphaFold2       | |
+  | `g_max`  | Text        | AlphaFold2        | |
+  | `h_sapiens`  | Text        |  AlphaFold2       | |
+  | `m_jannaschii`  | Text        |  AlphaFold2       | |
+  | `m_musculus`  | Text        |   AlphaFold2      | |
+  | `o_sativa`  | Text        |   AlphaFold2      | |
+  | `r_norvegicus`  | Text        |   AlphaFold2      | |
+  | `s_cerevisiae`  | Text        |   AlphaFold2      | |
+  | `s_pombe`  | Text        |  AlphaFold2       | |
+  | `z_mays`  | Text        |   AlphaFold2      | |
 
 </details>
 
@@ -297,10 +302,10 @@ N.B. All angular features are provided in [sin, cos] transformed form. E.g.: $\t
 
 | Name      | Description   | Dimensionality |
 | ----------- | ----------- | ----------- |
-| `residue_type` | One hot encoding of amino acid type       |      21  |
+| `residue_type` | One-hot encoding of amino acid type       |      21  |
 | `positional_encoding` | Transformer-like positional encoding of sequence position       |      16  |
-| `alpha` | virtual torsion angle defined by four $C_\alpha$ atoms of residues $I_{-1},I,I_{+1},I_{+2}$       |      2  |
-| `kappa` | virtual bond angle (bend angle) defined by the three $C_\alpha$ atoms of residues $I_{-2},I,_{+2}$       |      2  |
+| `alpha` | Virtual torsion angle defined by four $C_\alpha$ atoms of residues $I_{-1},I,I_{+1},I_{+2}$       |      2  |
+| `kappa` | Virtual bond angle (bend angle) defined by the three $C_\alpha$ atoms of residues $I_{-2},I,_{+2}$       |      2  |
 | `dihedrals` | Backbone dihedral angles $(\phi, \psi, \omega)$      |      6  |
 | `sidechain_torsions` | Sidechain torsion angles  $(\chi_{1-4})$     |    8    |
 

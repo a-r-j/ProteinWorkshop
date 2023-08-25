@@ -30,8 +30,8 @@ Invariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 170
-    :end-line: 176
+    :start-line: 184
+    :end-line: 191
 
 :py:class:`SchNet <proteinworkshop.models.graph_encoders.schnet.SchNetModel>` (``schnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -113,8 +113,8 @@ Vector-Equivariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 181
-    :end-line: 186
+    :start-line: 195
+    :end-line: 201
 
 :py:class:`EGNN <proteinworkshop.models.graph_encoders.egnn.EGNNModel>` (``egnn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -166,8 +166,8 @@ Tensor-Equivariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 189
-    :end-line: 193
+    :start-line: 203
+    :end-line: 208
 
 
 :py:class:`Tensor Field Networks <proteinworkshop.models.graph_encoders.tfn.TensorProductModel>` (``tfn``)

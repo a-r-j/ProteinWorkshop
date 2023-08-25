@@ -9,7 +9,10 @@ Welcome to Protein Workshop's documentation!
 
 .. mdinclude:: ../../README.md
     :start-line: 1
-    :end-line: 16
+    :end-line: 9
+.. mdinclude:: ../../README.md
+    :start-line: 12
+    :end-line: 14
 
 
 .. toctree::
@@ -44,9 +47,8 @@ Welcome to Protein Workshop's documentation!
 
    modules/proteinworkshop.train
    modules/proteinworkshop.datasets
-   modules/proteinworkshopteinworkshop.models
+   modules/proteinworkshop.models
    modules/proteinworkshop.tasks
-   modules/proteinworkshop.models.graph_encoders.layers
    modules/proteinworkshop.features
    modules/proteinworkshop.utils
 

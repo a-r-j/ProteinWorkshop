@@ -37,7 +37,8 @@ Representation
    :members:
 
 
-Utils
-======
-.. automodule:: proteinworkshop.features.utils
-   :members:
+.. Note: `Utils` is commented out because all its utility functions are currently private
+.. Utils
+.. ======
+.. .. automodule:: proteinworkshop.features.utils
+..    :members:
