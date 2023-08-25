@@ -1,7 +1,7 @@
 """
 Convenient setup for jupyter notebook explorations
 Use via inserting:
-   `from src.utils.notebook import *`
+   `from proteinworkshop.utils.notebook import *`
 as the last import in your jupyter notebook imports cell.
 """
 

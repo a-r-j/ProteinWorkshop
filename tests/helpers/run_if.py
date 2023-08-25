@@ -12,17 +12,12 @@ from packaging.version import Version
 from pkg_resources import get_distribution
 from pytest import MarkDecorator
 
-from tests.helpers.package_available import (
-    _COMET_AVAILABLE,
-    _DEEPSPEED_AVAILABLE,
-    _FAIRSCALE_AVAILABLE,
-    _IS_WINDOWS,
-    _MLFLOW_AVAILABLE,
-    _NEPTUNE_AVAILABLE,
-    _SH_AVAILABLE,
-    _TPU_AVAILABLE,
-    _WANDB_AVAILABLE,
-)
+from tests.helpers.package_available import (_COMET_AVAILABLE,
+                                             _DEEPSPEED_AVAILABLE,
+                                             _FAIRSCALE_AVAILABLE, _IS_WINDOWS,
+                                             _MLFLOW_AVAILABLE,
+                                             _NEPTUNE_AVAILABLE, _SH_AVAILABLE,
+                                             _TPU_AVAILABLE, _WANDB_AVAILABLE)
 
 
 class RunIf:
@@ -92,9 +87,7 @@ class RunIf:
             reasons.append(f"torch<{max_torch}")
 
         if min_python:
-            py_version = (
-                f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
-            )
+            py_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
             conditions.append(Version(py_version) < Version(min_python))
             reasons.append(f"python>={min_python}")
 

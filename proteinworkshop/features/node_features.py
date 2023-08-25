@@ -30,8 +30,8 @@ def compute_scalar_node_features(
     Factory function for node features.
 
     .. seealso::
-        :py:class:`src.types.ScalarNodeFeature` for a list of node features
-        that can be computed.
+        :py:class:`proteinworkshop.types.ScalarNodeFeature` for a list of node
+        features that can be computed.
 
     This function operates on a :py:class:`torch_geometric.data.Data` or
     :py:class:`torch_geometric.data.Batch` object and computes the requested

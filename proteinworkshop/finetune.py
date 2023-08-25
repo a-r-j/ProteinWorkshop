@@ -121,7 +121,7 @@ def finetune(cfg: DictConfig):
         # Run test on all splits if using fold_classification dataset
         if (
             cfg.dataset.datamodule._target_
-            == "src.datasets.fold_classification.FoldClassificationDataModule"
+            == "proteinworkshop.datasets.fold_classification.FoldClassificationDataModule"
         ):
             splits = ["fold", "family", "superfamily"]
             wandb_logger = copy.deepcopy(trainer.logger)

@@ -80,7 +80,7 @@ class BaseModel(L.LightningModule, abc.ABC):
         """Applies the featuriser (``self.featuriser``) to a batch of data.
 
         .. seealso::
-            :py:class:src.features.factory.ProteinFeaturiser
+            :py:class:proteinworkshop.features.factory.ProteinFeaturiser
 
         :param batch: Batch of data
         :type batch: Union[Batch, ProteinBatch]

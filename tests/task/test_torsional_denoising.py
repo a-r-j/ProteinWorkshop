@@ -4,8 +4,7 @@ import hydra
 import omegaconf
 import torch
 from graphein.protein.tensor.data import get_random_protein
-
-from src import constants
+from proteinworkshop import constants
 
 
 def test_instantiate_transform():

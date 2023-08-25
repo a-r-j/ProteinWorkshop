@@ -81,7 +81,7 @@ of how to use and extend the `Protein Workshop`, as outlined below.
 Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task:
 
 ```bash
-python src/train.py dataset=cath encoder=gcn task=inverse_folding
+python proteinworkshop/train.py dataset=cath encoder=gcn task=inverse_folding
 ```
 
 #### Finetuning a model
@@ -89,7 +89,7 @@ python src/train.py dataset=cath encoder=gcn task=inverse_folding
 Finetuning a model additionally requires specification of a checkpoint.
 
 ```bash
-python src/finetune.py dataset=cath encoder=gcn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
+python proteinworkshop/finetune.py dataset=cath encoder=gcn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
 ```
 
 ### Running a sweep/experiment
@@ -130,13 +130,13 @@ wandb agent ligands/protein_workshop-src/2wwtt7oy --count 1
 #### Embedding a dataset
 
 ```bash
-python src/embed.py dataset=cath encoder=gnn ckpt_path=PATH/TO/CHECKPOINT
+python proteinworkshop/embed.py dataset=cath encoder=gnn ckpt_path=PATH/TO/CHECKPOINT
 ```
 
 ### Verify a config
 
 ```bash
-python src/validate_config.py dataset=cath features=full_atom task=inverse_folding
+python proteinworkshop/validate_config.py dataset=cath features=full_atom task=inverse_folding
 ```
 
 ## Models
@@ -283,7 +283,7 @@ We predominanty support two types of edges: $k$-NN and $\epsilon$ edges.
 Edge types can be specified as follows:
 
 ```bash
-python src/train.py ... features.edge_types=[knn_16, knn_32, eps_16]
+python proteinworkshop/train.py ... features.edge_types=[knn_16, knn_32, eps_16]
 ```
 
 Where the suffix after `knn` or `eps` specifies $k$ (number of neighbours) or $\epsilon$ (distance threshold in angstroms).

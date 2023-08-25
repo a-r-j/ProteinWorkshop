@@ -11,7 +11,7 @@ import tarfile
 import biotite.database.rcsb as rcsb
 from tqdm import tqdm
 
-from src.constants import DATA_PATH
+from proteinworkshop.constants import DATA_PATH
 
 
 def download_pdb_mmtf(create_tar: bool = True):

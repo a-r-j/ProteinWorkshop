@@ -1,7 +1,6 @@
 import omegaconf
 from hydra.utils import instantiate
-
-from src import constants
+from proteinworkshop import constants
 
 
 def test_instantiate_encoder():
