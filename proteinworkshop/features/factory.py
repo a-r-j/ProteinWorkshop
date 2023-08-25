@@ -41,7 +41,7 @@ class ProteinFeaturiser(nn.Module):
         :param scalar_node_features: List of scalar-values node features to
             compute. Options: ``"amino_acid_one_hot",
             "sequence_positional_encoding", "alpha", "kappa", "dihedrals"
-            "sidechain_torsion"``. # TODO types
+            "sidechain_torsions"``. # TODO types
         :type scalar_node_features: List[ScalarNodeFeature]
         :param vector_node_features: List of vector-valued node features to
             compute. # TODO types

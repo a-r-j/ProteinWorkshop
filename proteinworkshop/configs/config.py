@@ -82,14 +82,14 @@ def get_start_time(run_id: str) -> str:
 def validate_inverse_folding(cfg: DictConfig):
     """Validate the inverse folding task config.
 
-    If the user is using ``amino_acid_one_hot`` or ``sidechain_torsion``
+    If the user is using ``amino_acid_one_hot`` or ``sidechain_torsions``
     as a feature, this will raise an error as these features leak information
     about the target.
 
     :param cfg: Config
     :type cfg: DictConfig
     :raises ExperimentConfigurationError: If the user is using
-        ``amino_acid_one_hot`` or sidechain_torsion as a feature.
+        ``amino_acid_one_hot`` or sidechain_torsions as a feature.
     :raises ExperimentConfigurationError: If the user is using no scalar node
         features.
     """
@@ -98,8 +98,8 @@ def validate_inverse_folding(cfg: DictConfig):
             "You are launching an inverse folding experiment with amino_acid_one_hot as a feature. This will be removed."
             )
         cfg.features.scalar_node_features.remove("amino_acid_one_hot")
-    if "sidechain_torsion" in cfg.features.scalar_node_features:
-        raise ExperimentConfigurationError("You are launching an inverse folding experiment with sidechain_torsion as a feature. This will be removed.")
+    if "sidechain_torsions" in cfg.features.scalar_node_features:
+        raise ExperimentConfigurationError("You are launching an inverse folding experiment with sidechain_torsions as a feature. This will be removed.")
     if cfg.features.scalar_node_features == []:
         raise ExperimentConfigurationError("You are launching an inverse folding experiment with no scalar node features.")
 

@@ -4,8 +4,8 @@ from pathlib import Path
 import pytest
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig, open_dict
-from proteinworkshop.train import train_model
 
+from proteinworkshop.train import train_model
 from tests.helpers.run_if import RunIf
 
 

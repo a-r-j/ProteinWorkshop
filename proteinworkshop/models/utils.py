@@ -33,7 +33,7 @@ def get_output_dim(output: str, cfg: DictConfig) -> int:
         return 6
     elif output == "residue_type":
         return 23
-    elif output == "sidechain_torsion":
+    elif output == "sidechain_torsions":
         return 8
     elif output == "rotation_frame_quaternion":
         return 4
@@ -64,7 +64,7 @@ def get_input_dim(features_config: DictConfig, feature_config_name: str, task_co
         "dihedrals": 6,
         "positional_encoding": 16,
         "sequence_positional_encoding": 16,
-        "sidechain_torsion": 8,
+        "sidechain_torsions": 8,
         "rotation_frame_quaternion": 4,
         "chi1": 2,
         # TODO rotation_frame_matrix

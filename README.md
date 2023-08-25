@@ -302,7 +302,7 @@ N.B. All angular features are provided in [sin, cos] transformed form. E.g.: $\t
 | `alpha` | virtual torsion angle defined by four $C_\alpha$ atoms of residues $I_{-1},I,I_{+1},I_{+2}$       |      2  |
 | `kappa` | virtual bond angle (bend angle) defined by the three $C_\alpha$ atoms of residues $I_{-2},I,_{+2}$       |      2  |
 | `dihedrals` | Backbone dihedral angles $(\phi, \psi, \omega)$      |      6  |
-| `sidechain_torsion` | Sidechain torsion angles  $(\chi_{1-4})$     |    8    |
+| `sidechain_torsions` | Sidechain torsion angles  $(\chi_{1-4})$     |    8    |
 
 ### Equivariant Node Features
 

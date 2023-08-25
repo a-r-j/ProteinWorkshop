@@ -1,4 +1,4 @@
-from typing import List, Optional, Set
+from typing import Optional, Set
 
 import torch
 import torch.nn as nn
@@ -24,7 +24,7 @@ class GearNet(nn.Module):
         num_angle_bin: Optional[int],
         activation: str = "relu",
         pool: str = "sum",
-        ) -> None:
+    ) -> None:
         super().__init__()
         # Base parameters
         self.num_relation = num_relation
@@ -146,7 +146,6 @@ class GearNet(nn.Module):
             "graph_embedding": self.readout(node_feature, graph.batch),
         })
 
-
     def get_num_edge_features(self) -> int:
         seq_dist = 1
         dist = 1
@@ -159,7 +158,6 @@ class GearNet(nn.Module):
         dists = torch.pairwise_distance(b.pos[b.edge_index[0]], b.pos[b.edge_index[1]]).unsqueeze(1)
         seq_dist = torch.abs(b.edge_index[0] - b.edge_index[1]).unsqueeze(1)
         return torch.cat([u, v, edge_type, seq_dist, dists], dim=1)
-
 
 
 if __name__ == "__main__":

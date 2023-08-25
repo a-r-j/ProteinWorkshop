@@ -125,10 +125,10 @@ def ca_to_bb_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
     This function tiles any existing node features on the CA atoms over the
     additional nodes in the backbone representation.
     """
-    if "sidechain_torsion" in batch.keys:
-        sidechain_torsion = batch.sidechain_torsion.repeat_interleave(4, 0)
+    if "sidechain_torsions" in batch.keys:
+        sidechain_torsions = batch.sidechain_torsions.repeat_interleave(4, 0)
     else:
-        sidechain_torsion = None
+        sidechain_torsions = None
 
     if "chi1" in batch.keys:
         chi1 = batch.chi1.repeat_interleave(4, 0)
@@ -155,9 +155,9 @@ def ca_to_bb_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
     batch = Batch.from_data_list([_ca_to_bb_repr(x) for x in batch.to_data_list()])
 
     batch.batch = batch_idx
-    if sidechain_torsion is not None:
-        batch.sidechain_torsion = sidechain_torsion
-        del sidechain_torsion
+    if sidechain_torsions is not None:
+        batch.sidechain_torsions = sidechain_torsions
+        del sidechain_torsions
     if chi1 is not None:
         batch.chi1 = chi1
         del chi1
