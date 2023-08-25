@@ -10,10 +10,41 @@ import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
 from sklearn.model_selection import train_test_split
-from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+from src.datasets.base import ProteinDataModule, ProteinDataset
 
 
 class CCPDBDataModule(ProteinDataModule):
+    """Data module for CCPDB dataset.
+
+    :param path: Path to store data.
+    :type path: str
+    :param pdb_dir: Path to directory containing PDB files.
+    :type pdb_dir: str
+    :param name: CCPDB dataset name.
+    :type name: str
+    :param batch_size: Batch size for dataloaders.
+    :type batch_size: int
+    :param num_workers: Number of workers for dataloaders.
+    :type num_workers: int
+    :param pin_memory: Whether to pin memory for dataloaders.
+    :type pin_memory: bool
+    :param in_memory: Whether to load the entire dataset into memory.
+    :type in_memory: bool
+    :param format: Format to load PDB files in.
+    :type format: str
+    :param obsolete_strategy: How to handle obsolete PDB structures.
+    :type obsolete_strategy: str
+    :param split_strategy: How to split dataset.
+    :type split_strategy: str
+    :param train_fraction: Fraction of dataset to use for training.
+    :type train_fraction: float
+    :param val_fraction: Fraction of dataset to use for validation.
+    :type val_fraction: float
+    :param test_fraction: Fraction of dataset to use for testing.
+    :type test_fraction: float
+    :param transforms: List of transforms to apply to dataset.  
+    :type transforms: Optional[List[Callable]]
+    """
     def __init__(
         self,
         path: str,
@@ -65,6 +96,7 @@ class CCPDBDataModule(ProteinDataModule):
             raise ValueError("Train, val, and test fractions must sum to 1")
 
     def download(self):
+        """Downloads the dataset."""
         if not os.path.exists(self.DATASET_PATH):
             log.info(f"Downloading {self.name} dataset to {self.DATASET_PATH}")
             wget.download(self.DATASET_URL, str(self.root))
@@ -77,6 +109,7 @@ class CCPDBDataModule(ProteinDataModule):
         pass
 
     def parse_dataset(self):
+        """Parses the dataset and splits into train/valid/test."""
         df = pd.read_csv(self.DATASET_PATH, sep=",")
         log.info(f"Loaded {len(df)} examples from {self.DATASET_PATH}")
 
@@ -118,6 +151,7 @@ class CCPDBDataModule(ProteinDataModule):
 
     @staticmethod
     def _encode_node_label(label: str):
+        """Encodes a node label as a one-hot vector."""
         labels = [1 if char == "+" else 0 for char in label]
         labels = np.array(labels)
         labels = torch.from_numpy(labels)
@@ -200,7 +234,7 @@ class CCPDBDataModule(ProteinDataModule):
 
 
 if __name__ == "__main__":
-    from proteinworkshop import constants
+    from src import constants
 
     # path = constants.DATASETS_DIR / "proteins_cc_pdb"
     path = pathlib.Path(constants.DATA_PATH) / "ccpdb"

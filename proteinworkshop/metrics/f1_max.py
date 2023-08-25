@@ -7,6 +7,7 @@ from torchmetrics import Metric
 
 
 class F1Max(Metric):
+    """ Class for F1Max metric."""
     def __init__(self, num_classes: int, compute_on_cpu: bool = True) -> None:
         super().__init__()
         self.add_state(
