@@ -1,4 +1,4 @@
-program: src/train.py
+program: proteinworkshop/train.py
 method: grid
 name: ptm_site_prediction_baseline
 metric: # Does not matter, as we are using sweep to run the experiment.

@@ -19,7 +19,7 @@ classifiers = [
     "Topic :: Scientific/Engineering"
 ]
 packages = [
-    { include = "src" },
+    { include = "proteinworkshop" },
 ]
 
 [tool.poetry.urls]

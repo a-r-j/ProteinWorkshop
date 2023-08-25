@@ -5,39 +5,39 @@ protein_workshop.features
 Featuriser
 ===========
 
-.. automodule:: src.features.factory
+.. automodule:: proteinworkshop.features.factory
    :members:
 
 
 Edge Construction
 =================
-.. automodule:: src.features.edges
+.. automodule:: proteinworkshop.features.edges
    :members:
 
 
 Node Features
 =============
-.. automodule:: src.features.node_features
+.. automodule:: proteinworkshop.features.node_features
    :members:
 
-.. automodule:: src.features.sequence_features
+.. automodule:: proteinworkshop.features.sequence_features
    :members:
 
 
 Edge Features
 =============
-.. automodule:: src.features.edge_features
+.. automodule:: proteinworkshop.features.edge_features
    :members:
 
 
 
 Representation
 ==============
-.. automodule:: src.features.representation
+.. automodule:: proteinworkshop.features.representation
    :members:
 
 
 Utils
 ======
-.. automodule:: src.features.utils
+.. automodule:: proteinworkshop.features.utils
    :members:

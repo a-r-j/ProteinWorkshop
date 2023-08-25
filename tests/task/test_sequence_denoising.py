@@ -1,6 +1,5 @@
 from graphein.protein.tensor.data import get_random_protein
-
-from src.tasks.sequence_denoising import SequenceNoiseTransform
+from proteinworkshop.tasks.sequence_denoising import SequenceNoiseTransform
 
 
 def test_instantiate_transform():

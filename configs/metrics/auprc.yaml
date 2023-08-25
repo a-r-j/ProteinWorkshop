@@ -1,2 +1,2 @@
 auprc:
-  _target_: src.metrics.auprc.AUPRC
+  _target_: proteinworkshop.metrics.auprc.AUPRC

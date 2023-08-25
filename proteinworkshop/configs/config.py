@@ -303,11 +303,11 @@ def validate_config(cfg: DictConfig) -> DictConfig:
     cfg = validate_supervision_config(cfg)
     validate_loss_config(cfg)
 
-    if cfg.encoder._target_ == "src.model.graph_encoders.egnn.EGNNModel":
+    if cfg.encoder._target_ == "proteinworkshop.model.graph_encoders.egnn.EGNNModel":
         validate_egnn_config(cfg)
-    elif cfg.encoder._target_ == "src.models.graph_encoders.gnn.GNNModel":
+    elif cfg.encoder._target_ == "proteinworkshop.models.graph_encoders.gnn.GNNModel":
         validate_gnn_config(cfg)
-    elif cfg.encoder._target_ == "src.models.graph_encoders.gcpnet.GCPNetModel":
+    elif cfg.encoder._target_ == "proteinworkshop.models.graph_encoders.gcpnet.GCPNetModel":
         validate_gcpnet_config(cfg)
 
     # Validate task

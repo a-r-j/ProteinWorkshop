@@ -2,8 +2,7 @@ import hydra
 import omegaconf
 import pytest
 import torch.nn as nn
-
-from src import constants
+from proteinworkshop import constants
 
 
 def test_instantiate_gear_net():

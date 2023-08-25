@@ -1,4 +1,4 @@
 structure_denoising:
-  _target_: src.tasks.structural_denoising.StructuralNoiseTransform
+  _target_: proteinworkshop.tasks.structural_denoising.StructuralNoiseTransform
   corruption_rate: 0.1 # How much noise to apply
   corruption_strategy: "gaussian" # Whether to use a 'gaussian' or 'uniform' distribution

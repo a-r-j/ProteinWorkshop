@@ -16,7 +16,7 @@ Specific training objects are achieved through the use of :doc:`/configs/transfo
 
     .. code-block:: bash
 
-        python src/train.py task=<TASK_NAME> dataset=cath encoder=gvp ...
+        python proteinworkshop/train.py task=<TASK_NAME> dataset=cath encoder=gvp ...
 
     Where ``<TASK_NAME>`` is one of the tasks listed below.
 
@@ -31,11 +31,11 @@ Sequence Denoising (``sequence_denoising``)
 
 This config trains a model to predict the original identies of the corrupted residues in a protein sequence.
 
-The corruption is configured by the :py:class:`sequence noise transform <src.tasks.sequence_denoising.SequenceNoiseTransform`>, which can be configured to apply masking or mutation
+The corruption is configured by the :py:class:`sequence noise transform <proteinworkshop.tasks.sequence_denoising.SequenceNoiseTransform`>, which can be configured to apply masking or mutation
 corruptions in various amounts to the input sequence.
 
 .. seealso::
-    :py:class:`src.tasks.sequence_denoising.SequenceNoiseTransform`
+    :py:class:`proteinworkshop.tasks.sequence_denoising.SequenceNoiseTransform`
 
 
 .. code-block:: bash
@@ -53,10 +53,10 @@ This config trains a model to predict the original Cartesian coordinates of the 
 
 Noise is applied to the Cartesian coordinates and the model is tasked with predicting either the per-residue Cartesian noise or the original Cartesian coordinates.
 
-The corruption is configured by the :py:class:`structure noise transform <src.tasks.structure_denoising.StructureNoiseTransform`>`, which can be configured to apply uniform or gaussian random noise in various amounts to the input structure.
+The corruption is configured by the :py:class:`structure noise transform <proteinworkshop.tasks.structure_denoising.StructureNoiseTransform`>`, which can be configured to apply uniform or gaussian random noise in various amounts to the input structure.
 
 .. seealso::
-    :py:class:`src.tasks.structure_denoising.StructureNoiseTransform`
+    :py:class:`proteinworkshop.tasks.structure_denoising.StructureNoiseTransform`
 
 .. literalinclude:: ../../../configs/task/structure_denoising.yaml
    :language: yaml
@@ -70,8 +70,8 @@ This config trains a model to predict the original identies of the corrupted res
 This config demonstrates how we can compose transforms in a modular fashion to create new training regimes.
 
 .. seealso::
-    :py:class:`src.tasks.sequence_denoising.SequenceNoiseTransform`
-    :py:class:`src.tasks.structure_denoising.StructureNoiseTransform`
+    :py:class:`proteinworkshop.tasks.sequence_denoising.SequenceNoiseTransform`
+    :py:class:`proteinworkshop.tasks.structure_denoising.StructureNoiseTransform`
 
 .. literalinclude:: ../../../configs/task/sequence_structure_denoising.yaml
    :language: yaml
@@ -85,7 +85,7 @@ This config trains a model to predict the original dihedral angles of the corrup
 The torsional noise transform applies noise in dihedral angle space. The cartesian coordinates are the recomputed using pNeRF to enable structure-based featurisation.
 
 .. seealso::
-    :py:class:`src.tasks.torsional_denoising.TorsionalNoiseTransform`
+    :py:class:`proteinworkshop.tasks.torsional_denoising.TorsionalNoiseTransform`
 
 .. literalinclude:: ../../../configs/task/torsional_denoising.yaml
     :language: yaml
@@ -108,7 +108,7 @@ Ligand Binding Site Prediction (``binding_site_identification``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. seealso::
-    :py:class:`src.tasks.binding_site_identification.BindingSiteIdentificationTransform`
+    :py:class:`proteinworkshop.tasks.binding_site_identification.BindingSiteIdentificationTransform`
 
 .. literalinclude:: ../../../configs/task/binding_site_identification.yaml
    :language: yaml
@@ -165,7 +165,7 @@ batch. The distance is then predicted from the concantenated node embeddings of 
 
     .. code-block::bash
 
-        python src/train.py ... +aux_task=nn_sequence
+        python proteinworkshop/train.py ... +aux_task=nn_sequence
 
 Sequence Denoising (``nn_sequence``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -173,7 +173,7 @@ Sequence Denoising (``nn_sequence``)
 .. code-block:: bash
 
     # Example:
-    python src/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=nn_sequence
+    python proteinworkshop/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=nn_sequence
 
 .. literalinclude:: ../../../configs/aux_task/nn_sequence.yaml
     :language: yaml
@@ -185,7 +185,7 @@ Structure Denoising (``nn_structure_r3``)
 .. code-block:: bash
 
     # Example:
-    python src/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=nn_structure_r3
+    python proteinworkshop/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=nn_structure_r3
 
 .. literalinclude:: ../../../configs/aux_task/nn_structure_r3.yaml
     :language: yaml
@@ -209,7 +209,7 @@ is then tasked with predicting either the per-residue angular noise or the origi
 .. code-block:: bash
 
     # Example:
-    python src/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=nn_structure_torsion
+    python proteinworkshop/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=nn_structure_torsion
 
 .. literalinclude:: ../../../configs/aux_task/nn_structure_torsion.yaml
     :language: yaml
@@ -227,7 +227,7 @@ This adds an additional inverse folding objective to the model. I.e. the model i
 .. code-block:: bash
 
     # Example:
-    python src/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=inverse_folding
+    python proteinworkshop/train.py dataset=cath encoder=gvp task=plddt_prediction +aux_task=inverse_folding
 
 .. literalinclude:: ../../../configs/aux_task/inverse_folding.yaml
     :language: yaml
@@ -239,4 +239,4 @@ None (``none``)
 .. code-block:: bash
 
     # Example:
-    python src/train.py dataset=cath encoder=gvp task=plddt_prediction
+    python proteinworkshop/train.py dataset=cath encoder=gvp task=plddt_prediction

@@ -1,4 +1,4 @@
-_target_: src.models.graph_encoders.gnn.GNNModel
+_target_: proteinworkshop.models.graph_encoders.gnn.GNNModel
 model_name: "GCN"
 layer_types: ["GCN", "GCN"]
 n_hid: [128, 128] # number of hidden units

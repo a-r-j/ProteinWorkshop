@@ -1,5 +1,5 @@
 pos:
-  _target_: src.models.decoders.mlp_decoder.PositionDecoder
+  _target_: proteinworkshop.models.decoders.mlp_decoder.PositionDecoder
   num_message_layers: 2
   message_hidden_dim: 128
   message_activation: "relu"

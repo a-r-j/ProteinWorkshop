@@ -1,5 +1,5 @@
 datamodule:
-  _target_: src.datasets.cc_pdb.CCPDBDataModule
+  _target_: proteinworkshop.datasets.cc_pdb.CCPDBDataModule
   path: ${env.paths.data}/ccpdb/nucleotides/ # Path to the dataset
   pdb_dir: ${env.paths.data}/pdb/ # Path to the PDB files
   name: "nucleotides" # Name of the ccPDB dataset

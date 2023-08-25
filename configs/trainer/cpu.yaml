@@ -2,4 +2,3 @@ defaults:
   - default.yaml
 
 accelerator: cpu
-devices: 1

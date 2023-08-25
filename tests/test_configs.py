@@ -1,8 +1,8 @@
 import hydra
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig
+from proteinworkshop.models.base import BenchMarkModel
 
-from src.models.base import BenchMarkModel
 
 def test_train_config(cfg_train: DictConfig) -> None:
     """
@@ -24,6 +24,7 @@ def test_train_config(cfg_train: DictConfig) -> None:
     hydra.utils.instantiate(cfg_train.trainer)
 
     model = BenchMarkModel(cfg_train)
+    assert model
 
 
 def test_finetune_config(cfg_finetune: DictConfig) -> None:
@@ -46,3 +47,4 @@ def test_finetune_config(cfg_finetune: DictConfig) -> None:
     hydra.utils.instantiate(cfg_finetune.trainer)
 
     model = BenchMarkModel(cfg_finetune)
+    assert model

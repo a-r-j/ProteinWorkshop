@@ -31,7 +31,7 @@ class BackboneDihedralPredictionTransform(T.BaseTransform):
         Compute backbone dihedral angles for a protein.
 
         Sets dihedrals as an attribute of the Batch object. This is retrieved
-        in :ref:`src.models.base.BaseModel.get_labels`.
+        in :py:meth:`proteinworkshop.models.base.BaseModel.get_labels`.
 
         :param x: Protein data object
         :type x: Union[Protein, Data]

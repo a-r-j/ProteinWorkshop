@@ -162,7 +162,7 @@
       if (task == "ppi_site_prediction" & datasets != "masif_site") {
         $("#command pre").text(`# The ppi_site_prediction task is currently only supported on the masif_site dataset. \n`);
       } else {
-      $("#command pre").append(`python src/${$("#command").attr("scheme")}.py encoder=${$("#command").attr("model")} task=${$("#command").attr("task")} dataset=${$("#command").attr("datasets")} features=${$("#command").attr("features")} +aux_task=${$("#command").attr("auxtask")}`);
+      $("#command pre").append(`python proteinworkshop/${$("#command").attr("scheme")}.py encoder=${$("#command").attr("model")} task=${$("#command").attr("task")} dataset=${$("#command").attr("datasets")} features=${$("#command").attr("features")} +aux_task=${$("#command").attr("auxtask")}`);
       }
 
      if (scheme == "finetune") {

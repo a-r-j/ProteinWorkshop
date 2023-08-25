@@ -1,4 +1,4 @@
-_target_: src.models.graph_encoders.gvp.GVPGNNModel
+_target_: proteinworkshop.models.graph_encoders.gvp.GVPGNNModel
 s_dim: 128  # Dimension of the node state embeddings
 v_dim: 16  # Dimension of the node vector embeddings
 s_dim_edge: 32  # Dimension of the edge scalar embeddings

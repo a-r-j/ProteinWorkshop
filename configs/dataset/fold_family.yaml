@@ -1,5 +1,5 @@
 datamodule:
-  _target_: "src.datasets.fold_classification.FoldClassificationDataModule"
+  _target_: "proteinworkshop.datasets.fold_classification.FoldClassificationDataModule"
   path: ${env.paths.data}/FoldClassification/ # Directory where the dataset is stored
   split: "family" # Level of fold classification to perform (`family`, `superfamily`, or `fold`)
   batch_size: 32 # Batch size for dataloader

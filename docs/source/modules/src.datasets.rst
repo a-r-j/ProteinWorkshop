@@ -4,15 +4,15 @@ protein_workshop.datasets
 
 Base Classes
 ----------------
-.. automodule:: src.datasets.base
+.. automodule:: proteinworkshop.datasets.base
     :members:
 
 
 Pre-Training Datasets
 ---------------------
-.. automodule:: src.datasets.cath
+.. automodule:: proteinworkshop.datasets.cath
     :members:
-.. automodule:: src.datasets.astral
+.. automodule:: proteinworkshop.datasets.astral
     :members:
 
 
@@ -22,20 +22,20 @@ Node-level Datasets
 
 Graph-level Datasets
 ---------------------
-.. automodule:: src.datasets.go
+.. automodule:: proteinworkshop.datasets.go
     :members:
 
-.. automodule:: src.datasets.fold_classification
+.. automodule:: proteinworkshop.datasets.fold_classification
     :members:
 
 
 FLIP
 -------
-.. automodule:: src.datasets.flip_datamodule
+.. automodule:: proteinworkshop.datasets.flip_datamodule
     :members:
 
 
 Utils
 -------
-.. automodule:: src.datasets.utils
+.. automodule:: proteinworkshop.datasets.utils
     :members:

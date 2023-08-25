@@ -1,4 +1,4 @@
-_target_: src.models.graph_encoders.mace.MACEModel
+_target_: proteinworkshop.models.graph_encoders.mace.MACEModel
 r_max: 10.0
 num_bessel: 8
 num_polynomial_cutoff: 5

@@ -1,0 +1,24 @@
+# Configuration
+hydra-core
+python-dotenv
+python-wget
+
+# Protein
+graphein
+torchdrug
+fair-esm
+biotite
+atom3d
+
+# Deep learning
+einsum
+einops
+
+# Typing
+jaxtyping
+beartype
+
+# Logging
+loguru
+lovely-tensors
+wandb
