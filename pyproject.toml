@@ -55,6 +55,7 @@ chromadb = "^0.4.7"
 torch = "^2.0.1"
 pyrootutils = "^1.0.4"
 torch-geometric = "^2.3.1"
+hydra-colorlog = "^1.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
