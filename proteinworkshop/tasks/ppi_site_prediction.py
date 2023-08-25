@@ -4,7 +4,7 @@ import numpy as np
 import scipy.spatial as spatial
 import torch
 from graphein.protein.tensor.data import Protein
-from proteinworkshop.features.representation import get_full_atom_coords
+from src.features.representation import get_full_atom_coords
 from torch_geometric import transforms as T
 from torch_geometric.data import Data
 

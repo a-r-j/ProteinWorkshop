@@ -12,13 +12,6 @@ class BackboneDihedralPredictionTransform(T.BaseTransform):
 
     This is used for setting the labels in a SSL context,
     not for featurisation.
-
-    Sets dihedrals as an attribute of the Batch object (i.e.
-    ``batch.dihedrals``). This is retrieved in
-    :py:meth:`proteinworkshop.models.base.BaseModel.get_labels` for supervision.
-
-    .. seealso::
-        :py:meth:`proteinworkshop.models.base.BaseModel.get_labels`
     """
 
     def __init__(self):
@@ -27,11 +20,6 @@ class BackboneDihedralPredictionTransform(T.BaseTransform):
     @property
     def required_attributes(self) -> Set[str]:
         """Required batch attributes for this transform.
-
-         - ``coords`` are required for computing dihedrals. This is a tensor of
-            shape :math:`(N, 37, 3)` where :math:`N` is the number of residues,
-            37 is the number of unique atoms in PDBs, and 3 is the x, y, z
-            position of each atom.
 
         :return: Set of required attributes
         :rtype: Set[str]
@@ -43,7 +31,7 @@ class BackboneDihedralPredictionTransform(T.BaseTransform):
         Compute backbone dihedral angles for a protein.
 
         Sets dihedrals as an attribute of the Batch object. This is retrieved
-        in :py:meth:`proteinworkshop.models.base.BaseModel.get_labels`.
+        in :ref:`src.models.base.BaseModel.get_labels`.
 
         :param x: Protein data object
         :type x: Union[Protein, Data]
