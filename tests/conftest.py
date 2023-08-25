@@ -9,13 +9,19 @@ from graphein.protein.tensor.data import (ProteinBatch, get_random_batch,
 from hydra import compose, initialize
 from hydra.core.global_hydra import GlobalHydra
 from omegaconf import DictConfig, open_dict
+import functools
+import torch.nn.functional as F
 
+from proteinworkshop.features.node_features import orientations
+from proteinworkshop.features.utils import _normalize
+from proteinworkshop.features.edge_features import pos_emb
 
 @pytest.fixture(scope="package")
 def cfg_train_global() -> DictConfig:
     """A pytest fixture for setting up a default Hydra DictConfig for training.
 
-    :return: A DictConfig object containing a default Hydra configuration for training.
+    :return: A DictConfig object containing a default Hydra configuration for
+        training.
     """
     with initialize(version_base="1.3", config_path="../configs"):
         cfg = compose(config_name="train.yaml", return_hydra_config=True, overrides=[])
@@ -42,7 +48,8 @@ def cfg_train_global() -> DictConfig:
 
 @pytest.fixture(scope="package")
 def cfg_finetune_global() -> DictConfig:
-    """A pytest fixture for setting up a default Hydra DictConfig for evaluation.
+    """
+    A pytest fixture for setting up a default Hydra DictConfig for evaluation.
 
     :return: A DictConfig containing a default Hydra configuration for evaluation.
     """
@@ -124,15 +131,29 @@ def cfg_finetune(cfg_finetune_global: DictConfig, tmp_path: Path) -> DictConfig:
     GlobalHydra.instance().clear()
 
 
-@pytest.fixture(scope="function")
-def test_batch() -> ProteinBatch:
-    """Creates a random batch of proteins for testing"""
-    batch = ProteinBatch().from_protein_list(
-        [get_random_protein() for _ in range(4)], follow_batch=["coords"]
-    )
+@functools.lru_cache()
+def _example_batch() -> ProteinBatch:
+    proteins = []
+    for _ in range(4):
+        p = get_random_protein()
+        p.x = p.residue_type
+        proteins.append(p)
 
-    batch.batch = batch.coords_batch
+    batch = ProteinBatch.from_protein_list(proteins)
+
     batch.edges("knn_8", cache="edge_index")
+    batch.edge_index = batch.edge_index.long()
     batch.pos = batch.coords[:, 1, :]
-    batch.x = batch.residue_type
+    batch.x = F.one_hot(batch.residue_type, num_classes=23).float()
+
+    batch.x_vector_attr = orientations(batch.pos)
+    batch.edge_attr = pos_emb(batch.edge_index, 9)
+    batch.edge_vector_attr = _normalize(
+        batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]
+        )
     return batch
+
+@pytest.fixture(scope="function")
+def example_batch() -> ProteinBatch:
+    """Creates a random batch of proteins for testing"""
+    return _example_batch()

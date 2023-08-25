@@ -53,7 +53,7 @@ if __name__ == "__main__":
     from graphein.protein.tensor.data import get_random_protein
 
     p = get_random_protein()
-    task = StructuralNoiseTransform(corrution_rate=5, corruption_strategy="uniform")
+    task = StructuralNoiseTransform(corruption_rate=5, corruption_strategy="uniform")
 
     def rmsd(x, y):
         return torch.sqrt(torch.mean((x - y) ** 2))
