@@ -4,7 +4,7 @@ To switch between different encoder architectures, simply change the ``encoder``
 
 .. code-block:: bash
 
-    python src/train.py encoder=<encoder_name> dataset=cath task=inverse_folding
+    python proteinworkshop/train.py encoder=<encoder_name> dataset=cath task=inverse_folding
 
 Where ``<encoder_name>`` is given by bracketed name in the listing below. For example, the encoder name for SchNet is ``schnet``.
 
@@ -17,14 +17,14 @@ Where ``<encoder_name>`` is given by bracketed name in the listing below. For ex
 
     .. code-block:: bash
 
-        python src/train.py encoder=<encoder_name> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
+        python proteinworkshop/train.py encoder=<encoder_name> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
 
 The following structural encoders are currently supported:
 
 
 Base Classes
 =============================
-.. automodule:: src.models.base
+.. automodule:: proteinworkshop.models.base
     :members:
     :undoc-members:
     :show-inheritance:
@@ -35,7 +35,7 @@ Invariant Encoders
 
 SchNet (``schnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. automodule:: src.models.graph_encoders.schnet
+.. automodule:: proteinworkshop.models.graph_encoders.schnet
     :members:
     :undoc-members:
     :show-inheritance:
@@ -43,7 +43,7 @@ SchNet (``schnet``)
 
 DimeNet++ (``dimenet_plus_plus``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. automodule:: src.models.graph_encoders.dimenetpp
+.. automodule:: proteinworkshop.models.graph_encoders.dimenetpp
     :members:
     :undoc-members:
     :show-inheritance:
@@ -51,7 +51,7 @@ DimeNet++ (``dimenet_plus_plus``)
 
 GearNet (``gear_net``, ``gear_net_edge``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. automodule:: src.models.graph_encoders.gear_net
+.. automodule:: proteinworkshop.models.graph_encoders.gear_net
     :members:
     :undoc-members:
     :show-inheritance:
@@ -62,7 +62,7 @@ Vector-Equivariant Encoders
 
 EGNN (``egnn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. automodule:: src.models.graph_encoders.egnn
+.. automodule:: proteinworkshop.models.graph_encoders.egnn
     :members:
     :undoc-members:
     :show-inheritance:
@@ -70,7 +70,7 @@ EGNN (``egnn``)
 
 GVP (``gvp``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. automodule:: src.models.graph_encoders.gvp
+.. automodule:: proteinworkshop.models.graph_encoders.gvp
     :members:
     :undoc-members:
     :show-inheritance:
@@ -78,7 +78,7 @@ GVP (``gvp``)
 
 GCPNet (``gcpnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. automodule:: src.models.graph_encoders.gcpnet
+.. automodule:: proteinworkshop.models.graph_encoders.gcpnet
     :members:
     :undoc-members:
     :show-inheritance:
@@ -89,7 +89,7 @@ Tensor-Equivariant Encoders
 
 TFN (``tfn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. automodule:: src.models.graph_encoders.gcpnet
+.. automodule:: proteinworkshop.models.graph_encoders.gcpnet
     :members:
     :undoc-members:
     :show-inheritance:
@@ -97,7 +97,7 @@ TFN (``tfn``)
 
 Multi-Atomic Cluster Expansion (``mace``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. automodule:: src.models.graph_encoders.gcpnet
+.. automodule:: proteinworkshop.models.graph_encoders.gcpnet
     :members:
     :undoc-members:
     :show-inheritance:
@@ -106,7 +106,7 @@ Multi-Atomic Cluster Expansion (``mace``)
 Decoders
 =============================
 
-.. automodule:: src.models.decoders.mlp_decoder
+.. automodule:: proteinworkshop.models.decoders.mlp_decoder
     :members:
     :undoc-members:
     :show-inheritance:

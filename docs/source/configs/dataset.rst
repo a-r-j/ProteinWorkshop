@@ -10,7 +10,7 @@ To switch between different datasets, simply change the `dataset` argument in th
 
 .. code-block:: bash
 
-    python src/train.py encoder=gear_net dataset=<DATASET_NAME> task=inverse_folding
+    python proteinworkshop/train.py encoder=gear_net dataset=<DATASET_NAME> task=inverse_folding
 
 Where ``<DATASET_NAME>`` is given by bracketed name in the listing below. For example, the dataset name for CATH is ``cath``.
 
@@ -23,7 +23,7 @@ Where ``<DATASET_NAME>`` is given by bracketed name in the listing below. For ex
 
     .. code-block:: bash
 
-        python src/train.py encoder=<encoder_name> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
+        python proteinworkshop/train.py encoder=<encoder_name> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
 
 
 
@@ -36,7 +36,7 @@ Unlabelled Datasets
     :end-line: 188
 
 
-:py:class:`ASTRAL <src.datasets.astral.AstralDataModule>` (``astral``)
+:py:class:`ASTRAL <proteinworkshop.datasets.astral.AstralDataModule>` (``astral``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ASTRAL provides compendia of protein domain structures, regions of proteins that
@@ -48,17 +48,17 @@ exhibit highly-specific functions and can be considered structural building bloc
     :caption: configs/dataset/astral.yaml
 
 
-:py:class:`CATH <src.datasets.cath.CATHDataModule>` (``cath``)
+:py:class:`CATH <proteinworkshop.datasets.cath.CATHDataModule>` (``cath``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. literalinclude:: ../../../configs/dataset/cath.yaml
     :language: yaml
     :caption: configs/dataset/cath.yaml
 
-:py:class:`PDB <src.datasets.pdb_dataset.PDBDataModule>` (``pdb``)
+:py:class:`PDB <proteinworkshop.datasets.pdb_dataset.PDBDataModule>` (``pdb``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. seealso::
-    :py:class:`src.datasets.pdb_dataset.PDBData`
+    :py:class:`proteinworkshop.datasets.pdb_dataset.PDBData`
 
 .. literalinclude:: ../../../configs/dataset/pdb.yaml
     :language: yaml
@@ -124,7 +124,7 @@ TODO
 Graph-level Datasets
 =============================
 
-:py:class:`Antibody Developability <src.datasets.antibody_developability.AntibodyDevelopabilityDataModule>` (``antibody_developability``)
+:py:class:`Antibody Developability <proteinworkshop.datasets.antibody_developability.AntibodyDevelopabilityDataModule>` (``antibody_developability``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Therapeutic antibodies must be optimised for favourable
 physicochemical properties in addition to target binding affinity and specificity
@@ -141,7 +141,7 @@ purpose structure-based encoders can be applicable to fold-specific tasks.
     :language: yaml
     :caption: configs/dataset/antibody_developability.yaml
 
-:py:class:`Atom3D Mutation Stability Prediction <src.datasets.atom3d_datamodule.ATOM3DDataModule>` (``atom3d_msp``)
+:py:class:`Atom3D Mutation Stability Prediction <proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule>` (``atom3d_msp``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This task is defined in the `Atom3D benchmark <https://www.atom3d.ai/msp.html>`_.
 
@@ -162,7 +162,7 @@ As per their documentation:
     :language: yaml
     :caption: configs/dataset/atom3d_msp.yaml
 
-:py:class:`Atom3D Protein Structure Ranking <src.datasets.atom3d_datamodule.ATOM3DDataModule>` (``atom3d_psr``)
+:py:class:`Atom3D Protein Structure Ranking <proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule>` (``atom3d_psr``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This task is defined in the `Atom3D benchmark <https://www.atom3d.ai/psr.html>`_.
 
@@ -184,14 +184,14 @@ As per their documentation:
     :caption: configs/dataset/atom3d_psr.yaml
 
 
-:py:class:`Deep Sea Protein Classification <src.datasets.deep_sea_proteins.DeepSeaProteinsDataModule>` (``deep_sea_proteins``)
+:py:class:`Deep Sea Protein Classification <proteinworkshop.datasets.deep_sea_proteins.DeepSeaProteinsDataModule>` (``deep_sea_proteins``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. literalinclude:: ../../../configs/dataset/deep_sea_proteins.yaml
     :language: yaml
     :caption: configs/dataset/deepsea.yaml
 
 
-:py:class:`Enzyme Commission Number Prediction <src.datasets.ec_reaction.EnzymeCommissionReactionDataset>` (``ec_reaction``)
+:py:class:`Enzyme Commission Number Prediction <proteinworkshop.datasets.ec_reaction.EnzymeCommissionReactionDataset>` (``ec_reaction``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: ../../../configs/dataset/ec_reaction.yaml
@@ -199,7 +199,7 @@ As per their documentation:
     :caption: configs/dataset/ec_reaction.yaml
 
 
-:py:class:`Fold Classification <src.src.datasets.fold_classification.FoldClassificationDataModule>` (``fold-family``, ``fold-superfamily``, ``fold-fold``)
+:py:class:`Fold Classification <proteinworkshop.datasets.fold_classification.FoldClassificationDataModule>` (``fold-family``, ``fold-superfamily``, ``fold-fold``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This is a multiclass graph classification task where each protein, G, is mapped to a
 label y ∈ {1, . . . , 1195} denoting the fold class.

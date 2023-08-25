@@ -1,7 +1,7 @@
 protein_workshop.train
 -----------------------
 
-.. automodule:: src.train
+.. automodule:: proteinworkshop.train
    :members:
    :undoc-members:
    :show-inheritance:

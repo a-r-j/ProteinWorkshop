@@ -11,7 +11,7 @@ These configs configure PyTorch Lightning ``Trainer`` objects.
 
     .. code-block:: bash
 
-        python src/train.py trainer=<TRAINER_NAME> encoder=gvp dataset=cath task=inverse_folding
+        python proteinworkshop/train.py trainer=<TRAINER_NAME> encoder=gvp dataset=cath task=inverse_folding
 
     where ``<TRAINER_NAME>`` is the name of the trainer config.
 
@@ -22,7 +22,7 @@ Default (``default``)
 .. code-block:: bash
 
    # Example usage
-   python src/train.py ... trainer.max_epochs=1000
+   python proteinworkshop/train.py ... trainer.max_epochs=1000
 
 .. literalinclude:: ../../../../configs/trainer/default.yaml
    :language: yaml

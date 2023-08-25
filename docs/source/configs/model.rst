@@ -10,7 +10,7 @@ To switch between different encoder architectures, simply change the ``encoder``
 
 .. code-block:: bash
 
-    python src/train.py encoder=<ENCODER_NAME> dataset=cath task=inverse_folding
+    python proteinworkshop/train.py encoder=<ENCODER_NAME> dataset=cath task=inverse_folding
 
 Where ``<ENCODER_NAME>`` is given by bracketed name in the listing below. For example, the encoder name for SchNet is ``schnet``.
 
@@ -23,7 +23,7 @@ Where ``<ENCODER_NAME>`` is given by bracketed name in the listing below. For ex
 
     .. code-block:: bash
 
-        python src/train.py encoder=<ENCODER_NAME> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
+        python proteinworkshop/train.py encoder=<ENCODER_NAME> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
 
 
 Invariant Encoders
@@ -33,7 +33,7 @@ Invariant Encoders
     :start-line: 144
     :end-line: 152
 
-:py:class:`SchNet <src.models.graph_encoders.schnet.SchNetModel>` (``schnet``)
+:py:class:`SchNet <proteinworkshop.models.graph_encoders.schnet.SchNetModel>` (``schnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 SchNet is one of the most popular and simplest instantiation of E(3) invariant message passing GNNs. SchNet constructs messages through element-wise multiplication of scalar features modulated by a radial filter conditioned on the pairwise distance :math:`\Vert \vec{\vx}_{ij} \Vert`` between two neighbours.
@@ -49,7 +49,7 @@ Scalar features are update from iteration :math:`t`` to :math:`t+1` via:
     :caption: configs/encoder/schnet.yaml
 
 
-:py:class:`DimeNet++ <src.models.graph_encoders.dimenetpp.DimeNetPPModel>` (``dimenet_plus_plus``)
+:py:class:`DimeNet++ <proteinworkshop.models.graph_encoders.dimenetpp.DimeNetPPModel>` (``dimenet_plus_plus``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 DimeNet is an E(3) invariant GNN which uses both distances :math:`\Vert \vec{\vx}_{ij} \Vert` and angles :math:`\vec{\vx}_{ij} \cdot \vec{\vx}_{ik}` to perform message passing among triplets, as follows:
@@ -65,7 +65,7 @@ DimeNet is an E(3) invariant GNN which uses both distances :math:`\Vert \vec{\vx
     :language: yaml
     :caption: configs/encoder/dimenet_plus_plus.yaml
 
-:py:class:`GearNet <src.models.graph_encoders.gear_net.GearNet>` (``gear_net``, ``gear_net_edge``)
+:py:class:`GearNet <proteinworkshop.models.graph_encoders.gear_net.GearNet>` (``gear_net``, ``gear_net_edge``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 GearNet-Edge is an SE(3) invariant architecture leveraging
@@ -116,7 +116,7 @@ Vector-Equivariant Encoders
     :start-line: 156
     :end-line: 162
 
-:py:class:`EGNN <src.models.graph_encoders.egnn.EGNNModel>` (``egnn``)
+:py:class:`EGNN <proteinworkshop.models.graph_encoders.egnn.EGNNModel>` (``egnn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We consider E(3) equivariant GNN layers proposed by Satorras et al. (2021) which updates both scalar features :math:`\vs_i` as well as node coordinates :math:`\vec{\vx}_{i}`, as follows:
@@ -132,14 +132,14 @@ We consider E(3) equivariant GNN layers proposed by Satorras et al. (2021) which
     :caption: configs/encoder/egnn.yaml
 
 
-:py:class:`GVP <src.models.graph_encoders.gvp.GVPGNNModel>` (``gvp``)
+:py:class:`GVP <proteinworkshop.models.graph_encoders.gvp.GVPGNNModel>` (``gvp``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. literalinclude:: ../../../configs/encoder/gvp.yaml
     :language: yaml
     :caption: configs/encoder/gvp.yaml
 
 
-:py:class:`GCPNet <src.models.graph_encoders.gcpnet.GCPNetModel>` (``gcpnet``)
+:py:class:`GCPNet <proteinworkshop.models.graph_encoders.gcpnet.GCPNetModel>` (``gcpnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 GCPNet is an SE(3) equivariant architecture that jointly learns scalar and vector-valued features from geometric protein structure inputs and, through the use of geometry-complete frame embeddings, sensitises its predictions to account for potential changes induced by the effects of molecular chirality on protein structure. In contrast to the original GCPNet formulation presented in Morehead et al. (2022), the implementation we provide in the benchmark incorporates the architectural enhancements proposed in Morehead et al. (2023) which include the addition of a scalar message attention gate (i.e., :math:`f_{a}(\cdot)``) and a simplified structure for the model's geometric graph convolution layers (i.e., :math:`f_{n}(\cdot)`). With geometry-complete graph convolution in mind, for node :math:`i` and layer :math:`t`, scalar edge features :math:`\vs_{e^{ij}}^{(t)}` and vector edge features :math:`\vv_{e^{ij}}^{(t)}` are used along with scalar node features :math:`\vs_{n^{i}}^{(t)}` and vector node features :math:`\vv_{n^{i}}^{(t)}` to update each node feature type as:
@@ -170,7 +170,7 @@ Tensor-Equivariant Encoders
     :end-line: 169
 
 
-:py:class:`Tensor Field Networks <src.models.graph_encoders.tfn.TensorProductModel>` (``tfn``)
+:py:class:`Tensor Field Networks <proteinworkshop.models.graph_encoders.tfn.TensorProductModel>` (``tfn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Tensor Field Networks are E(3) or SE(3) equivariant GNNs that have been successfully used in protein structure prediction (Baek et al., 2021) and protein-ligand docking (Corso et al., 2022).
@@ -191,7 +191,7 @@ where the weights :math:`\vw` of the tensor product are computed via a learnt ra
     :caption: configs/encoder/tfn.yaml
 
 
-:py:class:`Multi-Atomic Cluster Expansion <src.models.graph_encoders.mace.MACEModel>` (``mace``)
+:py:class:`Multi-Atomic Cluster Expansion <proteinworkshop.models.graph_encoders.mace.MACEModel>` (``mace``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 MACE (Batatia et al., 2022) is a higher order E(3) or SE(3) equivariant GNN originally developed for molecular dynamics simulations.

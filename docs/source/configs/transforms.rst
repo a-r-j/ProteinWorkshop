@@ -45,14 +45,14 @@ Generic Task Transforms
 Binding Site Prediction
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. seealso::
-    :py:class:`src.tasks.binding_site_prediction.BindingSiteTransform`
+    :py:class:`proteinworkshop.tasks.binding_site_prediction.BindingSiteTransform`
 
 
 Protein Protein Site Prediction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. seealso::
-    :py:class:`src.tasks.ppi_site_prediction.BindingSiteTransform`
+    :py:class:`proteinworkshop.tasks.ppi_site_prediction.BindingSiteTransform`
 
 .. literalinclude:: ../../../configs/transforms/ppi_site_prediction.yaml
     :language: yaml
@@ -67,7 +67,7 @@ Denoising Transforms
 Sequence Denoising
 ^^^^^^^^^^^^^^^^^^
 .. seealso::
-    :py:class:`src.tasks.sequence_denoising.SequenceNoiseTransform`
+    :py:class:`proteinworkshop.tasks.sequence_denoising.SequenceNoiseTransform`
 
 .. literalinclude:: ../../../configs/transforms/sequence_denoising.yaml
     :language: yaml
@@ -77,7 +77,7 @@ Structure Denoising
 ^^^^^^^^^^^^^^^^^^^
 
 .. seealso::
-    :py:class:`src.tasks.structural_denoising.StructuralNoiseTransform`
+    :py:class:`proteinworkshop.tasks.structural_denoising.StructuralNoiseTransform`
 
 .. literalinclude:: ../../../configs/transforms/structure_denoising.yaml
     :language: yaml
@@ -87,7 +87,7 @@ Torsional Denoising
 ^^^^^^^^^^^^^^^^^^^
 
 .. seealso::
-    :py:class:`src.tasks.torsional_denoising.TorsionalNoiseTransform`
+    :py:class:`proteinworkshop.tasks.torsional_denoising.TorsionalNoiseTransform`
 
 .. literalinclude:: ../../../configs/transforms/torsional_denoising.yaml
     :language: yaml

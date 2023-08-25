@@ -135,7 +135,7 @@
       var features = $("#command").attr("features");
       var auxtask = $("#command").attr("auxtask");
 
-      $("#command pre").text(`python src/train.py encoder=${$("#command").attr("model")} task=${$("#command").attr("task")} dataset=${$("#command").attr("datasets")} features=${$("#command").attr("features")} +aux_task=${$("#command").attr("auxtask")}`);
+      $("#command pre").text(`python proteinworkshop/train.py encoder=${$("#command").attr("model")} task=${$("#command").attr("task")} dataset=${$("#command").attr("datasets")} features=${$("#command").attr("features")} +aux_task=${$("#command").attr("auxtask")}`);
     }
 
     $(".quick-start-pt .content-column .row div").click(function() {
