@@ -1,16 +1,19 @@
+import copy
 
 import hydra
 import omegaconf
 import torch
-import copy
 from graphein.protein.tensor.data import get_random_protein
+
+from src import constants
 
 
 def test_instantiate_transform():
-
-    config = omegaconf.OmegaConf.load(
-        "../../configs/transforms/torsional_denoising.yaml"
+    config_path = (
+        constants.PROJECT_PATH / "configs" / "transforms" / "torsional_denoising.yaml"
     )
+
+    config = omegaconf.OmegaConf.load(config_path)
 
     a = get_random_protein()
     b = copy.deepcopy(a)

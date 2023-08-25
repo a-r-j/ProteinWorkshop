@@ -1,8 +1,8 @@
-import torch
 import pytest
-from src.tasks.structural_noise import StructuralNoiseTransform
+import torch
 from graphein.protein.tensor.data import get_random_protein
 
+from src.tasks.structural_denoising import StructuralNoiseTransform
 
 
 def test_instantiate_transform():

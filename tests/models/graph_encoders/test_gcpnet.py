@@ -11,5 +11,6 @@ def test_instantiate_encoder():
 
     print(enc)
 
+
 if __name__ == "__main__":
     test_instantiate_encoder()

@@ -1,9 +1,8 @@
-
-import pytest
 import hydra
 import omegaconf
 import pyrootutils
-from graphein.protein.tensor.data import get_random_protein, ProteinBatch
+import pytest
+from graphein.protein.tensor.data import ProteinBatch, get_random_protein
 from loguru import logger
 
 
@@ -14,7 +13,9 @@ def test_instantiate_schnet():
     logger.info(cfg)
     encoder = hydra.utils.instantiate(cfg)
     logger.info(encoder)
-    batch = ProteinBatch().from_protein_list([get_random_protein() for _ in range(4)], follow_batch=["coords"])
+    batch = ProteinBatch().from_protein_list(
+        [get_random_protein() for _ in range(4)], follow_batch=["coords"]
+    )
 
     batch.batch = batch.coords_batch
     batch.edges("knn_8", cache="edge_index")
