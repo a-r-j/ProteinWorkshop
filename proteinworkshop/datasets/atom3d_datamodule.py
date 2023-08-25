@@ -14,10 +14,10 @@ import torch
 from beartype import beartype
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
-from proteinworkshop.datasets.components import atom3d_dataset
-from proteinworkshop.datasets.components.ppi_dataset import PPIDataset
-from proteinworkshop.datasets.components.res_dataset import RESDataset
-from proteinworkshop.datasets.components.sampler import DistributedSamplerWrapper
+from src.datasets.components import atom3d_dataset
+from src.datasets.components.ppi_dataset import PPIDataset
+from src.datasets.components.res_dataset import RESDataset
+from src.datasets.components.sampler import DistributedSamplerWrapper
 from torch.utils.data import Dataset
 from torch_geometric.loader import DynamicBatchSampler
 
@@ -62,6 +62,21 @@ def get_test_data_path(
     test_phase: str = "test",
     use_dips_for_testing: bool = False,
 ) -> str:
+    """Get path to test data.
+    
+    :param dataset: name of the dataset.
+    :type dataset: str
+    :param lba_split: data split type for the LBA task (30 or 60).
+    :type lba_split: int
+    :param ppi_split: data split type for the PPI task (DIPS-split).
+    :type ppi_split: str
+    :param test_phase: test phase (test or test2).
+    :type test_phase: str
+    :param use_dips_for_testing: whether to use DIPS for testing PPI methods.
+    :type use_dips_for_testing: bool
+    :return: path to test data.
+    :rtype: str
+    """
     data_paths = {
         "PSR": f"PSR/splits/split-by-year/data/{test_phase}",
         "LBA": f"LBA/splits/split-by-sequence-identity-{lba_split}/data/{test_phase}",
@@ -90,6 +105,21 @@ def get_task_split(
     res_split: str = "cath-topology",
     msp_split: int = 30,
 ) -> str:
+    """Get split type for a given task.
+
+    :param task: name of the task.
+    :type task: str
+    :param lba_split: data split type for the LBA task (30 or 60).
+    :type lba_split: int
+    :param ppi_split: data split type for the PPI task (DIPS-split).
+    :type ppi_split: str
+    :param res_split: data split type for the RES task (cath-topology).
+    :type res_split: str
+    :param msp_split: data split type for the MSP task (30).
+    :type msp_split: int
+    :return: split type for the given task.
+    :rtype: str
+    """
     splits = {
         "PSR": "year",
         "LBA": f"sequence-identity-{lba_split}",
@@ -296,6 +326,21 @@ class ATOM3DDataModule(L.LightningDataModule):
         shuffle: bool = False,
         drop_last: bool = False,
     ) -> ProteinDataLoader:
+        """Get dataloader for a given dataset.
+        
+        :param dataset: dataset to get dataloader for.
+        :type dataset: Union[da.LMDBDataset, PPIDataset, RESDataset]
+        :param batch_size: batch size.
+        :type batch_size: int
+        :param pin_memory: whether to reserve memory for faster data loading.
+        :type pin_memory: bool
+        :param shuffle: whether to shuffle the data.
+        :type shuffle: bool
+        :param drop_last: whether to drop the last batch.
+        :type drop_last: bool
+        :return: dataloader for the given dataset.
+        :rtype: ProteinDataLoader
+        """
         if batch_size is None:
             batch_size = self.hparams.batch_size
         if pin_memory is None:
@@ -396,7 +441,7 @@ if __name__ == "__main__":
     import hydra
     import omegaconf
     import pyrootutils
-    from proteinworkshop.constants import DATA_PATH
+    from src.constants import DATA_PATH
 
     root = pyrootutils.setup_root(__file__, pythonpath=True)
     import pathlib

@@ -7,10 +7,31 @@ import pandas as pd
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
-from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+from src.datasets.base import ProteinDataModule, ProteinDataset
 
 
 class Metal3DDataModule(ProteinDataModule):
+    """Data module for Metal3D dataset.
+
+    :param path: Path to store data.
+    :type path: str
+    :param pdb_dir: Path to directory containing PDB files.
+    :type pdb_dir: str
+    :param format: Format to load PDB files in.
+    :type format: str
+    :param in_memory: Whether to load the entire dataset into memory.
+    :type in_memory: bool
+    :param transforms: List of transforms to apply to dataset.
+    :type transforms: Optional[List[Callable]]
+    :param batch_size: Batch size for dataloaders.
+    :type batch_size: int
+    :param num_workers: Number of workers for dataloaders.
+    :type num_workers: int
+    :param pin_memory: Whether to pin memory for dataloaders.
+    :type pin_memory: bool
+    :param obsolete_strategy: How to handle obsolete PDB structures.
+    :type obsolete_strategy: str
+    """
     def __init__(
         self,
         path: str,
@@ -59,6 +80,7 @@ class Metal3DDataModule(ProteinDataModule):
         pass
 
     def download(self):
+        """Download Metal3D dataset from GitHub."""
         if not os.path.exists(self.root_dir / "train.txt"):
             log.info(
                 f"Downloading training data from {self.BASE_URL} to {self.root_dir}"

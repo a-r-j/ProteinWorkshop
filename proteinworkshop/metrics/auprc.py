@@ -6,6 +6,7 @@ from torchmetrics import Metric
 
 
 class AUPRC(Metric):
+    """ Class for AUPRC metric."""
     def __init__(self, compute_on_cpu: bool = True) -> None:
         super().__init__()
         self.add_state(

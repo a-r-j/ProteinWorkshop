@@ -12,10 +12,33 @@ import wget
 graphein.verbose(False)
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
-from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+from src.datasets.base import ProteinDataModule, ProteinDataset
 
 
 class DeepSeaProteinsDataModule(ProteinDataModule):
+    """Data module for Deep Sea Proteins dataset.
+
+    :param path: Path to store data.
+    :type path: str
+    :param pdb_dir: Path to directory containing PDB files.
+    :type pdb_dir: str
+    :param validation_fold: Fold to use for validation.
+    :type validation_fold: int
+    :param batch_size: Batch size for dataloaders.
+    :type batch_size: int
+    :param in_memory: Whether to load the entire dataset into memory.
+    :type in_memory: bool
+    :param pin_memory: Whether to pin memory for dataloaders.
+    :type pin_memory: bool
+    :param num_workers: Number of workers for dataloaders.
+    :type num_workers: int
+    :param obsolete_strategy: How to handle obsolete PDB structures.
+    :type obsolete_strategy: str
+    :param format: Format to load PDB files in.
+    :type format: str
+    :param transforms: List of transforms to apply to dataset.
+    :type transforms: Optional[List[Callable]]
+    """
     def __init__(
         self,
         path: os.PathLike,
@@ -64,6 +87,7 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         }
 
     def download(self):
+        """Download Deep Sea Protein dataset from https://www.zbh.uni-hamburg.de/forschung/amd/datasets/deep-sea-protein-structure.html"""
         if not os.path.exists(self.data_dir / self.ZIP_FNAME):
             log.info(f"Downloading Deep Sea Protein dataset to {self.data_dir}")
             wget.download(self.DATASET_URL, str(self.data_dir))
@@ -78,6 +102,7 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
             log.info(f"Deep Sea Protein dataset already extracted to {self.data_dir}")
 
     def parse_dataset(self, split: str) -> pd.DataFrame:
+        """Parse Deep Sea Protein dataset into train/val/test splits."""
         log.info(f"Parsing dataset from {self.data_dir / 'folds.tsv'}")
         df = pd.read_csv(self.data_dir / "folds.tsv", sep="\t")
         df[["pdb_code", "chain"]] = df["sample"].str.split("_", expand=True)
@@ -170,7 +195,7 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
 if __name__ == "__main__":
     import hydra
     import omegaconf
-    from proteinworkshop import constants
+    from src import constants
 
     cfg = omegaconf.OmegaConf.load(
         constants.HYDRA_CONFIG_PATH / "dataset" / "deep_sea_proteins.yaml"

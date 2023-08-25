@@ -18,7 +18,7 @@ from graphein.protein.utils import (download_pdb_multiprocessing,
                                     get_obsolete_mapping, read_fasta)
 from loguru import logger
 from sklearn.utils.class_weight import compute_class_weight
-from proteinworkshop.features.sequence_features import amino_acid_one_hot
+from src.features.sequence_features import amino_acid_one_hot
 from torch_geometric import transforms as T
 from torch_geometric.data import Data, Dataset
 from tqdm import tqdm
@@ -195,6 +195,41 @@ class ProteinDataModule(L.LightningDataModule, ABC):
 
 
 class ProteinDataset(Dataset):
+    """A PyTorch Geometric Dataset for protein structures.
+
+    :param pdb_codes: List of PDB codes to download.
+    :type pdb_codes: List[str]
+    :param root: Root directory to store data.
+    :type root: str
+    :param pdb_dir: Directory to store PDB files.
+    :type pdb_dir: str
+    :param processed_dir: Directory to store processed data.
+    :type processed_dir: str
+    :param pdb_paths: List of paths to PDB files.
+    :type pdb_paths: List[str]
+    :param chains: List of chains to select from each PDB file.
+    :type chains: List[str]
+    :param graph_labels: List of graph labels.
+    :type graph_labels: List[torch.Tensor]
+    :param node_labels: List of node labels.
+    :type node_labels: List[torch.Tensor]
+    :param transform: List of transforms to apply to each graph.
+    :type transform: List[Callable]
+    :param pre_transform: Transform to apply to each graph before processing.
+    :type pre_transform: Callable
+    :param pre_filter: Filter to apply to each graph before processing.
+    :type pre_filter: Callable
+    :param log: Whether to log progress.
+    :type log: bool
+    :param overwrite: Whether to overwrite existing data.
+    :type overwrite: bool
+    :param format: Format of PDB files to download.
+    :type format: str
+    :param in_memory: Whether to read data into memory.
+    :type in_memory: bool
+    :param store_het: Whether to store HETATM records.
+    :type store_het: bool
+    """
     def __init__(
         self,
         pdb_codes: List[str],
@@ -283,6 +318,7 @@ class ProteinDataset(Dataset):
             return [f"{pdb}.pt" for pdb in self.pdb_codes]
 
     def process(self):
+        """Processes raw data into PyTorch Geometric Data objects."""
         if not self.overwrite:
             if self.chains is not None:
                 pdb_codes = [
