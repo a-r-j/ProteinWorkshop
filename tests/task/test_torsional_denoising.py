@@ -4,6 +4,7 @@ import hydra
 import omegaconf
 import torch
 from graphein.protein.tensor.data import get_random_protein
+
 from proteinworkshop import constants
 
 
@@ -18,13 +19,11 @@ def test_instantiate_transform():
     b = copy.deepcopy(a)
 
     t = hydra.utils.instantiate(config.torsional_denoising)
-    print(t)
 
     out = t(a)
 
     def rmsd(a, b):
         return torch.sqrt(torch.mean((a - b) ** 2))
 
-    print(rmsd(out.coords[:, 1, :], b.coords[:, 1, :]))
+    assert rmsd(out.coords, b.coords[:, :3, :]) > 3
 
-    out.plot_structure(["N", "CA", "C"])
