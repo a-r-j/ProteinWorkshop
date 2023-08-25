@@ -10,7 +10,7 @@ import torch
 import wget
 from loguru import logger as log
 from sklearn.preprocessing import LabelEncoder
-from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+from src.datasets.base import ProteinDataModule, ProteinDataset
 from torch_geometric.data import Dataset
 from torch_geometric.loader import DataLoader
 from tqdm import tqdm
@@ -24,14 +24,38 @@ LABEL_LINE: Dict[str, int] = {
 
 class GeneOntologyDataset(ProteinDataModule):
     """
+    Data module for Gene Ontology dataset.
 
     Statistics (test_cutoff=0.95):
         - #Train: 27,496
         - #Valid: 3,053
         - #Test: 2,991
 
+    :param path: Path to store data.
+    :type path: str
+    :param batch_size: Batch size for dataloaders.
+    :type batch_size: int
+    :param split: Which GO task to use.
+    :type split: str
+    :param obsolete: How to handle obsolete PDB structures.
+    :type obsolete: str
+    :param pdb_dir: Path to directory containing PDB files.
+    :type pdb_dir: str
+    :param format: Format to load PDB files in.
+    :type format: str
+    :param in_memory: Whether to load the entire dataset into memory.
+    :type in_memory: bool   
+    :param dataset_fraction: Fraction of dataset to use.
+    :type dataset_fraction: float
+    :param shuffle_labels: Whether to shuffle labels.
+    :type shuffle_labels: bool
+    :param pin_memory: Whether to pin memory for dataloaders.
+    :type pin_memory: bool
+    :param num_workers: Number of workers for dataloaders.
+    :type num_workers: int
+    :param transforms: List of transforms to apply to dataset.
+    :type transforms: List[Callable]
     """
-
     def __init__(
         self,
         path: str,
@@ -180,6 +204,7 @@ class GeneOntologyDataset(ProteinDataModule):
         )
 
     def download(self):
+        """Download the dataset from Zenodo."""
         if not all(
             os.path.exists(f)
             for f in [
@@ -258,7 +283,7 @@ if __name__ == "__main__":
 
     import hydra
     import omegaconf
-    from proteinworkshop import constants
+    from src import constants
 
     log.info("Imported libs")
     cfg = omegaconf.OmegaConf.load(

@@ -28,13 +28,22 @@ def flatten_dir(dir: os.PathLike):
 def download_pdb_mmtf(
     mmtf_dir: pathlib.Path, ids: Optional[List[str]] = None, create_tar: bool = False
 ):
-    ### Download of PDB and archive creation ###
+    """Download PDB files in MMTF format from RCSB PDB and create archive.
 
-    # MMTF files are downloaded into a new directory in this path
-    # and the .tar archive is created here
+    MMTF files are downloaded into a new directory in this path
+    and the .tar archive is created here.
 
-    # Obtain all PDB IDs using a query that includes all entries
-    # Each PDB entry has a title
+    Obtain all PDB IDs using a query that includes all entries.
+    Each PDB entry has a title.
+    
+    :param mmtf_dir: Path to directory to store MMTF files.
+    :type mmtf_dir: pathlib.Path
+    :param ids: List of PDB IDs to download.
+    :type ids: Optional[List[str]]
+    :param create_tar: Whether to create a .tar archive from the downloaded files.
+    :type create_tar: bool
+    """
+
     if ids is None:
         all_id_query = rcsb.FieldQuery("struct.title")
         pdb_ids = rcsb.search(all_id_query)
