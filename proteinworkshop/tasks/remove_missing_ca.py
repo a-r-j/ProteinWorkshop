@@ -17,7 +17,6 @@ class RemoveMissingCa(T.BaseTransform):
             attribute of the Protein data object. By default this is 1, as the
             coords attribute is of shape ``(N, 37, 3)`` where ``N`` is the
             number of residues.
-        :type ca_idx: int, optional
         """
         self.fill_value = fill_value
         self.ca_idx = ca_idx
