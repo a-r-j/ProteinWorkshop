@@ -109,7 +109,7 @@ See `configs/sweep/` for examples.
 With wandb:
 
   ```bash
-  wandb agent ligands/lightning-hydra-template/2wwtt7oy --count 8
+  wandb agent ligands/protein_workshop-src/2wwtt7oy --count 8
   ```
 
 Or an example SLURM submission script:
