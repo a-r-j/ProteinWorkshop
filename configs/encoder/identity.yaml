@@ -1,2 +1,2 @@
-_target_: src.models.graph_encoders.identity.IdentityModel
+_target_: proteinworkshop.models.graph_encoders.identity.IdentityModel
 readout: "sum"

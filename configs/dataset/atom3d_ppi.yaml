@@ -1,5 +1,5 @@
 datamodule:
-  _target_: src.datasets.atom3d_datamodule.ATOM3DDataModule
+  _target_: proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule
   task: PPI
   data_dir: ${env.paths.data}/ATOM3D
   ppi_split: DIPS-split

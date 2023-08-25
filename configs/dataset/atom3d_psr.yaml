@@ -1,5 +1,5 @@
 datamodule:
-  _target_: src.datasets.atom3d_datamodule.ATOM3DDataModule
+  _target_: proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule
   task: PSR
   data_dir: ${env.paths.data}/ATOM3D
   max_units: 0

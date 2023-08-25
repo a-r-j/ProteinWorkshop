@@ -1,5 +1,5 @@
 datamodule:
-  _target_: src.datasets.go.GeneOntologyDataset
+  _target_: proteinworkshop.datasets.go.GeneOntologyDataset
   path: ${env.paths.data}/GeneOntology/ # Directory where the dataset is stored
   pdb_dir: ${env.paths.data}/pdb/ # Directory where raw PDB/mmtf files are stored
   format: "mmtf" # Format of the raw PDB/MMTF files

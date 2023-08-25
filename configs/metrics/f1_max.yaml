@@ -1,3 +1,3 @@
 f1_max:
-  _target_: src.metrics.f1_max.F1Max
+  _target_: proteinworkshop.metrics.f1_max.F1Max
   num_classes: ${dataset.num_classes} # set the number of classes if necessary

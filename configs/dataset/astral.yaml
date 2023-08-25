@@ -1,5 +1,5 @@
 datamodule:
-  _target_: "src.datasets.astral.AstralDataModule"
+  _target_: "proteinworkshop.datasets.astral.AstralDataModule"
   path: ${env.paths.data}/Astral/ # Directory where the dataset is stored
   release: "2.08" # Version of ASTRAL to use
   identity: "95" # Percent identity clustering threshold to use

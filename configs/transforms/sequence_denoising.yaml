@@ -1,4 +1,4 @@
 sequence_denoising:
-  _target_: src.tasks.sequence_denoising.SequenceNoiseTransform
+  _target_: proteinworkshop.tasks.sequence_denoising.SequenceNoiseTransform
   corruption_rate: 0.25 # Fraction of residues to corrupt
   corruption_strategy: "mutate" # Whether to 'mutate' or 'mask'
