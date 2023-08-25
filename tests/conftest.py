@@ -32,9 +32,9 @@ def cfg_train_global() -> DictConfig:
                 pyrootutils.find_root(indicator=".project-root")
             )
             cfg.trainer.max_epochs = 1
-            cfg.trainer.limit_train_batches = 0.01
-            cfg.trainer.limit_val_batches = 0.1
-            cfg.trainer.limit_test_batches = 0.1
+            cfg.trainer.limit_train_batches = 0.5
+            cfg.trainer.limit_val_batches = 0.5
+            cfg.trainer.limit_test_batches = 0.5
             cfg.trainer.accelerator = "cpu"
             cfg.trainer.devices = 1
             cfg.dataset.datamodule.num_workers = 0
@@ -66,7 +66,7 @@ def cfg_finetune_global() -> DictConfig:
                 pyrootutils.find_root(indicator=".project-root")
             )
             cfg.trainer.max_epochs = 1
-            cfg.trainer.limit_test_batches = 0.1
+            cfg.trainer.limit_test_batches = 0.5
             cfg.trainer.accelerator = "cpu"
             cfg.trainer.devices = 1
             cfg.dataset.datamodule.num_workers = 0
