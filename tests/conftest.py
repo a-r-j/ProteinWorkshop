@@ -24,7 +24,7 @@ def cfg_train_global() -> DictConfig:
         training.
     """
     with initialize(version_base="1.3", config_path="../configs"):
-        cfg = compose(config_name="train.yaml", return_hydra_config=True, overrides=[])
+        cfg = compose(config_name="train.yaml", return_hydra_config=True, overrides=["dataset=dummy"])
 
         # set defaults for all tests
         with open_dict(cfg):
@@ -57,7 +57,7 @@ def cfg_finetune_global() -> DictConfig:
         cfg = compose(
             config_name="finetune.yaml",
             return_hydra_config=True,
-            overrides=["ckpt_path=."],
+            overrides=["ckpt_path=.", "dataset=dummy"],
         )
 
         # set defaults for all tests
