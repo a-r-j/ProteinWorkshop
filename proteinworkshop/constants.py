@@ -20,6 +20,8 @@ PROJECT_PATH = SRC_PATH.parent
 
 if not os.path.exists(PROJECT_PATH / ".env"):
     DATA_PATH = PROJECT_PATH / "data"
+    os.environ["DATA_PATH"] = str(DATA_PATH)
+    
 else:
     dotenv.load_dotenv(PROJECT_PATH / ".env")
 
