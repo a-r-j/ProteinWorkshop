@@ -81,7 +81,7 @@ of how to use and extend the `Protein Workshop`, as outlined below.
 Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task:
 
 ```bash
-python src/train.py dataset=cath encoder=gnn task=inverse_folding
+python src/train.py dataset=cath encoder=gcn task=inverse_folding
 ```
 
 #### Finetuning a model
@@ -89,7 +89,7 @@ python src/train.py dataset=cath encoder=gnn task=inverse_folding
 Finetuning a model additionally requires specification of a checkpoint.
 
 ```bash
-python src/finetune.py dataset=cath encoder=gnn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
+python src/finetune.py dataset=cath encoder=gcn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
 ```
 
 ### Running a sweep/experiment
