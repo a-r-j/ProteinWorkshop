@@ -40,14 +40,15 @@ jobs:
         if: steps.cache-dependencies.cache-hit != 'true'
         run: |
           python -m pip install -U pip poetry
+          python -m pip install -U pip poethepoet
           poetry --version
           poetry check --no-interaction
           poetry config virtualenvs.in-project true
           poetry install --no-interaction --without docs
-          poe run install-torch-cluster
-          poe run install-torch-sparse
-          poe run install-torch-scatter
-          poe run install-torch-spline-conv
+          poe install-torch-cluster
+          poe install-torch-sparse
+          poe install-torch-scatter
+          poe install-torch-spline-conv
 
       - name: Run tests
         run: |
