@@ -34,8 +34,8 @@ def test_feature_shapes(example_batch):
         out_features = out.x
 
         # Test we have edges
-        assert out.edges.shape[0] == 2
+        assert out.edge_index.shape[0] == 2
 
         # Test we have node features of the correct shape
         assert out_features.shape[0] == example_batch.num_nodes
-        assert out_features.shape[1] == get_input_dim(cfg, t[:-5], None)
+        assert out_features.shape[1] == get_input_dim(cfg, "scalar_node_features", None)
