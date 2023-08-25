@@ -6,10 +6,10 @@ The benchmark is constructed in a modular fashion, with each module configured v
 
 The predominant ingredients are:
 
-- **Datasets**: The benchmark supports a variety of datasets, described in :doc:`/configs/dataset` and documented in :doc:`/modules/src.datasets`
-- **Models**: The benchmark supports a variety of models, described in :doc:`/configs/model` and documented in :doc:`/modules/src.models`
-- **Tasks**: The benchmark supports a variety of tasks, described in :doc:`/configs/task` and documented in :doc:`/modules/src.tasks`
-- **Features**: The benchmark supports a variety of features, described in :doc:`/configs/features` and documented in :doc:`/modules/src.features`
+- **Datasets**: The benchmark supports a variety of datasets, described in :doc:`/configs/dataset` and documented in :doc:`/modules/proteinworkshop.datasets`
+- **Models**: The benchmark supports a variety of models, described in :doc:`/configs/model` and documented in :doc:`/modules/proteinworkshop.models`
+- **Tasks**: The benchmark supports a variety of tasks, described in :doc:`/configs/task` and documented in :doc:`/modules/proteinworkshop.tasks`
+- **Features**: The benchmark supports a variety of features, described in :doc:`/configs/features` and documented in :doc:`/modules/proteinworkshop.features`
 
 
 Datasets
