@@ -70,6 +70,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/build/
 
 # PyBuilder
 target/
@@ -143,3 +144,4 @@ data/pdb/
 logs/
 wandb/
 .DS_Store
+.env
