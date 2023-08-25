@@ -124,7 +124,15 @@ class AstralDataModule(ProteinDataModule):
             log.info("Found SCOPe structures in: ")  # TODO
 
     def parse_class_map(self) -> Dict[str, str]:
+<<<<<<< HEAD
         """Parses the class map from the ASTRAL dataset."""
+=======
+        """Parses the class map from the ASTRAL dataset.
+
+        :return: Dictionary mapping PDB codes to SCOPe classes.
+        :rtype: Dict[str, str]
+        """
+>>>>>>> 1f4bbf8 (Add some docstrings)
         log.info(f"Reading labels from: {self.data_dir / 'class_map.txt'}")
         class_map = pd.read_csv(self.data_dir / "class_map.txt", sep="\t", header=None)
         return dict(class_map.values)
@@ -133,7 +141,17 @@ class AstralDataModule(ProteinDataModule):
         self.download()
 
     def parse_dataset(self, split: str) -> List[str]:
+<<<<<<< HEAD
         """ Parses the dataset and splits into train/valid/test."""
+=======
+        """Parses the dataset and splits into train/valid/test.
+
+        :param split: Split to parse: train/val/test.
+        :type split: str
+        :return: List of PDB codes for a given split.
+        :rtype: List[str]
+        """
+>>>>>>> 1f4bbf8 (Add some docstrings)
         # If we've already split, return the split data
         if hasattr(self, f"{split}_ids"):
             return getattr(self, f"{split}_ids")
@@ -160,7 +178,19 @@ class AstralDataModule(ProteinDataModule):
         return getattr(self, f"{split}_ids")
 
     def _get_dataset(self, split: str) -> ProteinDataset:
+<<<<<<< HEAD
         """Returns a :class:`~graphein.protein.ProteinDataset` for a given split."""
+=======
+        """
+        Returns a :py:class:`~graphein.protein.ProteinDataset` for a given
+        split.
+
+        :param split: Split to return dataset for.
+        :type split: str
+        :return: Dataset for given split.
+        :rtype: ProteinDataset
+        """
+>>>>>>> 1f4bbf8 (Add some docstrings)
         ids = self.parse_dataset(split)
         return ProteinDataset(
             root=str(self.data_dir),
