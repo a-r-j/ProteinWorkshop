@@ -122,7 +122,7 @@ Or an example SLURM submission script:
 #SBATCH --array=0-32
 
 source ~/.bashrc
-conda activate  protein_workshop
+conda activate protein_workshop
 
 wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 1
 ```
