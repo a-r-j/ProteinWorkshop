@@ -43,7 +43,12 @@ jobs:
           poetry --version
           poetry check --no-interaction
           poetry config virtualenvs.in-project true
-          poetry install --no-interaction
+          poetry install --no-interaction --without docs
+          poe run install-torch-cluster
+          poe run install-torch-sparse
+          poe run install-torch-scatter
+          poe run install-torch-spline-conv
+
       - name: Run tests
         run: |
           poetry run pytest -v
