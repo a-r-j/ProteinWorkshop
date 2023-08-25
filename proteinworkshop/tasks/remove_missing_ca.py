@@ -22,6 +22,7 @@ class RemoveMissingCa(T.BaseTransform):
         self.ca_idx = ca_idx
 
     def __call__(self, data):
+<<<<<<< HEAD
         """Remove residues with missing CA atoms from a protein structure.
 
         :param data: Protein data object.
@@ -29,6 +30,10 @@ class RemoveMissingCa(T.BaseTransform):
         :return: Protein data object with missing residues removed.
         :rtype: Protein
         """
+=======
+        # Check for missing CA atoms
+        # If there are no missing CA atoms, return the data
+>>>>>>> parent of 4d82522 (skip unneeded tests)
         mask = data.coords[:, self.ca_idx, 0] != self.fill_value
         if torch.all(mask):
             return data
