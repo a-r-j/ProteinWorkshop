@@ -10,7 +10,7 @@ parameters:
     values: [multiple_graph_classification]
 
   dataset:
-    values: [go-mf, go-bp, go-cc, fold-family, fold-superfamily, fold-fold]
+    values: [fold-family, fold-superfamily, fold-fold]
 
   encoder:
     values: [schnet, dimenet_plus_plus, gear_net_edge, egnn, gcpnet]

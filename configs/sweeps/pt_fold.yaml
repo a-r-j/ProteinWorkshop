@@ -1,19 +1,19 @@
 program: src/finetune.py
 method: grid
-name: pretrained_ppi_prediction
+name: pretrained_graph_classification_equiv
 metric: # Does not matter, as we are using sweep to run the experiment.
   goal: minimize
   name: val/loss/total
 
 parameters:
   task:
-    values: [ppi_site_prediction]
+    values: [multiclass_graph_classification]
 
   dataset:
-    values: [masif_site]
+    values: [fold-family, fold-superfamily, fold-fold]
 
   encoder:
-    values: [schnet, dimenet_plus_plus, egnn, gcpnet, gear_net_edge]
+    values: [schnet, dimenet_plus_plus, gear_net_edge, egnn, gcpnet]
 
   optimiser.optimizer.lr:
     values: [0.0001]
@@ -27,21 +27,24 @@ parameters:
   extras.enforce_tags:
     value: False
 
-  trainer.max_epochs:
-    value: 150
+  #+aux_task:
+  #  values: [none, nn_sequence, nn_structure_torsion]
 
-  # We don't want to freeze the encoder
+  trainer.max_epochs:
+    value: 20
+
+  # We dont want to freeze the encoder
   finetune.encoder.freeze:
     value: False
 
   # Just used for checkpoint selection
   +_pre_train_task:
     values: [
-        inverse_folding,
         sequence_denoising,
         #plddt_prediction,
         torsional_denoising,
         structure_denoising,
+        #inverse_folding,
       ]
 
   # Uses checkpoint_root/pretrain_task/encoder/features/last.ckpt
@@ -49,7 +52,7 @@ parameters:
     values:
       [
         # Note: One needed to manually update this path to point to the one's corresponding `last.ckpt` pre-trained checkpoint
-        #"$USER/ProteinWorkshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/last.ckpt",
+        # "$USER/ProteinWorkshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/last.ckpt",
         ???
       ]
 

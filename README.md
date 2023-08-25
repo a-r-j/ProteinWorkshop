@@ -96,12 +96,12 @@ python src/finetune.py dataset=cath encoder=gcn task=inverse_folding ckpt_path=P
 
 We can make use of the hydra wandb sweeper plugin to configure experiments as sweeps, allowing searches over hyperparameters, architectures, pre-training/auxiliary tasks and datasets.
 
-See `configs/sweep/` for examples.
+See `configs/sweeps/` for examples.
 
 1. Create the sweep with weights and biases
 
   ```bash
-  wandb sweep configs/sweep/sweep_config.yaml
+  wandb sweep configs/sweeps/my_new_sweep_config.yaml
   ```
 
 2. Launch job workers
@@ -109,7 +109,7 @@ See `configs/sweep/` for examples.
 With wandb:
 
   ```bash
-  wandb agent ligands/protein_workshop-src/2wwtt7oy --count 8
+  wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 8
   ```
 
 Or an example SLURM submission script:
@@ -124,7 +124,31 @@ Or an example SLURM submission script:
 source ~/.bashrc
 conda activate  protein_workshop
 
-wandb agent ligands/protein_workshop-src/2wwtt7oy --count 1
+wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 1
+```
+
+3. Reproduce the sweeps performed in the manuscript
+
+```bash
+# reproduce the baseline tasks sweep (i.e., those performed without pre-training each model)
+wandb sweep configs/sweeps/baseline_fold.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2awtt7oy --count 8
+wandb sweep configs/sweeps/baseline_ppi.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2bwtt7oy --count 8
+wandb sweep configs/sweeps/baseline_inverse_folding.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2cwtt7oy --count 8
+
+# reproduce the model pre-training sweep
+wandb sweep configs/sweeps/pre_train.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2dwtt7oy --count 8
+
+# reproduce the pre-trained tasks sweep (i.e., those performed after pre-training each model)
+wandb sweep configs/sweeps/pt_fold.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2ewtt7oy --count 8
+wandb sweep configs/sweeps/pt_ppi.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2fwtt7oy --count 8
+wandb sweep configs/sweeps/pt_inverse_folding.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2gwtt7oy --count 8
 ```
 
 #### Embedding a dataset

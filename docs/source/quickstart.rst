@@ -3,7 +3,7 @@ Quickstart
 
 .. mdinclude:: ../../README.md
     :start-line: 79
-    :end-line: 141
+    :end-line: 165
 
 .. toctree::
     :maxdepth: 3
