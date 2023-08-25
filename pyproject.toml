@@ -53,6 +53,8 @@ wget = "^3.2"
 opt-einsum = "^3.3.0"
 chromadb = "^0.4.7"
 torch = "^2.0.1"
+pyrootutils = "^1.0.4"
+torch-geometric = "^2.3.1"
 
 
 [tool.poetry.group.dev.dependencies]
