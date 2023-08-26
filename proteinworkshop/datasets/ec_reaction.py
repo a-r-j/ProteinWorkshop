@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Callable, Dict, Iterable, Optional
+from typing import Callable, Dict, Iterable, Optional, Literal
 
 import omegaconf
 import pandas as pd
@@ -18,7 +18,7 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
         path: str,
         batch_size: int,
         pdb_dir: Optional[str] = None,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         obsolete: str = "drop",
         in_memory: bool = False,
         pin_memory: bool = True,

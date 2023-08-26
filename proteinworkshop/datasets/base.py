@@ -3,7 +3,7 @@ import pathlib
 from abc import ABC, abstractmethod
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union, Literal
 
 import lightning as L
 import numpy as np
@@ -210,7 +210,7 @@ class ProteinDataset(Dataset):
         pre_filter: Optional[Callable] = None,
         log: bool = True,
         overwrite: bool = False,
-        format: str = "pdb",
+        format: Literal["mmtf", "pdb"] = "pdb",
         in_memory: bool = False,
         store_het: bool = False,
     ):
