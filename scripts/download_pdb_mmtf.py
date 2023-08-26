@@ -34,13 +34,17 @@ def download_pdb_mmtf(create_tar: bool = True):
 
     # Download all PDB IDs with parallelized HTTP requests
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        for pdb_id in tqdm(pdb_ids):
+        pbar = tqdm(pdb_ids)
+        for pdb_id in pbar:
+            pbar.set_description(f"Downloading PDB {pdb_id}")
             executor.submit(rcsb.fetch, pdb_id, "mmtf", mmtf_dir)
 
     if create_tar:
         # Create .tar archive file from MMTF files in directory
         with tarfile.open(f"{mmtf_dir}.tar", mode="w") as file:
-            for pdb_id in pdb_ids:
+            pbar = tqdm(pdb_ids)
+            for pdb_id in pbar:
+                pbar.set_description(f"Adding downloaded PDB {pdb_id} to {f'{mmtf_dir}.tar'}")
                 file.add(os.path.join(mmtf_dir, f"{pdb_id}.mmtf"), f"{pdb_id}.mmtf")
 
     ### File access for analysis ###
