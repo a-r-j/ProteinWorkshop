@@ -9,7 +9,10 @@ Welcome to Protein Workshop's documentation!
 
 .. mdinclude:: ../../README.md
     :start-line: 1
-    :end-line: 16
+    :end-line: 9
+.. mdinclude:: ../../README.md
+    :start-line: 12
+    :end-line: 14
 
 
 .. toctree::
@@ -42,13 +45,12 @@ Welcome to Protein Workshop's documentation!
    :hidden:
    :caption: API Reference
 
-   modules/src.train
-   modules/src.datasets
-   modules/src.models
-   modules/src.tasks
-   modules/src.models.graph_encoders.layers
-   modules/src.features
-   modules/src.utils
+   modules/proteinworkshop.train
+   modules/proteinworkshop.datasets
+   modules/proteinworkshop.models
+   modules/proteinworkshop.tasks
+   modules/proteinworkshop.features
+   modules/proteinworkshop.utils
 
 
 

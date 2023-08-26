@@ -20,7 +20,7 @@ defaults:
   - extras: default
   - hydra: default
   - metrics: none
-  - task: graph_classification # See: /configs/task/
+  - task: inverse_folding # See: /configs/task/
   - logger: wandb # wandb, tensorboard, csv
   - finetune: default # Specifies finetuning config. See: configs/finetune/
   # debugging config (enable through command line, e.g. `python train.py debug=default)

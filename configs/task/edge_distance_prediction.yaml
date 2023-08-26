@@ -20,7 +20,7 @@ callbacks:
 task:
   task: "edge_distance_prediction"
   transform:
-    _target_: src.tasks.edge_distance_prediction.EdgeDistancePredictionTransform
+    _target_: proteinworkshop.tasks.edge_distance_prediction.EdgeDistancePredictionTransform
     num_samples: 256
   losses:
     edge_distance: mse_loss

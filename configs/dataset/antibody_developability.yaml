@@ -1,5 +1,5 @@
 datamodule:
-  _target_: src.datasets.antibody_developability.AntibodyDevelopabilityDataModule
+  _target_: proteinworkshop.datasets.antibody_developability.AntibodyDevelopabilityDataModule
   path: ${env.paths.data}/AntibodyDevelopability # Directory where the dataset is stored
   pdb_dir: ${env.paths.data}/pdb/ # Path to all downloaded PDB files
   batch_size: 32 # Batch size for dataloader

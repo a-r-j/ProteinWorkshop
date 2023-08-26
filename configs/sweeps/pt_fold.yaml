@@ -1,0 +1,68 @@
+program: proteinworkshop/finetune.py
+method: grid
+name: pretrained_graph_classification_equiv
+metric: # Does not matter, as we are using sweep to run the experiment.
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  task:
+    values: [multiclass_graph_classification]
+
+  dataset:
+    values: [fold-family, fold-superfamily, fold-fold]
+
+  encoder:
+    values: [schnet, dimenet_plus_plus, gear_net_edge, egnn, gcpnet]
+
+  optimiser.optimizer.lr:
+    values: [0.0001]
+
+  features:
+    values: [ca_angles, ca_bb]
+
+  scheduler:
+    values: [plateau]
+
+  extras.enforce_tags:
+    value: False
+
+  #+aux_task:
+  #  values: [none, nn_sequence, nn_structure_torsion]
+
+  trainer.max_epochs:
+    value: 20
+
+  # We dont want to freeze the encoder
+  finetune.encoder.freeze:
+    value: False
+
+  # Just used for checkpoint selection
+  +_pre_train_task:
+    values: [
+        sequence_denoising,
+        #plddt_prediction,
+        torsional_denoising,
+        structure_denoising,
+        #inverse_folding,
+      ]
+
+  # Uses checkpoint_root/pretrain_task/encoder/features/last.ckpt
+  ckpt_path:
+    values:
+      [
+        # Note: One needed to manually update this path to point to the one's corresponding `last.ckpt` pre-trained checkpoint
+        # "$USER/ProteinWorkshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/last.ckpt",
+        ???
+      ]
+
+  +test:
+    value: True
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}

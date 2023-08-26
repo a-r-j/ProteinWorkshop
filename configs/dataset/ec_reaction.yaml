@@ -1,5 +1,5 @@
 datamodule:
-  _target_: src.datasets.ec_reaction.EnzymeCommissionReactionDataset
+  _target_: proteinworkshop.datasets.ec_reaction.EnzymeCommissionReactionDataset
   path: ${env.paths.data}/ECReaction/ # Directory where the dataset is stored
   pdb_dir: ${env.paths.data}/pdb/ # Directory where raw PDB/mmtf files are stored
   format: "mmtf" # Format of the raw PDB/MMTF files

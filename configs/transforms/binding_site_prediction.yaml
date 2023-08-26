@@ -1,5 +1,5 @@
 binding_site_prediction:
-  _target_: src.tasks.binding_site_prediction.BindingSiteTransform
+  _target_: proteinworkshop.tasks.binding_site_prediction.BindingSiteTransform
   hetatms: [HOH, SO4, PEG] # Types of hetatms to be considered as binding sites
   threshold: 3.5 # Threshold for binding site prediction
   ca_only: False # Whether to use only CA atoms for assigning labels

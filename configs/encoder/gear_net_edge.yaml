@@ -1,4 +1,4 @@
-_target_: src.models.graph_encoders.gear_net.GearNet
+_target_: proteinworkshop.models.graph_encoders.gear_net.GearNet
 input_dim: ${resolve_feature_config_dim:${features},scalar_node_features,${task},true}
 num_relation: ${resolve_num_edge_types:${features}}
 num_layers: 6

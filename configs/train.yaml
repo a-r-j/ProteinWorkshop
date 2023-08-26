@@ -20,7 +20,7 @@ defaults:
   - extras: default
   - hydra: default
   - metrics: none
-  - task: multiclass_graph_classification
+  - task: inverse_folding
   - logger: wandb
   # debugging config (enable through command line, e.g. `python train.py debug=default)
   - debug: null

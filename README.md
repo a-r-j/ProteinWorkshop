@@ -5,7 +5,7 @@
 [![Docs](https://assets.readthedocs.org/static/projects/badges/passing-flat.svg)](https://www.proteins.sh)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
-![Overview of the Protein Workshop](https://github.com/a-r-j/ProteinWorkshop/blob/main/img/overview.png)
+![Overview of the Protein Workshop](https://github.com/a-r-j/ProteinWorkshop/blob/main/docs/source/_static/workshop_overview.png)
 
 [Documentation](https://www.proteins.sh)
 
@@ -38,26 +38,41 @@ Configuration files to run the experiments described in the manuscript are provi
 
 ## Installation
 
-1. Install Mamba
+Below, we outline how one may set up a virtual environment for the `ProteinWorkshop`. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Windows and macOS are currently not officially supported.
+
+1. Install `poetry` for dependency management using its [installation instructions](https://python-poetry.org/docs/)
+
+2. Install project dependencies
 
     ```bash
-    wget "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
-    bash Mambaforge-$(uname)-$(uname -m).sh  # accept all terms and install to the default location
-    rm Mambaforge-$(uname)-$(uname -m).sh  # (optionally) remove installer after using it
-    source ~/.bashrc  # alternatively, one can restart their shell session to achieve the same result as this line
+    poetry install
     ```
 
-2. Install dependencies and project
+3. Activate the newly-created virtual environment following `poetry`'s [usage documentation](https://python-poetry.org/docs/basic-usage/)
 
     ```bash
-    mamba env create -f environment.yaml
-    conda activate protein_workshop
-    pip install -e .
+      # activate the environment on a `posix`-like (e.g., macOS or Linux) system
+      source $(poetry env info --path)/bin/activate
+    ```
+    ```powershell
+      # activate the environment on a `Windows`-like system
+      & ((poetry env info --path) + "\Scripts\activate.ps1")
+    ```
+    ```bash
+      # if desired, deactivate the environment
+      deactivate
     ```
 
-3. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example) for an example.
+4. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
 
-4. Download PDB data:
+    ```bash
+    # hint: to see the list of dependencies that are currently installed in the environment, run:
+    poetry show
+    ```
+
+5. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example) for an example.
+
+6. Download PDB data:
 
     ```bash
     python scripts/download_pdb_mmtf.py
@@ -81,7 +96,7 @@ of how to use and extend the `Protein Workshop`, as outlined below.
 Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task:
 
 ```bash
-python src/train.py dataset=cath encoder=gcn task=inverse_folding
+python proteinworkshop/train.py dataset=cath encoder=gcn task=inverse_folding
 ```
 
 #### Finetuning a model
@@ -89,19 +104,19 @@ python src/train.py dataset=cath encoder=gcn task=inverse_folding
 Finetuning a model additionally requires specification of a checkpoint.
 
 ```bash
-python src/finetune.py dataset=cath encoder=gcn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
+python proteinworkshop/finetune.py dataset=cath encoder=gcn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
 ```
 
 ### Running a sweep/experiment
 
 We can make use of the hydra wandb sweeper plugin to configure experiments as sweeps, allowing searches over hyperparameters, architectures, pre-training/auxiliary tasks and datasets.
 
-See `configs/sweep/` for examples.
+See `configs/sweeps/` for examples.
 
 1. Create the sweep with weights and biases
 
   ```bash
-  wandb sweep configs/sweep/sweep_config.yaml
+  wandb sweep configs/sweeps/my_new_sweep_config.yaml
   ```
 
 2. Launch job workers
@@ -109,34 +124,58 @@ See `configs/sweep/` for examples.
 With wandb:
 
   ```bash
-  wandb agent ligands/lightning-hydra-template/2wwtt7oy --count 8
+  wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 8
   ```
 
 Or an example SLURM submission script:
 
+  ```bash
+  #!/bin/bash
+  #SBATCH --nodes 1
+  #SBATCH --ntasks-per-node=1
+  #SBATCH --gres=gpu:1
+  #SBATCH --array=0-32
+
+  source ~/.bashrc
+  source $(poetry env info --path)/bin/activate
+
+  wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 1
+  ```
+
+Reproduce the sweeps performed in the manuscript:
+
 ```bash
-#!/bin/bash
-#SBATCH --nodes 1
-#SBATCH --ntasks-per-node=1
-#SBATCH --gres=gpu:1
-#SBATCH --array=0-32
+# reproduce the baseline tasks sweep (i.e., those performed without pre-training each model)
+wandb sweep configs/sweeps/baseline_fold.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2awtt7oy --count 8
+wandb sweep configs/sweeps/baseline_ppi.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2bwtt7oy --count 8
+wandb sweep configs/sweeps/baseline_inverse_folding.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2cwtt7oy --count 8
 
-source ~/.bashrc
-conda activate  protein_workshop
+# reproduce the model pre-training sweep
+wandb sweep configs/sweeps/pre_train.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2dwtt7oy --count 8
 
-wandb agent ligands/protein_workshop-src/2wwtt7oy --count 1
+# reproduce the pre-trained tasks sweep (i.e., those performed after pre-training each model)
+wandb sweep configs/sweeps/pt_fold.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2ewtt7oy --count 8
+wandb sweep configs/sweeps/pt_ppi.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2fwtt7oy --count 8
+wandb sweep configs/sweeps/pt_inverse_folding.yaml
+wandb agent mywandbgroup/ProteinWorkshop/2gwtt7oy --count 8
 ```
 
 #### Embedding a dataset
 
 ```bash
-python src/embed.py dataset=cath encoder=gnn ckpt_path=PATH/TO/CHECKPOINT
+python proteinworkshop/embed.py dataset=cath encoder=gnn ckpt_path=PATH/TO/CHECKPOINT
 ```
 
-### Verify a config
+#### Verify a config
 
 ```bash
-python src/validate_config.py dataset=cath features=full_atom task=inverse_folding
+python proteinworkshop/validate_config.py dataset=cath features=full_atom task=inverse_folding
 ```
 
 ## Models
@@ -189,24 +228,24 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 <details>
   <summary>Additionally, we provide several species-specific compilations</summary>
 
-| Name            | Description   | Source | Size |
-| ----------------| ----------- | ------ | ------ |
-| `a_thaliana`    | _Arabidopsis thaliana_ proteome | AlphaFold2|
-| `c_albicans`    | _Candida albicans_ proteome | AlphaFold2|
-| `c_elegans`     | _Caenorhabditis elegans_ proteome        | AlphaFold2       | |
-| `d_discoideum`  | _Dictyostelium discoideum_ proteome | AlphaFold2| |
-| `d_melanogaster`  | [_Drosophila melanogaster_](https://www.uniprot.org/taxonomy/7227) proteome        | AlphaFold2        | |
-| `d_rerio`  | [_Danio rerio_](https://www.uniprot.org/taxonomy/7955) proteome        | AlphaFold2        | |
-| `e_coli`  | Text        |  AlphaFold2       | |
-| `g_max`  | Text        | AlphaFold2        | |
-| `h_sapiens`  | Text        |  AlphaFold2       | |
-| `m_jannaschii`  | Text        |  AlphaFold2       | |
-| `m_musculus`  | Text        |   AlphaFold2      | |
-| `o_sativa`  | Text        |   AlphaFold2      | |
-| `r_norvegicus`  | Text        |   AlphaFold2      | |
-| `s_cerevisiae`  | Text        |   AlphaFold2      | |
-| `s_pombe`  | Text        |  AlphaFold2       | |
-| `z_mays`  | Text        |   AlphaFold2      | |
+  | Name            | Description   | Source | Size |
+  | ----------------| ----------- | ------ | ------ |
+  | `a_thaliana`    | _Arabidopsis thaliana_ proteome | AlphaFold2|
+  | `c_albicans`    | _Candida albicans_ proteome | AlphaFold2|
+  | `c_elegans`     | _Caenorhabditis elegans_ proteome        | AlphaFold2       | |
+  | `d_discoideum`  | _Dictyostelium discoideum_ proteome | AlphaFold2| |
+  | `d_melanogaster`  | [_Drosophila melanogaster_](https://www.uniprot.org/taxonomy/7227) proteome        | AlphaFold2        | |
+  | `d_rerio`  | [_Danio rerio_](https://www.uniprot.org/taxonomy/7955) proteome        | AlphaFold2        | |
+  | `e_coli`  | Text        |  AlphaFold2       | |
+  | `g_max`  | Text        | AlphaFold2        | |
+  | `h_sapiens`  | Text        |  AlphaFold2       | |
+  | `m_jannaschii`  | Text        |  AlphaFold2       | |
+  | `m_musculus`  | Text        |   AlphaFold2      | |
+  | `o_sativa`  | Text        |   AlphaFold2      | |
+  | `r_norvegicus`  | Text        |   AlphaFold2      | |
+  | `s_cerevisiae`  | Text        |   AlphaFold2      | |
+  | `s_pombe`  | Text        |  AlphaFold2       | |
+  | `z_mays`  | Text        |   AlphaFold2      | |
 
 </details>
 
@@ -263,12 +302,12 @@ N.B. All angular features are provided in [sin, cos] transformed form. E.g.: $\t
 
 | Name      | Description   | Dimensionality |
 | ----------- | ----------- | ----------- |
-| `residue_type` | One hot encoding of amino acid type       |      21  |
+| `residue_type` | One-hot encoding of amino acid type       |      21  |
 | `positional_encoding` | Transformer-like positional encoding of sequence position       |      16  |
-| `alpha` | virtual torsion angle defined by four $C_\alpha$ atoms of residues $I_{-1},I,I_{+1},I_{+2}$       |      2  |
-| `kappa` | virtual bond angle (bend angle) defined by the three $C_\alpha$ atoms of residues $I_{-2},I,_{+2}$       |      2  |
+| `alpha` | Virtual torsion angle defined by four $C_\alpha$ atoms of residues $I_{-1},I,I_{+1},I_{+2}$       |      2  |
+| `kappa` | Virtual bond angle (bend angle) defined by the three $C_\alpha$ atoms of residues $I_{-2},I,_{+2}$       |      2  |
 | `dihedrals` | Backbone dihedral angles $(\phi, \psi, \omega)$      |      6  |
-| `sidechain_torsion` | Sidechain torsion angles  $(\chi_{1-4})$     |    8    |
+| `sidechain_torsions` | Sidechain torsion angles  $(\chi_{1-4})$     |    8    |
 
 ### Equivariant Node Features
 
@@ -283,7 +322,7 @@ We predominanty support two types of edges: $k$-NN and $\epsilon$ edges.
 Edge types can be specified as follows:
 
 ```bash
-python src/train.py ... features.edge_types=[knn_16, knn_32, eps_16]
+python proteinworkshop/train.py ... features.edge_types=[knn_16, knn_32, eps_16]
 ```
 
 Where the suffix after `knn` or `eps` specifies $k$ (number of neighbours) or $\epsilon$ (distance threshold in angstroms).

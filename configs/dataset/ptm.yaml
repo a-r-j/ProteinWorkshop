@@ -1,5 +1,5 @@
 datamodule:
-  _target_: "src.datasets.ptm.PTMDataModule"
+  _target_: "proteinworkshop.datasets.ptm.PTMDataModule"
   dataset_name: "ptm_13" # Options currently include (`ptm_13`, `optm`)
   path: ${env.paths.data}/PostTranslationalModification/ # Directory where the dataset is stored
   batch_size: 32 # Batch size for dataloader

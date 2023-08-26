@@ -2,8 +2,8 @@ Tutorials
 ---------------------
 
 .. mdinclude:: ../../README.md
-    :start-line: 66
-    :end-line: 76
+    :start-line: 82
+    :end-line: 91
 
 
 Training a New Model
@@ -13,13 +13,13 @@ Training a New Model
 
 .. code-block:: bash
 
-    python src/train.py dataset=DATASET model=MODEL task=TASK features=FEATURES
+    python proteinworkshop/train.py dataset=DATASET model=MODEL task=TASK features=FEATURES
 
 To override hparams, you can either edit the relevant :doc:`/configs` files directly or via the CLI using Hydra syntax:
 
 .. code-block::
 
-    python src/train.py ... optimiser.optimizer.lr=0.001 dataset.datamodule.batch_size=32
+    python proteinworkshop/train.py ... optimiser.optimizer.lr=0.001 dataset.datamodule.batch_size=32
 
 2. In a jupyter notebook:
 
@@ -39,7 +39,7 @@ Evaluating a pre-trained Model
     import torch.nn as nn
     from torch_geometric.data import Batch
     from graphein.protein.tensor.data import ProteinBatch
-    from src.models.utils import get_aggregation
+    from proteinworkshop.models.utils import get_aggregation
     from jaxtyping import jaxtyped
     from beartype import beartype
 
@@ -87,8 +87,8 @@ Evaluating a pre-trained Model
     from hydra.compose import GlobalHydra
     from hydra.core.hydra_config import HydraConfig
 
-    from src.constants import HYDRA_CONFIG_PATH
-    from src.utils.notebook import init_hydra_singleton
+    from proteinworkshop.constants import HYDRA_CONFIG_PATH
+    from proteinworkshop.utils.notebook import init_hydra_singleton
 
     version_base = "1.2"  # Note: Need to update whenever Hydra is upgraded
     init_hydra_singleton(reload=True, version_base=version_base)
@@ -113,7 +113,7 @@ Evaluating a pre-trained Model
 
 .. code-block::
 
-    from src.train import train_model, trian_model
+    from proteinworkshop.train import train_model
 
     train_model(cfg, model)
 

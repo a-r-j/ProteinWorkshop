@@ -3,7 +3,7 @@
 # Maintains an exponential moving average (EMA) of model weights.
 # Look at the above link for more detailed information regarding the original implementation.
 ema:
-  _target_: src.utils.EMA
+  _target_: proteinworkshop.utils.EMA
   decay: 0.9999 # weight decay factor for the EMA
   apply_ema_every_n_steps: 1 # after how many steps to apply the EMA
   start_step: 0 # when to start the EMA

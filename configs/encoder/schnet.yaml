@@ -1,4 +1,4 @@
-_target_: src.models.graph_encoders.schnet.SchNetModel
+_target_: proteinworkshop.models.graph_encoders.schnet.SchNetModel
 hidden_channels: 512
 out_dim: 32
 num_layers: 6

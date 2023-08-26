@@ -1,0 +1,45 @@
+program: proteinworkshop/train.py
+method: grid
+name: baseline_gc_prediction
+metric: # Does not matter, as we are using sweep to run the experiment.
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  task:
+    values: [multiple_graph_classification]
+
+  dataset:
+    values: [fold-family, fold-superfamily, fold-fold]
+
+  encoder:
+    values: [schnet, dimenet_plus_plus, gear_net_edge, egnn, gcpnet]
+
+  optimiser.optimizer.lr:
+    value: 0.0001
+
+  features:
+    values: [ca_base, ca_seq, ca_angles, ca_bb, ca_sc]
+
+  scheduler:
+    values: [plateau]
+
+  extras.enforce_tags:
+    value: False
+
+  +aux_task:
+    values: [none, nn_sequence, nn_structure_torsion, nn_structure_r3]
+
+  trainer.max_epochs:
+    value: 150
+
+  test:
+    value: True
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}

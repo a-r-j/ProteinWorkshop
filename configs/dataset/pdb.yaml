@@ -1,5 +1,5 @@
 datamodule:
-  _target_: "src.datasets.pdb_dataset.PDBDataModule"
+  _target_: "proteinworkshop.datasets.pdb_dataset.PDBDataModule"
   path: ${env.paths.data}/pdb/ # Directory where the dataset is stored
   batch_size: 32 # Batch size for dataloader
   num_workers: 4 # Number of workers for dataloader
@@ -7,7 +7,7 @@ datamodule:
   transforms: ${transforms} # Transforms to apply to dataset examples
 
   pdb_dataset:
-    _target_: "src.datasets.pdb_dataset.PDBData"
+    _target_: "proteinworkshop.datasets.pdb_dataset.PDBData"
     fraction: 1.0 # Fraction of dataset to use
     molecule_type: "protein" # Type of molecule for which to select
     experiment_types: ["diffraction", "NMR", "EM", "other"] # All experiment types

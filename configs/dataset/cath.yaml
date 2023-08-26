@@ -1,5 +1,5 @@
 datamodule:
-  _target_: "src.datasets.cath.CATHDataModule"
+  _target_: "proteinworkshop.datasets.cath.CATHDataModule"
   path: ${env.paths.data}/cath/ # Directory where the dataset is stored
   pdb_dir: ${env.paths.data}/pdb/ # Directory where raw PDB/mmtf files are stored
   format: "mmtf" # Format of the raw PDB/MMTF files

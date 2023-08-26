@@ -7,8 +7,8 @@ Features
   :width: 400
 
 .. mdinclude:: ../../../README.md
-    :start-line: 260
-    :end-line: 306
+    :start-line: 297
+    :end-line: 345
 
 
 Default Features

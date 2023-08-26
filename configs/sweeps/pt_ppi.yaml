@@ -1,4 +1,4 @@
-program: src/finetune.py
+program: proteinworkshop/finetune.py
 method: grid
 name: pretrained_ppi_prediction
 metric: # Does not matter, as we are using sweep to run the experiment.
@@ -48,7 +48,8 @@ parameters:
   ckpt_path:
     values:
       [
-        #"/home/arj39/rds/hpc-work/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/last.ckpt",
+        # Note: One needed to manually update this path to point to the one's corresponding `last.ckpt` pre-trained checkpoint
+        #"$USER/ProteinWorkshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/last.ckpt",
         ???
       ]
 

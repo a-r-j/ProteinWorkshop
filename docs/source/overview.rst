@@ -6,10 +6,10 @@ The benchmark is constructed in a modular fashion, with each module configured v
 
 The predominant ingredients are:
 
-- **Datasets**: The benchmark supports a variety of datasets, described in :doc:`/configs/dataset` and documented in :doc:`/modules/src.datasets`
-- **Models**: The benchmark supports a variety of models, described in :doc:`/configs/model` and documented in :doc:`/modules/src.models`
-- **Tasks**: The benchmark supports a variety of tasks, described in :doc:`/configs/task` and documented in :doc:`/modules/src.tasks`
-- **Features**: The benchmark supports a variety of features, described in :doc:`/configs/features` and documented in :doc:`/modules/src.features`
+- **Datasets**: The benchmark supports a variety of datasets, described in :doc:`/configs/dataset` and documented in :doc:`/modules/proteinworkshop.datasets`
+- **Models**: The benchmark supports a variety of models, described in :doc:`/configs/model` and documented in :doc:`/modules/proteinworkshop.models`
+- **Tasks**: The benchmark supports a variety of tasks, described in :doc:`/configs/task` and documented in :doc:`/modules/proteinworkshop.tasks`
+- **Features**: The benchmark supports a variety of features, described in :doc:`/configs/features` and documented in :doc:`/modules/proteinworkshop.features`
 
 
 Datasets
@@ -24,44 +24,44 @@ To familiarise yourself with the data structures used in the framework, please s
 and :py:class:`torch_geometric.data.Batch` respectively, and are used to represent a single protein or a batch of proteins.
 
 
-:py:class:`ProteinDataModule <src.datasets.base.ProteinDataModule>` Base classes
+:py:class:`ProteinDataModule <proteinworkshop.datasets.base.ProteinDataModule>` Base classes
 ==============================================================================================================
 
 The framework provides base classes for datasets and datamodules, which can be extended to create new datasets.
 
-The datamodule is the only object that needs to be configured to add a new dataset. The :py:class:`src.datasets.base.ProteinDataModule` class is a subclass of :py:class:`pytorch_lightning.LightningDataModule` and is used to represent a datamodule for a dataset of proteins. This class is used to create dataloaders for training, validation and testing.
+The datamodule is the only object that needs to be configured to add a new dataset. The :py:class:`proteinworkshop.datasets.base.ProteinDataModule` class is a subclass of :py:class:`pytorch_lightning.LightningDataModule` and is used to represent a datamodule for a dataset of proteins. This class is used to create dataloaders for training, validation and testing.
 
-To do so, the datamodule for the new dataset should inherit from :py:class:`src.datasets.base.ProteinDataModule` and implement the following methods:
+To do so, the datamodule for the new dataset should inherit from :py:class:`proteinworkshop.datasets.base.ProteinDataModule` and implement the following methods:
 
-- :py:meth:`src.datasets.base.ProteinDataModule.download`
-- :py:meth:`src.datasets.base.ProteinDataModule.parse_dataset`
-- (optionally) :py:meth:`src.datasets.base.ProteinDataModule.parse_labels`
-- (optionally) :py:meth:`src.datasets.base.ProteinDataModule.exclude_pdbs`
-- :py:meth:`src.datasets.base.ProteinDataModule.train_dataset`
-- :py:meth:`src.datasets.base.ProteinDataModule.val_dataset`
-- :py:meth:`src.datasets.base.ProteinDataModule.test_dataset`
-- :py:meth:`src.datasets.base.ProteinDataModule.train_dataloader`
-- :py:meth:`src.datasets.base.ProteinDataModule.val_dataloader`
-- :py:meth:`src.datasets.base.ProteinDataModule.test_dataloader`
+- :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.download`
+- :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.parse_dataset`
+- (optionally) :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.parse_labels`
+- (optionally) :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.exclude_pdbs`
+- :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.train_dataset`
+- :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.val_dataset`
+- :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.test_dataset`
+- :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.train_dataloader`
+- :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.val_dataloader`
+- :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.test_dataloader`
 
-The methods :py:meth:`src.datasets.base.ProteinDataModule.train_dataset`, :py:meth:`src.datasets.base.ProteinDataModule.val_dataset` and :py:meth:`src.datasets.base.ProteinDataModule.test_dataset` should return a :py:class:`src.datasets.base.ProteinDataset` object, which is a subclass of :py:class:`torch.utils.data.Dataset` and is used to represent a dataset of proteins.
+The methods :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.train_dataset`, :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.val_dataset` and :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.test_dataset` should return a :py:class:`proteinworkshop.datasets.base.ProteinDataset` object, which is a subclass of :py:class:`torch.utils.data.Dataset` and is used to represent a dataset of proteins.
 
-The methods :py:meth:`src.datasets.base.ProteinDataModule.train_dataloader`, :py:meth:`src.datasets.base.ProteinDataModule.val_dataloader` and :py:meth:`src.datasets.base.ProteinDataModule.test_dataloader` should return a :py:class:`from graphein.protein.tensor.dataloader.ProteinDataLoader` object, which is used to represent a dataloader for a dataset of proteins.
+The methods :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.train_dataloader`, :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.val_dataloader` and :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.test_dataloader` should return a :py:class:`graphein.protein.tensor.dataloader.ProteinDataLoader` object, which is used to represent a dataloader for a dataset of proteins.
 
-The methods :py:meth:`src.datasets.base.ProteinDataModule.download` :py:meth:`src.datasets.base.ProteinDataModule.parse_dataset`, handles all of the dataset-specific logic for downloading, and parsing labels, ids/filenames and chains.
+The methods :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.download` :py:meth:`proteinworkshop.datasets.base.ProteinDataModule.parse_dataset`, handles all of the dataset-specific logic for downloading, and parsing labels, ids/filenames and chains.
 
 
 
 Models
 ==========
 
-:py:class:`src.models.base.BaseModel` and :py:class:`src.models.base.BenchMarkModel` Base classes
+:py:class:`proteinworkshop.models.base.BaseModel` and :py:class:`proteinworkshop.models.base.BenchMarkModel` Base classes
 ==============================================================================================================
 
-These objects orchestrate model training and validation logic. The :py:class:`src.models.base.BaseModel` class is a subclass of :py:class:`pytorch_lightning.LightningModule`.
-The :py:class:`src.models.base.BenchMarkModel` class is a subclass of :py:class:`src.models.base.BaseModel` and is used as the primary orchestrator in the framework.
+These objects orchestrate model training and validation logic. The :py:class:`proteinworkshop.models.base.BaseModel` class is a subclass of :py:class:`pytorch_lightning.LightningModule`.
+The :py:class:`proteinworkshop.models.base.BenchMarkModel` class is a subclass of :py:class:`proteinworkshop.models.base.BaseModel` and is used as the primary orchestrator in the framework.
 
-To use a different structural encoder, the user should overwrite :py:attr:`src.models.base.BenchMarkModel.encoder` with a new encoder class. The encoder class should be a subclass of :py:class:`torch.nn.Module` and should implement the following methods:
+To use a different structural encoder, the user should overwrite :py:attr:`proteinworkshop.models.base.BenchMarkModel.encoder` with a new encoder class. The encoder class should be a subclass of :py:class:`torch.nn.Module` and should implement the following methods:
 
 - :py:meth:`torch.nn.Module.forward`
 
@@ -69,7 +69,7 @@ The forward method should be of the form:
 
 .. code-block:: python
 
-    from src.types import EncoderOutput
+    from srproteinworkshopc.types import EncoderOutput
 
     def forward(self, x: [Batch, ProteinBatch]) -> EncoderOutput:
         node_emb = x.x
