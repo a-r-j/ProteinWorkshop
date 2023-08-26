@@ -136,6 +136,7 @@ outputs/
 *.pdb
 *.pt
 *.ent
+data/pdb.tar
 data/afdb_swissprot_v4
 data/ATOM3D/
 data/cath/
