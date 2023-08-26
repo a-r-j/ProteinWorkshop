@@ -44,7 +44,7 @@ Below, we outline how one may set up a virtual environment for the `ProteinWorks
 
 ### From PyPI
 
-`proteinworkshop` is available for install [from PyPI]. This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects.
+`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects.
 
 ```bash
 pip install proteinworkshop
