@@ -54,7 +54,7 @@ class GCPNetModel(torch.nn.Module):
         :param edge_v_emb_dim: Dimension of the edge vector embeddings
             (default: ``4``)
         :type edge_v_emb_dim: int
-        :param r_max: Maximum distance for Bessel basis functions
+        :param r_max: Maximum distance for radial basis functions
             (default: ``10.0``)
         :type r_max: float
         :param num_rbf: Number of radial basis functions (default: ``8``)
