@@ -43,7 +43,7 @@ Configuration files to run the experiments described in the manuscript are provi
 
 ## Installation
 
-Below, we outline how one may set up a virtual environment for the `ProteinWorkshop`. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Windows and macOS are currently not officially supported.
+Below, we outline how one may set up a virtual environment for `proteinworkshop`. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Windows and macOS are currently not officially supported.
 
 ### From PyPI
 
@@ -57,15 +57,22 @@ However, for full exploration we recommend cloning the repository and building f
 
 ### Building from source
 
-1. Install `poetry` for dependency management using its [installation instructions](https://python-poetry.org/docs/)
+1. Clone the project
 
-2. Install project dependencies
+    ```bash
+    git clone https://github.com/a-r-j/ProteinWorkshop
+    cd ProteinWorkshop
+    ```
+
+2. Install `poetry` for dependency management using its [installation instructions](https://python-poetry.org/docs/)
+
+3. Install project dependencies
 
     ```bash
     poetry install
     ```
 
-3. Activate the newly-created virtual environment following `poetry`'s [usage documentation](https://python-poetry.org/docs/basic-usage/)
+4. Activate the newly-created virtual environment following `poetry`'s [usage documentation](https://python-poetry.org/docs/basic-usage/)
 
     ```bash
       # activate the environment on a `posix`-like (e.g., macOS or Linux) system
@@ -80,16 +87,16 @@ However, for full exploration we recommend cloning the repository and building f
       deactivate
     ```
 
-4. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
+5. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
 
     ```bash
     # hint: to see the list of dependencies that are currently installed in the environment, run:
     poetry show
     ```
 
-5. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example) for an example.
+6. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/proteinworkshop/blob/main/.env.example) for an example.
 
-6. Download PDB data:
+7. Download PDB data:
 
     ```bash
     python scripts/download_pdb_mmtf.py
@@ -98,7 +105,7 @@ However, for full exploration we recommend cloning the repository and building f
 ## Tutorials
 
 We provide a five-part tutorial series of Jupyter notebooks to provide users with examples
-of how to use and extend the `Protein Workshop`, as outlined below.
+of how to use and extend the Protein Workshop, as outlined below.
 
 1. [Training a new model](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/training_new_model_tutorial.ipynb)
 2. [Customizing an existing dataset](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/customizing_existing_dataset_tutorial.ipynb)
@@ -124,7 +131,7 @@ Finetuning a model additionally requires specification of a checkpoint.
 python proteinworkshop/finetune.py dataset=cath encoder=gcn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
 ```
 
-### Running a sweep/experiment
+#### Running a sweep/experiment
 
 We can make use of the hydra wandb sweeper plugin to configure experiments as sweeps, allowing searches over hyperparameters, architectures, pre-training/auxiliary tasks and datasets.
 
@@ -141,7 +148,7 @@ See `configs/sweeps/` for examples.
 With wandb:
 
   ```bash
-  wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 8
+  wandb agent mywandbgroup/proteinworkshop/2wwtt7oy --count 8
   ```
 
 Or an example SLURM submission script:
@@ -156,7 +163,7 @@ Or an example SLURM submission script:
   source ~/.bashrc
   source $(poetry env info --path)/bin/activate
 
-  wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 1
+  wandb agent mywandbgroup/proteinworkshop/2wwtt7oy --count 1
   ```
 
 Reproduce the sweeps performed in the manuscript:
@@ -164,23 +171,23 @@ Reproduce the sweeps performed in the manuscript:
 ```bash
 # reproduce the baseline tasks sweep (i.e., those performed without pre-training each model)
 wandb sweep configs/sweeps/baseline_fold.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2awtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2awtt7oy --count 8
 wandb sweep configs/sweeps/baseline_ppi.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2bwtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2bwtt7oy --count 8
 wandb sweep configs/sweeps/baseline_inverse_folding.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2cwtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2cwtt7oy --count 8
 
 # reproduce the model pre-training sweep
 wandb sweep configs/sweeps/pre_train.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2dwtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2dwtt7oy --count 8
 
 # reproduce the pre-trained tasks sweep (i.e., those performed after pre-training each model)
 wandb sweep configs/sweeps/pt_fold.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2ewtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2ewtt7oy --count 8
 wandb sweep configs/sweeps/pt_ppi.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2fwtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2fwtt7oy --count 8
 wandb sweep configs/sweeps/pt_inverse_folding.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2gwtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 ```
 
 #### Embedding a dataset
@@ -193,6 +200,21 @@ python proteinworkshop/embed.py dataset=cath encoder=gnn ckpt_path=PATH/TO/CHECK
 
 ```bash
 python proteinworkshop/validate_config.py dataset=cath features=full_atom task=inverse_folding
+```
+
+#### Using `proteinworkshop` modules functionally
+
+One may use the modules (e.g., datasets, models, tasks, and utilities) of `proteinworkshop`
+functionally by importing them directly. When installing this package using PyPi, this makes building
+on top of the assets of `proteinworkshop` straightforward and convenient.
+
+```python
+from proteinworkshop.datasets.cath import CATHDataModule
+
+datamodule = CATHDataModule(path="data/cath/", pdb_dir="data/pdb/", format="mmtf", batch_size=32)
+datamodule.download()
+
+train_dl = datamodule.train_dataloader()
 ```
 
 ## Models
