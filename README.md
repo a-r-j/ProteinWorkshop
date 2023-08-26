@@ -53,7 +53,7 @@ Below, we outline how one may set up a virtual environment for `proteinworkshop`
 pip install proteinworkshop
 ```
 
-However, for full exploration we recommend cloning the repository and building from source
+However, for full exploration we recommend cloning the repository and building from source.
 
 ### Building from source
 
