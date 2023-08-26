@@ -38,7 +38,7 @@ class GCPNetModel(torch.nn.Module):
         Initializes an instance of the GCPNetModel class with the provided
         parameters.
         Note: Each of the model's keyword arguments listed here
-        are also stored in the corresponding `DictConfigs` within `kwargs`.
+        are also referenced in the corresponding `DictConfigs` within `kwargs`.
         They are simply listed here to highlight some of the key arguments available.
         See `configs/encoder/gcpnet.yaml` for a full list of all available arguments.
 
