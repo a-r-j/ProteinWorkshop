@@ -17,10 +17,16 @@ PROJECT_PATH = SRC_PATH.parent
 """Path to the project root."""
 
 # Data paths are configured using the `.env` file in the project root.
-dotenv.load_dotenv(PROJECT_PATH / ".env")
 
-DATA_PATH = os.environ.get("DATA_PATH")
-"""Root path to the data directory. """
+if not os.path.exists(PROJECT_PATH / ".env"):
+    DATA_PATH = PROJECT_PATH / "data"
+    os.environ["DATA_PATH"] = str(DATA_PATH)
+    
+else:
+    dotenv.load_dotenv(PROJECT_PATH / ".env")
+
+    DATA_PATH = os.environ.get("DATA_PATH")
+    """Root path to the data directory. """
 
 # ---------------- HYDRA CONSTANTS ----------------
 HYDRA_CONFIG_PATH = PROJECT_PATH / "configs"

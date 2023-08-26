@@ -1,2 +1,2 @@
-sequence_denoising:
+backbone_dihedral_angles:
   _target_: proteinworkshop.tasks.backbone_dihedral_angle_prediction.BackboneDihedralPredictionTransform

@@ -117,11 +117,33 @@ class GVPGNNModel(torch.nn.Module):
 
     @property
     def required_batch_attributes(self) -> Set[str]:
+        """Required batch attributes for this encoder.
+
+        - ``edge_index`` (shape ``[2, num_edges]``)
+        - ``pos`` (shape ``[num_nodes, 3]``)
+        - ``x`` (shape ``[num_nodes, num_node_features]``)
+        - ``batch`` (shape ``[num_nodes]``)
+
+        :return: _description_
+        :rtype: Set[str]
+        """
         return {"edge_index", "pos", "x", "batch"}
 
     @jaxtyped
     @beartype
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
+        """Returns the node embedding and graph embedding in a dictionary.
+
+        :param batch: Batch of data to encode.
+        :type batch: Union[Batch, ProteinBatch]
+        :return: Dictionary of node and graph embeddings. Contains
+            ``node_embedding`` and ``graph_embedding`` fields. The node
+            embedding is of shape :math:`(|V|, d)` and the graph embedding is
+            of shape :math:`(n, d)`, where :math:`|V|` is the number of nodes
+            and :math:`n` is the number of graphs in the batch and :math:`d` is
+            the dimension of the embeddings.
+        :rtype: EncoderOutput
+        """
         # Edge features
         vectors = (
             batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]

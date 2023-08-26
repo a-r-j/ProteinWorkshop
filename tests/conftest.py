@@ -24,7 +24,7 @@ def cfg_train_global() -> DictConfig:
         training.
     """
     with initialize(version_base="1.3", config_path="../configs"):
-        cfg = compose(config_name="train.yaml", return_hydra_config=True, overrides=[])
+        cfg = compose(config_name="train.yaml", return_hydra_config=True, overrides=["dataset=dummy", "logger=csv"])
 
         # set defaults for all tests
         with open_dict(cfg):
@@ -32,16 +32,15 @@ def cfg_train_global() -> DictConfig:
                 pyrootutils.find_root(indicator=".project-root")
             )
             cfg.trainer.max_epochs = 1
-            cfg.trainer.limit_train_batches = 0.01
-            cfg.trainer.limit_val_batches = 0.1
-            cfg.trainer.limit_test_batches = 0.1
+            cfg.trainer.limit_train_batches = 0.5
+            cfg.trainer.limit_val_batches = 0.5
+            cfg.trainer.limit_test_batches = 0.5
             cfg.trainer.accelerator = "cpu"
             cfg.trainer.devices = 1
             cfg.dataset.datamodule.num_workers = 0
             cfg.dataset.datamodule.pin_memory = False
             cfg.extras.print_config = False
             cfg.extras.enforce_tags = False
-            cfg.logger = None
 
     return cfg
 
@@ -57,7 +56,7 @@ def cfg_finetune_global() -> DictConfig:
         cfg = compose(
             config_name="finetune.yaml",
             return_hydra_config=True,
-            overrides=["ckpt_path=."],
+            overrides=["ckpt_path=.", "dataset=dummy", "logger=csv"],
         )
 
         # set defaults for all tests
@@ -66,7 +65,7 @@ def cfg_finetune_global() -> DictConfig:
                 pyrootutils.find_root(indicator=".project-root")
             )
             cfg.trainer.max_epochs = 1
-            cfg.trainer.limit_test_batches = 0.1
+            cfg.trainer.limit_test_batches = 0.5
             cfg.trainer.accelerator = "cpu"
             cfg.trainer.devices = 1
             cfg.dataset.datamodule.num_workers = 0

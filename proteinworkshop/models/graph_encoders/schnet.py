@@ -3,10 +3,9 @@ from typing import Optional, Set, Union
 import torch
 import torch_scatter
 from graphein.protein.tensor.data import ProteinBatch
+from proteinworkshop.types import EncoderOutput
 from torch_geometric.data import Batch
 from torch_geometric.nn.models import SchNet
-
-from proteinworkshop.types import EncoderOutput
 
 
 class SchNetModel(SchNet):
@@ -25,12 +24,38 @@ class SchNetModel(SchNet):
         std: Optional[float] = None,
         atomref: Optional[torch.Tensor] = None,
     ):
+        """
+        Initializes an instance of the SchNetModel class with the provided
+        parameters.
+
+        :param hidden_channels: Number of channels in the hidden layers
+            (default: ``128``)
+        :type hidden_channels: int
+        :param out_dim: Output dimension of the model (default: ``1``)
+        :type out_dim: int
+        :param num_filters: Number of filters used in convolutional layers
+            (default: ``128``)
+        :type num_filters: int
+        :param num_layers: Number of convolutional layers in the model
+            (default: ``6``)
+        :type num_layers: int
+        :param num_gaussians: Number of Gaussian functions used for radial
+            filters (default: ``50``)
+        :type num_gaussians: int
+        :param cutoff: Cutoff distance for interactions (default: ``10``)
+        :type cutoff: float
+        :param max_num_neighbors: Maximum number of neighboring atoms to
+            consider (default: ``32``)
+        :type max_num_neighbors: int
+        :param readout: Global pooling method to be used (default: ``"add"``)
+        :type readout: str
+        """
         super().__init__(
             hidden_channels,
             num_filters,
             num_layers,
             num_gaussians,
-            cutoff, #None, # Interaction graph is not used
+            cutoff,  # None, # Interaction graph is not used
             max_num_neighbors,
             readout,
             dipole,
@@ -62,12 +87,14 @@ class SchNetModel(SchNet):
         h = self.act(h)
         h = self.lin2(h)
 
-        return EncoderOutput({
-            "node_embedding": h,
-            "graph_embedding": torch_scatter.scatter(
-                h, batch.batch, dim=0, reduce=self.readout
-            ),
-        })
+        return EncoderOutput(
+            {
+                "node_embedding": h,
+                "graph_embedding": torch_scatter.scatter(
+                    h, batch.batch, dim=0, reduce=self.readout
+                ),
+            }
+        )
 
 
 if __name__ == "__main__":
@@ -81,7 +108,9 @@ if __name__ == "__main__":
     print(cfg)
     encoder = hydra.utils.instantiate(cfg.schnet)
     print(encoder)
-    batch = ProteinBatch().from_protein_list([get_random_protein() for _ in range(4)], follow_batch=["coords"])
+    batch = ProteinBatch().from_protein_list(
+        [get_random_protein() for _ in range(4)], follow_batch=["coords"]
+    )
     batch.batch = batch.coords_batch
     batch.edges("knn_8", cache="edge_index")
     batch.pos = batch.coords[:, 1, :]
