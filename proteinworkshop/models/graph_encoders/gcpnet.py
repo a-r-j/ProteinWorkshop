@@ -1,27 +1,26 @@
-from functools import partial
-from typing import List, Union
-
 import hydra
-import proteinworkshop.models.graph_encoders.layers.gcp as gcp
 import torch
 import torch.nn as nn
+
 from beartype import beartype
+from functools import partial
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import jaxtyped
 from omegaconf import DictConfig
+from torch_geometric.data import Batch
+from typing import List, Union
+
+import proteinworkshop.models.graph_encoders.layers.gcp as gcp
+
 from proteinworkshop import constants
 from proteinworkshop.models.graph_encoders.components.wrappers import ScalarVector
-from proteinworkshop.models.utils import (centralize, decentralize, get_aggregation,
-                              localize)
+from proteinworkshop.models.utils import (centralize, decentralize, get_aggregation, localize)
 from proteinworkshop.types import EncoderOutput
-from torch_geometric.data import Batch
 
 
 class GCPNetModel(torch.nn.Module):
     def __init__(
         self,
-        # Note: Each of the following arguments are stored in the corresponding `kwargs` configs below
-        # They are simply listed here to highlight key available arguments
         num_layers: int = 5,
         node_s_emb_dim: int = 128,
         node_v_emb_dim: int = 16,
@@ -31,13 +30,49 @@ class GCPNetModel(torch.nn.Module):
         num_rbf: int = 8,
         activation: str = "silu",
         pool: str = "sum",
+        # Note: Each of the arguments above are stored in the corresponding `kwargs` configs below
+        # They are simply listed here to highlight key available arguments
         **kwargs,
     ):
+        """
+        Initializes an instance of the GCPNetModel class with the provided
+        parameters.
+        Note: Each of the model's keyword arguments listed here
+        are also stored in the corresponding `DictConfigs` within `kwargs`.
+        They are simply listed here to highlight some of the key arguments available.
+        See `configs/encoder/gcpnet.yaml` for a full list of all available arguments.
+
+        :param num_layers: Number of layers in the model (default: ``5``)
+        :type num_layers: int
+        :param node_s_emb_dim: Dimension of the node state embeddings (default: ``128``)
+        :type node_s_emb_dim: int
+        :param node_v_emb_dim: Dimension of the node vector embeddings (default: ``16``)
+        :type node_v_emb_dim: int
+        :param edge_s_emb_dim: Dimension of the edge state embeddings
+            (default: ``32``)
+        :type edge_s_emb_dim: int
+        :param edge_v_emb_dim: Dimension of the edge vector embeddings
+            (default: ``4``)
+        :type edge_v_emb_dim: int
+        :param r_max: Maximum distance for Bessel basis functions
+            (default: ``10.0``)
+        :type r_max: float
+        :param num_rbf: Number of radial basis functions (default: ``8``)
+        :type num_rbf: int
+        :param activation: Activation function to use in each GCP layer (default: ``silu``)
+        :type activation: str
+        :param pool: Global pooling method to be used
+            (default: ``"sum"``)
+        :type pool: str
+        :param kwargs: Primary model arguments in the form of the
+            `DictConfig`s `module_cfg`, `model_cfg`, and `layer_cfg`, respectively
+        :type kwargs: dict
+        """
         super().__init__()
 
         assert all(
             [cfg in kwargs for cfg in ["module_cfg", "model_cfg", "layer_cfg"]]
-        ), "All required GCPNet DictConfigs must be provided."
+        ), "All required GCPNet `DictConfig`s must be provided."
         module_cfg = kwargs["module_cfg"]
         model_cfg = kwargs["model_cfg"]
         layer_cfg = kwargs["layer_cfg"]
