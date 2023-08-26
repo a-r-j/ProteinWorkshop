@@ -1,5 +1,7 @@
 # Protein Workshop
 
+[![PyPI version](https://badge.fury.io/py/proteinworkshop.svg)](https://badge.fury.io/py/proteinworkshop)
+![Tests](https://github.com/a-r-j/ProteinWorkshop/actions/workflows/code-tests.yaml/badge.svg)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docs](https://assets.readthedocs.org/static/projects/badges/passing-flat.svg)](https://www.proteins.sh)
@@ -39,6 +41,18 @@ Configuration files to run the experiments described in the manuscript are provi
 ## Installation
 
 Below, we outline how one may set up a virtual environment for the `ProteinWorkshop`. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Windows and macOS are currently not officially supported.
+
+### From PyPI
+
+`proteinworkshop` is available for install [from PyPI]. This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects.
+
+```bash
+pip install proteinworkshop
+```
+
+However, for full exploration we recommend cloning the repository and building from source
+
+### Building from source
 
 1. Install `poetry` for dependency management using its [installation instructions](https://python-poetry.org/docs/)
 
