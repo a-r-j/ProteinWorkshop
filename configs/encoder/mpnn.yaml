@@ -1,6 +1,0 @@
-# 1 Model hyperparams
-model_name: "GCN"
-layers: ["MPNN", "MPNN"]
-dropout: 0.0
-n_hid: [128, 128] # number of hidden units
-gnn_activations: ["relu", "relu"]

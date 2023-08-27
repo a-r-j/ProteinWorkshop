@@ -10,7 +10,7 @@ defaults:
   - env: default
   - dataset: afdb_swissprot_v4
   - features: ca
-  - encoder: gcn
+  - encoder: egnn
   - decoder: default
   - logger: wandb
   - callbacks: default

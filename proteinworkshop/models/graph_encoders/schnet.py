@@ -71,9 +71,29 @@ class SchNetModel(SchNet):
 
     @property
     def required_batch_attributes(self) -> Set[str]:
+        """
+        Required batch attributes for this encoder.
+
+        - ``x``: Node features (shape: :math:`(n, d)`)
+        - ``pos``: Node positions (shape: :math:`(n, 3)`)
+        - ``edge_index``: Edge indices (shape: :math:`(2, e)`)
+        - ``batch``: Batch indices (shape: :math:`(n,)`)
+
+        :return: Set of required batch attributes
+        :rtype: Set[str]
+        """
         return {"pos", "edge_index", "x", "batch"}
 
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
+        """Implementation of the forward pass of the SchNet model.
+
+        :param batch: Batch of data to encode.
+        :type batch: Union[Batch, ProteinBatch]
+        :return: Dictionary with ``node_embedding`` and ``graph_embedding``
+            fields: node representations of shape :math:`(|V|, d)`, graph
+            representations of shape :math:`(n, d)`
+        :rtype: EncoderOutput
+        """
         h = self.embedding(batch.x)
 
         u, v = batch.edge_index

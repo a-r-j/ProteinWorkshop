@@ -72,7 +72,7 @@ However, for full exploration we recommend cloning the repository and building f
 3. Install project dependencies
 
     ```bash
-    poetry install
+      poetry install
     ```
 
 4. Activate the newly-created virtual environment following `poetry`'s [usage documentation](https://python-poetry.org/docs/basic-usage/)
@@ -93,8 +93,8 @@ However, for full exploration we recommend cloning the repository and building f
 5. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
 
     ```bash
-    # hint: to see the list of dependencies that are currently installed in the environment, run:
-    poetry show
+      # hint: to see the list of dependencies that are currently installed in the environment, run:
+      poetry show
     ```
 
 6. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/proteinworkshop/blob/main/.env.example) for an example.
@@ -102,7 +102,7 @@ However, for full exploration we recommend cloning the repository and building f
 7. Download PDB data:
 
     ```bash
-    python scripts/download_pdb_mmtf.py
+      python scripts/download_pdb_mmtf.py
     ```
 
 ## Tutorials
