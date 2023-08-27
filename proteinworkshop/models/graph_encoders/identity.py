@@ -4,13 +4,15 @@ import torch.nn as nn
 from beartype import beartype
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import jaxtyped
+from torch_geometric.data import Batch
+
 from proteinworkshop.models.utils import get_aggregation
 from proteinworkshop.types import EncoderOutput
-from torch_geometric.data import Batch
 
 
 class IdentityModel(nn.Module):
     """Identity encoder for debugging purposes."""
+
     def __init__(self, readout: str = "sum"):
         """Initializes an instance of the IdentityModel class.
 

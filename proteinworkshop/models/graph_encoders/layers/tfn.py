@@ -1,5 +1,5 @@
-import torch
 import e3nn
+import torch
 from torch_scatter import scatter
 
 from proteinworkshop.models.graph_encoders.components import irreps_tools
@@ -43,13 +43,19 @@ class TensorProductConvLayer(torch.nn.Module):
 
         if gate:
             # Optionally apply gated non-linearity
-            irreps_scalars, irreps_gates, irreps_gated = irreps_tools.irreps2gate(
-                e3nn.o3.Irreps(out_irreps)
-            )
-            act_scalars = [torch.nn.functional.silu for _, ir in irreps_scalars]
+            (
+                irreps_scalars,
+                irreps_gates,
+                irreps_gated,
+            ) = irreps_tools.irreps2gate(e3nn.o3.Irreps(out_irreps))
+            act_scalars = [
+                torch.nn.functional.silu for _, ir in irreps_scalars
+            ]
             act_gates = [torch.sigmoid for _, ir in irreps_gates]
             if irreps_gated.num_irreps == 0:
-                self.gate = e3nn.nn.Activation(out_irreps, acts=[torch.nn.functional.silu])
+                self.gate = e3nn.nn.Activation(
+                    out_irreps, acts=[torch.nn.functional.silu]
+                )
             else:
                 self.gate = e3nn.nn.Gate(
                     irreps_scalars,

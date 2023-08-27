@@ -6,12 +6,11 @@ from typing import Callable, Dict, Iterable, List, Optional
 
 import omegaconf
 import pandas as pd
-import torch
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
-from loguru import logger
 from loguru import logger as log
 from sklearn.model_selection import train_test_split
+
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 from proteinworkshop.datasets.utils import flatten_dir
 
@@ -40,12 +39,14 @@ class AstralDataModule(ProteinDataModule):
         self.release = str(release)
         self.identity = str(identity)
         if self.identity not in {"95", "40"}:
-            raise ValueError(f"Identity must be one of {95, 40} not {self.identity}")
+            raise ValueError(
+                f"Identity must be one of {95, 40} not {self.identity}"
+            )
 
-        self.ASTRAL_GZ_FNAME = f"pdbstyle-sel-gs-bib-{identity}-{self.release}.tgz"
-        self.scop_url = (
-            f"https://scop.berkeley.edu/downloads/pdbstyle/{self.ASTRAL_GZ_FNAME}"
+        self.ASTRAL_GZ_FNAME = (
+            f"pdbstyle-sel-gs-bib-{identity}-{self.release}.tgz"
         )
+        self.scop_url = f"https://scop.berkeley.edu/downloads/pdbstyle/{self.ASTRAL_GZ_FNAME}"
 
         self.structure_dir = self.data_dir / f"pdbstyle-{self.release}"
 
@@ -100,7 +101,9 @@ class AstralDataModule(ProteinDataModule):
 
     def parse_class_map(self) -> Dict[str, str]:
         log.info(f"Reading labels from: {self.data_dir / 'class_map.txt'}")
-        class_map = pd.read_csv(self.data_dir / "class_map.txt", sep="\t", header=None)
+        class_map = pd.read_csv(
+            self.data_dir / "class_map.txt", sep="\t", header=None
+        )
         return dict(class_map.values)
 
     def setup(self, stage: Optional[str] = None):
@@ -115,7 +118,9 @@ class AstralDataModule(ProteinDataModule):
         structs = [s for s in structs if s.endswith(".ent")]
         structs = [s.replace(".ent", "") for s in structs]
 
-        structs = random.sample(structs, int(len(structs) * self.dataset_fraction))
+        structs = random.sample(
+            structs, int(len(structs) * self.dataset_fraction)
+        )
 
         train_size, val_size, test_size = self.train_val_test
         log.info(
@@ -123,8 +128,12 @@ class AstralDataModule(ProteinDataModule):
         )
 
         train, val = train_test_split(structs, test_size=val_size + test_size)
-        val, test = train_test_split(val, test_size=test_size / (val_size + test_size))
-        log.info(f"Split sizes: {len(train)} train, {len(val)} val, {len(test)} test")
+        val, test = train_test_split(
+            val, test_size=test_size / (val_size + test_size)
+        )
+        log.info(
+            f"Split sizes: {len(train)} train, {len(val)} val, {len(test)} test"
+        )
 
         self.train_ids = train
         self.val_ids = val

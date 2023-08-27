@@ -1,7 +1,8 @@
 """Logging of hyperparameters"""
+from typing import Any, Dict
+
 from lightning.pytorch.utilities import rank_zero_only
 from loguru import logger as log
-from typing import Dict, Any
 
 
 @rank_zero_only

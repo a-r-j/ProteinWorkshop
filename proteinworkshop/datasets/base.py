@@ -3,28 +3,39 @@ import pathlib
 from abc import ABC, abstractmethod
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union, Literal
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterable,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    Union,
+)
 
 import lightning as L
 import numpy as np
 import pandas as pd
 import torch
-import torch.nn as nn
 from beartype import beartype
 from graphein import verbose
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from graphein.protein.tensor.io import protein_to_pyg
-from graphein.protein.utils import (download_pdb_multiprocessing,
-                                    get_obsolete_mapping, read_fasta)
+from graphein.protein.utils import (
+    download_pdb_multiprocessing,
+    get_obsolete_mapping,
+)
 from loguru import logger
 from sklearn.utils.class_weight import compute_class_weight
-from proteinworkshop.features.sequence_features import amino_acid_one_hot
 from torch_geometric import transforms as T
 from torch_geometric.data import Data, Dataset
 from tqdm import tqdm
 
+from proteinworkshop.features.sequence_features import amino_acid_one_hot
+
 verbose(False)
-from torch_geometric.data import Data
 
 
 def pair_data(a: Data, b: Data) -> Data:
@@ -305,7 +316,9 @@ class ProteinDataset(Dataset):
                     pdb
                     for pdb in self.pdb_codes
                     if not (
-                        os.path.exists(Path(self.raw_dir) / f"{pdb}.{self.format}")
+                        os.path.exists(
+                            Path(self.raw_dir) / f"{pdb}.{self.format}"
+                        )
                         or os.path.exists(
                             Path(self.raw_dir) / f"{pdb}.{self.format}.gz"
                         )
@@ -315,9 +328,13 @@ class ProteinDataset(Dataset):
             to_download = list(set(to_download))
             logger.info(f"Downloading {len(to_download)} structures")
             file_format = (
-                self.format[:-3] if self.format.endswith(".gz") else self.format
+                self.format[:-3]
+                if self.format.endswith(".gz")
+                else self.format
             )
-            download_pdb_multiprocessing(to_download, self.raw_dir, format=file_format)
+            download_pdb_multiprocessing(
+                to_download, self.raw_dir, format=file_format
+            )
 
     def len(self) -> int:
         return len(self.pdb_codes)
@@ -355,7 +372,8 @@ class ProteinDataset(Dataset):
         """
         if self.chains is not None:
             return [
-                f"{pdb}_{chain}.pt" for pdb, chain in zip(self.pdb_codes, self.chains)
+                f"{pdb}_{chain}.pt"
+                for pdb, chain in zip(self.pdb_codes, self.chains)
             ]
         else:
             return [f"{pdb}.pt" for pdb in self.pdb_codes]
@@ -379,7 +397,9 @@ class ProteinDataset(Dataset):
                 pdb_codes = [
                     (i, pdb)
                     for i, pdb in enumerate(self.pdb_codes)
-                    if not os.path.exists(Path(self.processed_dir) / f"{pdb}.pt")
+                    if not os.path.exists(
+                        Path(self.processed_dir) / f"{pdb}.pt"
+                    )
                 ]
             logger.info(f"Processing {len(pdb_codes)} unprocessed structures")
         else:
@@ -401,7 +421,11 @@ class ProteinDataset(Dataset):
                 )  # type: ignore
                 raise e
 
-            fname = f"{pdb}.pt" if self.chains is None else f"{pdb}_{self.chains[i]}.pt"
+            fname = (
+                f"{pdb}.pt"
+                if self.chains is None
+                else f"{pdb}_{self.chains[i]}.pt"
+            )
 
             graph.id = fname.split(".")[0]
 

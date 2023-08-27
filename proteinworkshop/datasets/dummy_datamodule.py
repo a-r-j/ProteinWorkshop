@@ -1,10 +1,11 @@
-import omegaconf
-from typing import Optional, Union, Iterable, Callable, Literal
 import os
-
-from .base import ProteinDataset, ProteinDataModule
-from graphein.protein.tensor.dataloader import ProteinDataLoader
 import pathlib
+from typing import Callable, Iterable, Literal, Optional
+
+import omegaconf
+from graphein.protein.tensor.dataloader import ProteinDataLoader
+
+from .base import ProteinDataModule, ProteinDataset
 
 
 class DummyDataModule(ProteinDataModule):

@@ -8,9 +8,7 @@ from torchmetrics import Metric
 class AUPRC(Metric):
     def __init__(self, compute_on_cpu: bool = True) -> None:
         super().__init__()
-        self.add_state(
-            "preds", default=[], dist_reduce_fx="cat"
-        )
+        self.add_state("preds", default=[], dist_reduce_fx="cat")
         self.add_state("targets", default=[], dist_reduce_fx="cat")
         self.compute_on_cpu = compute_on_cpu
 
@@ -21,7 +19,7 @@ class AUPRC(Metric):
     def compute(self) -> Any:
         return self.auprc(
             torch.cat(self.preds).flatten(), torch.cat(self.targets).flatten()
-            )
+        )
 
     @staticmethod
     def auprc(pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
@@ -35,5 +33,7 @@ class AUPRC(Metric):
         eps = 1e-10
         order = pred.argsort(descending=True)
         target = target[order]
-        precision = target.cumsum(0) / torch.arange(1, len(target) + 1, device=target.device)
+        precision = target.cumsum(0) / torch.arange(
+            1, len(target) + 1, device=target.device
+        )
         return precision[target == 1].sum() / ((target == 1).sum() + eps)

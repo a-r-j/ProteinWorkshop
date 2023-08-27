@@ -3,12 +3,13 @@ import json
 import os
 import random
 from pathlib import Path
-from typing import Callable, Dict, Iterable, List, Optional, Literal
+from typing import Callable, Dict, Iterable, List, Literal, Optional
 
 import omegaconf
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
+
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
@@ -79,11 +80,15 @@ class CATHDataModule(ProteinDataModule):
         logger.info(f"Found {len(self.train_pdbs)} chains in training set")
         logger.info("Removing obsolete PDBs from training set")
         self.train_pdbs = [
-            pdb for pdb in self.train_pdbs if pdb[:4] not in self.obsolete_pdbs.keys()
+            pdb
+            for pdb in self.train_pdbs
+            if pdb[:4] not in self.obsolete_pdbs.keys()
         ]
         logger.info(f"{len(self.train_pdbs)} remaining training chains")
 
-        logger.info(f"Sampling fraction {self.dataset_fraction} of training set")
+        logger.info(
+            f"Sampling fraction {self.dataset_fraction} of training set"
+        )
         fraction = int(self.dataset_fraction * len(self.train_pdbs))
         self.train_pdbs = random.sample(self.train_pdbs, fraction)
 
@@ -91,7 +96,9 @@ class CATHDataModule(ProteinDataModule):
         logger.info(f"Found {len(self.val_pdbs)} chains in validation set")
         logger.info("Removing obsolete PDBs from validation set")
         self.val_pdbs = [
-            pdb for pdb in self.val_pdbs if pdb[:4] not in self.obsolete_pdbs.keys()
+            pdb
+            for pdb in self.val_pdbs
+            if pdb[:4] not in self.obsolete_pdbs.keys()
         ]
         logger.info(f"{len(self.val_pdbs)} remaining validation chains")
 
@@ -99,7 +106,9 @@ class CATHDataModule(ProteinDataModule):
         logger.info(f"Found {len(self.test_pdbs)} chains in test set")
         logger.info("Removing obsolete PDBs from test set")
         self.test_pdbs = [
-            pdb for pdb in self.test_pdbs if pdb[:4] not in self.obsolete_pdbs.keys()
+            pdb
+            for pdb in self.test_pdbs
+            if pdb[:4] not in self.obsolete_pdbs.keys()
         ]
         logger.info(f"{len(self.test_pdbs)} remaining test chains")
         return data
@@ -195,6 +204,7 @@ if __name__ == "__main__":
 
     import hydra
     import omegaconf
+
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(

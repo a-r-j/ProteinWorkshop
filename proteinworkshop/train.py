@@ -18,8 +18,11 @@ from lightning.pytorch.loggers import Logger
 from loguru import logger as log
 from omegaconf import DictConfig
 
-from proteinworkshop import (constants, register_custom_omegaconf_resolvers,
-                             utils)
+from proteinworkshop import (
+    constants,
+    register_custom_omegaconf_resolvers,
+    utils,
+)
 from proteinworkshop.configs import config
 from proteinworkshop.models.base import BenchMarkModel
 
@@ -27,7 +30,9 @@ graphein.verbose(False)
 lt.monkey_patch()
 
 
-def _num_training_steps(train_dataset: ProteinDataLoader, trainer: L.Trainer) -> int:
+def _num_training_steps(
+    train_dataset: ProteinDataLoader, trainer: L.Trainer
+) -> int:
     """
     Returns total training steps inferred from datamodule and devices.
 
@@ -51,7 +56,9 @@ def _num_training_steps(train_dataset: ProteinDataLoader, trainer: L.Trainer) ->
 
     num_devices = max(1, trainer.num_devices)
     effective_batch_size = (
-        train_dataset.batch_size * trainer.accumulate_grad_batches * num_devices
+        train_dataset.batch_size
+        * trainer.accumulate_grad_batches
+        * num_devices
     )
     return (dataset_size // effective_batch_size) * trainer.max_epochs
 
@@ -88,8 +95,12 @@ def train_model(
     # set seed for random number generators in pytorch, numpy and python.random
     L.seed_everything(cfg.seed)
 
-    log.info(f"Instantiating datamodule: <{cfg.dataset.datamodule._target_}...")
-    datamodule: L.LightningDataModule = hydra.utils.instantiate(cfg.dataset.datamodule)
+    log.info(
+        f"Instantiating datamodule: <{cfg.dataset.datamodule._target_}..."
+    )
+    datamodule: L.LightningDataModule = hydra.utils.instantiate(
+        cfg.dataset.datamodule
+    )
 
     log.info("Instantiating callbacks...")
     callbacks: List[Callback] = utils.callbacks.instantiate_callbacks(
@@ -110,9 +121,15 @@ def train_model(
             == "flash.core.optimizers.LinearWarmupCosineAnnealingLR"
             and cfg.scheduler.interval == "step"
         ):
-            num_steps = _num_training_steps(datamodule.train_dataloader(), trainer)
-            log.info(f"Setting number of training steps in scheduler to: {num_steps}")
-            cfg.scheduler.scheduler.warmup_epochs = num_steps / trainer.max_epochs
+            num_steps = _num_training_steps(
+                datamodule.train_dataloader(), trainer
+            )
+            log.info(
+                f"Setting number of training steps in scheduler to: {num_steps}"
+            )
+            cfg.scheduler.scheduler.warmup_epochs = (
+                num_steps / trainer.max_epochs
+            )
             cfg.scheduler.scheduler.max_epochs = num_steps
             log.info(cfg.scheduler)
 
@@ -160,7 +177,9 @@ def train_model(
 
     if cfg.get("task_name") == "train":
         log.info("Starting training!")
-        trainer.fit(model=model, datamodule=datamodule, ckpt_path=cfg.get("ckpt_path"))
+        trainer.fit(
+            model=model, datamodule=datamodule, ckpt_path=cfg.get("ckpt_path")
+        )
 
     if cfg.get("test"):
         log.info("Starting testing!")

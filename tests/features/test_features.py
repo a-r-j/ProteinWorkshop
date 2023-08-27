@@ -1,11 +1,10 @@
-
 import os
-import pytest
-from hydra.utils import instantiate
+
 import omegaconf
+from hydra.utils import instantiate
+
 from proteinworkshop import constants
 from proteinworkshop.features.factory import ProteinFeaturiser
-
 from proteinworkshop.models.utils import get_input_dim
 
 FEATURE_CONFIG_DIR = constants.PROJECT_PATH / "configs" / "features"
@@ -38,4 +37,6 @@ def test_feature_shapes(example_batch):
 
         # Test we have node features of the correct shape
         assert out_features.shape[0] == example_batch.num_nodes
-        assert out_features.shape[1] == get_input_dim(cfg, "scalar_node_features", None)
+        assert out_features.shape[1] == get_input_dim(
+            cfg, "scalar_node_features", None
+        )

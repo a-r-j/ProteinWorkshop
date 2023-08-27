@@ -133,7 +133,9 @@ class LBATransform(BaseTransform):
         data = super().__call__(df)
         with torch.no_grad():
             data.graph_y = elem["scores"]["neglog_aff"]
-            lig_flag = torch.zeros(df.shape[0], device=self.device, dtype=torch.bool)
+            lig_flag = torch.zeros(
+                df.shape[0], device=self.device, dtype=torch.bool
+            )
             lig_flag[-len(ligand) :] = 1
             data.lig_flag = lig_flag
         return data
@@ -149,7 +151,9 @@ class PSRTransform(BaseTransform):
             df = elem["atoms"]
             df = df[df.element != "H"].reset_index(drop=True)
             data = super().__call__(df)
-            data.graph_y = torch.tensor(elem["scores"]["gdt_ts"])  # .unsqueeze(0)
+            data.graph_y = torch.tensor(
+                elem["scores"]["gdt_ts"]
+            )  # .unsqueeze(0)
             data.id = eval(elem["id"])[0]
         except Exception as e:
             log.error(f"Failed to process {eval(elem['id'])[0]}")
@@ -179,9 +183,9 @@ class MSPTransform(BaseTransform):
         orig_df = elem["original_atoms"].reset_index(drop=True)
         mut_df = elem["mutated_atoms"].reset_index(drop=True)
         with torch.no_grad():
-            original, mutated = self._transform(orig_df, mutation), self._transform(
-                mut_df, mutation
-            )
+            original, mutated = self._transform(
+                orig_df, mutation
+            ), self._transform(mut_df, mutation)
         original.label = mutated.label = 1.0 if elem["label"] == "1" else 0.0
         return original, mutated
 
@@ -193,7 +197,9 @@ class MSPTransform(BaseTransform):
 
     def _extract_node_mask(self, df, mutation):
         chain, res = mutation[1], int(mutation[2:-1])
-        idx = df.index[(df.chain.values == chain) & (df.residue.values == res)].values
+        idx = df.index[
+            (df.chain.values == chain) & (df.residue.values == res)
+        ].values
         mask = torch.zeros(len(df), dtype=torch.long)
         mask[idx] = 1
         return mask

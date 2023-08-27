@@ -59,15 +59,23 @@ def compute_edges(
         if edge_type.startswith("knn") or edge_type.startswith("eps"):
             edges.append(edge_fn(x.pos, edge_type))
         elif edge_type == "seq_forward":
-            edges.append(sequence_edges(x, chains=x.chains, direction="forward"))
+            edges.append(
+                sequence_edges(x, chains=x.chains, direction="forward")
+            )
         elif edge_type == "seq_backward":
-            edges.append(sequence_edges(x, chains=x.chains, direction="backward"))
+            edges.append(
+                sequence_edges(x, chains=x.chains, direction="backward")
+            )
         else:
             raise NotImplementedError(f"Edge type {edge_type} not implemented")
 
     # Compute edge types
     indxs = torch.cat(
-        [torch.ones_like(e_idx[0, :]) * idx for idx, e_idx in enumerate(edges)], dim=0
+        [
+            torch.ones_like(e_idx[0, :]) * idx
+            for idx, e_idx in enumerate(edges)
+        ],
+        dim=0,
     ).unsqueeze(0)
     edges = torch.cat(edges, dim=1)
 

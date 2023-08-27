@@ -1,11 +1,13 @@
 import importlib.metadata
 
 from graphein import verbose
-# Disable graphein import warnings
-verbose(False)
 from omegaconf import OmegaConf
 
 from proteinworkshop.models.utils import get_input_dim
+
+# Disable graphein import warnings
+verbose(False)
+
 
 __version__ = importlib.metadata.version("proteinworkshop")
 

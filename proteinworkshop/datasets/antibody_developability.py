@@ -1,18 +1,18 @@
 import os
 import pathlib
-from typing import Callable, List, Optional, Literal
+from typing import Callable, List, Literal, Optional
 
 import omegaconf
 import torch
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
 
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+
 try:
     from tdc.single_pred import Develop
 except ImportError:
     log.warning("Dependency TDC not installed. Run: pip install PyTDC")
-
-from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
 class AntibodyDevelopabilityDataModule(ProteinDataModule):

@@ -22,11 +22,13 @@ class BatchSampler(data.Sampler):
         max_units: int = 3000,
         shuffle: bool = True,
         hard_shuffle: bool = False,
-        **kwargs
+        **kwargs,
     ):
         self.hard_shuffle = hard_shuffle
         self.unit_counts = unit_counts
-        self.idx = [i for i in range(len(unit_counts)) if unit_counts[i] <= max_units]
+        self.idx = [
+            i for i in range(len(unit_counts)) if unit_counts[i] <= max_units
+        ]
         self.shuffle = shuffle
         self.max_units = max_units
         self._form_batches()
@@ -96,7 +98,7 @@ class DistributedSamplerWrapper(DistributedSampler):
         num_replicas: Optional[int] = None,
         rank: Optional[int] = None,
         shuffle: bool = True,
-        **kwargs
+        **kwargs,
     ):
         """
 

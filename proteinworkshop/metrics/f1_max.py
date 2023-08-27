@@ -9,9 +9,7 @@ from torchmetrics import Metric
 class F1Max(Metric):
     def __init__(self, num_classes: int, compute_on_cpu: bool = True) -> None:
         super().__init__()
-        self.add_state(
-            "preds", default=[], dist_reduce_fx="cat"
-        )
+        self.add_state("preds", default=[], dist_reduce_fx="cat")
         self.add_state("targets", default=[], dist_reduce_fx="cat")
         self.compute_on_cpu = compute_on_cpu
 
@@ -20,10 +18,7 @@ class F1Max(Metric):
         self.targets.append(target)
 
     def compute(self) -> Any:
-        return self.f1_max(
-            torch.cat(self.preds),
-            torch.cat(self.targets)
-            )
+        return self.f1_max(torch.cat(self.preds), torch.cat(self.targets))
 
     def f1_max(self, pred, target):
         """
@@ -67,5 +62,10 @@ class F1Max(Metric):
             is_start, torch.zeros_like(recall), recall[all_order - 1]
         )
         all_recall = all_recall.cumsum(0) / pred.shape[0]
-        all_f1 = 2 * all_precision * all_recall / (all_precision + all_recall + 1e-10)
+        all_f1 = (
+            2
+            * all_precision
+            * all_recall
+            / (all_precision + all_recall + 1e-10)
+        )
         return all_f1.max()

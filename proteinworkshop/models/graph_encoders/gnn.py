@@ -1,15 +1,23 @@
-from typing import List, Literal, Set, Union
+from typing import List, Set, Union
 
 import torch.nn as nn
 from beartype import beartype
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import jaxtyped
+from torch_geometric.data import Batch
+from torch_geometric.nn import (
+    GATConv,
+    GATv2Conv,
+    GCNConv,
+    RGATConv,
+    RGCNConv,
+    Sequential,
+    TransformerConv,
+)
+from torch_geometric.nn.conv import MessagePassing
+
 from proteinworkshop.models.utils import get_activations, get_aggregation
 from proteinworkshop.types import ActivationType, EncoderOutput, GNNLayerType
-from torch_geometric.data import Batch
-from torch_geometric.nn import (GATConv, GATv2Conv, GCNConv, RGATConv,
-                                RGCNConv, Sequential, TransformerConv)
-from torch_geometric.nn.conv import MessagePassing
 
 
 def get_gnn_layer(layer: GNNLayerType) -> MessagePassing:
@@ -116,7 +124,9 @@ class GNNModel(nn.Module):
             if i < len(self.n_hid) - 2:
                 gnn_layers.append(
                     (
-                        get_gnn_layer(self.layer_types[i])(dim, self.n_hid[i + 1]),
+                        get_gnn_layer(self.layer_types[i])(
+                            dim, self.n_hid[i + 1]
+                        ),
                         io_str,
                     )
                 )
@@ -161,10 +171,18 @@ class GNNModel(nn.Module):
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
         """Implements the forward pass of the GNN encoder."""
         if self.edge_weight:
-            x, edge_index, edge_weight = batch.x, batch.edge_index, batch.edge_weight
+            x, edge_index, edge_weight = (
+                batch.x,
+                batch.edge_index,
+                batch.edge_weight,
+            )
             emb = self.layers(x, edge_index, edge_weight)
         elif self.edge_features:
-            x, edge_index, edge_attr = batch.x, batch.edge_index, batch.edge_attr
+            x, edge_index, edge_attr = (
+                batch.x,
+                batch.edge_index,
+                batch.edge_attr,
+            )
             emb = self.layers(x, edge_index, edge_attr)
         else:
             x, edge_index = batch.x, batch.edge_index
@@ -181,6 +199,7 @@ class GNNModel(nn.Module):
 if __name__ == "__main__":
     import omegaconf
     from hydra.utils import instantiate
+
     from proteinworkshop import constants
 
     config_path = constants.PROJECT_PATH / "configs" / "encoder" / "gcn.yaml"

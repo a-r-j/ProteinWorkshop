@@ -5,7 +5,6 @@ from typing import Optional
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch_scatter import scatter
 
 
 class ShiftedSoftplus(nn.Module):
@@ -15,7 +14,6 @@ class ShiftedSoftplus(nn.Module):
 
     def forward(self, x):
         return F.softplus(x) - self.shift
-
 
 
 act_class_mapping = {
@@ -43,7 +41,9 @@ class OutputModel(nn.Module, metaclass=ABCMeta):
 
 
 class Scalar(OutputModel):
-    def __init__(self, hidden_channels, activation="silu", allow_prior_model=True):
+    def __init__(
+        self, hidden_channels, activation="silu", allow_prior_model=True
+    ):
         super(Scalar, self).__init__(allow_prior_model=allow_prior_model)
         act_class = act_class_mapping[activation]
         self.output_network = nn.Sequential(
@@ -83,7 +83,9 @@ class GatedEquivariantBlock(nn.Module):
         if intermediate_channels is None:
             intermediate_channels = hidden_channels
 
-        self.vec1_proj = nn.Linear(hidden_channels, hidden_channels, bias=False)
+        self.vec1_proj = nn.Linear(
+            hidden_channels, hidden_channels, bias=False
+        )
         self.vec2_proj = nn.Linear(hidden_channels, out_channels, bias=False)
 
         act_class = act_class_mapping[activation]
@@ -117,8 +119,12 @@ class GatedEquivariantBlock(nn.Module):
 
 
 class EquivariantScalar(OutputModel):
-    def __init__(self, hidden_channels, activation="silu", allow_prior_model=True):
-        super(EquivariantScalar, self).__init__(allow_prior_model=allow_prior_model)
+    def __init__(
+        self, hidden_channels, activation="silu", allow_prior_model=True
+    ):
+        super(EquivariantScalar, self).__init__(
+            allow_prior_model=allow_prior_model
+        )
         self.output_network = nn.ModuleList(
             [
                 GatedEquivariantBlock(
@@ -127,7 +133,9 @@ class EquivariantScalar(OutputModel):
                     activation=activation,
                     scalar_activation=True,
                 ),
-                GatedEquivariantBlock(hidden_channels // 2, 1, activation=activation),
+                GatedEquivariantBlock(
+                    hidden_channels // 2, 1, activation=activation
+                ),
             ]
         )
 

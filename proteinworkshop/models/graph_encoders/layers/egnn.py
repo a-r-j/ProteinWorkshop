@@ -14,8 +14,8 @@ class EGNNLayer(MessagePassing):
         emb_dim: int,
         activation: str = "relu",
         norm: str = "layer",
-        aggr: str="add"
-        ):
+        aggr: str = "add",
+    ):
         """E(n) Equivariant GNN Layer
 
         Paper: E(n) Equivariant Graph Neural Networks, Satorras et al.
@@ -31,7 +31,10 @@ class EGNNLayer(MessagePassing):
 
         self.emb_dim = emb_dim
         self.activation = get_activations(activation)
-        self.norm = {"layer": torch.nn.LayerNorm, "batch": torch.nn.BatchNorm1d}[norm]
+        self.norm = {
+            "layer": torch.nn.LayerNorm,
+            "batch": torch.nn.BatchNorm1d,
+        }[norm]
 
         # MLP `\psi_h` for computing messages `m_ij`
         self.mlp_msg = Sequential(
@@ -59,7 +62,9 @@ class EGNNLayer(MessagePassing):
             self.activation,
         )
 
-    def forward(self, h: NodeFeatureTensor, pos: CoordTensor, edge_index: EdgeTensor):
+    def forward(
+        self, h: NodeFeatureTensor, pos: CoordTensor, edge_index: EdgeTensor
+    ):
         """
         Args:
             h: (n, d) - initial node features
@@ -77,9 +82,7 @@ class EGNNLayer(MessagePassing):
         msg = torch.cat([h_i, h_j, dists], dim=-1)
         msg = self.mlp_msg(msg)
         # Scale magnitude of displacement vector
-        pos_diff = pos_diff * self.mlp_pos(
-            msg
-        )
+        pos_diff = pos_diff * self.mlp_pos(msg)
         # TODO some papers divide pos_diff by (dists + 1) to stabilise model.
         # TODO lucidrains implementation clamps pos_diff between some [-n, +n], also for stability.
         return msg, pos_diff

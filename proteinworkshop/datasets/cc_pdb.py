@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Callable, List, Optional, Literal
+from typing import Callable, List, Literal, Optional
 
 import numpy as np
 import omegaconf
@@ -10,6 +10,7 @@ import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
 from sklearn.model_selection import train_test_split
+
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
@@ -93,19 +94,26 @@ class CCPDBDataModule(ProteinDataModule):
         df["graph_labels"] = torch.tensor(labels[0])
 
         # Node labels
-        df["node_labels"] = df.interacting_residues.apply(self._encode_node_label)
+        df["node_labels"] = df.interacting_residues.apply(
+            self._encode_node_label
+        )
 
         # Split dataset
-        stratify = df["graph_labels"] if self.split_strategy == "stratified" else None
+        stratify = (
+            df["graph_labels"] if self.split_strategy == "stratified" else None
+        )
         log.info(
             f"Splitting dataset into train ({self.train_fraction}), val ({self.val_fraction}), and test ({self.test_fraction}) sets."
         )
         train, val = train_test_split(
-            df, test_size=self.val_fraction + self.test_fraction, stratify=stratify
+            df,
+            test_size=self.val_fraction + self.test_fraction,
+            stratify=stratify,
         )
         val, test = train_test_split(
             val,
-            test_size=self.test_fraction / (self.val_fraction + self.test_fraction),
+            test_size=self.test_fraction
+            / (self.val_fraction + self.test_fraction),
             stratify=stratify,
         )
 
@@ -210,7 +218,9 @@ if __name__ == "__main__":
     num_workers = 4
     pin_memory = True
 
-    dataset = CCPDBDataset(path, pdb_dir, name, batch_size, num_workers, pin_memory)
+    dataset = CCPDBDataset(
+        path, pdb_dir, name, batch_size, num_workers, pin_memory
+    )
     dataset.download()
     # dataset.parse_dataset("train")
     dataset.train_dataset()

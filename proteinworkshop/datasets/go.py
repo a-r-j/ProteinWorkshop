@@ -2,7 +2,7 @@ import os
 import zipfile
 from functools import lru_cache
 from pathlib import Path
-from typing import Callable, Dict, Iterable, Optional, Literal
+from typing import Callable, Dict, Iterable, Literal, Optional
 
 import omegaconf
 import pandas as pd
@@ -10,10 +10,11 @@ import torch
 import wget
 from loguru import logger as log
 from sklearn.preprocessing import LabelEncoder
-from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 from torch_geometric.data import Dataset
 from torch_geometric.loader import DataLoader
 from tqdm import tqdm
+
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 LABEL_LINE: Dict[str, int] = {
     "MF": 1,
@@ -79,7 +80,9 @@ class GeneOntologyDataset(ProteinDataModule):
         self.label_fname = self.data_dir / "nrPDB-GO_annot.tsv"
         self.url = "https://zenodo.org/record/6622158/files/GeneOntology.zip"
 
-        log.info(f"Setting up Gene Ontology dataset. Fraction {self.dataset_fraction}")
+        log.info(
+            f"Setting up Gene Ontology dataset. Fraction {self.dataset_fraction}"
+        )
 
     @lru_cache
     def parse_labels(self) -> Dict[str, torch.Tensor]:
@@ -117,7 +120,8 @@ class GeneOntologyDataset(ProteinDataModule):
         log.info("Encoding labels...")
         label_encoder = LabelEncoder().fit(all_labels)
         labels = {
-            k: torch.tensor(label_encoder.transform(v)) for k, v in tqdm(labels.items())
+            k: torch.tensor(label_encoder.transform(v))
+            for k, v in tqdm(labels.items())
         }
         log.info(f"Encoded {len(labels)} labels for task {self.split}.")
         return labels
@@ -237,12 +241,16 @@ class GeneOntologyDataset(ProteinDataModule):
 
         if self.obsolete == "drop":
             log.info("Dropping obsolete PDBs")
-            data = data.loc[~data["pdb"].str.lower().isin(self.obsolete_pdbs.keys())]
+            data = data.loc[
+                ~data["pdb"].str.lower().isin(self.obsolete_pdbs.keys())
+            ]
             log.info(
                 f"Found {len(data)} examples in {split} after dropping obsolete PDBs"
             )
         else:
-            raise NotImplementedError("Obsolete PDB replacement not implemented")
+            raise NotImplementedError(
+                "Obsolete PDB replacement not implemented"
+            )
         # logger.info(f"Identified {len(data['label'].unique())} classes in this split: {split}")
 
         if self.shuffle_labels:
@@ -258,6 +266,7 @@ if __name__ == "__main__":
 
     import hydra
     import omegaconf
+
     from proteinworkshop import constants
 
     log.info("Imported libs")

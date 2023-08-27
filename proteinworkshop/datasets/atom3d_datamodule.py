@@ -14,12 +14,15 @@ import torch
 from beartype import beartype
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
+from torch.utils.data import Dataset
+from torch_geometric.loader import DynamicBatchSampler
+
 from proteinworkshop.datasets.components import atom3d_dataset
 from proteinworkshop.datasets.components.ppi_dataset import PPIDataset
 from proteinworkshop.datasets.components.res_dataset import RESDataset
-from proteinworkshop.datasets.components.sampler import DistributedSamplerWrapper
-from torch.utils.data import Dataset
-from torch_geometric.loader import DynamicBatchSampler
+from proteinworkshop.datasets.components.sampler import (
+    DistributedSamplerWrapper,
+)
 
 ITERABLE_DATASETS = ["PPI", "RES"]
 SHARING_STRATEGY = "file_system"
@@ -156,14 +159,22 @@ class ATOM3DDataModule(L.LightningDataModule):
         self.data_train: Optional[Dataset] = None
         self.data_val: Optional[Dataset] = None
         self.data_test: Optional[Dataset] = None
-        self.train_phase, self.val_phase, self.test_phase = "train", "val", "test"
+        self.train_phase, self.val_phase, self.test_phase = (
+            "train",
+            "val",
+            "test",
+        )
 
-    def get_datasets(self, use_dips_for_testing: bool = False) -> Tuple[da.LMDBDataset]:
+    def get_datasets(
+        self, use_dips_for_testing: bool = False
+    ) -> Tuple[da.LMDBDataset]:
         """Retrieve data from storage.
 
         Does not assign state (e.g., self.data_train = data_train).
         """
-        relative_path = get_data_path(self.hparams.task, self.hparams.lba_split)
+        relative_path = get_data_path(
+            self.hparams.task, self.hparams.lba_split
+        )
         relative_test_path = get_test_data_path(
             self.hparams.task,
             self.hparams.lba_split,
@@ -172,9 +183,15 @@ class ATOM3DDataModule(L.LightningDataModule):
             use_dips_for_testing=use_dips_for_testing,
         )
         full_path = os.path.join(self.hparams.data_dir, relative_path)
-        full_test_path = os.path.join(self.hparams.data_dir, relative_test_path)
+        full_test_path = os.path.join(
+            self.hparams.data_dir, relative_test_path
+        )
         full_raw_data_path = os.path.join(
-            self.hparams.data_dir, self.hparams.task, "raw", self.hparams.task, "data"
+            self.hparams.data_dir,
+            self.hparams.task,
+            "raw",
+            self.hparams.task,
+            "data",
         )
 
         transform = self.transforms[self.hparams.task]()
@@ -187,7 +204,9 @@ class ATOM3DDataModule(L.LightningDataModule):
 
         if self.hparams.task in ["PPI"]:
             return (
-                dataset_class(full_path + self.train_phase, dataset_type="DIPS"),
+                dataset_class(
+                    full_path + self.train_phase, dataset_type="DIPS"
+                ),
                 dataset_class(full_path + self.val_phase, dataset_type="DIPS"),
                 dataset_class(
                     full_test_path,
@@ -233,7 +252,9 @@ class ATOM3DDataModule(L.LightningDataModule):
 
         Do not use it to assign state (e.g., self.x = y).
         """
-        relative_path = get_data_path(self.hparams.task, self.hparams.lba_split)
+        relative_path = get_data_path(
+            self.hparams.task, self.hparams.lba_split
+        )
         relative_test_path = get_test_data_path(
             self.hparams.task,
             self.hparams.lba_split,
@@ -243,7 +264,9 @@ class ATOM3DDataModule(L.LightningDataModule):
         )
 
         full_path = os.path.join(self.hparams.data_dir, relative_path)
-        full_test_path = os.path.join(self.hparams.data_dir, relative_test_path)
+        full_test_path = os.path.join(
+            self.hparams.data_dir, relative_test_path
+        )
         full_task_path = os.path.join(self.hparams.data_dir, self.hparams.task)
 
         if not os.path.exists(full_path):
@@ -257,7 +280,8 @@ class ATOM3DDataModule(L.LightningDataModule):
                     self.hparams.res_split,
                 ),
                 out_path=os.path.join(
-                    self.hparams.data_dir, os.sep.join(relative_path.split("/")[:2])
+                    self.hparams.data_dir,
+                    os.sep.join(relative_path.split("/")[:2]),
                 ),
             )
         if not os.path.exists(full_test_path):
@@ -275,7 +299,9 @@ class ATOM3DDataModule(L.LightningDataModule):
         ):
             # note: for downloading the RES task's raw dataset files, which we need even when only using a specific split
             atom3d.datasets.download_dataset(
-                self.hparams.task.split("_")[0], split=None, out_path=full_task_path
+                self.hparams.task.split("_")[0],
+                split=None,
+                out_path=full_task_path,
             )
 
     def setup(self, stage: Optional[str] = None):
@@ -285,7 +311,11 @@ class ATOM3DDataModule(L.LightningDataModule):
         """
         # load and split datasets only if not loaded already
         if not self.data_train and not self.data_val and not self.data_test:
-            self.data_train, self.data_val, self.data_test = self.get_datasets()
+            (
+                self.data_train,
+                self.data_val,
+                self.data_test,
+            ) = self.get_datasets()
 
     @beartype
     def get_dataloader(
@@ -377,11 +407,12 @@ class ATOM3DDataModule(L.LightningDataModule):
         )
 
     def test_dataloader(self) -> ProteinDataLoader:
-        return self.get_dataloader(self.data_test, batch_size=self.hparams.batch_size)
+        return self.get_dataloader(
+            self.data_test, batch_size=self.hparams.batch_size
+        )
 
     def teardown(self, stage: Optional[str] = None):
         """Clean up after fit or test."""
-        pass
 
     def state_dict(self) -> Dict:
         """Extra things to save to checkpoint."""
@@ -389,13 +420,13 @@ class ATOM3DDataModule(L.LightningDataModule):
 
     def load_state_dict(self, state_dict: Dict[str, Any]):
         """Things to do when loading checkpoint."""
-        pass
 
 
 if __name__ == "__main__":
     import hydra
     import omegaconf
     import pyrootutils
+
     from proteinworkshop.constants import DATA_PATH
 
     root = pyrootutils.setup_root(__file__, pythonpath=True)
@@ -438,7 +469,9 @@ if __name__ == "__main__":
     #     print(i)
     #     break
 
-    cfg = omegaconf.OmegaConf.load(root / "configs" / "dataset" / "atom3d_msp.yaml")
+    cfg = omegaconf.OmegaConf.load(
+        root / "configs" / "dataset" / "atom3d_msp.yaml"
+    )
     cfg.datamodule.data_dir = pathlib.Path(DATA_PATH) / "ATOM3D"
 
     ds = hydra.utils.instantiate(cfg.datamodule)

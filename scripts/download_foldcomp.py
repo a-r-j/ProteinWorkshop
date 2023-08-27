@@ -6,6 +6,7 @@ from typing import Optional
 
 import foldcomp
 from loguru import logger
+
 from proteinworkshop import constants
 
 _DATASET_NAMES = [

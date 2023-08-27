@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch_geometric.data import Batch
-from torch_scatter import scatter_add, scatter_max, scatter_mean
+from torch_scatter import scatter_add
 from torchdrug import data, utils
 
 
@@ -114,9 +114,9 @@ class RelationalGraphConv(MessagePassingBase):
         else:
             self.activation = activation
 
-        #self.self_loop = nn.Linear(input_dim, output_dim)
+        # self.self_loop = nn.Linear(input_dim, output_dim)
         self.self_loop = nn.LazyLinear(output_dim)
-        #self.linear = nn.Linear(num_relation * input_dim, output_dim)
+        # self.linear = nn.Linear(num_relation * input_dim, output_dim)
         self.linear = nn.LazyLinear(output_dim)
         self.edge_linear = nn.LazyLinear(input_dim) if edge_input_dim else None
 
@@ -130,12 +130,22 @@ class RelationalGraphConv(MessagePassingBase):
     def aggregate(self, graph, message):
         assert graph.num_relation == self.num_relation
 
-        node_out = graph.edge_index[:, 1] * self.num_relation + graph.edge_index[:, 2]
+        node_out = (
+            graph.edge_index[:, 1] * self.num_relation + graph.edge_index[:, 2]
+        )
         edge_weight = graph.edge_weight.unsqueeze(-1)
         update = scatter_add(
-            message * edge_weight, node_out, dim=0, dim_size=graph.num_nodes * self.num_relation
+            message * edge_weight,
+            node_out,
+            dim=0,
+            dim_size=graph.num_nodes * self.num_relation,
         ) / (
-            scatter_add(edge_weight, node_out, dim=0, dim_size=graph.num_nodes * self.num_relation)
+            scatter_add(
+                edge_weight,
+                node_out,
+                dim=0,
+                dim_size=graph.num_nodes * self.num_relation,
+            )
             + self.eps
         )
         return update.view(graph.num_nodes, self.num_relation * self.input_dim)
@@ -146,7 +156,9 @@ class RelationalGraphConv(MessagePassingBase):
         node_in, node_out, relation = graph.edge_index
         node_out = node_out * self.num_relation + relation
         degree_out = scatter_add(
-            graph.edge_weight, node_out, dim_size=graph.num_nodes * graph.num_relation
+            graph.edge_weight,
+            node_out,
+            dim_size=graph.num_nodes * graph.num_relation,
         )
         edge_weight = graph.edge_weight / degree_out[node_out]
         adjacency = utils.sparse_coo_tensor(
@@ -206,18 +218,30 @@ class GeometricRelationalGraphConv(RelationalGraphConv):
         activation: str = "relu",
     ):
         super(GeometricRelationalGraphConv, self).__init__(
-            input_dim, output_dim, num_relation, edge_input_dim, batch_norm, activation
+            input_dim,
+            output_dim,
+            num_relation,
+            edge_input_dim,
+            batch_norm,
+            activation,
         )
 
     def aggregate(self, graph, message):
         assert graph.num_relation == self.num_relation
 
-        node_out = graph.edge_index[:, 1] * self.num_relation + graph.edge_index[:, 2]
+        node_out = (
+            graph.edge_index[:, 1] * self.num_relation + graph.edge_index[:, 2]
+        )
         edge_weight = graph.edge_weight.unsqueeze(-1)
         update = scatter_add(
-            message * edge_weight, node_out, dim=0, dim_size=graph.num_nodes * self.num_relation
+            message * edge_weight,
+            node_out,
+            dim=0,
+            dim_size=graph.num_nodes * self.num_relation,
         )
-        update = update.view(graph.num_nodes, self.num_relation * self.input_dim)
+        update = update.view(
+            graph.num_nodes, self.num_relation * self.input_dim
+        )
 
         return update
 
@@ -291,7 +315,9 @@ class SpatialLineGraph(nn.Module):
         y = torch.cross(vector1, vector2).norm(dim=-1)
         angle = torch.atan2(y, x)
         relation = (angle / math.pi * self.num_angle_bin).long()
-        edge_list = torch.cat([line_graph.edge_index, relation.unsqueeze(0)], dim=0)  # .t()
+        edge_list = torch.cat(
+            [line_graph.edge_index, relation.unsqueeze(0)], dim=0
+        )  # .t()
 
         return type(line_graph)(
             edge_index=edge_list,
@@ -328,9 +354,14 @@ def get_line_graph(graph: Batch):
     # each node u has degree_out[u] * degree_in[u] local edges
     local_index = range - starts
     local_inner_size = degree_in.repeat_interleave(size)
-    edge_in_offset = (degree_out.cumsum(0) - degree_out).repeat_interleave(size)
+    edge_in_offset = (degree_out.cumsum(0) - degree_out).repeat_interleave(
+        size
+    )
     edge_out_offset = (degree_in.cumsum(0) - degree_in).repeat_interleave(size)
-    edge_in_index = torch.div(local_index, local_inner_size, rounding_mode="floor") + edge_in_offset
+    edge_in_index = (
+        torch.div(local_index, local_inner_size, rounding_mode="floor")
+        + edge_in_offset
+    )
     edge_out_index = local_index % local_inner_size + edge_out_offset
 
     edge_in = edge_in[edge_in_index]

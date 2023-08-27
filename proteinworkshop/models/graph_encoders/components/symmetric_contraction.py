@@ -76,7 +76,9 @@ class SymmetricContraction(CodeGenMixin, torch.nn.Module):
             )
 
     def forward(self, x: torch.Tensor, y: Optional[torch.Tensor]):
-        outs = [self.contractions[str(irrep)](x, y) for irrep in self.irreps_out]
+        outs = [
+            self.contractions[str(irrep)](x, y) for irrep in self.irreps_out
+        ]
         return torch.cat(outs, dim=-1)
 
 
@@ -118,7 +120,9 @@ class Contraction(torch.nn.Module):
                 for i in range(1, correlation + 1):
                     num_params = self.U_tensors(i).size()[-1]
                     w = torch.nn.Parameter(
-                        torch.randn(num_elements, num_params, self.num_features)
+                        torch.randn(
+                            num_elements, num_params, self.num_features
+                        )
                         / num_params
                     )
                     self.weights[str(i)] = w
