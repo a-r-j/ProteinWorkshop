@@ -140,7 +140,7 @@ python scripts/download_pdb_mmtf.py
 
 #### Training a model
 
-Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task:
+Launching an experiment minimally requires specification of a dataset, structural encoder, and task:
 
 ```bash
 python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding
