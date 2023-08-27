@@ -28,7 +28,6 @@ def download_pdb_mmtf(create_tar: bool = True):
     pdb_ids = [pdb_id.lower() for pdb_id in pdb_ids]
 
     # Name for download directory
-    now = datetime.datetime.now()
     if not os.path.isdir(mmtf_dir):
         os.mkdir(mmtf_dir)
 
@@ -44,7 +43,7 @@ def download_pdb_mmtf(create_tar: bool = True):
         for request_index, future in enumerate(pbar):
             pbar.set_description(f"Waiting for PDB download request #{request_index + 1}/{num_requests} to complete")
             # Wait for the future to complete
-            result = future.result()
+            future.result()
 
     if create_tar:
         # Create .tar archive file from MMTF files in directory

@@ -204,9 +204,11 @@ python proteinworkshop/validate_config.py dataset=cath features=full_atom task=i
 
 #### Using `proteinworkshop` modules functionally
 
-One may use the modules (e.g., datasets, models, tasks, and utilities) of `proteinworkshop`
+One may use the modules (e.g., datasets, models, featurisers, and utilities) of `proteinworkshop`
 functionally by importing them directly. When installing this package using PyPi, this makes building
 on top of the assets of `proteinworkshop` straightforward and convenient.
+
+For example, to use any datamodule available in `proteinworkshop`:
 
 ```python
 from proteinworkshop.datasets.cath import CATHDataModule
@@ -216,6 +218,31 @@ datamodule.download()
 
 train_dl = datamodule.train_dataloader()
 ```
+
+To use any model or featuriser available in `proteinworkshop`:
+
+```python
+from proteinworkshop.models.graph_encoders.dimenetpp import DimeNetPPModel
+from proteinworkshop.features.factory import ProteinFeaturiser
+from proteinworkshop.datasets.utils import create_example_batch
+
+model = DimeNetPPModel(hidden_channels=64, num_layers=3)
+ca_featuriser = ProteinFeaturiser(
+    representation="CA",
+    scalar_node_features=["amino_acid_one_hot"],
+    vector_node_features=[],
+    edge_types=["knn_16"],
+    scalar_edge_features=["edge_distance"],
+    vector_edge_features=[],
+)
+
+example_batch = create_example_batch()
+batch = ca_featuriser(example_batch)
+
+model_outputs = model(batch)
+```
+
+Read [the docs](https://www.proteins.sh) for a full list of modules available in `proteinworkshop`.
 
 ## Models
 
