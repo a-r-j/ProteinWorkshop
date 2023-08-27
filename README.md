@@ -16,6 +16,8 @@ This repository provides the code for the protein structure representation learn
 
 In the benchmark, we implement numerous [featurisation](https://www.proteins.sh/configs/features) schemes, [datasets](https://www.proteins.sh/configs/dataset) for [self-supervised pre-training](https://proteins.sh/quickstart_component/pretrain.html) and [downstream evaluation](https://proteins.sh/quickstart_component/downstream.html), [pre-training](https://proteins.sh/configs/task) tasks, and [auxiliary tasks](https://proteins.sh/configs/task.html#auxiliary-tasks).
 
+The benchmark can be used as a working template for a protein representation learning research project, [a library](#using-proteinworkshop-modules-functionally) of drop-in components for use in your projects, or as a CLI tool for quickly running [protein representation learning evaluation](https://proteins.sh/quickstart_component/downstream.html) and [pre-training](https://proteins.sh/quickstart_component/pretrain.html) configurations.
+
 [Processed datasets](https://zenodo.org/record/8282470) and [pre-trained weights](https://drive.google.com/drive/folders/1zK1r8FpmGaqV_QwUJuvDacwSL0RW-Vw9?usp=sharing) are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
 
 Configuration files to run the experiments described in the manuscript are provided in the `configs/sweeps/` directory.
