@@ -114,7 +114,8 @@ def download_processed_data(dataset_name: str, data_dir: Optional[str] = None):
 
     # Untar
     logger.info("Untarring dataset...")
-    tar = tarfile.open(data_dir / f"{fname}.tar.gz").extractall(path=data_dir)
+    tar = tarfile.open(data_dir / f"{fname}.tar.gz")
+    tar.extractall(path=data_dir)
     tar.close()
 
     if not os.path.exists(data_dir / fname / "processed"):
