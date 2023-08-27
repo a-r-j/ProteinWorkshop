@@ -25,6 +25,13 @@ Configuration files to run the experiments described in the manuscript are provi
 * [Installation](#installation)
 * [Tutorials](#tutorials)
 * [Quickstart](#quickstart)
+  * [Downloading datasets](#downloading-datasets)
+  * [Training a model](#training-a-model)
+  * [Finetuning a model](#finetuning-a-model)
+  * [Running a sweep/experiment](#running-a-sweepexperiment)
+  * [Embedding a dataset](#embedding-a-dataset)
+  * [Verifying a config](#verifying-a-config)
+  * [Using proteinworkshop modules functionally](#using-proteinworkshop-modules-functionally)
 * [Models](#models)
   * [Invariant structure encoders](#invariant-graph-encoders)
   * [Equivariant structure encoders](#equivariant-graph-encoders)
@@ -33,8 +40,8 @@ Configuration files to run the experiments described in the manuscript are provi
   * [Supervised graph-level datasets](#supervised-datasets)
   * [Supervised node-level datasets](#supervised-datasets)
 * [Tasks](#tasks)
-  * [Self-Supervised Tasks](#self-supervision-tasks)
-  * [Generic-Supervised Tasks](#generic-supervised-tasks)
+  * [Self-Supervised Tasks](#self-supervised-tasks)
+  * [Generic Supervised Tasks](#generic-supervised-tasks)
 * [Featurisation Schemes](#featurisation-schemes)
   * [Invariant Node Features](#invariant-node-features)
   * [Equivariant Node Features](#equivariant-node-features)
@@ -65,7 +72,7 @@ However, for full exploration we recommend cloning the repository and building f
     cd ProteinWorkshop
     ```
 
-2. Install `poetry` for dependency management using its [installation instructions](https://python-poetry.org/docs/)
+2. Install `poetry` for platform-agnostic dependency management using its [installation instructions](https://python-poetry.org/docs/)
 
     After installing `poetry`, to avoid potential [keyring errors](https://github.com/python-poetry/poetry/issues/1917#issuecomment-1235998997), disable its keyring usage by adding `PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring` to your shell's startup configuration and restarting your shell environment (e.g., `echo 'export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring' >> ~/.bashrc && source ~/.bashrc` for a Bash shell environment and likewise for other shell environments).
 
@@ -108,7 +115,7 @@ However, for full exploration we recommend cloning the repository and building f
 ## Tutorials
 
 We provide a five-part tutorial series of Jupyter notebooks to provide users with examples
-of how to use and extend the Protein Workshop, as outlined below.
+of how to use and extend `proteinworkshop`, as outlined below.
 
 1. [Training a new model](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/training_new_model_tutorial.ipynb)
 2. [Customizing an existing dataset](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/customizing_existing_dataset_tutorial.ipynb)
@@ -116,9 +123,9 @@ of how to use and extend the Protein Workshop, as outlined below.
 4. [Adding a new model](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/adding_new_model_tutorial.ipynb)
 5. [Adding a new task](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/adding_new_task_tutorial.ipynb)
 
-### Quickstart
+## Quickstart
 
-#### Downloading datasets
+### Downloading datasets
 
 Datasets can either be built from the source structures or downloaded from [Zenodo](https://zenodo.org/record/8282470). Datasets will be built from source the first time a dataset is used in a run (or by calling the appropriate `setup()` method in the corresponding datamodule). We provide a CLI tool for downloading datasets:
 
@@ -130,7 +137,7 @@ workshop download afdb_rep_v4
 # etc..
 ```
 
-If you wish to build datasets from source, we reccommend first downloading the entire PDB first (in MMTF format, c. 24 Gb)
+If you wish to build datasets from source, we recommend first downloading the entire PDB first (in MMTF format, c. 24 Gb) to reuse shared PDB data as much as possible:
 
 ```bash
 workshop download pdb
@@ -138,7 +145,7 @@ workshop download pdb
 python scripts/download_pdb_mmtf.py
 ```
 
-#### Training a model
+### Training a model
 
 Launching an experiment minimally requires specification of a dataset, structural encoder, and task:
 
@@ -152,7 +159,7 @@ This command uses the default configurations in `configs/train.yaml`, which can 
 python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding features=ca_bb name=MY-EXPT-NAME
 ```
 
-#### Finetuning a model
+### Finetuning a model
 
 Finetuning a model additionally requires specification of a checkpoint.
 
@@ -160,7 +167,7 @@ Finetuning a model additionally requires specification of a checkpoint.
 python proteinworkshop/finetune.py dataset=cath encoder=egnn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
 ```
 
-#### Running a sweep/experiment
+### Running a sweep/experiment
 
 We can make use of the hydra wandb sweeper plugin to configure experiments as sweeps, allowing searches over hyperparameters, architectures, pre-training/auxiliary tasks and datasets.
 
@@ -219,19 +226,19 @@ wandb sweep configs/sweeps/pt_inverse_folding.yaml
 wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 ```
 
-#### Embedding a dataset
+### Embedding a dataset
 
 ```bash
 python proteinworkshop/embed.py dataset=cath encoder=egnn ckpt_path=PATH/TO/CHECKPOINT
 ```
 
-#### Verify a config
+### Verifying a config
 
 ```bash
 python proteinworkshop/validate_config.py dataset=cath features=full_atom task=inverse_folding
 ```
 
-#### Using `proteinworkshop` modules functionally
+### Using `proteinworkshop` modules functionally
 
 One may use the modules (e.g., datasets, models, featurisers, and utilities) of `proteinworkshop`
 functionally by importing them directly. When installing this package using PyPi, this makes building
@@ -303,15 +310,15 @@ Read [the docs](https://www.proteins.sh) for a full list of modules available in
 
 ## Datasets
 
-To download a (processed) dataset from Zenodo, you can run:
+To download a (processed) dataset from Zenodo, you can run
 
 ```bash
 workshop download <DATASET_NAME>
 ```
 
-Where `<DATASET_NAME>` is given the first column in the tables below.
+where `<DATASET_NAME>` is given the first column in the tables below.
 
-Otherwise, simply starting a training run will download and process the data from source
+Otherwise, simply starting a training run will download and process the data from source.
 
 ### Structure-based Pre-training Corpuses
 
@@ -381,7 +388,7 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 
 ## Tasks
 
-### Self-supervision Tasks
+### Self-Supervised Tasks
 
 | Name      | Description   | Source |
 | ----------- | ----------- | ----------- |
@@ -406,7 +413,7 @@ These are likely to be most frequently used with the [`pdb`](https://github.com/
 
 ## Featurisation Schemes
 
-Part of the goal of the benchmark is to investigate the impact of the degree to which increasing granularity of structural detail affects performance. To achieve this, we provide several featurisation schemes for protein structures.
+Part of the goal of `proteinworkshop` benchmark is to investigate the impact of the degree to which increasing granularity of structural detail affects performance. To achieve this, we provide several featurisation schemes for protein structures.
 
 ### Invariant Node Features
 
