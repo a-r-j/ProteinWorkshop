@@ -323,6 +323,10 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 | `atom3d_ppi` | Protein-protein interaction prediction      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
 | `atom3d_psr` | Protein structure ranking      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
 | `atom3d_res` | Residue identity prediction      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
+|`ccpdb_ligands`| Ligand binding residue prediction | [Agrawal et al.](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908) | [Publicly Available](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)
+|`ccpdb_metal`| Metal ion binding residue prediction | [Agrawal et al.](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)  | [Publicly Available](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)
+|`ccpdb_nucleic`| Nucleic acid binding residue prediction | [Agrawal et al.](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)  | [Publicly Available](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)
+|`ccpdb_nucleotides`| Nucleotide binding residue prediction | [Agrawal et al.](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)  | [Publicly Available](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)
 | `deep_sea_proteins` | Gene Ontology prediction (Biological Process)      |    [Sieg et al.](https://onlinelibrary.wiley.com/doi/10.1002/prot.26337uuujj)    | [Public domain](https://onlinelibrary.wiley.com/doi/10.1002/prot.26337)
 | `go-bp` | Gene Ontology prediction (Biological Process)      |    [Gligorijevic et al](https://www.nature.com/articles/s41467-021-23303-9)    | [CC-BY 4.0](https://www.nature.com/articles/s41467-021-23303-9)|
 | `go-cc` | Gene Ontology (Cellular Component)       | [Gligorijevic et al](https://www.nature.com/articles/s41467-021-23303-9)       | [CC-BY 4.0](https://www.nature.com/articles/s41467-021-23303-9) |
@@ -332,6 +336,9 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 | `fold-family` |  Fold prediction, split at the family level       |  [Hou et al.](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)      | [CC-BY 4.0](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)
 | `fold-superfamily` |   Fold prediction, split at the superfamily level      | [Hou et al.](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)       | [CC-BY 4.0](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)
 | `masif-site` | Protein-protein interaction site prediction | [Gainza et al.](https://www.nature.com/articles/s41592-019-0666-6)       | [Apache 2.0](https://github.com/LPDI-EPFL/masif/blob/master/LICENSE)
+| `metal_3d` | Zinc Binding Site Prediction | [Duerr et al.](https://www.nature.com/articles/s41467-023-37870-6) | [MIT](https://zenodo.org/record/7594085)
+| `ptm` | Post Translational Modification Side Prediction | [Yan et al.](https://www.sciencedirect.com/science/article/pii/S2667237523000450?via%3Dihub) | [CC-BY 4.0](https://zenodo.org/record/7655709) |
+
 
 ## Tasks
 
