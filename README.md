@@ -16,7 +16,7 @@ This repository provides the code for the protein structure representation learn
 
 In the benchmark, we implement numerous [featurisation](https://www.proteins.sh/configs/features) schemes, [datasets](https://www.proteins.sh/configs/dataset) for [self-supervised pre-training](https://proteins.sh/quickstart_component/pretrain.html) and [downstream evaluation](https://proteins.sh/quickstart_component/downstream.html), [pre-training](https://proteins.sh/configs/task) tasks, and [auxiliary tasks](https://proteins.sh/configs/task.html#auxiliary-tasks).
 
-[Processed datasets](https://drive.google.com/drive/folders/18i8rLST6ZICTBu6Q67ClT0KqN9AHeqoW?usp=sharing) and [pre-trained weights](https://drive.google.com/drive/folders/1zK1r8FpmGaqV_QwUJuvDacwSL0RW-Vw9?usp=sharing) are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
+[Processed datasets](https://zenodo.org/record/8282470) and [pre-trained weights](https://drive.google.com/drive/folders/1zK1r8FpmGaqV_QwUJuvDacwSL0RW-Vw9?usp=sharing) are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
 
 Configuration files to run the experiments described in the manuscript are provided in the `configs/sweeps/` directory.
 
@@ -117,6 +117,26 @@ of how to use and extend the Protein Workshop, as outlined below.
 5. [Adding a new task](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/adding_new_task_tutorial.ipynb)
 
 ### Quickstart
+
+#### Downloading datasets
+
+Datasets can either be built from the source structures or downloaded from [Zenodo](https://zenodo.org/record/8282470). Datasets will be built from source the first time a dataset is used in a run (or by calling the appropriate `setup()` method in the corresponding datamodule). We provide a CLI tool for downloading datasets:
+
+```bash
+workshop download <DATASET_NAME>
+workshop download pdb
+workshop download cath
+workshop download afdb_rep_v4
+# etc..
+```
+
+If you wish to build datasets from source, we reccommend first downloading the entire PDB first (in MMTF format, c. 24 Gb)
+
+```bash
+workshop download pdb
+# or
+python scripts/download_pdb_mmtf.py
+```
 
 #### Training a model
 
