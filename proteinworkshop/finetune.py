@@ -1,6 +1,7 @@
 """Entry point for finetuning a pretrained model."""
 import collections
 import copy
+import sys
 from typing import List
 
 import graphein
@@ -13,7 +14,8 @@ from lightning.pytorch.loggers import Logger
 from loguru import logger as log
 from omegaconf import DictConfig
 
-from proteinworkshop import constants, register_custom_omegaconf_resolvers, utils
+from proteinworkshop import (constants, register_custom_omegaconf_resolvers,
+                             utils)
 from proteinworkshop.configs import config
 from proteinworkshop.models.base import BenchMarkModel
 
@@ -21,7 +23,6 @@ graphein.verbose(False)
 lt.monkey_patch()
 
 
-@utils.extras.task_wrapper
 def finetune(cfg: DictConfig):
     assert cfg.ckpt_path, "No checkpoint path provided."
 
@@ -34,7 +35,9 @@ def finetune(cfg: DictConfig):
     model: L.LightningModule = BenchMarkModel(cfg)
 
     log.info("Instantiating callbacks...")
-    callbacks: List[Callback] = utils.callbacks.instantiate_callbacks(cfg.get("callbacks"))
+    callbacks: List[Callback] = utils.callbacks.instantiate_callbacks(
+        cfg.get("callbacks")
+    )
 
     log.info("Instantiating loggers:... ")
     logger: List[Logger] = utils.loggers.instantiate_loggers(cfg.get("logger"))
@@ -148,9 +151,20 @@ def finetune(cfg: DictConfig):
 def _main(cfg: DictConfig) -> None:
     # apply extra utilities
     # (e.g. ask for tags if none are provided in cfg, print cfg tree, etc.)
-    utils.extras.extras(cfg)
+    utils.extras(cfg)
     cfg = config.validate_config(cfg)
     finetune(cfg)
+
+
+def _script_main(args):
+    """
+    Provides an entry point for the script dispatcher.
+
+    Sets the sys.argv to the provided args and calls the main train function.
+    """
+    register_custom_omegaconf_resolvers()
+    sys.argv = args
+    _main()
 
 
 if __name__ == "__main__":

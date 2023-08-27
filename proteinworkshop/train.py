@@ -3,6 +3,7 @@ Main module to load and train the model. This should be the program entry
 point.
 """
 import copy
+import sys
 from typing import List, Optional
 
 import graphein
@@ -17,7 +18,8 @@ from lightning.pytorch.loggers import Logger
 from loguru import logger as log
 from omegaconf import DictConfig
 
-from proteinworkshop import constants, register_custom_omegaconf_resolvers, utils
+from proteinworkshop import (constants, register_custom_omegaconf_resolvers,
+                             utils)
 from proteinworkshop.configs import config
 from proteinworkshop.models.base import BenchMarkModel
 
@@ -54,7 +56,9 @@ def _num_training_steps(train_dataset: ProteinDataLoader, trainer: L.Trainer) ->
     return (dataset_size // effective_batch_size) * trainer.max_epochs
 
 
-def train_model(cfg: DictConfig, encoder: Optional[nn.Module] = None):  # sourcery skip: extract-method
+def train_model(
+    cfg: DictConfig, encoder: Optional[nn.Module] = None
+):  # sourcery skip: extract-method
     """
     Trains a model from a config.
 
@@ -88,7 +92,9 @@ def train_model(cfg: DictConfig, encoder: Optional[nn.Module] = None):  # source
     datamodule: L.LightningDataModule = hydra.utils.instantiate(cfg.dataset.datamodule)
 
     log.info("Instantiating callbacks...")
-    callbacks: List[Callback] = utils.callbacks.instantiate_callbacks(cfg.get("callbacks"))
+    callbacks: List[Callback] = utils.callbacks.instantiate_callbacks(
+        cfg.get("callbacks")
+    )
 
     log.info("Instantiating loggers...")
     logger: List[Logger] = utils.loggers.instantiate_loggers(cfg.get("logger"))
@@ -189,6 +195,17 @@ def _main(cfg: DictConfig) -> None:
     utils.extras(cfg)
     cfg = config.validate_config(cfg)
     train_model(cfg)
+
+
+def _script_main(args: List[str]) -> None:
+    """
+    Provides an entry point for the script dispatcher.
+
+    Sets the sys.argv to the provided args and calls the main train function.
+    """
+    sys.argv = args
+    register_custom_omegaconf_resolvers()
+    _main()
 
 
 if __name__ == "__main__":
