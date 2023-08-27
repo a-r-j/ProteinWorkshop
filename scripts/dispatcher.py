@@ -6,6 +6,8 @@ from proteinworkshop.train import _script_main as train_main
 
 from .download_foldcomp import _DATASET_NAMES, download_foldcomp
 from .download_pdb_mmtf import download_pdb_mmtf
+from .download_processed_data import (_ZENODO_DATASET_NAMES,
+                                      download_processed_data)
 from .install_pyg import _install_pyg
 
 
@@ -16,6 +18,8 @@ def main():
             download_pdb_mmtf()
         elif sys.argv[2] in _DATASET_NAMES:
             download_foldcomp(*sys.argv[2:])
+        elif sys.argv[2] in _ZENODO_DATASET_NAMES:
+            download_processed_data(*sys.argv[2:])
         else:
             raise ValueError("Invalid dataset name")
     elif sys.argv[1] == "install":
