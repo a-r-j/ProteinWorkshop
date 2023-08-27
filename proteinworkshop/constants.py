@@ -47,3 +47,52 @@ DEFAULT_LOG_FORMATTER = logging.Formatter(
 DEFAULT_LOG_FILE = PROJECT_PATH / "logs" / "default_log.log"
 DEFAULT_LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
 DEFAULT_LOG_LEVEL = logging.DEBUG  # verbose logging per default
+
+# ---------------- VALID DATASETS CONSTANTS ---------
+FOLDCOMP_DATASET_NAMES = [
+    "afdb_rep_v4",
+    "afdb_rep_dark_v4",
+    "afdb_swissprot",
+    "afdb_swissprot_v4",
+    "afdb_uniprot_v4",
+    "esmatlas",
+    "highquality_clust30",
+    "a_thaliana",
+    "c_albicans",
+    "c_elegans",
+    "d_discoideum",
+    "d_melanogaster",
+    "d_rerio",
+    "e_coli",
+    "g_max",
+    "h_sapiens",
+    "m_jannaschii",
+    "m_musculus",
+    "o_sativa",
+    "r_norvegicus",
+    "s_cerevisiae",
+    "s_pombe",
+    "z_mays",
+]
+
+ZENODO_DATASET_NAMES = [
+    "antibody_developability",
+    "cath" ,
+    "ccpdb",
+    "ccpdb_ligands",
+    "ccpdb_metal",
+    "ccpdb_nucleic",
+    "ccpdb_nucleotides",
+    "deep_sea_proteins",
+    "ec_reaction",
+    "fold_classification",
+    "fold_fold",
+    "fold_family",
+    "fold_superfamily",
+    "go-bp",
+    "go-cc",
+    "go-mf",
+    "masif_site",
+    "metal_3d",
+    "ptm",
+]

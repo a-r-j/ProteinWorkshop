@@ -8,31 +8,7 @@ import foldcomp
 from loguru import logger
 from proteinworkshop import constants
 
-_DATASET_NAMES = [
-    "afdb_rep_v4",
-    "afdb_rep_dark_v4",
-    "afdb_swissprot",
-    "afdb_swissprot_v4",
-    "afdb_uniprot_v4",
-    "esmatlas",
-    "highquality_clust30",
-    "a_thaliana",
-    "c_albicans",
-    "c_elegans",
-    "d_discoideum",
-    "d_melanogaster",
-    "d_rerio",
-    "e_coli",
-    "g_max",
-    "h_sapiens",
-    "m_jannaschii",
-    "m_musculus",
-    "o_sativa",
-    "r_norvegicus",
-    "s_cerevisiae",
-    "s_pombe",
-    "z_mays",
-]
+_DATASET_NAMES = constants.FOLDCOMP_DATASET_NAMES
 
 
 def download_foldcomp(dataset_name: str, data_dir: Optional[str] = None):

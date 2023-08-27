@@ -1,39 +1,50 @@
 import sys
-
-from loguru import logger
-from proteinworkshop.finetune import _script_main as finetune_main
-from proteinworkshop.train import _script_main as train_main
-
-from .download_foldcomp import _DATASET_NAMES, download_foldcomp
-from .download_pdb_mmtf import download_pdb_mmtf
-from .download_processed_data import (_ZENODO_DATASET_NAMES,
-                                      download_processed_data)
-from .install_pyg import _install_pyg
+from proteinworkshop import constants
 
 
 def main():
     """Dispatches the command to the appropriate function."""
+    if len(sys.argv) < 2:
+        _valid = "\n\t".join(["\n\tdownload", "install", "train", "finetune"])
+        raise ValueError(f"Did not provide a command. Valid commands are: {_valid}")
+
+    # Options to download data
     if sys.argv[1] == "download":
         if sys.argv[2] == "pdb":
+            # lazy import
+            from .download_pdb_mmtf import download_pdb_mmtf  
             download_pdb_mmtf()
-        elif sys.argv[2] in _DATASET_NAMES:
+        elif sys.argv[2] in constants.FOLDCOMP_DATASET_NAMES:
+            # lazy import
+            from .download_foldcomp import download_foldcomp
             download_foldcomp(*sys.argv[2:])
-        elif sys.argv[2] in _ZENODO_DATASET_NAMES:
+        elif sys.argv[2] in constants.ZENODO_DATASET_NAMES:
+            # lazy import
+            from .download_processed_data import download_processed_data
             download_processed_data(*sys.argv[2:])
         else:
-            raise ValueError("Invalid dataset name")
+            _valid = "\n\t".join(["\n\tpdb", *constants.FOLDCOMP_DATASET_NAMES, *constants.ZENODO_DATASET_NAMES])
+            raise ValueError(f"Invalid dataset name. Valid datasets are: {_valid}")
+    
+    # Options to install dependencies
     elif sys.argv[1] == "install":
         if sys.argv[2] == "pyg":
+            # lazy import
+            from .install_pyg import _install_pyg
             _install_pyg()
 
+    # Options to run scripts
     elif sys.argv[1] == "train":
+        from proteinworkshop.train import _script_main as train_main
         train_main(sys.argv[2:])
 
     elif sys.argv[1] == "finetune":
+        from proteinworkshop.finetune import _script_main as finetune_main
         finetune_main(sys.argv[2:])
 
     else:
-        raise ValueError("Invalid command")
+        _valid = "\n\t".join(["\n\tdownload", "install", "train", "finetune"])
+        raise ValueError(f"Invalid command. Valid commands are: {_valid}")
 
 
 if __name__ == "__main__":
