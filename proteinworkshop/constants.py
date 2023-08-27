@@ -7,8 +7,6 @@ import logging
 import os
 import pathlib
 
-import dotenv
-
 # ---------------- PATH CONSTANTS ----------------
 SRC_PATH = pathlib.Path(__file__).parent
 """Path to the project source code. """
@@ -23,6 +21,8 @@ if not os.path.exists(PROJECT_PATH / ".env"):
     os.environ["DATA_PATH"] = str(DATA_PATH)
 
 else:
+    import dotenv  # lazy import to avoid dependency on dotenv
+
     dotenv.load_dotenv(PROJECT_PATH / ".env")
 
     DATA_PATH = os.environ.get("DATA_PATH")
@@ -78,6 +78,8 @@ FOLDCOMP_DATASET_NAMES = [
     "s_pombe",  #  Schizosaccharomyces pombe (a fungus)
     "z_mays",  # Zea mays (corn)
 ]
+"""List of available foldcomp datasets for download. For documentation see https://github.com/steineggerlab/foldcomp.
+For an up-to-date list of all datsets see https://foldcomp.steineggerlab.workers.dev."""
 
 ZENODO_DATASET_NAMES = [
     "antibody_developability",
@@ -100,3 +102,5 @@ ZENODO_DATASET_NAMES = [
     "metal_3d",
     "ptm",
 ]
+"""List of pre-processed datasets for `proteinworkshop` available on Zenodo. For documentation see
+https://github.com/a-r-j/ProteinWorkshop/#datasets"""
