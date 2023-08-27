@@ -1,5 +1,8 @@
 # Protein Workshop
 
+[![PyPI version](https://badge.fury.io/py/proteinworkshop.svg)](https://badge.fury.io/py/proteinworkshop)
+[![Zenodo doi badge](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.8282470-blue.svg)](https://zenodo.org/record/8282470)
+![Tests](https://github.com/a-r-j/ProteinWorkshop/actions/workflows/code-tests.yaml/badge.svg)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docs](https://assets.readthedocs.org/static/projects/badges/passing-flat.svg)](https://www.proteins.sh)
@@ -13,7 +16,7 @@ This repository provides the code for the protein structure representation learn
 
 In the benchmark, we implement numerous [featurisation](https://www.proteins.sh/configs/features) schemes, [datasets](https://www.proteins.sh/configs/dataset) for [self-supervised pre-training](https://proteins.sh/quickstart_component/pretrain.html) and [downstream evaluation](https://proteins.sh/quickstart_component/downstream.html), [pre-training](https://proteins.sh/configs/task) tasks, and [auxiliary tasks](https://proteins.sh/configs/task.html#auxiliary-tasks).
 
-[Processed datasets](https://drive.google.com/drive/folders/18i8rLST6ZICTBu6Q67ClT0KqN9AHeqoW?usp=sharing) and [pre-trained weights](https://drive.google.com/drive/folders/1zK1r8FpmGaqV_QwUJuvDacwSL0RW-Vw9?usp=sharing) are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
+[Processed datasets](https://zenodo.org/record/8282470) and [pre-trained weights](https://drive.google.com/drive/folders/1zK1r8FpmGaqV_QwUJuvDacwSL0RW-Vw9?usp=sharing) are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
 
 Configuration files to run the experiments described in the manuscript are provided in the `configs/sweeps/` directory.
 
@@ -22,13 +25,16 @@ Configuration files to run the experiments described in the manuscript are provi
 * [Installation](#installation)
 * [Tutorials](#tutorials)
 * [Quickstart](#quickstart)
-* [Datasets](#datasets)
-  * [Pre-training corpuses](#structure-based-pre-training-corpuses)
-  * [Supervised graph-level tasks](#supervised-datasets)
-  * [Supervised node-level tasks](#supervised-datasets)
 * [Models](#models)
   * [Invariant structure encoders](#invariant-graph-encoders)
   * [Equivariant structure encoders](#equivariant-graph-encoders)
+* [Datasets](#datasets)
+  * [Pre-training corpuses](#structure-based-pre-training-corpuses)
+  * [Supervised graph-level datasets](#supervised-datasets)
+  * [Supervised node-level datasets](#supervised-datasets)
+* [Tasks](#tasks)
+  * [Self-Supervised Tasks](#self-supervision-tasks)
+  * [Generic-Supervised Tasks](#generic-supervised-tasks)
 * [Featurisation Schemes](#featurisation-schemes)
   * [Invariant Node Features](#invariant-node-features)
   * [Equivariant Node Features](#equivariant-node-features)
@@ -38,17 +44,38 @@ Configuration files to run the experiments described in the manuscript are provi
 
 ## Installation
 
-Below, we outline how one may set up a virtual environment for the `ProteinWorkshop`. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Windows and macOS are currently not officially supported.
+Below, we outline how one may set up a virtual environment for `proteinworkshop`. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Windows and macOS are currently not officially supported.
 
-1. Install `poetry` for dependency management using its [installation instructions](https://python-poetry.org/docs/)
+### From PyPI
 
-2. Install project dependencies
+`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects.
+
+```bash
+pip install proteinworkshop
+```
+
+However, for full exploration we recommend cloning the repository and building from source.
+
+### Building from source
+
+1. Clone the project
+
+    ```bash
+    git clone https://github.com/a-r-j/ProteinWorkshop
+    cd ProteinWorkshop
+    ```
+
+2. Install `poetry` for dependency management using its [installation instructions](https://python-poetry.org/docs/)
+
+    After installing `poetry`, to avoid potential [keyring errors](https://github.com/python-poetry/poetry/issues/1917#issuecomment-1235998997), disable its keyring usage by adding `PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring` to your shell's startup configuration and restarting your shell environment (e.g., `echo 'export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring' >> ~/.bashrc && source ~/.bashrc` for a Bash shell environment and likewise for other shell environments).
+
+3. Install project dependencies
 
     ```bash
       poetry install
     ```
 
-3. Activate the newly-created virtual environment following `poetry`'s [usage documentation](https://python-poetry.org/docs/basic-usage/)
+4. Activate the newly-created virtual environment following `poetry`'s [usage documentation](https://python-poetry.org/docs/basic-usage/)
 
     ```bash
       # activate the environment on a `posix`-like (e.g., macOS or Linux) system
@@ -63,16 +90,16 @@ Below, we outline how one may set up a virtual environment for the `ProteinWorks
       deactivate
     ```
 
-4. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
+5. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
 
     ```bash
       # hint: to see the list of dependencies that are currently installed in the environment, run:
       poetry show
     ```
 
-5. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example) for an example.
+6. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/proteinworkshop/blob/main/.env.example) for an example.
 
-6. Download PDB data:
+7. Download PDB data:
 
     ```bash
       python scripts/download_pdb_mmtf.py
@@ -81,7 +108,7 @@ Below, we outline how one may set up a virtual environment for the `ProteinWorks
 ## Tutorials
 
 We provide a five-part tutorial series of Jupyter notebooks to provide users with examples
-of how to use and extend the `Protein Workshop`, as outlined below.
+of how to use and extend the Protein Workshop, as outlined below.
 
 1. [Training a new model](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/training_new_model_tutorial.ipynb)
 2. [Customizing an existing dataset](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/customizing_existing_dataset_tutorial.ipynb)
@@ -91,6 +118,26 @@ of how to use and extend the `Protein Workshop`, as outlined below.
 
 ### Quickstart
 
+#### Downloading datasets
+
+Datasets can either be built from the source structures or downloaded from [Zenodo](https://zenodo.org/record/8282470). Datasets will be built from source the first time a dataset is used in a run (or by calling the appropriate `setup()` method in the corresponding datamodule). We provide a CLI tool for downloading datasets:
+
+```bash
+workshop download <DATASET_NAME>
+workshop download pdb
+workshop download cath
+workshop download afdb_rep_v4
+# etc..
+```
+
+If you wish to build datasets from source, we reccommend first downloading the entire PDB first (in MMTF format, c. 24 Gb)
+
+```bash
+workshop download pdb
+# or
+python scripts/download_pdb_mmtf.py
+```
+
 #### Training a model
 
 Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task:
@@ -99,15 +146,21 @@ Minimally, launching an experiment minimally requires specification of a dataset
 python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding
 ```
 
+This command uses the default configurations in `configs/train.yaml`, which can be overwritten by equivalently named options. For instance, you can use a different input featurisation using the `features` option, or set the display name of your experiment on wandb using the `name` option:
+
+```bash
+python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding features=ca_bb name=MY-EXPT-NAME
+```
+
 #### Finetuning a model
 
 Finetuning a model additionally requires specification of a checkpoint.
 
 ```bash
-python proteinworkshop/finetune.py dataset=cath encoder=gcn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
+python proteinworkshop/finetune.py dataset=cath encoder=egnn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
 ```
 
-### Running a sweep/experiment
+#### Running a sweep/experiment
 
 We can make use of the hydra wandb sweeper plugin to configure experiments as sweeps, allowing searches over hyperparameters, architectures, pre-training/auxiliary tasks and datasets.
 
@@ -124,7 +177,7 @@ See `configs/sweeps/` for examples.
 With wandb:
 
   ```bash
-  wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 8
+  wandb agent mywandbgroup/proteinworkshop/2wwtt7oy --count 8
   ```
 
 Or an example SLURM submission script:
@@ -139,7 +192,7 @@ Or an example SLURM submission script:
   source ~/.bashrc
   source $(poetry env info --path)/bin/activate
 
-  wandb agent mywandbgroup/ProteinWorkshop/2wwtt7oy --count 1
+  wandb agent mywandbgroup/proteinworkshop/2wwtt7oy --count 1
   ```
 
 Reproduce the sweeps performed in the manuscript:
@@ -147,29 +200,29 @@ Reproduce the sweeps performed in the manuscript:
 ```bash
 # reproduce the baseline tasks sweep (i.e., those performed without pre-training each model)
 wandb sweep configs/sweeps/baseline_fold.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2awtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2awtt7oy --count 8
 wandb sweep configs/sweeps/baseline_ppi.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2bwtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2bwtt7oy --count 8
 wandb sweep configs/sweeps/baseline_inverse_folding.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2cwtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2cwtt7oy --count 8
 
 # reproduce the model pre-training sweep
 wandb sweep configs/sweeps/pre_train.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2dwtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2dwtt7oy --count 8
 
 # reproduce the pre-trained tasks sweep (i.e., those performed after pre-training each model)
 wandb sweep configs/sweeps/pt_fold.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2ewtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2ewtt7oy --count 8
 wandb sweep configs/sweeps/pt_ppi.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2fwtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2fwtt7oy --count 8
 wandb sweep configs/sweeps/pt_inverse_folding.yaml
-wandb agent mywandbgroup/ProteinWorkshop/2gwtt7oy --count 8
+wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 ```
 
 #### Embedding a dataset
 
 ```bash
-python proteinworkshop/embed.py dataset=cath encoder=gnn ckpt_path=PATH/TO/CHECKPOINT
+python proteinworkshop/embed.py dataset=cath encoder=egnn ckpt_path=PATH/TO/CHECKPOINT
 ```
 
 #### Verify a config
@@ -177,6 +230,48 @@ python proteinworkshop/embed.py dataset=cath encoder=gnn ckpt_path=PATH/TO/CHECK
 ```bash
 python proteinworkshop/validate_config.py dataset=cath features=full_atom task=inverse_folding
 ```
+
+#### Using `proteinworkshop` modules functionally
+
+One may use the modules (e.g., datasets, models, featurisers, and utilities) of `proteinworkshop`
+functionally by importing them directly. When installing this package using PyPi, this makes building
+on top of the assets of `proteinworkshop` straightforward and convenient.
+
+For example, to use any datamodule available in `proteinworkshop`:
+
+```python
+from proteinworkshop.datasets.cath import CATHDataModule
+
+datamodule = CATHDataModule(path="data/cath/", pdb_dir="data/pdb/", format="mmtf", batch_size=32)
+datamodule.download()
+
+train_dl = datamodule.train_dataloader()
+```
+
+To use any model or featuriser available in `proteinworkshop`:
+
+```python
+from proteinworkshop.models.graph_encoders.dimenetpp import DimeNetPPModel
+from proteinworkshop.features.factory import ProteinFeaturiser
+from proteinworkshop.datasets.utils import create_example_batch
+
+model = DimeNetPPModel(hidden_channels=64, num_layers=3)
+ca_featuriser = ProteinFeaturiser(
+    representation="CA",
+    scalar_node_features=["amino_acid_one_hot"],
+    vector_node_features=[],
+    edge_types=["knn_16"],
+    scalar_edge_features=["edge_distance"],
+    vector_edge_features=[],
+)
+
+example_batch = create_example_batch()
+batch = ca_featuriser(example_batch)
+
+model_outputs = model(batch)
+```
+
+Read [the docs](https://www.proteins.sh) for a full list of modules available in `proteinworkshop`.
 
 ## Models
 
@@ -207,6 +302,16 @@ python proteinworkshop/validate_config.py dataset=cath features=full_atom task=i
 | `Multi-ACE` | [Batatia et al.](https://arxiv.org/abs/2206.07697) | ✗
 
 ## Datasets
+
+To download a (processed) dataset from Zenodo, you can run:
+
+```bash
+workshop download <DATASET_NAME>
+```
+
+Where `<DATASET_NAME>` is given the first column in the tables below.
+
+Otherwise, simply starting a training run will download and process the data from source
 
 ### Structure-based Pre-training Corpuses
 
@@ -257,6 +362,10 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 | `atom3d_ppi` | Protein-protein interaction prediction      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
 | `atom3d_psr` | Protein structure ranking      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
 | `atom3d_res` | Residue identity prediction      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
+|`ccpdb_ligands`| Ligand binding residue prediction | [Agrawal et al.](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908) | [Publicly Available](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)
+|`ccpdb_metal`| Metal ion binding residue prediction | [Agrawal et al.](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)  | [Publicly Available](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)
+|`ccpdb_nucleic`| Nucleic acid binding residue prediction | [Agrawal et al.](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)  | [Publicly Available](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)
+|`ccpdb_nucleotides`| Nucleotide binding residue prediction | [Agrawal et al.](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)  | [Publicly Available](https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908)
 | `deep_sea_proteins` | Gene Ontology prediction (Biological Process)      |    [Sieg et al.](https://onlinelibrary.wiley.com/doi/10.1002/prot.26337uuujj)    | [Public domain](https://onlinelibrary.wiley.com/doi/10.1002/prot.26337)
 | `go-bp` | Gene Ontology prediction (Biological Process)      |    [Gligorijevic et al](https://www.nature.com/articles/s41467-021-23303-9)    | [CC-BY 4.0](https://www.nature.com/articles/s41467-021-23303-9)|
 | `go-cc` | Gene Ontology (Cellular Component)       | [Gligorijevic et al](https://www.nature.com/articles/s41467-021-23303-9)       | [CC-BY 4.0](https://www.nature.com/articles/s41467-021-23303-9) |
@@ -266,6 +375,9 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 | `fold-family` |  Fold prediction, split at the family level       |  [Hou et al.](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)      | [CC-BY 4.0](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)
 | `fold-superfamily` |   Fold prediction, split at the superfamily level      | [Hou et al.](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)       | [CC-BY 4.0](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)
 | `masif-site` | Protein-protein interaction site prediction | [Gainza et al.](https://www.nature.com/articles/s41592-019-0666-6)       | [Apache 2.0](https://github.com/LPDI-EPFL/masif/blob/master/LICENSE)
+| `metal_3d` | Zinc Binding Site Prediction | [Duerr et al.](https://www.nature.com/articles/s41467-023-37870-6) | [MIT](https://zenodo.org/record/7594085)
+| `ptm` | Post Translational Modification Side Prediction | [Yan et al.](https://www.sciencedirect.com/science/article/pii/S2667237523000450?via%3Dihub) | [CC-BY 4.0](https://zenodo.org/record/7655709) |
+
 
 ## Tasks
 

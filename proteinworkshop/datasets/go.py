@@ -2,7 +2,7 @@ import os
 import zipfile
 from functools import lru_cache
 from pathlib import Path
-from typing import Callable, Dict, Iterable, Optional
+from typing import Callable, Dict, Iterable, Optional, Literal
 
 import omegaconf
 import pandas as pd
@@ -39,7 +39,7 @@ class GeneOntologyDataset(ProteinDataModule):
         split: str = "BP",
         obsolete="drop",
         pdb_dir: Optional[str] = None,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         in_memory: bool = False,
         dataset_fraction: float = 1.0,
         shuffle_labels: bool = False,

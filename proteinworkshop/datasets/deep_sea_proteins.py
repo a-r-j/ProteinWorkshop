@@ -1,7 +1,7 @@
 import os
 import pathlib
 import zipfile
-from typing import Callable, Iterable, Optional
+from typing import Callable, Iterable, Optional, Literal
 
 import graphein
 import omegaconf
@@ -26,7 +26,7 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         pin_memory: bool = True,
         num_workers: int = 16,
         obsolete_strategy: str = "drop",
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         transforms: Optional[Iterable[Callable]] = None,
     ):
         self.data_dir = pathlib.Path(path)

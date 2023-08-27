@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Literal
 
 import omegaconf
 import torch
@@ -24,7 +24,7 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
         num_workers: int,
         pin_memory: bool,
         in_memory=False,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         obsolete_strategy: str = "drop",
         transforms: Optional[List[Callable]] = None,
     ) -> None:

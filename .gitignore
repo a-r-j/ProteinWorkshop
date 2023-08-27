@@ -136,7 +136,10 @@ outputs/
 *.pdb
 *.pt
 *.ent
+chain_set_splits.json
+data/pdb.tar
 data/afdb_swissprot_v4
+raw/
 data/ATOM3D/
 data/cath/
 data/pdb/

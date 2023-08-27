@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Callable, Iterable, Optional
+from typing import Callable, Iterable, Optional, Literal
 
 import omegaconf
 import wget
@@ -17,7 +17,7 @@ class MaSIFPPISP(ProteinDataModule):
         pdb_dir: str,
         batch_size: int,
         dataset_fraction: float = 1.0,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         obsolete: str = "drop",
         val_fraction: float = 0.1,
         in_memory: bool = False,
