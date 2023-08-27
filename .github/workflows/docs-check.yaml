@@ -1,0 +1,30 @@
+name: "Pull Request Docs Check"
+on:
+  pull_request:
+    paths-ignore:
+      - ".gitignore"
+
+jobs:
+  docs:
+    name: "Docs Check"
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v2.3.1
+      with:
+        python-version: "3.9"
+    - name: Install Workshop
+      run: |
+        python -m pip install -U pip poetry
+        python -m pip install -U pip poethepoet
+        poetry --version
+        poetry check --no-interaction
+        poetry config virtualenvs.in-project true
+        poetry install --no-interaction --without docs
+        poetry run install_pyg_workshop
+        poe install-torchdrug
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        docs-folder: "docs/"
