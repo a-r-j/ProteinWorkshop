@@ -9,7 +9,11 @@ from chromadb.config import Settings
 from loguru import logger as log
 from tqdm import tqdm
 
-from proteinworkshop import constants, register_custom_omegaconf_resolvers, utils
+from proteinworkshop import (
+    constants,
+    register_custom_omegaconf_resolvers,
+    utils,
+)
 from proteinworkshop.models.base import BenchMarkModel
 
 
@@ -20,7 +24,9 @@ def embed(cfg: omegaconf.DictConfig):
     L.seed_everything(cfg.seed)
 
     log.info("Instantiating datamodule:... ")
-    datamodule: L.LightningDataModule = hydra.utils.instantiate(cfg.dataset.datamodule)
+    datamodule: L.LightningDataModule = hydra.utils.instantiate(
+        cfg.dataset.datamodule
+    )
 
     log.info("Instantiating model:... ")
     model: L.LightningModule = BenchMarkModel(cfg)
@@ -55,19 +61,21 @@ def embed(cfg: omegaconf.DictConfig):
         param.requires_grad = False
 
     log.info("Freezing decoder!")
-    model.decoder = None # TODO make this controllable by config
-    #for param in model.decoder.parameters():
+    model.decoder = None  # TODO make this controllable by config
+    # for param in model.decoder.parameters():
     #    param.requires_grad = False
 
     # Setup datamodule
     datamodule.setup()
 
     # Initialise chromadb
-    chroma_client = chromadb.Client(Settings(
-        chroma_db_impl="duckdb+parquet",
-        persist_directory=".chromadb", # Optional, defaults to .chromadb/ in the current directory
-        anonymized_telemetry=False
-    ))
+    chroma_client = chromadb.Client(
+        Settings(
+            chroma_db_impl="duckdb+parquet",
+            persist_directory=".chromadb",  # Optional, defaults to .chromadb/ in the current directory
+            anonymized_telemetry=False,
+        )
+    )
     chroma_client.persist()
 
     collection = chroma_client.create_collection(name=cfg.collection_name)
@@ -76,16 +84,18 @@ def embed(cfg: omegaconf.DictConfig):
         ids = batch.id
         batch = model.featuriser(batch)
         out = model.forward(batch)
-        #node_embeddings = out["node_embedding"] # TODO: add node embeddings
+        # node_embeddings = out["node_embedding"] # TODO: add node embeddings
         graph_embeddings = out["graph_embedding"]
         node_embeddings = graph_embeddings.tolist()
-        collection.add(
-            embeddings=node_embeddings,
-            ids=ids
-        )
+        collection.add(embeddings=node_embeddings, ids=ids)
     chroma_client.persist()
 
-@hydra.main(version_base="1.3", config_path=str(constants.HYDRA_CONFIG_PATH), config_name="embed.yaml")
+
+@hydra.main(
+    version_base="1.3",
+    config_path=str(constants.HYDRA_CONFIG_PATH),
+    config_name="embed.yaml",
+)
 def _main(cfg: omegaconf.DictConfig) -> None:
     # apply extra utilities
     # (e.g. ask for tags if none are provided in cfg, print cfg tree, etc.)

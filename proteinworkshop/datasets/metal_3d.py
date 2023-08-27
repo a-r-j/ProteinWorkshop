@@ -1,12 +1,13 @@
 import os
 import pathlib
-from typing import Callable, Iterable, Optional, Union, Literal
+from typing import Callable, Iterable, Literal, Optional, Union
 
 import omegaconf
 import pandas as pd
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
+
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
@@ -63,17 +64,23 @@ class Metal3DDataModule(ProteinDataModule):
             log.info(
                 f"Downloading training data from {self.BASE_URL} to {self.root_dir}"
             )
-            wget.download(f"{self.BASE_URL}train.txt", str(self.root_dir / "train.txt"))
+            wget.download(
+                f"{self.BASE_URL}train.txt", str(self.root_dir / "train.txt")
+            )
         if not os.path.exists(self.root_dir / "val.txt"):
             log.info(
                 f"Downloading training data from {self.BASE_URL} to {self.root_dir}"
             )
-            wget.download(f"{self.BASE_URL}val.txt", str(self.root_dir / "val.txt"))
+            wget.download(
+                f"{self.BASE_URL}val.txt", str(self.root_dir / "val.txt")
+            )
         if not os.path.exists(self.root_dir / "test.txt"):
             log.info(
                 f"Downloading training data from {self.BASE_URL} to {self.root_dir}"
             )
-            wget.download(f"{self.BASE_URL}test.txt", str(self.root_dir / "test.txt"))
+            wget.download(
+                f"{self.BASE_URL}test.txt", str(self.root_dir / "test.txt")
+            )
 
     def parse_dataset(self, split: str) -> pd.DataFrame:
         df = pd.read_csv(self.root_dir / f"{split}.txt", header=None)

@@ -11,6 +11,7 @@ from omegaconf import DictConfig, open_dict
 
 from proteinworkshop.datasets.utils import create_example_batch
 
+
 @pytest.fixture(scope="package")
 def cfg_train_global() -> DictConfig:
     """A pytest fixture for setting up a default Hydra DictConfig for training.
@@ -19,7 +20,11 @@ def cfg_train_global() -> DictConfig:
         training.
     """
     with initialize(version_base="1.3", config_path="../configs"):
-        cfg = compose(config_name="train.yaml", return_hydra_config=True, overrides=["dataset=dummy", "logger=csv"])
+        cfg = compose(
+            config_name="train.yaml",
+            return_hydra_config=True,
+            overrides=["dataset=dummy", "logger=csv"],
+        )
 
         # set defaults for all tests
         with open_dict(cfg):
@@ -99,7 +104,9 @@ def cfg_train(cfg_train_global: DictConfig, tmp_path: Path) -> DictConfig:
 
 
 @pytest.fixture(scope="function")
-def cfg_finetune(cfg_finetune_global: DictConfig, tmp_path: Path) -> DictConfig:
+def cfg_finetune(
+    cfg_finetune_global: DictConfig, tmp_path: Path
+) -> DictConfig:
     """
     A pytest fixture built on top of the `cfg_finetune_global()` fixture,
     which accepts a temporary logging path `tmp_path` for generating a

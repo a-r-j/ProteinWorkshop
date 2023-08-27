@@ -7,17 +7,16 @@ import os
 import os.path
 import pathlib
 import tarfile
+from typing import List, Optional
 
 import biotite.database.rcsb as rcsb
 import torch.nn.functional as F
-
-from graphein.protein.tensor.data import (ProteinBatch, get_random_protein)
+from graphein.protein.tensor.data import ProteinBatch, get_random_protein
 from tqdm import tqdm
-from typing import List, Optional
 
+from proteinworkshop.features.edge_features import pos_emb
 from proteinworkshop.features.node_features import orientations
 from proteinworkshop.features.utils import _normalize
-from proteinworkshop.features.edge_features import pos_emb
 
 
 def flatten_dir(dir: os.PathLike):
@@ -27,13 +26,18 @@ def flatten_dir(dir: os.PathLike):
     for dirpath, _, filenames in os.walk(dir):
         for filename in filenames:
             try:
-                os.rename(os.path.join(dirpath, filename), os.path.join(dir, filename))
+                os.rename(
+                    os.path.join(dirpath, filename),
+                    os.path.join(dir, filename),
+                )
             except OSError:
                 print(f"Could not move {os.path.join(dirpath, filename)}")
 
 
 def download_pdb_mmtf(
-    mmtf_dir: pathlib.Path, ids: Optional[List[str]] = None, create_tar: bool = False
+    mmtf_dir: pathlib.Path,
+    ids: Optional[List[str]] = None,
+    create_tar: bool = False,
 ):
     ### Download of PDB and archive creation ###
 
@@ -57,11 +61,17 @@ def download_pdb_mmtf(
         num_requests = len(pdb_ids)
         pbar = tqdm(pdb_ids)
         for pdb_id in pbar:
-            pbar.set_description(f"Submitting PDB download request for {pdb_id}")
-            futures.append(executor.submit(rcsb.fetch, pdb_id, "mmtf", mmtf_dir))
+            pbar.set_description(
+                f"Submitting PDB download request for {pdb_id}"
+            )
+            futures.append(
+                executor.submit(rcsb.fetch, pdb_id, "mmtf", mmtf_dir)
+            )
         pbar = tqdm(concurrent.futures.as_completed(futures))
         for request_index, future in enumerate(pbar):
-            pbar.set_description(f"Waiting for PDB download request #{request_index + 1}/{num_requests} to complete")
+            pbar.set_description(
+                f"Waiting for PDB download request #{request_index + 1}/{num_requests} to complete"
+            )
             # Wait for the future to complete
             future.result()
 
@@ -70,8 +80,12 @@ def download_pdb_mmtf(
         with tarfile.open(f"{mmtf_dir}.tar", mode="w") as file:
             pbar = tqdm(pdb_ids)
             for pdb_id in pbar:
-                pbar.set_description(f"Adding downloaded PDB {pdb_id} to {f'{mmtf_dir}.tar'}")
-                file.add(os.path.join(mmtf_dir, f"{pdb_id}.mmtf"), f"{pdb_id}.mmtf")
+                pbar.set_description(
+                    f"Adding downloaded PDB {pdb_id} to {f'{mmtf_dir}.tar'}"
+                )
+                file.add(
+                    os.path.join(mmtf_dir, f"{pdb_id}.mmtf"), f"{pdb_id}.mmtf"
+                )
 
     ### File access for analysis ###
 
@@ -79,9 +93,9 @@ def download_pdb_mmtf(
     # Instead of extracting the files from the archive,
     # the `.tar` file is directly accessed
     # with tarfile.open(f"{mmtf_dir}.tar", mode="r") as file:
-        # for member in file.getnames():
-            # mmtf_file = mmtf.MMTFFile.read(file.extractfile(member))
-            ## Do some fancy stuff with the data...
+    # for member in file.getnames():
+    # mmtf_file = mmtf.MMTFFile.read(file.extractfile(member))
+    ## Do some fancy stuff with the data...
 
 
 @functools.lru_cache()
@@ -103,5 +117,5 @@ def create_example_batch() -> ProteinBatch:
     batch.edge_attr = pos_emb(batch.edge_index, 9)
     batch.edge_vector_attr = _normalize(
         batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]
-        )
+    )
     return batch

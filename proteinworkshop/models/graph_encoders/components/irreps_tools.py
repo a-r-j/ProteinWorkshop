@@ -42,7 +42,9 @@ def tp_out_irreps_with_instructions(
     return irreps_out, instructions
 
 
-def linear_out_irreps(irreps: o3.Irreps, target_irreps: o3.Irreps) -> o3.Irreps:
+def linear_out_irreps(
+    irreps: o3.Irreps, target_irreps: o3.Irreps
+) -> o3.Irreps:
     # Assuming simplified irreps
     irreps_mid = []
     for _, ir_in in irreps:

@@ -11,10 +11,11 @@ from graphein.protein.tensor.angles import dihedrals
 from graphein.protein.tensor.data import ProteinBatch, get_random_protein
 from loguru import logger
 from omegaconf import DictConfig, OmegaConf
-from proteinworkshop.models.utils import get_loss
-from proteinworkshop.types import EncoderOutput, Label, ModelOutput
 from torch_geometric.data import Batch
 from torch_geometric.utils import to_dense_batch
+
+from proteinworkshop.models.utils import get_loss
+from proteinworkshop.types import EncoderOutput, Label, ModelOutput
 
 
 class BaseModel(L.LightningModule, abc.ABC):
@@ -36,7 +37,9 @@ class BaseModel(L.LightningModule, abc.ABC):
         ...
 
     @abc.abstractmethod
-    def training_step(self, batch: Batch, batch_idx: torch.Tensor) -> torch.Tensor:
+    def training_step(
+        self, batch: Batch, batch_idx: torch.Tensor
+    ) -> torch.Tensor:
         """Implement training step.
 
         :param batch: Mini-batch of data.
@@ -49,7 +52,9 @@ class BaseModel(L.LightningModule, abc.ABC):
         ...
 
     @abc.abstractmethod
-    def validation_step(self, batch: Batch, batch_idx: torch.Tensor) -> torch.Tensor:
+    def validation_step(
+        self, batch: Batch, batch_idx: torch.Tensor
+    ) -> torch.Tensor:
         """Implement validation step.
 
         :param batch: Mini-batch of data.
@@ -107,14 +112,18 @@ class BaseModel(L.LightningModule, abc.ABC):
         for output in self.config.task.supervise_on:
             if output == "node_label":
                 labels["node_label"] = batch.node_y
-                if isinstance(self.losses["node_label"], torch.nn.BCEWithLogitsLoss):
+                if isinstance(
+                    self.losses["node_label"], torch.nn.BCEWithLogitsLoss
+                ):
                     labels["node_label"] = F.one_hot(
                         labels["node_label"],
                         num_classes=self.config.dataset.num_classes,
                     ).float()
             elif output == "graph_label":
                 labels["graph_label"] = batch.graph_y
-                if isinstance(self.losses["graph_label"], torch.nn.BCEWithLogitsLoss):
+                if isinstance(
+                    self.losses["graph_label"], torch.nn.BCEWithLogitsLoss
+                ):
                     labels["graph_label"] = F.one_hot(
                         labels["graph_label"],
                         num_classes=self.config.dataset.num_classes,
@@ -128,7 +137,10 @@ class BaseModel(L.LightningModule, abc.ABC):
                 # If we have stored uncorrupted coords, use those to compute
                 elif hasattr(batch, "coords_uncorrupted"):
                     labels["dihedrals"] = dihedrals(
-                        batch.coords_uncorrupted, batch.batch, rad=True, embed=True
+                        batch.coords_uncorrupted,
+                        batch.batch,
+                        rad=True,
+                        embed=True,
                     )
                 # Otherwise, compute dihedrals from the batch coordinates
                 else:
@@ -161,7 +173,9 @@ class BaseModel(L.LightningModule, abc.ABC):
         return Label(labels)
 
     @beartype
-    def compute_loss(self, y_hat: ModelOutput, y: Label) -> Dict[str, torch.Tensor]:
+    def compute_loss(
+        self, y_hat: ModelOutput, y: Label
+    ) -> Dict[str, torch.Tensor]:
         """
         Compute loss by iterating over all outputs.
 
@@ -181,7 +195,10 @@ class BaseModel(L.LightningModule, abc.ABC):
 
         # Scale loss terms by coefficient
         if self.config.get("task.aux_loss_coefficient"):
-            for output, coefficient in self.config.task.aux_loss_coefficient.items():
+            for (
+                output,
+                coefficient,
+            ) in self.config.task.aux_loss_coefficient.items():
                 loss[output] = coefficient * loss[output]
 
         loss["total"] = sum(loss.values())
@@ -195,10 +212,17 @@ class BaseModel(L.LightningModule, abc.ABC):
 
         if self.config.get("scheduler"):
             logger.info("Instantiating scheduler...")
-            scheduler = hydra.utils.instantiate(self.config.scheduler, optimiser)
+            scheduler = hydra.utils.instantiate(
+                self.config.scheduler, optimiser
+            )
             scheduler = OmegaConf.to_container(scheduler)
-            scheduler["scheduler"] = scheduler["scheduler"](optimizer=optimiser)
-            optimiser_config = {"optimizer": optimiser, "lr_scheduler": scheduler}
+            scheduler["scheduler"] = scheduler["scheduler"](
+                optimizer=optimiser
+            )
+            optimiser_config = {
+                "optimizer": optimiser,
+                "lr_scheduler": scheduler,
+            }
             logger.info(f"Optimiser configuration: {optimiser_config}")
             return optimiser_config
         return optimiser
@@ -225,7 +249,9 @@ class BaseModel(L.LightningModule, abc.ABC):
             decoders[output_head] = hydra.utils.instantiate(cfg)
         return decoders
 
-    def configure_losses(self, loss_dict: Dict[str, str]) -> Dict[str, Callable]:
+    def configure_losses(
+        self, loss_dict: Dict[str, str]
+    ) -> Dict[str, Callable]:
         """
         Configures losses from config. Returns a dictionary of losses mapping
         each output name to its respective loss function.
@@ -273,7 +299,12 @@ class BaseModel(L.LightningModule, abc.ABC):
         ``{stage}_{output}_{metric_name}`` (e.g. ``train_residue_type_f1_score``)
         """
 
-        CLASSIFICATION_METRICS: Set[str] = {"f1_score", "auprc", "accuracy", "f1_max"}
+        CLASSIFICATION_METRICS: Set[str] = {
+            "f1_score",
+            "auprc",
+            "accuracy",
+            "f1_max",
+        }
         REGRESSION_METRICS: Set[str] = {"mse", "mae", "r2", "rmse"}
         CONTINUOUS_OUTPUTS: Set[str] = {
             "b_factor",
@@ -315,7 +346,9 @@ class BaseModel(L.LightningModule, abc.ABC):
         setattr(self, "metric_names", metric_names)
 
     @beartype
-    def log_metrics(self, loss, y_hat: ModelOutput, y: Label, stage: str, batch: Batch):
+    def log_metrics(
+        self, loss, y_hat: ModelOutput, y: Label, stage: str, batch: Batch
+    ):
         """
         Logs metrics to logger.
 
@@ -356,7 +389,10 @@ class BaseModel(L.LightningModule, abc.ABC):
                         except RuntimeError:
                             val = metric(pred, target.unsqueeze(-1))
                         self.log(
-                            f"{stage}/{output}/{m}", val, prog_bar=True, logger=True
+                            f"{stage}/{output}/{m}",
+                            val,
+                            prog_bar=True,
+                            logger=True,
                         )
                     except (ValueError, RuntimeError):
                         continue
@@ -396,7 +432,9 @@ class BenchMarkModel(BaseModel):
         logger.info(self.featuriser)
 
         logger.info("Instantiating task transform...")
-        self.task_transform = hydra.utils.instantiate(cfg.get("task.transform"))
+        self.task_transform = hydra.utils.instantiate(
+            cfg.get("task.transform")
+        )
         logger.info(self.task_transform)
 
         self.save_hyperparameters()
@@ -456,12 +494,16 @@ class BenchMarkModel(BaseModel):
                     emb_type = self.decoder[
                         output_head
                     ].input  # node_embedding or graph_embedding
-                    output[output_head] = self.decoder[output_head](output[emb_type])
+                    output[output_head] = self.decoder[output_head](
+                        output[emb_type]
+                    )
 
         return self.compute_output(output, batch)
 
     @beartype
-    def transform_encoder_output(self, output: EncoderOutput, batch) -> EncoderOutput:
+    def transform_encoder_output(
+        self, output: EncoderOutput, batch
+    ) -> EncoderOutput:
         """
         Modifies graph encoder output.
 
@@ -521,7 +563,10 @@ class BenchMarkModel(BaseModel):
 
     @beartype
     def _do_step(
-        self, batch: Batch, batch_idx: int, stage: Literal["train", "val", "test"]
+        self,
+        batch: Batch,
+        batch_idx: int,
+        stage: Literal["train", "val", "test"],
     ) -> torch.Tensor:
         """Performs a training/validation/test step.
 

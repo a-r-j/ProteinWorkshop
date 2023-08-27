@@ -3,9 +3,10 @@ from typing import Optional, Set, Union
 import torch
 import torch_scatter
 from graphein.protein.tensor.data import ProteinBatch
-from proteinworkshop.types import EncoderOutput
 from torch_geometric.data import Batch
 from torch_geometric.nn.models import SchNet
+
+from proteinworkshop.types import EncoderOutput
 
 
 class SchNetModel(SchNet):
@@ -124,7 +125,9 @@ if __name__ == "__main__":
     from graphein.protein.tensor.data import get_random_protein
 
     root = pyrootutils.setup_root(__file__, pythonpath=True)
-    cfg = omegaconf.OmegaConf.load(root / "configs" / "encoder" / "schnet.yaml")
+    cfg = omegaconf.OmegaConf.load(
+        root / "configs" / "encoder" / "schnet.yaml"
+    )
     print(cfg)
     encoder = hydra.utils.instantiate(cfg.schnet)
     print(encoder)

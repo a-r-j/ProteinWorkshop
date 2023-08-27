@@ -1,12 +1,12 @@
-import pytest
 import os
+
+import omegaconf
+from hydra.utils import instantiate
+from lightning import LightningDataModule
 
 from proteinworkshop import constants
 
 DATASET_CONFIG_DIR = constants.PROJECT_PATH / "configs" / "dataset"
-import omegaconf
-from hydra.utils import instantiate
-from lightning import LightningDataModule
 
 
 def test_instantiate_datasets(tmp_path):

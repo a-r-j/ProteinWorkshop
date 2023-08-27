@@ -14,8 +14,11 @@ from lightning.pytorch.loggers import Logger
 from loguru import logger as log
 from omegaconf import DictConfig
 
-from proteinworkshop import (constants, register_custom_omegaconf_resolvers,
-                             utils)
+from proteinworkshop import (
+    constants,
+    register_custom_omegaconf_resolvers,
+    utils,
+)
 from proteinworkshop.configs import config
 from proteinworkshop.models.base import BenchMarkModel
 
@@ -29,7 +32,9 @@ def finetune(cfg: DictConfig):
     L.seed_everything(cfg.seed)
 
     log.info("Instantiating datamodule:... ")
-    datamodule: L.LightningDataModule = hydra.utils.instantiate(cfg.dataset.datamodule)
+    datamodule: L.LightningDataModule = hydra.utils.instantiate(
+        cfg.dataset.datamodule
+    )
 
     log.info("Instantiating model:... ")
     model: L.LightningModule = BenchMarkModel(cfg)

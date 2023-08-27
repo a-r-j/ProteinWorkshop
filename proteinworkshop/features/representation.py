@@ -5,9 +5,10 @@ import torch
 from beartype import beartype
 from graphein.protein.tensor.types import AtomTensor, CoordTensor
 from jaxtyping import jaxtyped
-from proteinworkshop.configs.config import ExperimentConfigurationError
 from torch_geometric.data import Batch, Data
 from torch_geometric.utils import unbatch
+
+from proteinworkshop.configs.config import ExperimentConfigurationError
 
 
 @jaxtyped
@@ -152,7 +153,9 @@ def ca_to_bb_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
 
     batch_idx = batch.batch.repeat_interleave(4, 0)
     x = batch.x.repeat_interleave(4, 0) if "x" in batch.keys else None
-    batch = Batch.from_data_list([_ca_to_bb_repr(x) for x in batch.to_data_list()])
+    batch = Batch.from_data_list(
+        [_ca_to_bb_repr(x) for x in batch.to_data_list()]
+    )
 
     batch.batch = batch_idx
     if sidechain_torsions is not None:
@@ -206,7 +209,9 @@ def coarsen_sidechain(x: Data, aggr: str = "mean") -> CoordTensor:
     if aggr == "mean":
         sc_points = torch.mean(sc_points, dim=1)
     else:
-        raise NotImplementedError(f"Aggregation method {aggr} not implemented.")
+        raise NotImplementedError(
+            f"Aggregation method {aggr} not implemented."
+        )
 
     return sc_points
 
@@ -235,7 +240,9 @@ def ca_to_fa_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
         true_dihedrals = None
 
     if "true_amino_acid_one_hot" in batch.keys:
-        true_amino_acid_one_hot = unbatch(batch.true_amino_acid_one_hot, batch.batch)
+        true_amino_acid_one_hot = unbatch(
+            batch.true_amino_acid_one_hot, batch.batch
+        )
     else:
         true_amino_acid_one_hot = None
 
@@ -244,7 +251,9 @@ def ca_to_fa_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
     else:
         positional_encoding = None
 
-    batch = Batch.from_data_list([_ca_to_fa_repr(x) for x in batch.to_data_list()])
+    batch = Batch.from_data_list(
+        [_ca_to_fa_repr(x) for x in batch.to_data_list()]
+    )
 
     residue_idxs = unbatch(batch.residue_index, batch.batch)
 
@@ -252,7 +261,9 @@ def ca_to_fa_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
         batch.sidechain_torsion = torch.cat(
             [
                 sidechain_torsion[res_idx - torch.min(res_idx)]
-                for sidechain_torsion, res_idx in zip(sidechain_torsions, residue_idxs)
+                for sidechain_torsion, res_idx in zip(
+                    sidechain_torsions, residue_idxs
+                )
             ]
         )
         del sidechain_torsions
@@ -270,7 +281,9 @@ def ca_to_fa_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
         batch.true_dihedrals = torch.cat(
             [
                 true_dihedrals[res_idx - torch.min(res_idx)]
-                for true_dihedrals, res_idx in zip(true_dihedrals, residue_idxs)
+                for true_dihedrals, res_idx in zip(
+                    true_dihedrals, residue_idxs
+                )
             ]
         )
         del true_dihedrals
@@ -299,7 +312,9 @@ def ca_to_fa_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
         batch.positional_encoding = torch.cat(
             [
                 pos_encoding[res_idx - torch.min(res_idx)]
-                for pos_encoding, res_idx in zip(positional_encoding, residue_idxs)
+                for pos_encoding, res_idx in zip(
+                    positional_encoding, residue_idxs
+                )
             ]
         )
         del positional_encoding

@@ -6,17 +6,26 @@ from beartype import beartype
 from graphein.protein.tensor.data import ProteinBatch, get_random_batch
 from jaxtyping import jaxtyped
 from loguru import logger
-from proteinworkshop.features.edge_features import (compute_scalar_edge_features,
-                                        compute_vector_edge_features)
-from proteinworkshop.features.edges import compute_edges
-from proteinworkshop.features.node_features import (compute_scalar_node_features,
-                                        compute_vector_node_features)
-from proteinworkshop.features.representation import transform_representation
-from proteinworkshop.types import (ScalarEdgeFeature, ScalarNodeFeature, VectorEdgeFeature,
-                       VectorNodeFeature)
 from torch_geometric.data import Batch
 from torch_geometric.nn.encoding import PositionalEncoding
 from torch_geometric.utils import unbatch
+
+from proteinworkshop.features.edge_features import (
+    compute_scalar_edge_features,
+    compute_vector_edge_features,
+)
+from proteinworkshop.features.edges import compute_edges
+from proteinworkshop.features.node_features import (
+    compute_scalar_node_features,
+    compute_vector_node_features,
+)
+from proteinworkshop.features.representation import transform_representation
+from proteinworkshop.types import (
+    ScalarEdgeFeature,
+    ScalarNodeFeature,
+    VectorEdgeFeature,
+    VectorNodeFeature,
+)
 
 
 class ProteinFeaturiser(nn.Module):
@@ -69,7 +78,9 @@ class ProteinFeaturiser(nn.Module):
 
     @jaxtyped
     @beartype
-    def forward(self, batch: Union[Batch, ProteinBatch]) -> Union[Batch, ProteinBatch]:
+    def forward(
+        self, batch: Union[Batch, ProteinBatch]
+    ) -> Union[Batch, ProteinBatch]:
         # Scalar node features
         if self.scalar_node_features:
             concat_nf = False
@@ -92,18 +103,24 @@ class ProteinFeaturiser(nn.Module):
                 batch.x = torch.cat([batch.x, scalar_features], dim=-1)
             else:
                 batch.x = scalar_features
-            batch.x = torch.nan_to_num(batch.x, nan=0.0, posinf=0.0, neginf=0.0)
+            batch.x = torch.nan_to_num(
+                batch.x, nan=0.0, posinf=0.0, neginf=0.0
+            )
 
         # Representation
         batch = transform_representation(batch, self.representation)
 
         # Vector node features
         if self.vector_node_features:
-            batch = compute_vector_node_features(batch, self.vector_node_features)
+            batch = compute_vector_node_features(
+                batch, self.vector_node_features
+            )
 
         # Edges
         if self.edge_types:
-            batch.edge_index, batch.edge_type = compute_edges(batch, self.edge_types)
+            batch.edge_index, batch.edge_type = compute_edges(
+                batch, self.edge_types
+            )
             batch.num_relation = len(self.edge_types)
 
         # Scalar edge features
@@ -114,7 +131,9 @@ class ProteinFeaturiser(nn.Module):
 
         # Vector edge features
         if self.vector_edge_features:
-            batch = compute_vector_edge_features(batch, self.vector_edge_features)
+            batch = compute_vector_edge_features(
+                batch, self.vector_edge_features
+            )
 
         return batch
 
@@ -130,10 +149,14 @@ if __name__ == "__main__":
     import hydra
     import omegaconf
     from loguru import logger
+
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
-        constants.PROJECT_PATH / "configs" / "features" / "all_invariant_ca.yaml"
+        constants.PROJECT_PATH
+        / "configs"
+        / "features"
+        / "all_invariant_ca.yaml"
     )
     featuriser = hydra.utils.instantiate(cfg)
     logger.info(featuriser)

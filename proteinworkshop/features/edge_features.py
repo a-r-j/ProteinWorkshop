@@ -7,8 +7,9 @@ from beartype import beartype
 from graphein.protein.tensor.types import CoordTensor, EdgeTensor
 from jaxtyping import jaxtyped
 from omegaconf import ListConfig
-from proteinworkshop.features.utils import _normalize
 from torch_geometric.data import Batch, Data
+
+from proteinworkshop.features.utils import _normalize
 
 EDGE_FEATURES: List[str] = [
     "edge_distance",
@@ -72,7 +73,9 @@ def compute_vector_edge_features(
 
 @jaxtyped
 @beartype
-def compute_edge_distance(pos: CoordTensor, edge_index: EdgeTensor) -> torch.Tensor:
+def compute_edge_distance(
+    pos: CoordTensor, edge_index: EdgeTensor
+) -> torch.Tensor:
     """
     Compute the euclidean distance between each pair of nodes connected by an edge.
 
@@ -83,7 +86,9 @@ def compute_edge_distance(pos: CoordTensor, edge_index: EdgeTensor) -> torch.Ten
     :return: Tensor of shape :math:`(|E|, 1)` containing the euclidean distance between each pair of nodes connected by an edge.
     :rtype: torch.Tensor
     """
-    return torch.pairwise_distance(pos[edge_index[0, :]], pos[edge_index[1, :]])
+    return torch.pairwise_distance(
+        pos[edge_index[0, :]], pos[edge_index[1, :]]
+    )
 
 
 @jaxtyped
@@ -93,7 +98,9 @@ def pos_emb(edge_index: EdgeTensor, num_pos_emb: int = 16):
     d = edge_index[0] - edge_index[1]
 
     frequency = torch.exp(
-        torch.arange(0, num_pos_emb, 2, dtype=torch.float32, device=edge_index.device)
+        torch.arange(
+            0, num_pos_emb, 2, dtype=torch.float32, device=edge_index.device
+        )
         * -(np.log(10000.0) / num_pos_emb)
     )
     angles = d.unsqueeze(-1) * frequency

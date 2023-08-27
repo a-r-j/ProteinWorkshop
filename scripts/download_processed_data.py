@@ -6,6 +6,7 @@ from typing import Dict, Optional
 
 import wget
 from loguru import logger
+
 from proteinworkshop import constants
 
 _ZENODO_RECORD = "8282470"
@@ -100,7 +101,9 @@ def download_processed_data(dataset_name: str, data_dir: Optional[str] = None):
         zenodo_url = f"https://zenodo.org/record/{_ZENODO_RECORD}/files/{fname}.tar.gz?download=1"
         wget.download(zenodo_url, out=str(data_dir))
     else:
-        logger.info(f"Dataset {dataset_name} already downloaded. Skipping download")
+        logger.info(
+            f"Dataset {dataset_name} already downloaded. Skipping download"
+        )
 
     assert os.path.exists(data_dir / f"{fname}.tar.gz"), "Download failed"
 

@@ -1,18 +1,19 @@
 import os
 import pathlib
 import zipfile
-from typing import Callable, Iterable, Optional, Literal
+from typing import Callable, Iterable, Literal, Optional
 
 import graphein
 import omegaconf
 import pandas as pd
 import torch
 import wget
-
-graphein.verbose(False)
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
+
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+
+graphein.verbose(False)
 
 
 class DeepSeaProteinsDataModule(ProteinDataModule):
@@ -65,17 +66,27 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
 
     def download(self):
         if not os.path.exists(self.data_dir / self.ZIP_FNAME):
-            log.info(f"Downloading Deep Sea Protein dataset to {self.data_dir}")
+            log.info(
+                f"Downloading Deep Sea Protein dataset to {self.data_dir}"
+            )
             wget.download(self.DATASET_URL, str(self.data_dir))
         else:
-            log.info(f"Deep Sea Protein dataset already downloaded to {self.data_dir}")
+            log.info(
+                f"Deep Sea Protein dataset already downloaded to {self.data_dir}"
+            )
 
-        if not all(os.path.exists(self.data_dir / fname) for fname in self.DATA_FILES):
+        if not all(
+            os.path.exists(self.data_dir / fname) for fname in self.DATA_FILES
+        ):
             log.info(f"Extracting {self.ZIP_FNAME} dataset to {self.data_dir}")
-            with zipfile.ZipFile(self.data_dir / self.ZIP_FNAME, "r") as zip_ref:
+            with zipfile.ZipFile(
+                self.data_dir / self.ZIP_FNAME, "r"
+            ) as zip_ref:
                 zip_ref.extractall(self.data_dir)
         else:
-            log.info(f"Deep Sea Protein dataset already extracted to {self.data_dir}")
+            log.info(
+                f"Deep Sea Protein dataset already extracted to {self.data_dir}"
+            )
 
     def parse_dataset(self, split: str) -> pd.DataFrame:
         log.info(f"Parsing dataset from {self.data_dir / 'folds.tsv'}")
@@ -88,7 +99,9 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         if self.obsolete_strategy == "drop":
             log.info("Dropping obsolete PDBs from dataset")
             df = df.loc[~df.pdb_code.isin(self.obsolete_pdbs.keys())]
-            log.info(f"Dataset contains {len(df)} samples after dropping obsolete PDBs")
+            log.info(
+                f"Dataset contains {len(df)} samples after dropping obsolete PDBs"
+            )
         else:
             raise NotImplementedError(
                 f"Obsolete strategy {self.obsolete_strategy} not implemented."
@@ -170,12 +183,15 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
 if __name__ == "__main__":
     import hydra
     import omegaconf
+
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
         constants.HYDRA_CONFIG_PATH / "dataset" / "deep_sea_proteins.yaml"
     )
-    cfg.datamodule.path = str(pathlib.Path(constants.DATA_PATH) / "deep-sea-proteins")
+    cfg.datamodule.path = str(
+        pathlib.Path(constants.DATA_PATH) / "deep-sea-proteins"
+    )
     cfg.datamodule.pdb_dir = str(pathlib.Path(constants.DATA_PATH) / "pdb")
 
     datamodule = hydra.utils.instantiate(cfg.datamodule)

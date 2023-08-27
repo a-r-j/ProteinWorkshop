@@ -4,17 +4,22 @@ from typing import List, Union
 import torch
 import torch.nn.functional as F
 from beartype import beartype
-from graphein.protein.tensor.angles import (alpha, dihedrals, kappa,
-                                            sidechain_torsion)
+from graphein.protein.tensor.angles import (
+    alpha,
+    dihedrals,
+    kappa,
+    sidechain_torsion,
+)
 from graphein.protein.tensor.data import Protein, ProteinBatch
 from graphein.protein.tensor.types import AtomTensor, CoordTensor
 from jaxtyping import jaxtyped
 from omegaconf import ListConfig
-from proteinworkshop.models.utils import flatten_list
-from proteinworkshop.types import OrientationTensor, ScalarNodeFeature
 from torch_geometric.data import Batch, Data
 from torch_geometric.nn.pool import knn_graph
 from torch_geometric.utils import softmax
+
+from proteinworkshop.models.utils import flatten_list
+from proteinworkshop.types import OrientationTensor, ScalarNodeFeature
 
 from .sequence_features import amino_acid_one_hot
 from .utils import _normalize
@@ -59,7 +64,10 @@ def compute_scalar_node_features(
         elif feature == "sidechain_torsions":
             feats.append(
                 sidechain_torsion(
-                    x.coords, res_types=flatten_list(x.residues), rad=True, embed=True
+                    x.coords,
+                    res_types=flatten_list(x.residues),
+                    rad=True,
+                    embed=True,
                 )
             )
         elif feature.startswith("surface"):
@@ -135,9 +143,9 @@ def compute_surface_feat(
         diff_vecs = diff_vecs.reshape(-1, k, N_DIM)
 
         mean_vec = torch.bmm(weights, diff_vecs)
-        denom = torch.bmm(weights, torch.norm(diff_vecs, dim=-1).unsqueeze(-1)).squeeze(
-            -1
-        )
+        denom = torch.bmm(
+            weights, torch.norm(diff_vecs, dim=-1).unsqueeze(-1)
+        ).squeeze(-1)
         feat.append(torch.norm(mean_vec, dim=-1) / denom)
     return torch.cat(feat, dim=1)
 

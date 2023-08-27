@@ -44,7 +44,7 @@ class TensorProductModel(torch.nn.Module):
         :param num_polynomial_cutoff: Number of polynomial cutoff basis
             functions (default: ``5``)
         :type num_polynomial_cutoff: int, optional
-        :param max_ell: Maximum degree/order of spherical harmonics basis 
+        :param max_ell: Maximum degree/order of spherical harmonics basis
             functions and node feature tensors (default: ``2``)
         :type max_ell: int, optional
         :param num_layers: Number of layers in the model (default: ``5``)
@@ -52,7 +52,7 @@ class TensorProductModel(torch.nn.Module):
         :param emb_dim: Number of hidden channels/embedding dimension for each
             node feature tensor order (default: ``64``)
         :type emb_dim: int, optional
-        :param mlp_dim: Dimension of MLP for computing tensor product 
+        :param mlp_dim: Dimension of MLP for computing tensor product
             weights (default: ``256``)
         :type: int, optional
         :param aggr: Aggregation function to use, defaults to ``"sum"``
@@ -67,12 +67,12 @@ class TensorProductModel(torch.nn.Module):
         :type batch_norm: bool, optional
         :param gate: Whether to use gated non-linearity, defaults to ``False``
         :type gate: bool, optional
-        :param hidden_irreps: Irreps for intermediate layer node feature tensors 
+        :param hidden_irreps: Irreps for intermediate layer node feature tensors
             (default: ``None``)
         :type hidden_irreps: e3nn.o3.Irreps, optional
 
-        .. note:: 
-            If ``hidden_irreps`` is None, irreps for node feature tensors are 
+        .. note::
+            If ``hidden_irreps`` is None, irreps for node feature tensors are
             computed using ``max_ell`` order of spherical harmonics and ``emb_dim``.
         """
         super().__init__()
@@ -104,14 +104,14 @@ class TensorProductModel(torch.nn.Module):
         if hidden_irreps is None:
             hidden_irreps = (sh_irreps * emb_dim).sort()[0].simplify()
             # Note: This defaults to O(3) equivariant layers. It is
-            #       possible to use SO(3) equivariance by passing 
+            #       possible to use SO(3) equivariance by passing
             #       the appropriate irreps to `hidden_irreps`.
 
         self.convs = torch.nn.ModuleList()
         # First conv layer: scalar only -> tensor
         self.convs.append(
             tfn.TensorProductConvLayer(
-                in_irreps=e3nn.o3.Irreps(f'{emb_dim}x0e'),
+                in_irreps=e3nn.o3.Irreps(f"{emb_dim}x0e"),
                 out_irreps=hidden_irreps,
                 sh_irreps=sh_irreps,
                 edge_feats_dim=self.radial_embedding.out_dim,
@@ -138,7 +138,7 @@ class TensorProductModel(torch.nn.Module):
         self.convs.append(
             tfn.TensorProductConvLayer(
                 in_irreps=hidden_irreps,
-                out_irreps=e3nn.o3.Irreps(f'{emb_dim}x0e'),
+                out_irreps=e3nn.o3.Irreps(f"{emb_dim}x0e"),
                 sh_irreps=sh_irreps,
                 edge_feats_dim=self.radial_embedding.out_dim,
                 mlp_dim=mlp_dim,
@@ -188,24 +188,34 @@ class TensorProductModel(torch.nn.Module):
         vectors = (
             batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]
         )  # [n_edges, 3]
-        lengths = torch.linalg.norm(vectors, dim=-1, keepdim=True)  # [n_edges, 1]
+        lengths = torch.linalg.norm(
+            vectors, dim=-1, keepdim=True
+        )  # [n_edges, 1]
         edge_attrs = self.spherical_harmonics(vectors)
         edge_feats = self.radial_embedding(lengths)
 
         for conv in self.convs:
             # Message passing layer
             h_update = conv(h, batch.edge_index, edge_attrs, edge_feats)
-            # TODO it may be useful to concatenate node scalar type l=0 features 
+            # TODO it may be useful to concatenate node scalar type l=0 features
             # from both src and dst nodes into edge_feats (RBF of displacement), as in
             # https://github.com/gcorso/DiffDock/blob/main/models/score_model.py#L263
 
             # Update node features
-            h = h_update + F.pad(h, (0, h_update.shape[-1] - h.shape[-1])) if self.residual else h_update
+            h = (
+                h_update + F.pad(h, (0, h_update.shape[-1] - h.shape[-1]))
+                if self.residual
+                else h_update
+            )
 
-        return EncoderOutput({
-            "node_embedding": h,
-            "graph_embedding": self.readout(h, batch.batch),  # (n, d) -> (batch_size, d)
-        })
+        return EncoderOutput(
+            {
+                "node_embedding": h,
+                "graph_embedding": self.readout(
+                    h, batch.batch
+                ),  # (n, d) -> (batch_size, d)
+            }
+        )
 
 
 if __name__ == "__main__":
@@ -214,6 +224,8 @@ if __name__ == "__main__":
 
     from proteinworkshop import constants
 
-    cfg = omegaconf.OmegaConf.load(constants.PROJECT_PATH / "configs" / "encoder" / "tfn.yaml")
+    cfg = omegaconf.OmegaConf.load(
+        constants.PROJECT_PATH / "configs" / "encoder" / "tfn.yaml"
+    )
     enc = hydra.utils.instantiate(cfg)
     print(enc)

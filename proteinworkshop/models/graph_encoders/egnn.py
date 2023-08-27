@@ -3,10 +3,11 @@ from typing import Set, Union
 import torch
 import torch.nn as nn
 from graphein.protein.tensor.data import ProteinBatch
+from torch_geometric.data import Batch
+
 from proteinworkshop.models.graph_encoders.layers.egnn import EGNNLayer
 from proteinworkshop.models.utils import get_aggregation
 from proteinworkshop.types import EncoderOutput
-from torch_geometric.data import Batch
 
 
 class EGNNModel(nn.Module):
@@ -111,6 +112,7 @@ class EGNNModel(nn.Module):
 if __name__ == "__main__":
     import hydra
     import omegaconf
+
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(

@@ -1,5 +1,7 @@
-from graphein.protein.tensor.data import get_random_protein
 import copy
+
+from graphein.protein.tensor.data import get_random_protein
+
 from proteinworkshop.tasks.sequence_denoising import SequenceNoiseTransform
 
 
@@ -8,7 +10,9 @@ def test_sequence_noise_transform_mutate():
 
     orig_residues = copy.deepcopy(p.residue_type)
 
-    task = SequenceNoiseTransform(corruption_rate=0.99, corruption_strategy="mutate")
+    task = SequenceNoiseTransform(
+        corruption_rate=0.99, corruption_strategy="mutate"
+    )
 
     p = task(p)
 
@@ -23,7 +27,9 @@ def test_sequence_noise_transform_mask():
     p = get_random_protein()
 
     orig_residues = copy.deepcopy(p.residue_type)
-    task = SequenceNoiseTransform(corruption_rate=0.99, corruption_strategy="mask")
+    task = SequenceNoiseTransform(
+        corruption_rate=0.99, corruption_strategy="mask"
+    )
 
     p = task(p)
 

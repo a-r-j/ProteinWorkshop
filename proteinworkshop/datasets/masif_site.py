@@ -1,12 +1,13 @@
 import os
 import pathlib
-from typing import Callable, Iterable, Optional, Literal
+from typing import Callable, Iterable, Literal, Optional
 
 import omegaconf
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
 from sklearn.model_selection import train_test_split
+
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
@@ -63,13 +64,17 @@ class MaSIFPPISP(ProteinDataModule):
 
     def download(self):
         if not os.path.exists(self.path / "training.txt"):
-            logger.info(f"Downloading training data from {self.TRAIN_DATA_URL}")
+            logger.info(
+                f"Downloading training data from {self.TRAIN_DATA_URL}"
+            )
             wget.download(
                 self.TRAIN_DATA_URL,
                 out=str(self.path / "training.txt"),
             )
         else:
-            logger.info(f"Training data already exists at {self.path / 'training.txt'}")
+            logger.info(
+                f"Training data already exists at {self.path / 'training.txt'}"
+            )
 
         if not os.path.exists(self.path / "testing.txt"):
             wget.download(
@@ -77,7 +82,9 @@ class MaSIFPPISP(ProteinDataModule):
                 out=str(self.path / "testing.txt"),
             )
         else:
-            logger.info(f"Test data already exists at {self.path / 'training.txt'}")
+            logger.info(
+                f"Test data already exists at {self.path / 'training.txt'}"
+            )
 
     def parse_labels(self):
         pass
@@ -177,11 +184,14 @@ class MaSIFPPISP(ProteinDataModule):
                     f"Found {len(data)} examples in {split} after dropping obsolete PDBs"
                 )
             else:
-                raise NotImplementedError("Obsolete PDB replacement not implemented")
+                raise NotImplementedError(
+                    "Obsolete PDB replacement not implemented"
+                )
 
 
 if __name__ == "__main__":
     import hydra
+
     from proteinworkshop import constants
 
     config = omegaconf.OmegaConf.load("../../configs/dataset/masif_site.yaml")

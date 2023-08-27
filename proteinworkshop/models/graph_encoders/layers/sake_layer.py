@@ -34,7 +34,9 @@ def get_x_minus_xt_norm(
     x_minus_xt,
     epsilon: float = EPSILON,
 ):
-    return (F.relu((x_minus_xt**2).sum(dim=-1, keepdims=True)) + epsilon) ** 0.5
+    return (
+        F.relu((x_minus_xt**2).sum(dim=-1, keepdims=True)) + epsilon
+    ) ** 0.5
 
 
 def get_h_cat_ht(h):
@@ -110,7 +112,11 @@ class ExpNormalSmearing(nn.Module):
     def forward(self, dist):
         return torch.exp(
             -self.betas
-            * (torch.exp(self.alpha * (-dist + self.cutoff_lower)) - self.means) ** 2
+            * (
+                torch.exp(self.alpha * (-dist + self.cutoff_lower))
+                - self.means
+            )
+            ** 2
         )
 
 
@@ -255,7 +261,9 @@ class DenseSAKELayer(nn.Module):
         else:
             self.log_gamma = torch.ones(self.n_heads)
 
-    def spatial_attention(self, h_e_mtx, x_minus_xt, x_minus_xt_norm, mask=None):
+    def spatial_attention(
+        self, h_e_mtx, x_minus_xt, x_minus_xt_norm, mask=None
+    ):
         # (batch_size, n, n, n_coefficients)
         # coefficients = self.coefficients_mlp(h_e_mtx)# .unsqueeze(-1)
         coefficients = self.x_mixing(h_e_mtx)
@@ -272,7 +280,9 @@ class DenseSAKELayer(nn.Module):
         if mask is not None:
             _mask = torch.unsqueeze(torch.unsqueeze(mask, -1), -1)
             combinations = combinations * _mask
-            combinations_sum = combinations.sum(dim=-3) / (_mask.sum(dim=-3) + 1e-8)
+            combinations_sum = combinations.sum(dim=-3) / (
+                _mask.sum(dim=-3) + 1e-8
+            )
 
         else:
             # (batch_size, n, n, coefficients)
@@ -315,7 +325,9 @@ class DenseSAKELayer(nn.Module):
         )
 
         if mask is not None:
-            _x_minus_xt_norm = _x_minus_xt_norm + 1e5 * (1 - torch.unsqueeze(mask, -1))
+            _x_minus_xt_norm = _x_minus_xt_norm + 1e5 * (
+                1 - torch.unsqueeze(mask, -1)
+            )
 
         return F.softmax(
             -_x_minus_xt_norm * torch.exp(self.log_gamma),
@@ -343,7 +355,9 @@ class DenseSAKELayer(nn.Module):
         return F.softmax(att, dim=-2)
 
     def combined_attention(self, x_minus_xt_norm, h_e_mtx, mask=None):
-        euclidean_attention = self.euclidean_attention(x_minus_xt_norm, mask=mask)
+        euclidean_attention = self.euclidean_attention(
+            x_minus_xt_norm, mask=mask
+        )
         semantic_attention = self.semantic_attention(h_e_mtx, mask=mask)
 
         if not self.use_semantic_attention:
@@ -392,7 +406,9 @@ class DenseSAKELayer(nn.Module):
             semantic_attention,
             combined_attention,
         ) = self.combined_attention(x_minus_xt_norm, h_e_mtx, mask=mask)
-        h_e_att = torch.unsqueeze(h_e_mtx, -1) * torch.unsqueeze(combined_attention, -2)
+        h_e_att = torch.unsqueeze(h_e_mtx, -1) * torch.unsqueeze(
+            combined_attention, -2
+        )
         h_e_att = torch.reshape(h_e_att, h_e_att.shape[:-2] + (-1,))
         h_combinations, delta_v = self.spatial_attention(
             h_e_att, x_minus_xt, x_minus_xt_norm, mask=mask
@@ -421,7 +437,11 @@ class DenseSAKELayer(nn.Module):
                     .mean(axis=(-2, -3))
                 )
 
-            v = self.velocity_model(v, h) if v is not None else torch.zeros_like(x)
+            v = (
+                self.velocity_model(v, h)
+                if v is not None
+                else torch.zeros_like(x)
+            )
             v = delta_v + v
             x = x + v
 

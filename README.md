@@ -22,25 +22,37 @@ Configuration files to run the experiments described in the manuscript are provi
 
 ## Contents
 
-* [Installation](#installation)
-* [Tutorials](#tutorials)
-* [Quickstart](#quickstart)
-* [Models](#models)
-  * [Invariant structure encoders](#invariant-graph-encoders)
-  * [Equivariant structure encoders](#equivariant-graph-encoders)
-* [Datasets](#datasets)
-  * [Pre-training corpuses](#structure-based-pre-training-corpuses)
-  * [Supervised graph-level datasets](#supervised-datasets)
-  * [Supervised node-level datasets](#supervised-datasets)
-* [Tasks](#tasks)
-  * [Self-Supervised Tasks](#self-supervised-tasks)
-  * [Generic Supervised Tasks](#generic-supervised-tasks)
-* [Featurisation Schemes](#featurisation-schemes)
-  * [Invariant Node Features](#invariant-node-features)
-  * [Equivariant Node Features](#equivariant-node-features)
-  * [Edge Construction](#edge-construction)
-  * [Invariant Edge Features](#invariant-edge-features)
-  * [Equivariant Edge Features](#equivariant-edge-features)
+- [Protein Workshop](#protein-workshop)
+  - [Contents](#contents)
+  - [Installation](#installation)
+    - [From PyPI](#from-pypi)
+    - [Building from source](#building-from-source)
+  - [Tutorials](#tutorials)
+  - [Quickstart](#quickstart)
+    - [Downloading datasets](#downloading-datasets)
+    - [Training a model](#training-a-model)
+    - [Finetuning a model](#finetuning-a-model)
+    - [Running a sweep/experiment](#running-a-sweepexperiment)
+    - [Embedding a dataset](#embedding-a-dataset)
+    - [Verifying a config](#verifying-a-config)
+    - [Using `proteinworkshop` modules functionally](#using-proteinworkshop-modules-functionally)
+  - [Models](#models)
+    - [Invariant Graph Encoders](#invariant-graph-encoders)
+    - [Equivariant Graph Encoders](#equivariant-graph-encoders)
+      - [(Vector-type)](#vector-type)
+      - [(Tensor-type)](#tensor-type)
+  - [Datasets](#datasets)
+    - [Structure-based Pre-training Corpuses](#structure-based-pre-training-corpuses)
+    - [Supervised Datasets](#supervised-datasets)
+  - [Tasks](#tasks)
+    - [Self-Supervised Tasks](#self-supervised-tasks)
+    - [Generic Supervised Tasks](#generic-supervised-tasks)
+  - [Featurisation Schemes](#featurisation-schemes)
+    - [Invariant Node Features](#invariant-node-features)
+    - [Equivariant Node Features](#equivariant-node-features)
+    - [Edge Construction](#edge-construction)
+    - [Invariant Edge Features](#invariant-edge-features)
+    - [Equivariant Edge Features](#equivariant-edge-features)
 
 ## Installation
 
@@ -225,7 +237,7 @@ wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 python proteinworkshop/embed.py dataset=cath encoder=egnn ckpt_path=PATH/TO/CHECKPOINT
 ```
 
-### Verify a config
+### Verifying a config
 
 ```bash
 python proteinworkshop/validate_config.py dataset=cath features=full_atom task=inverse_folding

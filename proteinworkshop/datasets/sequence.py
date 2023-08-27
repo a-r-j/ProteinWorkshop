@@ -9,9 +9,9 @@ from graphein import verbose
 from graphein.protein.tensor.io import protein_to_pyg
 from graphein.protein.utils import read_fasta
 from loguru import logger
-from torch_geometric import transforms as T
 from torch_geometric.data import Data, Dataset
 from tqdm import tqdm
+
 
 try:
     import esm
@@ -20,10 +20,8 @@ except:
         "ESM not installed. If you are using a sequence dataset this will be required to fold structures. See: https://github.com/facebookresearch/esm#quickstart"
     )
 
-from proteinworkshop.features.sequence_features import amino_acid_one_hot
 
 verbose(False)
-from torch_geometric.data import Data
 
 
 class SequenceDataset(Dataset):
@@ -145,7 +143,9 @@ class SequenceDataset(Dataset):
 
         # Extract per-residue representations
         with torch.no_grad():
-            results = model(batch_tokens, repr_layers=[layer_idx], return_contacts=True)
+            results = model(
+                batch_tokens, repr_layers=[layer_idx], return_contacts=True
+            )
         token_representations = results["representations"][layer_idx]
 
         # Generate per-sequence representations via averaging
@@ -164,7 +164,9 @@ class SequenceDataset(Dataset):
                 Path(self.embedding_dir) / f"{seq_id}.pt",
             )
 
-    def fold(self, fold_model=esm.pretrained.esmfold_v1, overwrite: bool = False):
+    def fold(
+        self, fold_model=esm.pretrained.esmfold_v1, overwrite: bool = False
+    ):
         """
         Fold sequences using ESM-1b model.
 
@@ -179,7 +181,9 @@ class SequenceDataset(Dataset):
         )
 
         if self.seq_representative is not None:
-            logger.info(f"Folding representative sequence {self.seq_representative}")
+            logger.info(
+                f"Folding representative sequence {self.seq_representative}"
+            )
         else:
             logger.info(
                 f"Folding {len(self.sequences)} sequences in {self.structure_dir}"
@@ -190,7 +194,9 @@ class SequenceDataset(Dataset):
             seqs_to_fold = [
                 (seq_id, seq)
                 for seq_id, seq in self.sequences
-                if not os.path.exists(pathlib.Path(self.processed_dir) / f"{seq_id}.pt")
+                if not os.path.exists(
+                    pathlib.Path(self.processed_dir) / f"{seq_id}.pt"
+                )
             ]
             logger.info(
                 f"Found {len(self.sequences) - len(seqs_to_fold)} existing structures in {self.structure_dir}"

@@ -7,7 +7,9 @@ from loguru import logger
 def _install_pyg():
     torch_version = torch.__version__
     cuda_version = (
-        torch.version.cuda.replace(".", "") if torch.cuda.is_available() else None
+        torch.version.cuda.replace(".", "")
+        if torch.cuda.is_available()
+        else None
     )
     logger.info(f"Detected PyTorch version: {torch_version}")
     logger.info(f"Detected CUDA version: {cuda_version}")

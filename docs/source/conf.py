@@ -74,9 +74,7 @@ intersphinx_mapping = {
     "lightning": ("https://lightning.ai/docs/pytorch/stable/", None),
 }
 
-mathjax_path = (
-    "https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-)
+mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 mathjax2_config = {
     "tex2jax": {
         "inlineMath": [["$", "$"], ["\\(", "\\)"]],
@@ -115,7 +113,7 @@ mathjax2_config = {
             "vy": "\\mathbf{y}",
             "vz": "\\mathbf{z}",
         }
-    }
+    },
 }
 
 # -- Options for HTML output -------------------------------------------------
@@ -139,4 +137,6 @@ def setup(app):
     app.add_js_file(
         "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"
     )
-    app.add_js_file("http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+    app.add_js_file(
+        "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+    )

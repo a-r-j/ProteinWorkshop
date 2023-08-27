@@ -7,8 +7,9 @@ import pandas as pd
 import torch_geometric
 from graphein.protein.utils import read_fasta
 from loguru import logger as log
-from proteinworkshop.datasets.base import ProteinDataModule
 from tqdm import tqdm
+
+from proteinworkshop.datasets.base import ProteinDataModule
 
 
 def str2bool(v: str) -> bool:
@@ -22,7 +23,9 @@ class FLIPDatamodule(ProteinDataModule):
         self.dataset_name = dataset_name
         self.split = split
         self.BASE_URL = "http://data.bioembeddings.com/public/FLIP/fasta/"
-        self.DATA_URL = self.BASE_URL + self.dataset_name + "/" + self.split + ".fasta"
+        self.DATA_URL = (
+            self.BASE_URL + self.dataset_name + "/" + self.split + ".fasta"
+        )
         self.data_fname = self.root / dataset_name / f"{split}.fasta"
 
     def download(self, overwrite: bool = False):
@@ -49,7 +52,10 @@ class FLIPDatamodule(ProteinDataModule):
         records = []
         for k, v in tqdm(fasta_dict.items()):
             keys = k.split(" ")
-            record = {"name": keys[0], "label": float(keys[1].replace("TARGET=", ""))}
+            record = {
+                "name": keys[0],
+                "label": float(keys[1].replace("TARGET=", "")),
+            }
             record["set"] = keys[2].replace("SET=", "")
             record["validation"] = str2bool(keys[3].replace("VALIDATION=", ""))
             record["sequence"] = v
@@ -77,12 +83,12 @@ class FLIPDatamodule(ProteinDataModule):
         raise NotImplementedError
 
     def val_dataset(self):
-        data = self.parse_dataset("val")
+        self.parse_dataset("val")
         # return FASTADataset()
         raise NotImplementedError
 
     def test_dataset(self):
-        data = self.parse_dataset("test")
+        self.parse_dataset("test")
         # return FASTADataset()
         raise NotImplementedError
 

@@ -1,10 +1,12 @@
 import importlib.metadata
 
 from graphein import verbose
-# Disable graphein import warnings
-verbose(False)
 from omegaconf import OmegaConf
 
+
+
+# Disable graphein import warnings
+verbose(False)
 
 
 __version__ = importlib.metadata.version("proteinworkshop")

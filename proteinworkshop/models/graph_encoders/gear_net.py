@@ -5,11 +5,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 from graphein.protein.tensor.data import ProteinBatch
 from loguru import logger as log
+from torch_geometric.data import Batch
+from torch_scatter import scatter_add
+
 from proteinworkshop.models.graph_encoders.layers import gear_net
 from proteinworkshop.models.utils import get_aggregation
 from proteinworkshop.types import EncoderOutput
-from torch_geometric.data import Batch
-from torch_scatter import scatter_add
 
 
 class GearNet(nn.Module):
@@ -84,7 +85,9 @@ class GearNet(nn.Module):
             log.info("Using Edge Message Passing")
             self.edge_input_dim = self._get_num_edge_features()
             self.edge_dims = [self.edge_input_dim] + self.dims[:-1]
-            self.spatial_line_graph = gear_net.SpatialLineGraph(self.num_angle_bin)
+            self.spatial_line_graph = gear_net.SpatialLineGraph(
+                self.num_angle_bin
+            )
             self.edge_layers = nn.ModuleList()
             for i in range(len(self.edge_dims) - 1):
                 self.edge_layers.append(
@@ -120,7 +123,14 @@ class GearNet(nn.Module):
         :return: Set of required batch attributes.
         :rtype: Set[str]
         """
-        return {"x", "edge_index", "edge_type", "edge_attr", "num_nodes", "batch"}
+        return {
+            "x",
+            "edge_index",
+            "edge_type",
+            "edge_attr",
+            "num_nodes",
+            "batch",
+        }
 
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
         """
@@ -143,7 +153,9 @@ class GearNet(nn.Module):
         if self.num_angle_bin:
             line_graph = self.spatial_line_graph(batch)
             line_graph.edge_weight = torch.ones(
-                line_graph.edge_index.shape[1], dtype=torch.float, device=batch.x.device
+                line_graph.edge_index.shape[1],
+                dtype=torch.float,
+                device=batch.x.device,
             )
             edge_input = line_graph.x.float()
 
@@ -156,7 +168,8 @@ class GearNet(nn.Module):
                 edge_weight = batch.edge_weight.unsqueeze(-1)
                 # node_out = graph.edge_index[:, 1] * self.num_relation + graph.edge_index[:, 2]
                 node_out = (
-                    batch.edge_index[1, :] * self.num_relation + batch.edge_index[2, :]
+                    batch.edge_index[1, :] * self.num_relation
+                    + batch.edge_index[2, :]
                 )
                 update = scatter_add(
                     edge_hidden * edge_weight,
@@ -194,7 +207,9 @@ class GearNet(nn.Module):
         dist = 1
         return self.input_dim * 2 + self.num_relation + seq_dist + dist
 
-    def gear_net_edge_features(self, b: Union[Batch, ProteinBatch]) -> torch.Tensor:
+    def gear_net_edge_features(
+        self, b: Union[Batch, ProteinBatch]
+    ) -> torch.Tensor:
         """Compute edge features for the gear net encoder.
 
         - Concatenate node features of the two nodes in each edge
@@ -220,6 +235,7 @@ class GearNet(nn.Module):
 if __name__ == "__main__":
     import hydra
     import omegaconf
+
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(

@@ -10,6 +10,7 @@ import pathlib
 
 import hydra
 from loguru import logger as log
+
 from proteinworkshop import constants
 
 try:
@@ -23,7 +24,9 @@ except:
 
 
 def init_hydra_singleton(
-    path: os.PathLike = constants.HYDRA_CONFIG_PATH, reload: bool = False, version_base: str = "1.2",
+    path: os.PathLike = constants.HYDRA_CONFIG_PATH,
+    reload: bool = False,
+    version_base: str = "1.2",
 ) -> None:
     """Initialises the hydra singleton.
 

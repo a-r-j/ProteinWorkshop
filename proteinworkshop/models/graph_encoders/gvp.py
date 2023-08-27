@@ -1,4 +1,4 @@
-from typing import List, Union, Set
+from typing import Set, Union
 
 import torch
 import torch.nn.functional as F
@@ -73,7 +73,7 @@ class GVPGNNModel(torch.nn.Module):
                 (s_dim, 0),
                 _DEFAULT_V_DIM,
                 activations=(None, None),
-                vector_gate=True
+                vector_gate=True,
             ),
         )
         # Edge embedding
@@ -109,7 +109,7 @@ class GVPGNNModel(torch.nn.Module):
                 _DEFAULT_V_DIM,
                 (s_dim, 0),
                 activations=activations,
-                vector_gate=True
+                vector_gate=True,
             ),
         )
         # Global pooling/readout function
@@ -148,7 +148,9 @@ class GVPGNNModel(torch.nn.Module):
         vectors = (
             batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]
         )  # [n_edges, 3]
-        lengths = torch.linalg.norm(vectors, dim=-1, keepdim=True)  # [n_edges, 1]
+        lengths = torch.linalg.norm(
+            vectors, dim=-1, keepdim=True
+        )  # [n_edges, 1]
 
         h_V = self.emb_in(batch.x)
         h_E = (
@@ -164,11 +166,15 @@ class GVPGNNModel(torch.nn.Module):
 
         out = self.W_out(h_V)
 
-        return EncoderOutput({
-            "node_embedding": out,
-            "graph_embedding": self.readout(out, batch.batch),  # (n, d) -> (batch_size, d)
-            # "pos": pos  # TODO it is possible to output pos with GVP if needed
-        })
+        return EncoderOutput(
+            {
+                "node_embedding": out,
+                "graph_embedding": self.readout(
+                    out, batch.batch
+                ),  # (n, d) -> (batch_size, d)
+                # "pos": pos  # TODO it is possible to output pos with GVP if needed
+            }
+        )
 
 
 if __name__ == "__main__":
@@ -179,6 +185,6 @@ if __name__ == "__main__":
 
     cfg = omegaconf.OmegaConf.load(
         constants.PROJECT_PATH / "configs" / "encoder" / "gvp.yaml"
-        )
+    )
     enc = hydra.utils.instantiate(cfg)
     print(enc)

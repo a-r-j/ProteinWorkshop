@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Callable, Dict, Iterable, Optional, Literal
+from typing import Callable, Dict, Iterable, Literal, Optional
 
 import omegaconf
 import pandas as pd
@@ -8,8 +8,9 @@ import torch
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
-from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 from torch_geometric.data import Dataset
+
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
 class EnzymeCommissionReactionDataset(ProteinDataModule):
@@ -156,12 +157,18 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
 
         # Read in IDs of structures in split
         if split == "training":
-            data = pd.read_csv(self.data_dir / "training.txt", sep=",", header=None)
+            data = pd.read_csv(
+                self.data_dir / "training.txt", sep=",", header=None
+            )
             data = data.sample(frac=self.dataset_fraction)
         elif split == "validation":
-            data = pd.read_csv(self.data_dir / "validation.txt", sep=",", header=None)
+            data = pd.read_csv(
+                self.data_dir / "validation.txt", sep=",", header=None
+            )
         elif split == "testing":
-            data = pd.read_csv(self.data_dir / "testing.txt", sep=",", header=None)
+            data = pd.read_csv(
+                self.data_dir / "testing.txt", sep=",", header=None
+            )
         else:
             raise ValueError(f"Unknown split: {split}")
 
@@ -177,7 +184,9 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
                 f"Found {len(data)} examples in {split} after dropping obsolete PDBs"
             )
         else:
-            raise NotImplementedError("Obsolete PDB replacement not implemented")
+            raise NotImplementedError(
+                "Obsolete PDB replacement not implemented"
+            )
 
         # Map labels to IDs in dataframe
         data["label"] = data[0].map(class_map)
@@ -196,6 +205,7 @@ if __name__ == "__main__":
 
     import hydra
     import omegaconf
+
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
