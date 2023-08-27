@@ -1,6 +1,7 @@
 # Protein Workshop
 
 [![PyPI version](https://badge.fury.io/py/proteinworkshop.svg)](https://badge.fury.io/py/proteinworkshop)
+[![Zenodo doi badge](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.8282470-blue.svg)](https://zenodo.org/record/8282470)
 ![Tests](https://github.com/a-r-j/ProteinWorkshop/actions/workflows/code-tests.yaml/badge.svg)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
