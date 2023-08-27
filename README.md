@@ -120,7 +120,7 @@ of how to use and extend the Protein Workshop, as outlined below.
 Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task:
 
 ```bash
-python proteinworkshop/train.py dataset=cath encoder=gcn task=inverse_folding
+python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding
 ```
 
 #### Finetuning a model
@@ -128,7 +128,7 @@ python proteinworkshop/train.py dataset=cath encoder=gcn task=inverse_folding
 Finetuning a model additionally requires specification of a checkpoint.
 
 ```bash
-python proteinworkshop/finetune.py dataset=cath encoder=gcn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
+python proteinworkshop/finetune.py dataset=cath encoder=egnn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
 ```
 
 #### Running a sweep/experiment
@@ -193,7 +193,7 @@ wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 #### Embedding a dataset
 
 ```bash
-python proteinworkshop/embed.py dataset=cath encoder=gnn ckpt_path=PATH/TO/CHECKPOINT
+python proteinworkshop/embed.py dataset=cath encoder=egnn ckpt_path=PATH/TO/CHECKPOINT
 ```
 
 #### Verify a config
