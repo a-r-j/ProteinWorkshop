@@ -66,7 +66,7 @@ However, for full exploration we recommend cloning the repository and building f
 
 2. Install `poetry` for dependency management using its [installation instructions](https://python-poetry.org/docs/)
 
-    After installing `poetry`, to avoid potential [keyring errors](https://github.com/python-poetry/poetry/issues/1917#issuecomment-1235998997), disable its keyring usage by adding `PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring` to your shell's startup configuration (e.g., `echo 'export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring' >> ~/.bashrc` for a Bash shell environment).
+    After installing `poetry`, to avoid potential [keyring errors](https://github.com/python-poetry/poetry/issues/1917#issuecomment-1235998997), disable its keyring usage by adding `PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring` to your shell's startup configuration (e.g., `echo 'export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring' >> ~/.bashrc` for a Bash shell environment and likewise for other shell environments).
 
 3. Install project dependencies
 
