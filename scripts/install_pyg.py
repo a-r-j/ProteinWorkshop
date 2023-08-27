@@ -4,7 +4,7 @@ import torch
 from loguru import logger
 
 
-def _create_install_command():
+def _install_pyg():
     torch_version = torch.__version__
     cuda_version = (
         torch.version.cuda.replace(".", "") if torch.cuda.is_available() else None
@@ -36,4 +36,4 @@ def _create_install_command():
 
 
 if __name__ == "__main__":
-    _create_install_command()
+    _install_pyg()
