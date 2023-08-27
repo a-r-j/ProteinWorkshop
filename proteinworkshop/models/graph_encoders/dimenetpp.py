@@ -50,7 +50,7 @@ class DimeNetPPModel(DimeNetPlusPlus):
         :param int_emb_size: Embedding size for interaction features
             (default: ``64``)
         :type int_emb_size: int
-        :param basis_emb_size: Embedding size for basis functions.
+        :param basis_emb_size: Embedding size for basis functions
             (default: ``8``)
         :type basis_emb_size: int
         :param out_emb_channels: Number of channels in the output embeddings
