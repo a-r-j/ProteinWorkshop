@@ -10,7 +10,7 @@ defaults:
   - env: default
   - dataset: cath
   - features: ca_seq
-  - encoder: gcn
+  - encoder: egnn
   - decoder: default
   - transforms: default
   - callbacks: default

@@ -45,7 +45,7 @@ Below, we outline how one may set up a virtual environment for the `ProteinWorks
 2. Install project dependencies
 
     ```bash
-    poetry install
+      poetry install
     ```
 
 3. Activate the newly-created virtual environment following `poetry`'s [usage documentation](https://python-poetry.org/docs/basic-usage/)
@@ -66,8 +66,8 @@ Below, we outline how one may set up a virtual environment for the `ProteinWorks
 4. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
 
     ```bash
-    # hint: to see the list of dependencies that are currently installed in the environment, run:
-    poetry show
+      # hint: to see the list of dependencies that are currently installed in the environment, run:
+      poetry show
     ```
 
 5. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example) for an example.
@@ -75,7 +75,7 @@ Below, we outline how one may set up a virtual environment for the `ProteinWorks
 6. Download PDB data:
 
     ```bash
-    python scripts/download_pdb_mmtf.py
+      python scripts/download_pdb_mmtf.py
     ```
 
 ## Tutorials
@@ -96,7 +96,7 @@ of how to use and extend the `Protein Workshop`, as outlined below.
 Minimally, launching an experiment minimally requires specification of a dataset, structural encoder, and task:
 
 ```bash
-python proteinworkshop/train.py dataset=cath encoder=gcn task=inverse_folding
+python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding
 ```
 
 #### Finetuning a model
