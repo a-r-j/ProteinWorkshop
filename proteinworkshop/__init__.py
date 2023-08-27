@@ -3,8 +3,6 @@ import importlib.metadata
 from graphein import verbose
 from omegaconf import OmegaConf
 
-
-
 # Disable graphein import warnings
 verbose(False)
 

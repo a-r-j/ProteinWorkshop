@@ -77,7 +77,7 @@ FOLDCOMP_DATASET_NAMES = [
 
 ZENODO_DATASET_NAMES = [
     "antibody_developability",
-    "cath" ,
+    "cath",
     "ccpdb",
     "ccpdb_ligands",
     "ccpdb_metal",
