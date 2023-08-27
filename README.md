@@ -29,6 +29,8 @@ Configuration files to run the experiments described in the manuscript are provi
   * [Training a model](#training-a-model)
   * [Finetuning a model](#finetuning-a-model)
   * [Running a sweep/experiment](#running-a-sweepexperiment)
+  * [Embedding a dataset](#embedding-a-dataset)
+  * [Verifying a config](#verifying-a-config)
   * [Using proteinworkshop modules functionally](#using-proteinworkshop-modules-functionally)
 * [Models](#models)
   * [Invariant structure encoders](#invariant-graph-encoders)
@@ -230,7 +232,7 @@ wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 python proteinworkshop/embed.py dataset=cath encoder=egnn ckpt_path=PATH/TO/CHECKPOINT
 ```
 
-### Verify a config
+### Verifying a config
 
 ```bash
 python proteinworkshop/validate_config.py dataset=cath features=full_atom task=inverse_folding
