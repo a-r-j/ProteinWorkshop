@@ -108,7 +108,7 @@ However, for full exploration we recommend cloning the repository and building f
 ## Tutorials
 
 We provide a five-part tutorial series of Jupyter notebooks to provide users with examples
-of how to use and extend the `ProteinWorkshop`, as outlined below.
+of how to use and extend `proteinworkshop`, as outlined below.
 
 1. [Training a new model](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/training_new_model_tutorial.ipynb)
 2. [Customizing an existing dataset](https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/customizing_existing_dataset_tutorial.ipynb)
@@ -406,7 +406,7 @@ These are likely to be most frequently used with the [`pdb`](https://github.com/
 
 ## Featurisation Schemes
 
-Part of the goal of the `ProteinWorkshop` benchmark is to investigate the impact of the degree to which increasing granularity of structural detail affects performance. To achieve this, we provide several featurisation schemes for protein structures.
+Part of the goal of `proteinworkshop` benchmark is to investigate the impact of the degree to which increasing granularity of structural detail affects performance. To achieve this, we provide several featurisation schemes for protein structures.
 
 ### Invariant Node Features
 
