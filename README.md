@@ -469,7 +469,7 @@ Where the suffix after `knn` or `eps` specifies $k$ (number of neighbours) or $\
 | `edge_vectors` | Edge directional vectors (unit-normalized)        |      1  |
 
 # For developers
-To keep with the code style for the proteinworkshop repository, please format your commits requests before opening a merge request with the following lines:
+To keep with the code style for the `proteinworkshop` repository, please format your commits requests before opening a merge request with the following lines:
 ```bash
 # assuming you're in the `ProteinWorkshop` top-level directory
 isort . 
