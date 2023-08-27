@@ -1,5 +1,5 @@
 datamodule:
-  _target_: src.datasets.metal_3d.Metal3DDataModule
+  _target_: proteinworkshop.datasets.metal_3d.Metal3DDataModule
   path: ${env.paths.data}/Metal3D/ # Directory where the dataset is stored
   pdb_dir: ${env.paths.data}/pdb/ # Directory where raw PDB/mmtf files are stored
   format: "mmtf" # Format of the raw PDB/MMTF files
