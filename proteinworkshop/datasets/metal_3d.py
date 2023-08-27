@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Callable, Iterable, Optional, Union
+from typing import Callable, Iterable, Optional, Union, Literal
 
 import omegaconf
 import pandas as pd
@@ -15,7 +15,7 @@ class Metal3DDataModule(ProteinDataModule):
         self,
         path: str,
         pdb_dir: Optional[Union[str, os.PathLike]] = None,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         in_memory: bool = False,
         transforms: Optional[Iterable[Callable]] = None,
         batch_size: int = 32,

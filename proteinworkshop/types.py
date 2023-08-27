@@ -82,7 +82,7 @@ GRAPH_ENCODERS: List[str] = ["EGNN", "GVP", "GNN"]
 
 
 ScalarNodeFeature = Literal[
-    "amino_acid_onehot",
+    "amino_acid_one_hot",
     "alpha",
     "kappa",
     "dihedrals",

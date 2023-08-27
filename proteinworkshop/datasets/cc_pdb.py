@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Literal
 
 import numpy as np
 import omegaconf
@@ -23,7 +23,7 @@ class CCPDBDataModule(ProteinDataModule):
         num_workers: int,
         pin_memory: bool,
         in_memory=False,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         obsolete_strategy: str = "drop",
         split_strategy: str = "random",  # or stratified
         train_fraction: float = 0.8,

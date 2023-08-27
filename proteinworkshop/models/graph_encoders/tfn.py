@@ -31,6 +31,50 @@ class TensorProductModel(torch.nn.Module):
         gate: bool = False,
         hidden_irreps=None,
     ):
+        """e3nn-based Tensor Product Convolution Network (Tensor Field Network)
+
+        Initialise an instance of the TensorProductModel class with the provided
+        parameters.
+
+        :param r_max: Maximum distance for Bessel basis functions
+            (default: ``10.0``)
+        :type r_max: float, optional
+        :param num_bessel: Number of Bessel basis functions (default: ``8``)
+        :type num_bessel: int, optional
+        :param num_polynomial_cutoff: Number of polynomial cutoff basis
+            functions (default: ``5``)
+        :type num_polynomial_cutoff: int, optional
+        :param max_ell: Maximum degree/order of spherical harmonics basis 
+            functions and node feature tensors (default: ``2``)
+        :type max_ell: int, optional
+        :param num_layers: Number of layers in the model (default: ``5``)
+        :type num_layers: int, optional
+        :param emb_dim: Number of hidden channels/embedding dimension for each
+            node feature tensor order (default: ``64``)
+        :type emb_dim: int, optional
+        :param mlp_dim: Dimension of MLP for computing tensor product 
+            weights (default: ``256``)
+        :type: int, optional
+        :param aggr: Aggregation function to use, defaults to ``"sum"``
+        :type aggr: str, optional
+        :param pool: Pooling operation to use, defaults to ``"sum"``
+        :type pool: str, optional
+        :param residual: Whether to use residual connections, defaults to
+            ``True``
+        :type residual: bool, optional
+        :param batch_norm: Whether to use e3nn batch normalisation, defaults to
+            ``True``
+        :type batch_norm: bool, optional
+        :param gate: Whether to use gated non-linearity, defaults to ``False``
+        :type gate: bool, optional
+        :param hidden_irreps: Irreps for intermediate layer node feature tensors 
+            (default: ``None``)
+        :type hidden_irreps: e3nn.o3.Irreps, optional
+
+        .. note:: 
+            If ``hidden_irreps`` is None, irreps for node feature tensors are 
+            computed using ``max_ell`` order of spherical harmonics and ``emb_dim``.
+        """
         super().__init__()
         self.r_max = r_max
         self.max_ell = max_ell
@@ -59,8 +103,9 @@ class TensorProductModel(torch.nn.Module):
         # Set hidden irreps if none are provided
         if hidden_irreps is None:
             hidden_irreps = (sh_irreps * emb_dim).sort()[0].simplify()
-            # Note: This defaults to O(3) equivariant layers
-            # It is possible to use SO(3) equivariance by passing the appropriate irreps
+            # Note: This defaults to O(3) equivariant layers. It is
+            #       possible to use SO(3) equivariance by passing 
+            #       the appropriate irreps to `hidden_irreps`.
 
         self.convs = torch.nn.ModuleList()
         # First conv layer: scalar only -> tensor
@@ -108,11 +153,34 @@ class TensorProductModel(torch.nn.Module):
 
     @property
     def required_batch_attributes(self) -> Set[str]:
+        """
+        Required batch attributes for this encoder.
+
+        - ``x``: Node features (shape: :math:`(n, d)`)
+        - ``pos``: Node positions (shape: :math:`(n, 3)`)
+        - ``edge_index``: Edge indices (shape: :math:`(2, e)`)
+        - ``batch``: Batch indices (shape: :math:`(n,)`)
+
+        :return: Set of required batch attributes
+        :rtype: Set[str]
+        """
         return {"edge_index", "pos", "x", "batch"}
 
     @jaxtyped
     @beartype
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
+        """Returns the node embedding and graph embedding in a dictionary.
+
+        :param batch: Batch of data to encode.
+        :type batch: Union[Batch, ProteinBatch]
+        :return: Dictionary of node and graph embeddings. Contains
+            ``node_embedding`` and ``graph_embedding`` fields. The node
+            embedding is of shape :math:`(|V|, d)` and the graph embedding is
+            of shape :math:`(n, d)`, where :math:`|V|` is the number of nodes
+            and :math:`n` is the number of graphs in the batch and :math:`d` is
+            the dimension of the embeddings.
+        :rtype: EncoderOutput
+        """
         # Node embedding
         h = self.emb_in(batch.x)  # (n,) -> (n, d)
 

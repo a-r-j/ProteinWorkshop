@@ -3,7 +3,7 @@ import json
 import os
 import random
 from pathlib import Path
-from typing import Callable, Dict, Iterable, List, Optional
+from typing import Callable, Dict, Iterable, List, Optional, Literal
 
 import omegaconf
 import wget
@@ -17,7 +17,7 @@ class CATHDataModule(ProteinDataModule):
         self,
         path: str,
         batch_size: int,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         pdb_dir: Optional[str] = None,
         pin_memory: bool = True,
         in_memory: bool = False,

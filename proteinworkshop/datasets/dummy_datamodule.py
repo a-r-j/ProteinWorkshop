@@ -1,5 +1,5 @@
 import omegaconf
-from typing import Optional, Union, Iterable, Callable
+from typing import Optional, Union, Iterable, Callable, Literal
 import os
 
 from .base import ProteinDataset, ProteinDataModule
@@ -12,7 +12,7 @@ class DummyDataModule(ProteinDataModule):
         self,
         path: str,
         pdb_dir: Optional[str] = None,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         in_memory: bool = False,
         transforms: Optional[Iterable[Callable]] = None,
         batch_size: int = 8,

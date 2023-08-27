@@ -99,6 +99,8 @@ install-torchdrug = "pip install torchdrug"
 [tool.poetry.scripts]
 train_workshop = "proteinworkshop.train:_main"
 finetune_workshop = "proteinworkshop.finetune:_main"
+install_pyg_workshop = "scripts.install_pyg:_install_pyg"
+workshop = "scripts.dispatcher:main"
 
 [build-system]
 requires = ["poetry-core"]

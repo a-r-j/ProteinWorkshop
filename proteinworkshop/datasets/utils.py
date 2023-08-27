@@ -2,15 +2,22 @@
 # License: BSD 3 clause
 
 import concurrent.futures
-import datetime
+import functools
 import os
 import os.path
 import pathlib
 import tarfile
-from typing import List, Optional
 
 import biotite.database.rcsb as rcsb
+import torch.nn.functional as F
+
+from graphein.protein.tensor.data import (ProteinBatch, get_random_protein)
 from tqdm import tqdm
+from typing import List, Optional
+
+from proteinworkshop.features.node_features import orientations
+from proteinworkshop.features.utils import _normalize
+from proteinworkshop.features.edge_features import pos_emb
 
 
 def flatten_dir(dir: os.PathLike):
@@ -41,29 +48,60 @@ def download_pdb_mmtf(
         pdb_ids = [pdb_id.lower() for pdb_id in pdb_ids]
 
     # Name for download directory
-    now = datetime.datetime.now()
     if not os.path.isdir(mmtf_dir):
         os.mkdir(mmtf_dir)
 
     # Download all PDB IDs with parallelized HTTP requests
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        for pdb_id in tqdm(pdb_ids):
-            executor.submit(rcsb.fetch, pdb_id, "mmtf", mmtf_dir)
+        futures = []
+        num_requests = len(pdb_ids)
+        pbar = tqdm(pdb_ids)
+        for pdb_id in pbar:
+            pbar.set_description(f"Submitting PDB download request for {pdb_id}")
+            futures.append(executor.submit(rcsb.fetch, pdb_id, "mmtf", mmtf_dir))
+        pbar = tqdm(concurrent.futures.as_completed(futures))
+        for request_index, future in enumerate(pbar):
+            pbar.set_description(f"Waiting for PDB download request #{request_index + 1}/{num_requests} to complete")
+            # Wait for the future to complete
+            future.result()
 
     if create_tar:
         # Create .tar archive file from MMTF files in directory
         with tarfile.open(f"{mmtf_dir}.tar", mode="w") as file:
-            for pdb_id in pdb_ids:
+            pbar = tqdm(pdb_ids)
+            for pdb_id in pbar:
+                pbar.set_description(f"Adding downloaded PDB {pdb_id} to {f'{mmtf_dir}.tar'}")
                 file.add(os.path.join(mmtf_dir, f"{pdb_id}.mmtf"), f"{pdb_id}.mmtf")
 
     ### File access for analysis ###
 
-    # Iterate over all files in archive
+    # Iterate over all files in archive;
     # Instead of extracting the files from the archive,
-    # the .tar file is directly accessed
-    # with tarfile.open(mmtf_dir+".tar", mode="r") as file:
-    #    for member in file.getnames():
-    #        mmtf_file = mmtf.MMTFFile.read(file.extractfile(member))
-    ###
-    # Do some fancy stuff with the data...
-    ###
+    # the `.tar` file is directly accessed
+    # with tarfile.open(f"{mmtf_dir}.tar", mode="r") as file:
+        # for member in file.getnames():
+            # mmtf_file = mmtf.MMTFFile.read(file.extractfile(member))
+            ## Do some fancy stuff with the data...
+
+
+@functools.lru_cache()
+def create_example_batch() -> ProteinBatch:
+    proteins = []
+    for _ in range(4):
+        p = get_random_protein()
+        p.x = p.residue_type
+        proteins.append(p)
+
+    batch = ProteinBatch.from_protein_list(proteins)
+
+    batch.edges("knn_8", cache="edge_index")
+    batch.edge_index = batch.edge_index.long()
+    batch.pos = batch.coords[:, 1, :]
+    batch.x = F.one_hot(batch.residue_type, num_classes=23).float()
+
+    batch.x_vector_attr = orientations(batch.pos)
+    batch.edge_attr = pos_emb(batch.edge_index, 9)
+    batch.edge_vector_attr = _normalize(
+        batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]
+        )
+    return batch

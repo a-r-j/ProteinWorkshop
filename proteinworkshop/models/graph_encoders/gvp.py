@@ -31,16 +31,6 @@ class GVPGNNModel(torch.nn.Module):
         Initializes an instance of the GVPGNNModel class with the provided
         parameters.
 
-        :param r_max: Maximum distance for Bessel basis functions
-            (default: ``10.0``)
-        :type r_max: float
-        :param num_bessel: Number of Bessel basis functions (default: ``8``)
-        :type num_bessel: int
-        :param num_polynomial_cutoff: Number of polynomial cutoff basis
-            functions (default: ``5``)
-        :type num_polynomial_cutoff: int
-        :param num_layers: Number of layers in the model (default: ``5``)
-        :type num_layers: int
         :param s_dim: Dimension of the node state embeddings (default: ``128``)
         :type s_dim: int
         :param v_dim: Dimension of the node vector embeddings (default: ``16``)
@@ -51,6 +41,16 @@ class GVPGNNModel(torch.nn.Module):
         :param v_dim_edge: Dimension of the edge vector embeddings
             (default: ``1``)
         :type v_dim_edge: int
+        :param r_max: Maximum distance for Bessel basis functions
+            (default: ``10.0``)
+        :type r_max: float
+        :param num_bessel: Number of Bessel basis functions (default: ``8``)
+        :type num_bessel: int
+        :param num_polynomial_cutoff: Number of polynomial cutoff basis
+            functions (default: ``5``)
+        :type num_polynomial_cutoff: int
+        :param num_layers: Number of layers in the model (default: ``5``)
+        :type num_layers: int
         :param pool: Global pooling method to be used
             (default: ``"sum"``)
         :type pool: str
@@ -182,5 +182,3 @@ if __name__ == "__main__":
         )
     enc = hydra.utils.instantiate(cfg)
     print(enc)
-
-
