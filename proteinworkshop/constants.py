@@ -50,29 +50,33 @@ DEFAULT_LOG_LEVEL = logging.DEBUG  # verbose logging per default
 
 # ---------------- VALID DATASETS CONSTANTS ---------
 FOLDCOMP_DATASET_NAMES = [
-    "afdb_rep_v4",
-    "afdb_rep_dark_v4",
-    "afdb_swissprot",
-    "afdb_swissprot_v4",
-    "afdb_uniprot_v4",
-    "esmatlas",
-    "highquality_clust30",
-    "a_thaliana",
-    "c_albicans",
-    "c_elegans",
-    "d_discoideum",
-    "d_melanogaster",
-    "d_rerio",
-    "e_coli",
-    "g_max",
-    "h_sapiens",
-    "m_jannaschii",
-    "m_musculus",
-    "o_sativa",
-    "r_norvegicus",
-    "s_cerevisiae",
-    "s_pombe",
-    "z_mays",
+    # available foldcomp datasets
+    #   documentation:           https://github.com/steineggerlab/foldcomp
+    #   up-to-date dataset list: https://foldcomp.steineggerlab.workers.dev/
+    "afdb_rep_v4",  # representative structures identified from the AF2 database by FoldSeek structural clustering
+    "afdb_rep_dark_v4",  # dark proteome structures identied by structural clustering of the AlphaFold database.
+    "afdb_swissprot",  # AlphaFold2 predictions for SwissProt/UniProtKB -- OLD VERSION
+    "afdb_swissprot_v4",  # AlphaFold2 predictions for SwissProt/UniProtKB
+    "afdb_uniprot_v4",  # AlphaFold2 predictions for all of UniProt
+    "esmatlas",  # ESMFold predictions for all sequences in the ESMAtlas
+    "highquality_clust30",  # ESMFold high-quality predictions for the ESMAtlas (30% seq. id clustering)
+    # ... species-specific proteome-wide datasets (all predicted by AlphaFold 2)
+    "a_thaliana",  # Arabidopsis thaliana (thale cress)
+    "c_albicans",  # Candida albicans (a fungus)
+    "c_elegans",  # Caenorhabditis elegans (roundworm)
+    "d_discoideum",  # Dictyostelium discoideum (slime mold)
+    "d_melanogaster",  # Drosophila melanogaster (fruit fly)
+    "d_rerio",  # Danio rerio (zebrafish)
+    "e_coli",  # Escherichia coli (a bacterium)
+    "g_max",  # Glycine max (soybean)
+    "h_sapiens",  # Homo sapiens (human)
+    "m_jannaschii",  # Methanocaldococcus jannaschii (an archaea)
+    "m_musculus",  # Mus musculus (mouse) proteome predicted by AlphaFold 2
+    "o_sativa",  # Oryza sative (rice)
+    "r_norvegicus",  # Rattus norvegicus (brown rat)
+    "s_cerevisiae",  # Saccharomyces cerevisiae (brewer's yeast)
+    "s_pombe",  #  Schizosaccharomyces pombe (a fungus)
+    "z_mays",  # Zea mays (corn)
 ]
 
 ZENODO_DATASET_NAMES = [

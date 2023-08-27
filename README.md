@@ -344,26 +344,26 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 | `pdb`| Experimental structures deposited in the [RCSB Protein Data Bank](https://www.rcsb.org/)       |  [wwPDB consortium](https://academic.oup.com/nar/article/47/D1/D520/5144142)      | ~800k Chains |23 Gb | [CC0 1.0](https://www.rcsb.org/news/feature/611e8d97ef055f03d1f222c6) |
 
 <details>
-  <summary>Additionally, we provide several species-specific compilations</summary>
+  <summary>Additionally, we provide several species-specific compilations (mostly reference species)</summary>
 
   | Name            | Description   | Source | Size |
   | ----------------| ----------- | ------ | ------ |
-  | `a_thaliana`    | _Arabidopsis thaliana_ proteome | AlphaFold2|
-  | `c_albicans`    | _Candida albicans_ proteome | AlphaFold2|
-  | `c_elegans`     | _Caenorhabditis elegans_ proteome        | AlphaFold2       | |
-  | `d_discoideum`  | _Dictyostelium discoideum_ proteome | AlphaFold2| |
-  | `d_melanogaster`  | [_Drosophila melanogaster_](https://www.uniprot.org/taxonomy/7227) proteome        | AlphaFold2        | |
-  | `d_rerio`  | [_Danio rerio_](https://www.uniprot.org/taxonomy/7955) proteome        | AlphaFold2        | |
-  | `e_coli`  | Text        |  AlphaFold2       | |
-  | `g_max`  | Text        | AlphaFold2        | |
-  | `h_sapiens`  | Text        |  AlphaFold2       | |
-  | `m_jannaschii`  | Text        |  AlphaFold2       | |
-  | `m_musculus`  | Text        |   AlphaFold2      | |
-  | `o_sativa`  | Text        |   AlphaFold2      | |
-  | `r_norvegicus`  | Text        |   AlphaFold2      | |
-  | `s_cerevisiae`  | Text        |   AlphaFold2      | |
-  | `s_pombe`  | Text        |  AlphaFold2       | |
-  | `z_mays`  | Text        |   AlphaFold2      | |
+  | `a_thaliana`    | _Arabidopsis thaliana_ (thale cress) proteome | AlphaFold2|
+  | `c_albicans`    | _Candida albicans_ (a fungus) proteome | AlphaFold2|
+  | `c_elegans`     | _Caenorhabditis elegans_ (roundworm) proteome        | AlphaFold2       | |
+  | `d_discoideum`  | _Dictyostelium discoideum_ (slime mold) proteome | AlphaFold2| |
+  | `d_melanogaster`  | [_Drosophila melanogaster_](https://www.uniprot.org/taxonomy/7227) (fruit fly) proteome        | AlphaFold2        | |
+  | `d_rerio`  | [_Danio rerio_](https://www.uniprot.org/taxonomy/7955) (zebrafish) proteome        | AlphaFold2        | |
+  | `e_coli`  | _Escherichia coli_ (a bacteria) proteome        |  AlphaFold2       | |
+  | `g_max`  | _Glycine max_ (soy bean) proteome       | AlphaFold2        | |
+  | `h_sapiens`  | _Homo sapiens_ (human) proteome       |  AlphaFold2       | |
+  | `m_jannaschii`  | _Methanocaldococcus jannaschii_ (an archaea) proteome        |  AlphaFold2       | |
+  | `m_musculus`  | _Mus musculus_ (mouse) proteome        |   AlphaFold2      | |
+  | `o_sativa`  | _Oryza sative_ (rice) proteome     |   AlphaFold2      | |
+  | `r_norvegicus`  | _Rattus norvegicus_ (brown rat) proteome       |   AlphaFold2      | |
+  | `s_cerevisiae`  | _Saccharomyces cerevisiae_ (brewer's yeast) proteome       |   AlphaFold2      | |
+  | `s_pombe`  | _Schizosaccharomyces pombe_ (a fungus) proteome      |  AlphaFold2       | |
+  | `z_mays`  | _Zea mays_ (corn) proteome    |   AlphaFold2      | |
 
 </details>
 
