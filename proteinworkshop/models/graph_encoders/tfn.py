@@ -71,7 +71,7 @@ class TensorProductModel(torch.nn.Module):
             (default: ``None``)
         :type hidden_irreps: e3nn.o3.Irreps, optional
 
-        Note: 
+        .. note:: 
             If ``hidden_irreps`` is None, irreps for node feature tensors are 
             computed using ``max_ell`` order of spherical harmonics and ``emb_dim``.
         """
