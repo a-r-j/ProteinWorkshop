@@ -53,6 +53,7 @@ Configuration files to run the experiments described in the manuscript are provi
     - [Edge Construction](#edge-construction)
     - [Invariant Edge Features](#invariant-edge-features)
     - [Equivariant Edge Features](#equivariant-edge-features)
+- [For developers](#for-developers)
 
 ## Installation
 
@@ -466,3 +467,12 @@ Where the suffix after `knn` or `eps` specifies $k$ (number of neighbours) or $\
 | Name      | Description   | Dimensionality |
 | ----------- | ----------- | ----------- |
 | `edge_vectors` | Edge directional vectors (unit-normalized)        |      1  |
+
+# For developers
+To keep with the code style for the proteinworkshop repository, please format your commits requests before opening a merge request with the following lines:
+```bash
+# assuming you're in the `ProteinWorkshop` top-level directory
+isort . 
+autoflake -r --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports . 
+black --config=pyproject.toml .
+```
