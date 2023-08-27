@@ -274,6 +274,16 @@ Read [the docs](https://www.proteins.sh) for a full list of modules available in
 
 ## Datasets
 
+To download a (processed) dataset from Zenodo, you can run:
+
+```bash
+workshop download <DATASET_NAME>
+```
+
+Where `<DATASET_NAME>` is given the first column in the tables below.
+
+Otherwise, simply starting a training run will download and process the data from source
+
 ### Structure-based Pre-training Corpuses
 
 Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are provided in FoldComp database format. This format is highly compressed, resulting in very small disk space requirements despite the large size. `pdb` is provided as a collection of
