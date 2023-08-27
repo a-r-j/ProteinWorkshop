@@ -5,16 +5,16 @@ features:
   vector_node_features: ["orientation"]
   vector_edge_features: ["edge_vectors"]
 # global config #
-num_layers: 6
+num_layers: 6 # Number of layers in the model
 emb_dim: 128
-node_s_emb_dim: ${.emb_dim}
-node_v_emb_dim: 16
-edge_s_emb_dim: 32
-edge_v_emb_dim: 4
-r_max: 10.0
-num_rbf: 8
-activation: silu
-pool: sum
+node_s_emb_dim: ${.emb_dim} # Dimension of the node state embeddings
+node_v_emb_dim: 16 # Dimension of the node vector embeddings
+edge_s_emb_dim: 32 # Dimension of the edge state embeddings
+edge_v_emb_dim: 4 # Dimension of the edge vector embeddings
+r_max: 10.0 # Maximum distance for radial basis functions
+num_rbf: 8 # Number of radial basis functions 
+activation: silu # Activation function to use in each GCP layer
+pool: sum # Global pooling method to be used
 # module config #
 module_cfg:
   norm_pos_diff: true
