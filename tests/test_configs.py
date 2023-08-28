@@ -1,3 +1,4 @@
+"""Tests the configuration files for the training and finetuning scripts."""
 import hydra
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig
