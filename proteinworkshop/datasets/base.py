@@ -405,10 +405,20 @@ class ProteinDataset(Dataset):
         else:
             pdb_codes = self.pdb_codes
 
+        raw_dir = Path(self.raw_dir)
         for i, pdb in tqdm(pdb_codes):
             try:
+                path = raw_dir / f"{pdb}.{self.format}"
+                if path.exists():
+                    path = str(path)
+                elif path.with_suffix("." + self.format + ".gz").exists():
+                    path = str(path.with_suffix("." + self.format + ".gz"))
+                else:
+                    raise FileNotFoundError(
+                        f"{pdb} not found in raw directory. Are you sure it's downloaded and has the format {self.format}?"
+                    )
                 graph = protein_to_pyg(
-                    path=str(Path(self.raw_dir) / f"{pdb}.{self.format}"),
+                    path=path,
                     chain_selection=self.chains[i]
                     if self.chains is not None
                     else "all",
@@ -436,6 +446,7 @@ class ProteinDataset(Dataset):
                 graph.node_y = self.node_labels[i]  # type: ignore
 
             torch.save(graph, Path(self.processed_dir) / fname)
+        logger.info("Completed processing.")
 
     def get(self, idx: int) -> Data:
         """
