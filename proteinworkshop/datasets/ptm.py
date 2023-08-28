@@ -118,7 +118,6 @@ class PTMDataModule(ProteinDataModule):
 
     def exclude_pdbs(self):
         """Not used for PTM datasets"""
-        pass
 
     def setup(self, stage: Optional[str] = None):
         """Sequence of steps to download and prepare data for all splits."""

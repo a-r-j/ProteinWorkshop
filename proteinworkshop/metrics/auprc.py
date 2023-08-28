@@ -1,5 +1,4 @@
 """Implementation of the AUPRC metric in ``torchmetrics``."""
-from typing import Any
 
 import torch
 from torchmetrics import Metric

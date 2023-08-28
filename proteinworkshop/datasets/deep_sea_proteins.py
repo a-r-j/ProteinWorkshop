@@ -161,11 +161,9 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
     def parse_labels(self):
         """Not implemented. Labels handled in ``parse_dataset``."""
         # Labels are already in the dataset
-        pass
 
     def exclude_pdbs(self):
         """Not implemented for Deep Sea Proteins dataset"""
-        pass
 
     def _get_dataset(self, split: str) -> ProteinDataset:
         df = self.parse_dataset(split)

@@ -72,19 +72,15 @@ class DummyDataModule(ProteinDataModule):
 
     def exclude_pdbs(self):
         """Not implemented. No PDBs to exlcude."""
-        pass
 
     def parse_labels(self):
         """Not implemented. No labels."""
-        pass
 
     def download(self):
         """Not implemented. No data to download"""
-        pass
 
     def parse_dataset(self, split: str):
         """No dataset to parse."""
-        pass
 
     def _get_dataset(self, split: str) -> ProteinDataset:
         """Returns a dummy dataset of 32 proteins."""

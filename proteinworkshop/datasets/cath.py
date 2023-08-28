@@ -81,7 +81,6 @@ class CATHDataModule(ProteinDataModule):
 
     def parse_labels(self):
         """Not implemented for CATH dataset"""
-        pass
 
     def exclude_pdbs(self):
         """Not implemented for CATH dataset"""

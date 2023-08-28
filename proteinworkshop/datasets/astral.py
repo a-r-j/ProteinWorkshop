@@ -2,7 +2,7 @@ import os
 import pathlib
 import random
 import tarfile
-from typing import Callable, Dict, Iterable, List, Optional, Literal
+from typing import Callable, Dict, Iterable, List, Literal, Optional
 
 import omegaconf
 import pandas as pd
@@ -140,7 +140,9 @@ class AstralDataModule(ProteinDataModule):
     def setup(self, stage: Optional[str] = None):
         self.download()
 
-    def parse_dataset(self, split: Literal["train", "val", "test"]) -> List[str]:
+    def parse_dataset(
+        self, split: Literal["train", "val", "test"]
+    ) -> List[str]:
         """Parses ASTRAL dataset. Returns a list of IDs for each split.
 
         :param split: Split to parse.
@@ -272,8 +274,6 @@ class AstralDataModule(ProteinDataModule):
 
     def parse_labels(self):
         """Not implemented for ASTRAL dataset."""
-        pass
 
     def exclude_pdbs(self):
         """Not implemented for ASTRAL dataset."""
-        pass
