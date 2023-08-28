@@ -1249,6 +1249,46 @@ files = [
 ]
 
 [[package]]
+name = "foldcomp"
+version = "0.0.5"
+description = "Foldcomp compresses protein structures with torsion angles effectively. It compresses the backbone atoms to 8 bytes and the side chain to additionally 4-5 byes per residue, an averaged-sized protein of 350 residues requires ~4.2kb. Foldcomp is a C++ library with Python bindings."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "foldcomp-0.0.5-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:75c0fce4272b77d11c941308352e8272d5ac7fe43e2220dabd73ebe58f7132d9"},
+    {file = "foldcomp-0.0.5-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:f07a61f0a0c97a6c5e8d78fa9c22f4fb3ef8619c6c23945ef14447e5cbf064b9"},
+    {file = "foldcomp-0.0.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ec90dadca0e2b370d4c268258c53750164b08dfc592c5545005dc6d2cdb5161b"},
+    {file = "foldcomp-0.0.5-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:ecee8c33ccbe1bfcf3c06d2216ead54221a0aaf0eccb739bf01e4fbbf9f92ca3"},
+    {file = "foldcomp-0.0.5-cp310-cp310-win_amd64.whl", hash = "sha256:9b8508295bbd27951c9ef7b5ac02597009bf63bed0ac3cb027371c1ce451ae90"},
+    {file = "foldcomp-0.0.5-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:fa18255c38e9c2ef75de18cd767a2448ef78a278e047fde210c444154326c660"},
+    {file = "foldcomp-0.0.5-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:a3bed97a54a94df64489fa8174c53a3322b4c3bf2ee57f0e5f39d04fc0521ac1"},
+    {file = "foldcomp-0.0.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:04878dfb926c6bd7dd13d0a5ee47c2f6fc04a0d0e10b126f64a9b684c10c372f"},
+    {file = "foldcomp-0.0.5-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:7b923334f1685e63692fd3d5c87a1d005e1107754b5849ff3ea132111b1dfc74"},
+    {file = "foldcomp-0.0.5-cp311-cp311-win_amd64.whl", hash = "sha256:86124978fe1adda66fbece10cd25fad5c20c50f7dc4d99f456f71805ff8945de"},
+    {file = "foldcomp-0.0.5-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:45ccef5b08a2aab8d68301e487c03d27938e8fe26e8e419e9187544e58454305"},
+    {file = "foldcomp-0.0.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:15896e9622e83747ad8f231c64cf43893dbaa249777dcebd9200393b9b9768eb"},
+    {file = "foldcomp-0.0.5-cp37-cp37m-musllinux_1_1_x86_64.whl", hash = "sha256:9760fd85ee35525d6d1fe7fa838f29391c69f9a7fd204c68c3e6841b2185f430"},
+    {file = "foldcomp-0.0.5-cp37-cp37m-win_amd64.whl", hash = "sha256:a04a419dc24c50e1acea42f0177153f9f5ff127ce4bb4bc196c9a6b3040ed2ab"},
+    {file = "foldcomp-0.0.5-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:59d794e6bc5fba035d8bc74410cd196a3666a4431a2cb4e1cbff7ee11555fae6"},
+    {file = "foldcomp-0.0.5-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:be15eb39b31efbda816af848f767e5b033e8d179b1ac6043eec580d306ef1e11"},
+    {file = "foldcomp-0.0.5-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e03c40e8f6569f1d8bc94d22e3cd76c55ef34db3d8699f4710187f68c2e777ab"},
+    {file = "foldcomp-0.0.5-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:f558c05be1320f1eef607da51c024a036d51785179259e132e09a00036062cf3"},
+    {file = "foldcomp-0.0.5-cp38-cp38-win_amd64.whl", hash = "sha256:f700ce57ef0a5a9a2e8fa89c73b09407dce9f191c075808a58fde19955049884"},
+    {file = "foldcomp-0.0.5-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:0bbd144dcab243da643bb9defde3d7d65d02308dcb306c90c73d7f6763b94cf4"},
+    {file = "foldcomp-0.0.5-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:8a21ad799eaa8ed0965c54e6218f0f7b0cecb8d6d5b7af236aa3d2f72623d937"},
+    {file = "foldcomp-0.0.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ec7993bba648557188a869806a6fa1834b86fa356dcdb10379cfd1338f17e157"},
+    {file = "foldcomp-0.0.5-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:8825716da67daca86c8a4e8296d23d33d1de9cd8d0017a91461d2d3fd579f6d0"},
+    {file = "foldcomp-0.0.5-cp39-cp39-win_amd64.whl", hash = "sha256:e58add5f972b1a838e800371ab639a2b36a0ba889dfece87ca6577c2faccc364"},
+    {file = "foldcomp-0.0.5.tar.gz", hash = "sha256:35b5fec74f753bd3e5ef7ac83afa6aef45be118d4db06f8720d30d0f03a01474"},
+]
+
+[package.dependencies]
+httpx = ">=0.23.0"
+
+[package.extras]
+test = ["pytest"]
+
+[[package]]
 name = "fonttools"
 version = "4.42.1"
 description = "Tools to manipulate font files"
@@ -1667,6 +1707,27 @@ files = [
 ]
 
 [[package]]
+name = "httpcore"
+version = "0.17.3"
+description = "A minimal low-level HTTP client."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "httpcore-0.17.3-py3-none-any.whl", hash = "sha256:c2789b767ddddfa2a5782e3199b2b7f6894540b17b16ec26b2c4d8e103510b87"},
+    {file = "httpcore-0.17.3.tar.gz", hash = "sha256:a6f30213335e34c1ade7be6ec7c47f19f50c56db36abef1a9dfa3815b1cb3888"},
+]
+
+[package.dependencies]
+anyio = ">=3.0,<5.0"
+certifi = "*"
+h11 = ">=0.13,<0.15"
+sniffio = "==1.*"
+
+[package.extras]
+http2 = ["h2 (>=3,<5)"]
+socks = ["socksio (==1.*)"]
+
+[[package]]
 name = "httptools"
 version = "0.6.0"
 description = "A collection of framework independent HTTP protocol utils."
@@ -1712,6 +1773,29 @@ files = [
 
 [package.extras]
 test = ["Cython (>=0.29.24,<0.30.0)"]
+
+[[package]]
+name = "httpx"
+version = "0.24.1"
+description = "The next generation HTTP client."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "httpx-0.24.1-py3-none-any.whl", hash = "sha256:06781eb9ac53cde990577af654bd990a4949de37a28bdb4a230d434f3a30b9bd"},
+    {file = "httpx-0.24.1.tar.gz", hash = "sha256:5853a43053df830c20f8110c5e69fe44d035d850b2dfe795e196f00fdb774bdd"},
+]
+
+[package.dependencies]
+certifi = "*"
+httpcore = ">=0.15.0,<0.18.0"
+idna = "*"
+sniffio = "*"
+
+[package.extras]
+brotli = ["brotli", "brotlicffi"]
+cli = ["click (==8.*)", "pygments (==2.*)", "rich (>=10,<14)"]
+http2 = ["h2 (>=3,<5)"]
+socks = ["socksio (==1.*)"]
 
 [[package]]
 name = "huggingface-hub"
@@ -6258,4 +6342,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">= 3.9, < 3.11"
-content-hash = "89582eb66027c93b7a59cefe3646b9029942fa67e910a214507ce72c81af61f6"
+content-hash = "faa799babc40a06565fb1094c48995797f5dcbfd01ec2f10184493378c5eee78"
