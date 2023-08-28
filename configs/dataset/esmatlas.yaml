@@ -1,0 +1,17 @@
+datamodule:
+  _target_: graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule
+  data_dir: ${env.paths.data}/esmatlas/
+  database: "esmatlas"
+  batch_size: 32
+  num_workers: 4
+
+  train_split: 0.98
+  val_split: 0.01
+  test_split: 0.01
+
+  pin_memory: True
+  use_graphein: True
+  transform: ${transforms}
+
+dataset_name: "esmatlas"
+num_classes: None # number of classes
