@@ -45,7 +45,8 @@ if os.environ.get("RUNS_PATH") is None:
     os.environ["RUNS_PATH"] = str(RUNS_PATH)
 
 # ---------------- HYDRA CONSTANTS ----------------
-HYDRA_CONFIG_PATH = PROJECT_PATH / "configs"
+#HYDRA_CONFIG_PATH = PROJECT_PATH / "configs"
+HYDRA_CONFIG_PATH = SRC_PATH / "config"
 
 WANDB_API_KEY = os.environ.get("WANDB_API_KEY")
 """API key for wandb."""

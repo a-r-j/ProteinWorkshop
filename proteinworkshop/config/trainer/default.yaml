@@ -6,7 +6,6 @@ min_epochs: 1 # prevents early stopping
 max_epochs: 10
 
 accelerator: cpu
-devices: 1
 
 # mixed precision for extra speed-up
 # precision: 16
