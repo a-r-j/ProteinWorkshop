@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,18 +17,18 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="index.html" />
 <meta property="og:site_name" content="Protein Workshop" />
-<meta property="og:description" content="Project Status: Active – The project has reached a stable, usable state and is being actively developed. License: MIT Docs Overview of the Protein Workshop Documentation This repository provides th..." />
+<meta property="og:description" content="PyPI version Zenodo doi badge Tests Project Status: Active – The project has reached a stable, usable state and is being actively developed. License: MIT Docs Overview of the Protein Workshop This ..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_index_f4851116.png" />
-<meta property="og:image:alt" content="Project Status: Active – The project has reached a stable, usable state and is being actively developed. License: MIT Docs Overview of the Protein Workshop D..." />
-<meta name="description" content="Project Status: Active – The project has reached a stable, usable state and is being actively developed. License: MIT Docs Overview of the Protein Workshop Documentation This repository provides th..." />
+<meta property="og:image" content="/_images/social_previews/summary_index_d8a4e3f0.png" />
+<meta property="og:image:alt" content="PyPI version Zenodo doi badge Tests Project Status: Active – The project has reached a stable, usable state and is being actively developed. License: MIT Doc..." />
+<meta name="description" content="PyPI version Zenodo doi badge Tests Project Status: Active – The project has reached a stable, usable state and is being actively developed. License: MIT Docs Overview of the Protein Workshop This ..." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation" href="installation.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
+    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
         <title>Protein Workshop 0.0.1</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=362ab14a" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=4c969af8" />
@@ -189,6 +189,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/downstream.html">Downstream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart_component/download.html">Downloading Datasets</a></li>
 </ul>
 </li>
 </ul>
@@ -218,11 +219,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules/src.train.html">protein_workshop.train</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/src.datasets.html">protein_workshop.datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/src.models.html">protein_workshop.models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/src.tasks.html">protein_workshop.tasks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/src.features.html">protein_workshop.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.train.html">protein_workshop.train</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.datasets.html">protein_workshop.datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.models.html">protein_workshop.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.features.html">protein_workshop.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.utils.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.types.html">protein_workshop.types</a></li>
 </ul>
 
 </div>
@@ -258,20 +261,27 @@
         </div>
         <article role="main">
           <section id="welcome-to-protein-workshop-s-documentation">
-<h1>Welcome to Protein Workshop’s documentation!<a class="headerlink" href="#welcome-to-protein-workshop-s-documentation" title="Permalink to this heading">#</a></h1>
+<h1>Welcome to Protein Workshop’s documentation!<a class="headerlink" href="#welcome-to-protein-workshop-s-documentation" title="Link to this heading">#</a></h1>
+<a class="reference external image-reference" href="https://badge.fury.io/py/proteinworkshop"><img alt="PyPI version" src="https://badge.fury.io/py/proteinworkshop.svg" /></a>
+<a class="reference external image-reference" href="https://zenodo.org/record/8282470"><img alt="Zenodo doi badge" src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.8282470-blue.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/a-r-j/ProteinWorkshop/actions/workflows/code-tests.yaml/badge.svg"><img alt="Tests" src="https://github.com/a-r-j/ProteinWorkshop/actions/workflows/code-tests.yaml/badge.svg" /></a>
 <a class="reference external image-reference" href="https://www.repostatus.org/#active"><img alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed." src="https://www.repostatus.org/badges/latest/active.svg" /></a>
 <a class="reference external image-reference" href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
 <a class="reference external image-reference" href="https://www.proteins.sh"><img alt="Docs" src="https://assets.readthedocs.org/static/projects/badges/passing-flat.svg" /></a>
 <p><span class="raw-html-m2r"><a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a></span></p>
-<a class="reference external image-reference" href="https://github.com/a-r-j/ProteinWorkshop/blob/main/img/overview.png"><img alt="Overview of the Protein Workshop" src="https://github.com/a-r-j/ProteinWorkshop/blob/main/img/overview.png" /></a>
-<p><a class="reference external" href="https://www.proteins.sh">Documentation</a></p>
+<a class="reference external image-reference" href="https://github.com/a-r-j/ProteinWorkshop/blob/main/docs/source/_static/workshop_overview.png"><img alt="Overview of the Protein Workshop" src="https://github.com/a-r-j/ProteinWorkshop/blob/main/docs/source/_static/workshop_overview.png" /></a>
 <p>This repository provides the code for the protein structure representation learning benchmark detailed in the paper <em>Evaluating Representation Learning on the Protein Structure Universe</em>.</p>
 <p>In the benchmark, we implement numerous <a class="reference external" href="https://www.proteins.sh/configs/features">featurisation</a> schemes, <a class="reference external" href="https://www.proteins.sh/configs/dataset">datasets</a> for <a class="reference external" href="https://proteins.sh/quickstart_component/pretrain.html">self-supervised pre-training</a> and <a class="reference external" href="https://proteins.sh/quickstart_component/downstream.html">downstream evaluation</a>, <a class="reference external" href="https://proteins.sh/configs/task">pre-training</a> tasks, and <a class="reference external" href="https://proteins.sh/configs/task.html#auxiliary-tasks">auxiliary tasks</a>.</p>
-<p><a class="reference external" href="https://drive.google.com/drive/folders/18i8rLST6ZICTBu6Q67ClT0KqN9AHeqoW?usp=sharing">Processed datasets</a> and <a class="reference external" href="https://drive.google.com/drive/folders/1zK1r8FpmGaqV_QwUJuvDacwSL0RW-Vw9?usp=sharing">pre-trained weights</a> are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.</p>
+<p>The benchmark can be used as a working template for a protein representation learning research project, a library of drop-in components for use in your projects, or as a CLI tool for quickly running <a class="reference external" href="https://proteins.sh/quickstart_component/downstream.html">protein representation learning evaluation</a> and <a class="reference external" href="https://proteins.sh/quickstart_component/pretrain.html">pre-training</a> configurations.</p>
+<p><a class="reference external" href="https://zenodo.org/record/8282470">Processed datasets</a> and <a class="reference external" href="https://zenodo.org/record/8287754">pre-trained weights</a> are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-pypi">From PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#building-from-source">Building from source</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials.html#id1">Training a New Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials.html#evaluating-a-pre-trained-model">Evaluating a pre-trained Model</a></li>
@@ -282,12 +292,17 @@
 <li class="toctree-l2"><a class="reference internal" href="overview.html#protein-and-proteinbatch-data-structures"><code class="xref py py-class docutils literal notranslate"><span class="pre">Protein</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">ProteinBatch</span></code> Data structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#proteindatamodule-base-classes"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProteinDataModule</span></code> Base classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#models">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#src-models-base-basemodel-and-src-models-base-benchmarkmodel-base-classes"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BaseModel</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">src.models.base.BenchMarkModel</span></code> Base classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#proteinworkshop-models-base-basemodel-and-proteinworkshop-models-base-benchmarkmodel-base-classes"><code class="xref py py-class docutils literal notranslate"><span class="pre">proteinworkshop.models.base.BaseModel</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">proteinworkshop.models.base.BenchMarkModel</span></code> Base classes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#downloading-datasets">Downloading datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#training-a-model">Training a model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#finetuning-a-model">Finetuning a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#running-a-sweep-experiment">Running a sweep/experiment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#embedding-a-dataset">Embedding a dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#verifying-a-config">Verifying a config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#using-proteinworkshop-modules-functionally">Using <code class="docutils literal notranslate"><span class="pre">proteinworkshop</span></code> modules functionally</a></li>
 </ul>
 </li>
 </ul>
@@ -298,7 +313,7 @@
 </div>
 </section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">#</a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">#</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
@@ -366,9 +381,9 @@
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>

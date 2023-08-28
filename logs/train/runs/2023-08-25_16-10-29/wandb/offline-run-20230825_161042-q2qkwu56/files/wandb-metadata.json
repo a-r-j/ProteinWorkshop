@@ -1,0 +1,38 @@
+{
+    "os": "macOS-12.3-arm64-arm-64bit",
+    "python": "3.9.16",
+    "heartbeatAt": "2023-08-25T14:10:42.869877",
+    "startedAt": "2023-08-25T14:10:42.796853",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "encoder=gcn",
+        "task=inverse_folding",
+        "dataset=cath"
+    ],
+    "state": "running",
+    "program": "/Users/jamasba/github/ProteinWorkshop/src/train.py",
+    "codePath": "src/train.py",
+    "git": {
+        "remote": "https://github.com/a-r-j/ProteinWorkshop",
+        "commit": "343a45fb8c117cd80b8c52493b4ec697a23cf8c7"
+    },
+    "email": "arian.jamasb@roche.com",
+    "root": "/Users/jamasba/github/ProteinWorkshop",
+    "host": "jamasba-9MRXXW",
+    "username": "jamasba",
+    "executable": "/Users/jamasba/micromamba/envs/pw/bin/python",
+    "cpu_count": 8,
+    "cpu_count_logical": 8,
+    "disk": {
+        "total": 460.4317207336426,
+        "used": 22.188934326171875
+    },
+    "gpuapple": {
+        "type": "arm",
+        "vendor": "Apple"
+    },
+    "memory": {
+        "total": 16.0
+    }
+}

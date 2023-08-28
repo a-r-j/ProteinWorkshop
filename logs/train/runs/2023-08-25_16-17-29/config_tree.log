@@ -1,0 +1,215 @@
+CONFIG
+├── dataset
+│   └── datamodule:                                                                                                                                         
+│         _target_: src.datasets.cath.CATHDataModule                                                                                                        
+│         path: /Users/jamasba/github/ProteinWorkshop/data/cath/                                                                                            
+│         pdb_dir: /Users/jamasba/github/ProteinWorkshop/data/pdb/                                                                                          
+│         format: mmtf                                                                                                                                      
+│         num_workers: 4                                                                                                                                    
+│         pin_memory: true                                                                                                                                  
+│         batch_size: 32                                                                                                                                    
+│         dataset_fraction: 1.0                                                                                                                             
+│         transforms:                                                                                                                                       
+│           remove_missing_ca:                                                                                                                              
+│             _target_: src.tasks.remove_missing_ca.RemoveMissingCa                                                                                         
+│             fill_value: 1.0e-05                                                                                                                           
+│             ca_idx: 1                                                                                                                                     
+│       num_classes: 23                                                                                                                                     
+│                                                                                                                                                           
+├── encoder
+│   └── _target_: src.models.graph_encoders.gnn.GNNModel                                                                                                    
+│       model_name: GCN                                                                                                                                     
+│       layer_types:                                                                                                                                        
+│       - GCN                                                                                                                                               
+│       - GCN                                                                                                                                               
+│       n_hid:                                                                                                                                              
+│       - 128                                                                                                                                               
+│       - 128                                                                                                                                               
+│       activations:                                                                                                                                        
+│       - relu                                                                                                                                              
+│       - relu                                                                                                                                              
+│       dropout: 0.0                                                                                                                                        
+│       readout: sum                                                                                                                                        
+│       edge_types: 1                                                                                                                                       
+│       edge_weight: false                                                                                                                                  
+│       edge_features: false                                                                                                                                
+│                                                                                                                                                           
+├── decoder
+│   └── residue_type:                                                                                                                                       
+│         _target_: src.models.decoders.mlp_decoder.MLPDecoder                                                                                              
+│         hidden_dim:                                                                                                                                       
+│         - 128                                                                                                                                             
+│         - 128                                                                                                                                             
+│         dropout: 0.0                                                                                                                                      
+│         activations:                                                                                                                                      
+│         - relu                                                                                                                                            
+│         - relu                                                                                                                                            
+│         - none                                                                                                                                            
+│         skip: concat                                                                                                                                      
+│         out_dim: 23                                                                                                                                       
+│         input: node_embedding                                                                                                                             
+│                                                                                                                                                           
+├── callbacks
+│   └── model_checkpoint:                                                                                                                                   
+│         _target_: lightning.pytorch.callbacks.ModelCheckpoint                                                                                             
+│         dirpath: /Users/jamasba/github/ProteinWorkshop/logs/train/runs/2023-08-25_16-17-29/checkpoints                                                    
+│         filename: epoch_{epoch:03d}                                                                                                                       
+│         monitor: val/residue_type/accuracy                                                                                                                
+│         verbose: true                                                                                                                                     
+│         save_last: true                                                                                                                                   
+│         save_top_k: 1                                                                                                                                     
+│         mode: max                                                                                                                                         
+│         auto_insert_metric_name: false                                                                                                                    
+│         save_weights_only: false                                                                                                                          
+│         every_n_train_steps: null                                                                                                                         
+│         train_time_interval: null                                                                                                                         
+│         every_n_epochs: null                                                                                                                              
+│         save_on_train_epoch_end: null                                                                                                                     
+│       early_stopping:                                                                                                                                     
+│         _target_: lightning.pytorch.callbacks.EarlyStopping                                                                                               
+│         monitor: val/residue_type/accuracy                                                                                                                
+│         min_delta: 0.0                                                                                                                                    
+│         patience: 10                                                                                                                                      
+│         verbose: true                                                                                                                                     
+│         mode: max                                                                                                                                         
+│         strict: true                                                                                                                                      
+│         check_finite: true                                                                                                                                
+│         stopping_threshold: null                                                                                                                          
+│         divergence_threshold: null                                                                                                                        
+│         check_on_train_epoch_end: false                                                                                                                   
+│       model_summary:                                                                                                                                      
+│         _target_: lightning.pytorch.callbacks.RichModelSummary                                                                                            
+│         max_depth: -1                                                                                                                                     
+│       rich_progress_bar:                                                                                                                                  
+│         _target_: lightning.pytorch.callbacks.RichProgressBar                                                                                             
+│       learning_rate_monitor:                                                                                                                              
+│         _target_: lightning.pytorch.callbacks.LearningRateMonitor                                                                                         
+│       stop_on_nan:                                                                                                                                        
+│         _target_: lightning.pytorch.callbacks.EarlyStopping                                                                                               
+│         monitor: train/loss/total                                                                                                                         
+│         min_delta: 0.0                                                                                                                                    
+│         patience: 10000000                                                                                                                                
+│         verbose: true                                                                                                                                     
+│         mode: min                                                                                                                                         
+│         strict: true                                                                                                                                      
+│         check_finite: true                                                                                                                                
+│         stopping_threshold: null                                                                                                                          
+│         divergence_threshold: null                                                                                                                        
+│         check_on_train_epoch_end: null                                                                                                                    
+│                                                                                                                                                           
+├── logger
+│   └── wandb:                                                                                                                                              
+│         _target_: lightning.pytorch.loggers.wandb.WandbLogger                                                                                             
+│         save_dir: /Users/jamasba/github/ProteinWorkshop/logs/train/runs/2023-08-25_16-17-29                                                               
+│         offline: false                                                                                                                                    
+│         id: null                                                                                                                                          
+│         anonymous: null                                                                                                                                   
+│         project: lightning-hydra-template                                                                                                                 
+│         log_model: false                                                                                                                                  
+│         prefix: ''                                                                                                                                        
+│         group: ''                                                                                                                                         
+│         tags: []                                                                                                                                          
+│         job_type: ''                                                                                                                                      
+│                                                                                                                                                           
+├── trainer
+│   └── _target_: lightning.pytorch.trainer.Trainer                                                                                                         
+│       default_root_dir: /Users/jamasba/github/ProteinWorkshop/logs/train/runs/2023-08-25_16-17-29                                                         
+│       min_epochs: 1                                                                                                                                       
+│       max_epochs: 10                                                                                                                                      
+│       accelerator: cpu                                                                                                                                    
+│       devices: 1                                                                                                                                          
+│       check_val_every_n_epoch: 1                                                                                                                          
+│       deterministic: false                                                                                                                                
+│       num_sanity_val_steps: 2                                                                                                                             
+│                                                                                                                                                           
+├── env
+│   └── paths:                                                                                                                                              
+│         root_dir: /Users/jamasba/github/ProteinWorkshop                                                                                                   
+│         data: /Users/jamasba/github/ProteinWorkshop/data                                                                                                  
+│         output_dir: /Users/jamasba/github/ProteinWorkshop/logs/train/runs/2023-08-25_16-17-29                                                             
+│         work_dir: /Users/jamasba/github/ProteinWorkshop                                                                                                   
+│         log_dir: /Users/jamasba/github/ProteinWorkshop/logs/                                                                                              
+│         runs: /Users/jamasba/github/ProteinWorkshop/runs                                                                                                  
+│         run_dir: /Users/jamasba/github/ProteinWorkshop/runs/workshop/23-08-25_16:17:30                                                                    
+│       wandb:                                                                                                                                              
+│         entity: ''                                                                                                                                        
+│         project: ''                                                                                                                                       
+│         resolve: false                                                                                                                                    
+│       python:                                                                                                                                             
+│         version: 3.9.16                                                                                                                                   
+│       init_time: 23-08-25_16:17:30                                                                                                                        
+│                                                                                                                                                           
+├── extras
+│   └── ignore_warnings: true                                                                                                                               
+│       enforce_tags: true                                                                                                                                  
+│       print_config: true                                                                                                                                  
+│                                                                                                                                                           
+├── features
+│   └── _target_: src.features.factory.ProteinFeaturiser                                                                                                    
+│       representation: CA                                                                                                                                  
+│       scalar_node_features:                                                                                                                               
+│       - amino_acid_one_hot                                                                                                                                
+│       - sequence_positional_encoding                                                                                                                      
+│       vector_node_features: []                                                                                                                            
+│       edge_types:                                                                                                                                         
+│       - knn_16                                                                                                                                            
+│       scalar_edge_features:                                                                                                                               
+│       - edge_distance                                                                                                                                     
+│       vector_edge_features: []                                                                                                                            
+│                                                                                                                                                           
+├── transforms
+│   └── remove_missing_ca:                                                                                                                                  
+│         _target_: src.tasks.remove_missing_ca.RemoveMissingCa                                                                                             
+│         fill_value: 1.0e-05                                                                                                                               
+│         ca_idx: 1                                                                                                                                         
+│                                                                                                                                                           
+├── optimiser
+│   └── optimizer:                                                                                                                                          
+│         _target_: torch.optim.Adam                                                                                                                        
+│         _partial_: true                                                                                                                                   
+│         lr: 0.001                                                                                                                                         
+│         weight_decay: 0.0                                                                                                                                 
+│                                                                                                                                                           
+├── scheduler
+│   └── {}                                                                                                                                                  
+│                                                                                                                                                           
+├── metrics
+│   └── accuracy:                                                                                                                                           
+│         _target_: torchmetrics.Accuracy                                                                                                                   
+│         task: multiclass                                                                                                                                  
+│         average: micro                                                                                                                                    
+│         num_classes: 23                                                                                                                                   
+│         top_k: 1                                                                                                                                          
+│       f1_score:                                                                                                                                           
+│         _target_: torchmetrics.F1Score                                                                                                                    
+│         average: macro                                                                                                                                    
+│         num_classes: 23                                                                                                                                   
+│         task: multiclass                                                                                                                                  
+│       perplexity:                                                                                                                                         
+│         _target_: torchmetrics.Perplexity                                                                                                                 
+│         ignore_index: -100                                                                                                                                
+│                                                                                                                                                           
+├── task
+│   └── task: inverse_folding                                                                                                                               
+│       classification_type: multiclass                                                                                                                     
+│       metric_average: micro                                                                                                                               
+│       losses:                                                                                                                                             
+│         residue_type: cross_entropy                                                                                                                       
+│       label_smoothing: 0.0                                                                                                                                
+│       output:                                                                                                                                             
+│       - residue_type                                                                                                                                      
+│       supervise_on:                                                                                                                                       
+│       - residue_type                                                                                                                                      
+│                                                                                                                                                           
+├── name
+│   └── workshop                                                                                                                                            
+├── seed
+│   └── 52                                                                                                                                                  
+├── num_workers
+│   └── 16                                                                                                                                                  
+├── task_name
+│   └── train                                                                                                                                               
+├── test
+│   └── False                                                                                                                                               
+└── tags
+    └── ['dev']                                                                                                                                             

@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,18 +17,18 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="installation.html" />
 <meta property="og:site_name" content="Protein Workshop" />
-<meta property="og:description" content="Install dependencies and project, Configure paths in.env. See`.env.example`` < https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example>`_ for an example., Download PDB data:." />
+<meta property="og:description" content="Below, we outline how one may set up a virtual environment for proteinworkshop. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Win..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_installation_11cdc8a9.png" />
-<meta property="og:image:alt" content="Install dependencies and project, Configure paths in.env. See`.env.example`` < https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example>`_ for an exam..." />
-<meta name="description" content="Install dependencies and project, Configure paths in.env. See`.env.example`` < https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example>`_ for an example., Download PDB data:." />
+<meta property="og:image" content="/_images/social_previews/summary_installation_8c464f8a.png" />
+<meta property="og:image:alt" content="Below, we outline how one may set up a virtual environment for proteinworkshop. Note that these installation instructions currently target Linux-like systems..." />
+<meta name="description" content="Below, we outline how one may set up a virtual environment for proteinworkshop. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Win..." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorials" href="tutorials.html" /><link rel="prev" title="Welcome to Protein Workshop’s documentation!" href="index.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
+    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
         <title>Installation - Protein Workshop 0.0.1</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=362ab14a" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=4c969af8" />
@@ -158,7 +158,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -189,6 +189,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/pretrain.html">Pre-Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart_component/downstream.html">Downstream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart_component/download.html">Downloading Datasets</a></li>
 </ul>
 </li>
 </ul>
@@ -218,11 +219,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules/src.train.html">protein_workshop.train</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/src.datasets.html">protein_workshop.datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/src.models.html">protein_workshop.models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/src.tasks.html">protein_workshop.tasks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/src.features.html">protein_workshop.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.train.html">protein_workshop.train</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.datasets.html">protein_workshop.datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.models.html">protein_workshop.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.features.html">protein_workshop.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.utils.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.types.html">protein_workshop.types</a></li>
 </ul>
 
 </div>
@@ -251,46 +254,77 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
           <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This package is not yet available on PyPI. You can install it from GitHub
-using pip. We are working on better distribution. Until then, please use the following instructions:</p>
-</div>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="configs/framework_components/env.html"><span class="doc">Environment</span></a></p>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```bash
-wget &quot;https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh&quot;
-bash Mambaforge-$(uname)-$(uname -m).sh  # accept all terms and install to the default location
-rm Mambaforge-$(uname)-$(uname -m).sh  # (optionally) remove installer after using it
-source ~/.bashrc  # alternatively, one can restart their shell session to achieve the same result as this line
-```
+<p>Below, we outline how one may set up a virtual environment for <code class="docutils literal notranslate"><span class="pre">proteinworkshop</span></code>. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Windows and macOS are currently not officially supported.</p>
+<section id="from-pypi">
+<h2>From PyPI<a class="headerlink" href="#from-pypi" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">proteinworkshop</span></code> is available for install <a class="reference external" href="https://pypi.org/project/proteinworkshop/">from PyPI</a>. This enables training of specific configurations via the CLI <strong>or</strong> using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Beforehand, make sure to install <a class="reference external" href="https://pytorch.org/">PyTorch</a> using its official <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation instructions (with CUDA support as desired).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install `proteinworkshop` from PyPI</span>
+pip<span class="w"> </span>install<span class="w"> </span>proteinworkshop<span class="w"> </span>--no-cache-dir
+
+<span class="c1"># install PyTorch Geometric using the (now-installed) CLI</span>
+workshop<span class="w"> </span>install<span class="w"> </span>pyg
+
+<span class="c1"># set a custom data directory for file downloads; otherwise, all data will be downloaded to `site-packages`</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DATA_PATH</span><span class="o">=</span><span class="s2">&quot;where/you/want/data/&quot;</span>
 </pre></div>
 </div>
+<p>However, for full exploration we recommend cloning the repository and building from source.</p>
+</section>
+<section id="building-from-source">
+<h2>Building from source<a class="headerlink" href="#building-from-source" title="Link to this heading">#</a></h2>
 <ol class="arabic">
-<li><p>Install dependencies and project</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mamba<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment.yaml
-conda<span class="w"> </span>activate<span class="w"> </span>protein_workshop
-pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+<li><p>Clone the project</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/a-r-j/ProteinWorkshop
+<span class="nb">cd</span><span class="w"> </span>ProteinWorkshop
 </pre></div>
 </div>
 </li>
-<li><p>Configure paths in <code class="docutils literal notranslate"><span class="pre">.env</span></code>. See <cite>`</cite>.env.example`` &lt;<a class="reference external" href="https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example">https://github.com/a-r-j/ProteinWorkshop/blob/main/.env.example</a>&gt;`_ for an example.</p></li>
-<li><p>Download PDB data:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/download_pdb_mmtf.py
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">poetry</span></code> for platform-agnostic dependency management using its <a class="reference external" href="https://python-poetry.org/docs/">installation instructions</a></p>
+<blockquote>
+<div><p>After installing <code class="docutils literal notranslate"><span class="pre">poetry</span></code>, to avoid potential <a class="reference external" href="https://github.com/python-poetry/poetry/issues/1917#issuecomment-1235998997">keyring errors</a>, disable its keyring usage by adding <code class="docutils literal notranslate"><span class="pre">PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring</span></code> to your shell’s startup configuration and restarting your shell environment (e.g., <code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">'export</span> <span class="pre">PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring'</span> <span class="pre">&gt;&gt;</span> <span class="pre">~/.bashrc</span> <span class="pre">&amp;&amp;</span> <span class="pre">source</span> <span class="pre">~/.bashrc</span></code> for a Bash shell environment and likewise for other shell environments).</p>
+</div></blockquote>
+</li>
+<li><p>Install project dependencies</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>install
+</pre></div>
+</div>
+</li>
+<li><p>Activate the newly-created virtual environment following <code class="docutils literal notranslate"><span class="pre">poetry</span></code>‘s <a class="reference external" href="https://python-poetry.org/docs/basic-usage/">usage documentation</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># activate the environment on a `posix`-like (e.g., macOS or Linux) system</span>
+<span class="nb">source</span><span class="w"> </span><span class="k">$(</span>poetry<span class="w"> </span>env<span class="w"> </span>info<span class="w"> </span>--path<span class="k">)</span>/bin/activate
+</pre></div>
+</div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># activate the environment on a `Windows`-like system</span>
+<span class="p">&amp;</span> <span class="p">((</span><span class="n">poetry</span> <span class="n">env</span> <span class="n">info</span> <span class="p">-</span><span class="n">-path</span><span class="p">)</span> <span class="p">+</span> <span class="s2">&quot;\Scripts\activate.ps1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># if desired, deactivate the environment</span>
+deactivate
+</pre></div>
+</div>
+</li>
+<li><p>With the environment activated, install <a class="reference external" href="https://pytorch.org/">PyTorch</a> using its official <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation instructions (with CUDA support as desired - N.B. make sure to add <code class="docutils literal notranslate"><span class="pre">--no-cache-dir</span></code> to the end of the <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation command), and then use the (newly-installed) CLI to install <a class="reference external" href="https://pyg.org/">PyTorch Geometric</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workshop<span class="w"> </span>install<span class="w"> </span>pyg
+
+<span class="c1"># N.B. to list all dependencies currently installed, run:</span>
+poetry<span class="w"> </span>show
 </pre></div>
 </div>
 </li>
 </ol>
+</section>
 </section>
 
         </article>
@@ -336,17 +370,37 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#from-pypi">From PyPI</a></li>
+<li><a class="reference internal" href="#building-from-source">Building from source</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
