@@ -64,6 +64,9 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
             "protein_pairs.tsv",
         }
 
+        # required in lightning >= 2.0
+        self.prepare_data_per_node = True
+
     def download(self):
         if not os.path.exists(self.data_dir / self.ZIP_FNAME):
             log.info(
