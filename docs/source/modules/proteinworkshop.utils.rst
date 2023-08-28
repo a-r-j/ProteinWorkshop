@@ -1,4 +1,4 @@
-protein_workshop.types
+protein_workshop.utils
 ===============================
 
 .. automodule:: proteinworkshop.utils
