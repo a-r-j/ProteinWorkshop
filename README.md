@@ -298,7 +298,7 @@ ca_featuriser = ProteinFeaturiser(
 example_batch = create_example_batch()
 batch = ca_featuriser(example_batch)
 
-model_outputs = model(batch)
+model_outputs = model(example_batch)
 ```
 
 Read [the docs](https://www.proteins.sh) for a full list of modules available in `proteinworkshop`.
