@@ -18,7 +18,7 @@ In the benchmark, we implement numerous [featurisation](https://www.proteins.sh/
 
 The benchmark can be used as a working template for a protein representation learning research project, [a library](#using-proteinworkshop-modules-functionally) of drop-in components for use in your projects, or as a CLI tool for quickly running [protein representation learning evaluation](https://proteins.sh/quickstart_component/downstream.html) and [pre-training](https://proteins.sh/quickstart_component/pretrain.html) configurations.
 
-[Processed datasets](https://zenodo.org/record/8282470) and [pre-trained weights](https://zenodo.org/record/8287754)   are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
+[Processed datasets](https://zenodo.org/record/8282470) and [pre-trained weights](https://zenodo.org/record/8287754) are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
 
 Configuration files to run the experiments described in the manuscript are provided in the `configs/sweeps/` directory.
 
