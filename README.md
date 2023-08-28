@@ -121,7 +121,7 @@ However, for full exploration we recommend cloning the repository and building f
       poetry show
     ```
 
-6. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/proteinworkshop/blob/main/.env.example) for an example.
+6. Configure paths in `.env` (optional, will override default paths if set). See [`.env.example`](https://github.com/a-r-j/proteinworkshop/blob/main/.env.example) for an example.
 
 7. Download PDB data:
 
