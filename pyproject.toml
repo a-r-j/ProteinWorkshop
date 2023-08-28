@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "proteinworkshop"
-version = "0.1.11"
+version = "0.2.0"
 description = ""
 authors = ["Arian Jamasb <arian@jamasb.io>"]
 readme = "README.md"
