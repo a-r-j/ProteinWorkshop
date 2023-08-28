@@ -68,7 +68,7 @@ Rich Progress Bar (``rich_progress_bar``)
 Learning Rate Monitor (``learning_rate_monitor``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This is automatically configured when using a learning rate scheduler. See :doc:`/config/ml_components/scheduler`
+This is automatically configured when using a learning rate scheduler. See :doc:`/configs/ml_components/scheduler`
 
 .. seealso::
 

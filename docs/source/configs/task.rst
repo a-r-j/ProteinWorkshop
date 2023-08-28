@@ -121,9 +121,9 @@ Ligand Binding Site Prediction (``binding_site_identification``)
 Multiclass Node Classification (``multiclass_node_classification``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../proteinworkshop/config/task/muliclass_node_classification.yaml
+.. literalinclude:: ../../../proteinworkshop/config/task/multiclass_node_classification.yaml
    :language: yaml
-   :caption: config/task/muliclass_node_classification.yaml
+   :caption: config/task/multiclass_node_classification.yaml
 
 pLDDT Prediction (``plddt_prediction``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

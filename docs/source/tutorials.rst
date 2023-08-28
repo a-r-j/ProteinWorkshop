@@ -17,7 +17,7 @@ Training a New Model
     # or 
     python proteinworkshop/train.py dataset=DATASET encoder=MODEL task=TASK features=FEATURES
 
-To override hparams, you can either edit the relevant :doc:`/config` files directly or via the CLI using Hydra syntax:
+To override hparams, you can either edit the relevant :doc:`/configs/` files directly or via the CLI using Hydra syntax:
 
 .. code-block:: bash
 
@@ -81,7 +81,8 @@ Evaluating a pre-trained Model
 
 3. Configure the task
 
-.. code-block::
+.. code-block:: python
+
     # Misc. tools
     import os
 

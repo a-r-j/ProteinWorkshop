@@ -30,4 +30,4 @@ Processed datasets are available from Zenodo (https://zenodo.org/record/8282470)
 
 .. seealso::
 
-    :doc:`/configs/datasets`
+    :doc:`/configs/dataset`

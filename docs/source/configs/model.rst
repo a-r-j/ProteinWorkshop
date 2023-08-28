@@ -54,7 +54,7 @@ Scalar features are update from iteration :math:`t`` to :math:`t+1` via:
 
 
 :py:class:`DimeNet++ <proteinworkshop.models.graph_encoders.dimenetpp.DimeNetPPModel>` (``dimenet_plus_plus``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 DimeNet is an E(3) invariant GNN which uses both distances :math:`\Vert \vec{\vx}_{ij} \Vert` and angles :math:`\vec{\vx}_{ij} \cdot \vec{\vx}_{ik}` to perform message passing among triplets, as follows:
 
@@ -121,7 +121,7 @@ Vector-Equivariant Encoders
     :end-line: 326
 
 :py:class:`EGNN <proteinworkshop.models.graph_encoders.egnn.EGNNModel>` (``egnn``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We consider E(3) equivariant GNN layers proposed by Satorras et al. (2021) which updates both scalar features :math:`\vs_i` as well as node coordinates :math:`\vec{\vx}_{i}`, as follows:
 
@@ -196,7 +196,7 @@ where the weights :math:`\vw` of the tensor product are computed via a learnt ra
 
 
 :py:class:`Multi-Atomic Cluster Expansion <proteinworkshop.models.graph_encoders.mace.MACEModel>` (``mace``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 MACE (Batatia et al., 2022) is a higher order E(3) or SE(3) equivariant GNN originally developed for molecular dynamics simulations.
 MACE provides an efficient approach to computing high body order equivariant features in the Tensor Field Network framework via Atomic Cluster Expansion:
@@ -221,12 +221,12 @@ Decoder models are used to predict the target property from the learned represen
 
 Decoder configs are dictionaries indexed by the name of the output to which they are applied.
 
-These are configured in the task config. See :doc:`/config/task` for more details.
+These are configured in the task config. See :doc:`/configs/task` for more details.
 
 For example, the ``residue_type`` decoder:
 
 .. seealso::
-    :doc:`/config/task`
+    :doc:`/configs/task`
 
 .. literalinclude:: ../../../proteinworkshop/config/decoder/residue_type.yaml
     :language: yaml
