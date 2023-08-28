@@ -7,7 +7,7 @@ from proteinworkshop import constants
 from proteinworkshop.features.factory import ProteinFeaturiser
 from proteinworkshop.models.utils import get_input_dim
 
-FEATURE_CONFIG_DIR = constants.PROJECT_PATH / "configs" / "features"
+FEATURE_CONFIG_DIR = constants.HYDRA_CONFIG_PATH / "features"
 TRANSFORMS = os.listdir(FEATURE_CONFIG_DIR)
 
 

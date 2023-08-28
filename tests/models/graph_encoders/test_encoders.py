@@ -20,7 +20,7 @@ ENCODERS: List[str] = [
     "identity",
 ]
 
-FEATURES = os.listdir(constants.PROJECT_PATH / "configs" / "features")
+FEATURES = os.listdir(constants.HYDRA_CONFIG_PATH / "features")
 
 register_custom_omegaconf_resolvers()
 

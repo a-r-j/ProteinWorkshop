@@ -5,7 +5,7 @@ from hydra.utils import instantiate
 
 from proteinworkshop import constants
 
-TRANSFORM_CONFIG_DIR = constants.PROJECT_PATH / "configs" / "transforms"
+TRANSFORM_CONFIG_DIR = constants.HYDRA_CONFIG_PATH / "transforms"
 TRANSFORMS = os.listdir(TRANSFORM_CONFIG_DIR)
 
 
