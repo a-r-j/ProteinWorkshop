@@ -55,7 +55,7 @@ torch = ">=2.0.0, !=2.0.1"
 pyrootutils = "^1.0.4"
 torch-geometric = "^2.3.1"
 hydra-colorlog = "^1.2.0"
-biopandas = "0.5.0.dev0"
+biopandas = {git = "https://github.com/BioPandas/biopandas.git"}
 foldcomp = "^0.0.5"
 
 
