@@ -67,7 +67,7 @@ Below, we outline how one may set up a virtual environment for `proteinworkshop`
 
 ```bash
 # install `proteinworkshop` from PyPI
-pip install proteinworkshop
+pip install proteinworkshop --no-cache-dir
 
 # install PyTorch Geometric using the (now-installed) CLI
 workshop install pyg
