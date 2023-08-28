@@ -11,6 +11,11 @@ from proteinworkshop import constants
 
 _ZENODO_RECORD = "8282470"
 
+# NOTE: This is a list of all datasets available on Zenodo, these are
+#  the same as the keys in `dataset_fname_map` and `_MD5_CHECKSUMS`
+#  below.
+_ZENODO_DATASET_NAMES = constants.ZENODO_DATASET_NAMES
+
 dataset_fname_map = {
     "antibody_developability": "AntibodyDevelopability",
     "cath": "cath",
@@ -32,8 +37,6 @@ dataset_fname_map = {
     "metal_3d": "metal_3d",
     "ptm": "PostTranslationalModification",
 }
-
-_ZENODO_DATASET_NAMES = list(dataset_fname_map.keys())
 
 _MD5_CHECKSUMS: Dict[str, str] = {
     "antibody_developability": "2d7ad11284bbd1c561f3c828a38d29cc",
@@ -111,7 +114,8 @@ def download_processed_data(dataset_name: str, data_dir: Optional[str] = None):
 
     # Untar
     logger.info("Untarring dataset...")
-    tar = tarfile.open(data_dir / f"{fname}.tar.gz").extractall(path=data_dir)
+    tar = tarfile.open(data_dir / f"{fname}.tar.gz")
+    tar.extractall(path=data_dir)
     tar.close()
 
     if not os.path.exists(data_dir / fname / "processed"):

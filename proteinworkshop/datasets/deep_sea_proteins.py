@@ -53,6 +53,7 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         :param transforms: Transforms to apply, defaults to None
         :type transforms: Optional[Iterable[Callable]], optional
         """
+        super().__init__()
         self.data_dir = pathlib.Path(path)
         if not os.path.exists(self.data_dir):
             log.info(f"Creating data directory: {self.data_dir}")
@@ -86,6 +87,9 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
             "deep_sea_species.tsv",
             "protein_pairs.tsv",
         }
+
+        # required in lightning >= 2.0
+        self.prepare_data_per_node = True
 
     def download(self):
         """Downloads the Deep Sea Protein dataset to the data directory."""

@@ -137,6 +137,7 @@ class PDBDataModule(ProteinDataModule):
         num_workers: int = 0,
         pin_memory: bool = False,
     ):
+        super().__init__()
         self.root = path
         self.dataset = pdb_dataset
         self.dataset.path = path

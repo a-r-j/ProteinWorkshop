@@ -48,6 +48,7 @@ class GeneOntologyDataset(ProteinDataModule):
         num_workers: int = 16,
         transforms: Optional[Iterable[Callable]] = None,
     ) -> None:
+        super().__init__()
         self.pdb_dir = pdb_dir
         self.data_dir = Path(path)
         if not os.path.exists(self.data_dir):
