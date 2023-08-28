@@ -20,7 +20,7 @@ The benchmark can be used as a working template for a protein representation lea
 
 [Processed datasets](https://zenodo.org/record/8282470) and [pre-trained weights](https://zenodo.org/record/8287754) are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
 
-Configuration files to run the experiments described in the manuscript are provided in the `configs/sweeps/` directory.
+Configuration files to run the experiments described in the manuscript are provided in the `proteinworkshop/config/sweeps/` directory.
 
 ## Contents
 
@@ -179,12 +179,12 @@ python proteinworkshop/finetune.py dataset=cath encoder=egnn task=inverse_foldin
 
 We can make use of the hydra wandb sweeper plugin to configure experiments as sweeps, allowing searches over hyperparameters, architectures, pre-training/auxiliary tasks and datasets.
 
-See `configs/sweeps/` for examples.
+See `proteinworkshop/config/sweeps/` for examples.
 
 1. Create the sweep with weights and biases
 
   ```bash
-  wandb sweep configs/sweeps/my_new_sweep_config.yaml
+  wandb sweep proteinworkshop/config/sweeps/my_new_sweep_config.yaml
   ```
 
 2. Launch job workers
@@ -214,23 +214,23 @@ Reproduce the sweeps performed in the manuscript:
 
 ```bash
 # reproduce the baseline tasks sweep (i.e., those performed without pre-training each model)
-wandb sweep configs/sweeps/baseline_fold.yaml
+wandb sweep proteinworkshop/config/sweeps/baseline_fold.yaml
 wandb agent mywandbgroup/proteinworkshop/2awtt7oy --count 8
-wandb sweep configs/sweeps/baseline_ppi.yaml
+wandb sweep proteinworkshop/config/sweeps/baseline_ppi.yaml
 wandb agent mywandbgroup/proteinworkshop/2bwtt7oy --count 8
-wandb sweep configs/sweeps/baseline_inverse_folding.yaml
+wandb sweep proteinworkshop/config/sweeps/baseline_inverse_folding.yaml
 wandb agent mywandbgroup/proteinworkshop/2cwtt7oy --count 8
 
 # reproduce the model pre-training sweep
-wandb sweep configs/sweeps/pre_train.yaml
+wandb sweep proteinworkshop/config/sweeps/pre_train.yaml
 wandb agent mywandbgroup/proteinworkshop/2dwtt7oy --count 8
 
 # reproduce the pre-trained tasks sweep (i.e., those performed after pre-training each model)
-wandb sweep configs/sweeps/pt_fold.yaml
+wandb sweep proteinworkshop/config/sweeps/pt_fold.yaml
 wandb agent mywandbgroup/proteinworkshop/2ewtt7oy --count 8
-wandb sweep configs/sweeps/pt_ppi.yaml
+wandb sweep proteinworkshop/config/sweeps/pt_ppi.yaml
 wandb agent mywandbgroup/proteinworkshop/2fwtt7oy --count 8
-wandb sweep configs/sweeps/pt_inverse_folding.yaml
+wandb sweep proteinworkshop/config/sweeps/pt_inverse_folding.yaml
 wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 ```
 
