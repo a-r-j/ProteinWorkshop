@@ -28,6 +28,28 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
         obsolete_strategy: str = "drop",
         transforms: Optional[List[Callable]] = None,
     ) -> None:
+        """
+        Data module for antibody developability dataset from Chen et al.
+
+        :param path: Path to store data.
+        :type path: str
+        :param pdb_dir: Path to directory containing PDB files.
+        :type pdb_dir: str
+        :param batch_size: Batch size for dataloaders.
+        :type batch_size: int
+        :param num_workers: Number of workers for dataloaders.
+        :type num_workers: int
+        :param pin_memory: Whether to pin memory for dataloaders.
+        :type pin_memory: bool
+        :param in_memory: Whether to load the entire dataset into memory.
+        :type in_memory: bool
+        :param format: Format to load PDB files in.
+        :type format: str
+        :param obsolete_strategy: How to handle obsolete PDB structures.
+        :type obsolete_strategy: str
+        :param transforms: List of transforms to apply to dataset.
+        :type transforms: Optional[List[Callable]]
+        """
         super().__init__()
         self.root = pathlib.Path(path)
         if not os.path.exists(self.root):
@@ -60,6 +82,21 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
         pass
 
     def parse_dataset(self):
+        """
+        Parses the dataset from Chen (retrieved from PyTDC).
+
+        Accounts for obsolete PDB structures by either dropping them or
+        replacing them with a similar structure.
+
+        Sets the relevant pd.DataFrames on the following attributes:
+
+        - ``train_data``: Training dataset
+        - ``valid_data``: Validation dataset
+        - ``test_data``: Test dataset
+
+        :raises NotImplementedError: Replace obsolete PDBs not implemented.
+        :raises ValueError: Obsolete strategy not recognised.
+        """
         data = Develop("SAbDab_Chen", path=self.root)
         data = data.get_split()
 
@@ -84,6 +121,7 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
                 )
 
     def _get_dataset(self, split: str) -> ProteinDataset:
+        """Gets the dataset object for a given split."""
         if not hasattr(self, f"{split}_data"):
             self.parse_dataset()
         data = getattr(self, f"{split}_data")
@@ -101,15 +139,47 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
         )
 
     def train_dataset(self) -> ProteinDataset:
+        """Returns the training dataset.
+
+        .. seealso::
+            :py:class:`proteinworkshop.datasets.base.ProteinDataset`
+
+        :return: Training dataset
+        :rtype: ProteinDataset
+        """
         return self._get_dataset("train")
 
     def val_dataset(self) -> ProteinDataset:
+        """Returns the validation dataset.
+
+        .. seealso::
+            :py:class:`proteinworkshop.datasets.base.ProteinDataset`
+
+        :return: Validation dataset
+        :rtype: ProteinDataset
+        """
         return self._get_dataset("valid")
 
     def test_dataset(self) -> ProteinDataset:
+        """Returns the test dataset.
+
+        .. seealso::
+            :py:class:`proteinworkshop.datasets.base.ProteinDataset`
+
+        :return: Test dataset
+        :rtype: ProteinDataset
+        """
         return self._get_dataset("test")
 
     def train_dataloader(self) -> ProteinDataLoader:
+        """Returns the training dataloader.
+
+        .. seealso::
+            :py:class:`graphein.protein.tensor.dataloader.ProteinDataLoader`
+
+        :return: Training dataloader
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.train_dataset(),
             batch_size=self.batch_size,
@@ -119,6 +189,14 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
         )
 
     def val_dataloader(self) -> ProteinDataLoader:
+        """Returns the validation dataloader.
+
+        .. seealso::
+            :py:class:`graphein.protein.tensor.dataloader.ProteinDataLoader`
+
+        :return: Validation dataloader
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.val_dataset(),
             batch_size=self.batch_size,
@@ -128,6 +206,14 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
         )
 
     def test_dataloader(self) -> ProteinDataLoader:
+        """Returns the test dataloader.
+
+        .. seealso::
+            :py:class:`graphein.protein.tensor.dataloader.ProteinDataLoader`
+
+        :return: Test dataloader
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.test_dataset(),
             batch_size=self.batch_size,

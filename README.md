@@ -16,7 +16,9 @@ This repository provides the code for the protein structure representation learn
 
 In the benchmark, we implement numerous [featurisation](https://www.proteins.sh/configs/features) schemes, [datasets](https://www.proteins.sh/configs/dataset) for [self-supervised pre-training](https://proteins.sh/quickstart_component/pretrain.html) and [downstream evaluation](https://proteins.sh/quickstart_component/downstream.html), [pre-training](https://proteins.sh/configs/task) tasks, and [auxiliary tasks](https://proteins.sh/configs/task.html#auxiliary-tasks).
 
-[Processed datasets](https://zenodo.org/record/8282470) and [pre-trained weights](https://drive.google.com/drive/folders/1zK1r8FpmGaqV_QwUJuvDacwSL0RW-Vw9?usp=sharing) are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
+The benchmark can be used as a working template for a protein representation learning research project, [a library](#using-proteinworkshop-modules-functionally) of drop-in components for use in your projects, or as a CLI tool for quickly running [protein representation learning evaluation](https://proteins.sh/quickstart_component/downstream.html) and [pre-training](https://proteins.sh/quickstart_component/pretrain.html) configurations.
+
+[Processed datasets](https://zenodo.org/record/8282470) and [pre-trained weights](https://zenodo.org/record/8287754) are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
 
 Configuration files to run the experiments described in the manuscript are provided in the `configs/sweeps/` directory.
 
@@ -372,6 +374,7 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 
 | Name      | Description   | Source | License |
 | ----------- | ----------- | ----------- | ---- |
+| `antibody_developability` | Antibody developability prediction | [Chen et al.](https://www.biorxiv.org/content/10.1101/2020.06.18.159798v1.abstract) | [CC-BY 3.0](https://tdcommons.ai/single_pred_tasks/develop/#sabdab-chen-et-al) |
 | `atom3d_msp` | Mutation stability prediction      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
 | `atom3d_ppi` | Protein-protein interaction prediction      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
 | `atom3d_psr` | Protein structure ranking      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |

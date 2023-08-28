@@ -22,6 +22,9 @@ from proteinworkshop.features.utils import _normalize
 def flatten_dir(dir: os.PathLike):
     """
     Flattens the nested directory structure of a directory into a single level.
+
+    :param dir: Path to directory
+    :type dir: os.PathLike
     """
     for dirpath, _, filenames in os.walk(dir):
         for filename in filenames:
@@ -39,6 +42,19 @@ def download_pdb_mmtf(
     ids: Optional[List[str]] = None,
     create_tar: bool = False,
 ):
+    """Download PDB files in MMTF format from RCSB PDB and create archive.
+    MMTF files are downloaded into a new directory in this path
+    and the .tar archive is created here.
+    Obtain all PDB IDs using a query that includes all entries.
+    Each PDB entry has a title.
+
+    :param mmtf_dir: Path to directory to store MMTF files.
+    :type mmtf_dir: pathlib.Path
+    :param ids: List of PDB IDs to download.
+    :type ids: Optional[List[str]]
+    :param create_tar: Whether to create a .tar archive from the downloaded files.
+    :type create_tar: bool
+    """
     ### Download of PDB and archive creation ###
 
     # MMTF files are downloaded into a new directory in this path
@@ -99,7 +115,14 @@ def download_pdb_mmtf(
 
 
 @functools.lru_cache()
-def create_example_batch() -> ProteinBatch:
+def create_example_batch(n: int = 4) -> ProteinBatch:
+    """Returns a batch of random proteins.
+
+    :param n: Number of proteins to include in batch.
+    :type n: int, optional
+    :return: Batch of random proteins.
+    :rtype: ProteinBatch
+    """
     proteins = []
     for _ in range(4):
         p = get_random_protein()

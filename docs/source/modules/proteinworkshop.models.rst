@@ -22,6 +22,11 @@ Where ``<encoder_name>`` is given by bracketed name in the listing below. For ex
 The following structural encoders are currently supported:
 
 
+.. contents:: Contents
+    :local:
+    :class: this-will-duplicate-information-and-it-is-still-useful-here
+
+
 Base Classes
 =============================
 .. automodule:: proteinworkshop.models.base
