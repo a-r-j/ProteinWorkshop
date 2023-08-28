@@ -35,7 +35,7 @@ Configuration files to run the experiments described in the manuscript are provi
     - [Training a model](#training-a-model)
     - [Finetuning a model](#finetuning-a-model)
     - [Running a sweep/experiment](#running-a-sweepexperiment)
-    - [Embedding a dataset](#embedding-a-dataset)
+    - [Embedding a dataset](#embedding-a-dataset-experimental)
     - [Verifying a config](#verifying-a-config)
     - [Using `proteinworkshop` modules functionally](#using-proteinworkshop-modules-functionally)
   - [Models](#models)
@@ -249,7 +249,7 @@ wandb sweep proteinworkshop/config/sweeps/pt_inverse_folding.yaml
 wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 ```
 
-### Embedding a dataset
+### Embedding a dataset (Experimental)
 
 ```bash
 python proteinworkshop/embed.py dataset=cath encoder=egnn ckpt_path=PATH/TO/CHECKPOINT
