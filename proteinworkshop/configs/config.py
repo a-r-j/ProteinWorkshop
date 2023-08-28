@@ -335,7 +335,6 @@ def validate_config(cfg: DictConfig) -> DictConfig:
     """
     if cfg.name is None:
         raise TypeError("The `run_name` argument is mandatory.")
-
     validate_classification_config(cfg)
     cfg = validate_output_config(cfg)
 
