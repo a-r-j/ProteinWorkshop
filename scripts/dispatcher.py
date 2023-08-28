@@ -17,6 +17,7 @@ def main():
         "install",
         help="install specific dependencies, such as pyg (pytorch geometric) which require careful checking against pytorch and cuda versions",
     )
+    install_parser.add_argument("--force-reinstall", action="store_true", help="force reinstall", default=False, required=False)
     install_parser.add_argument(
         "dependency", choices=["pyg"], help="dependency help"
     )
@@ -72,7 +73,7 @@ def main():
         # lazy import
         from .install_pyg import _install_pyg
 
-        _install_pyg()
+        _install_pyg(args.force_reinstall)
 
     elif args.command == "download":
         if args.dataset == "pdb":
