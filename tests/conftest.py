@@ -8,7 +8,7 @@ from graphein.protein.tensor.data import ProteinBatch
 from hydra import compose, initialize
 from hydra.core.global_hydra import GlobalHydra
 from omegaconf import DictConfig, open_dict
-from src import constants
+from proteinworkshop import constants
 
 from proteinworkshop.datasets.utils import create_example_batch
 
