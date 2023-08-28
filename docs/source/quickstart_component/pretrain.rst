@@ -11,7 +11,7 @@ To get up and running quickly, the following widgets can be used to configure co
    or ``workshop finetune ...``.
 
 .. note::
-   To use specify CPU / GPU, add ``trainer=cpu`` or ``trainer=gpu`` to the command.
+   To specify CPU vs. GPU, add ``trainer=cpu`` or ``trainer=gpu`` to the command.
 
 
 .. raw:: html

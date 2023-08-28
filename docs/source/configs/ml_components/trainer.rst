@@ -11,7 +11,9 @@ These configs configure PyTorch Lightning ``Trainer`` objects.
 
     .. code-block:: bash
 
-        python proteinworkshop/train.py trainer=<TRAINER_NAME> encoder=gvp dataset=cath task=inverse_folding
+         workshop train trainer=<TRAINER_NAME> encoder=gvp dataset=cath task=inverse_folding
+         # or
+         python proteinworkshop/train.py trainer=<TRAINER_NAME> encoder=gvp dataset=cath task=inverse_folding
 
     where ``<TRAINER_NAME>`` is the name of the trainer config.
 

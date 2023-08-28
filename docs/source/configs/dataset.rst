@@ -10,9 +10,9 @@ To switch between different datasets, simply change the `dataset` argument in th
 
 .. code-block:: bash
 
-    workshop train encoder=gear_net dataset=<DATASET_NAME> task=inverse_folding
+    workshop train encoder=gear_net dataset=<DATASET_NAME> task=inverse_folding trainer=cpu
     # or
-    python proteinworkshop/train.py encoder=gear_net dataset=<DATASET_NAME> task=inverse_folding
+    python proteinworkshop/train.py encoder=gear_net dataset=<DATASET_NAME> task=inverse_folding trainer=cpu # or trainer=gpu
 
 Where ``<DATASET_NAME>`` is given by bracketed name in the listing below. For example, the dataset name for CATH is ``cath``.
 
@@ -21,7 +21,7 @@ Where ``<DATASET_NAME>`` is given by bracketed name in the listing below. For ex
 
     If you have pip-installed `proteinworkshop`, you can download pre-training or processed downstream datasets from Zenodo with:
 
-    .. code-block::bash
+    .. code-block:: bash
 
         workshop download <DATASET_NAME>
 
