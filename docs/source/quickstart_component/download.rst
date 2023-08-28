@@ -11,7 +11,7 @@ Processed datasets are available from Zenodo (https://zenodo.org/record/8282470)
 
     .. code-block::
 
-            export DATA_PATH=/path/to/where/you/want/datasets
+            export DATA_PATH=/path/to/where/you/want/datasets # e.g., `export DATA_PATH="proteinworkshop/data"`
 
 
 .. code-block:: bash

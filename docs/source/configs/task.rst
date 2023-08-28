@@ -16,9 +16,9 @@ Specific training objects are achieved through the use of :doc:`/configs/transfo
 
     .. code-block:: bash
 
-        workshop train task=<TASK_NAME> dataset=cath encoder=gvp ...
+        workshop train task=<TASK_NAME> dataset=cath encoder=gvp trainer=cpu ...
         # or
-        python proteinworkshop/train.py task=<TASK_NAME> dataset=cath encoder=gvp ...
+        python proteinworkshop/train.py task=<TASK_NAME> dataset=cath encoder=gvp trainer=cpu ... # or trainer=gpu
 
     Where ``<TASK_NAME>`` is one of the tasks listed below.
 
@@ -165,7 +165,7 @@ batch. The distance is then predicted from the concantenated node embeddings of 
 .. note::
     Aux tasks are specified with the following syntax:
 
-    .. code-block::bash
+    .. code-block:: bash
 
         python proteinworkshop/train.py ... +aux_task=nn_sequence
 

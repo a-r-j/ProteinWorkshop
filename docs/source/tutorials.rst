@@ -13,9 +13,9 @@ Training a New Model
 
 .. code-block:: bash
 
-    workshop train dataset=DATASET encoder=MODEL task=TASK features=FEATURES env.paths.data=where/you/want/data/
+    workshop train dataset=DATASET encoder=MODEL task=TASK features=FEATURES trainer=cpu env.paths.data=where/you/want/data/
     # or 
-    python proteinworkshop/train.py dataset=DATASET encoder=MODEL task=TASK features=FEATURES
+    python proteinworkshop/train.py dataset=DATASET encoder=MODEL task=TASK features=FEATURES trainer=cpu # or trainer=gpu
 
 To override hparams, you can either edit the relevant :doc:`/configs/` files directly or via the CLI using Hydra syntax:
 

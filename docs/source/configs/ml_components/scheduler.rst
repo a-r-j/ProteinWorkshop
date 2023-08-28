@@ -8,7 +8,9 @@ These configs configure various learning rate schedulers.
 
     .. code-block:: bash
 
-        python proteinworkshop/train.py scheduler=<SCHEDULER_NAME> encoder=gvp dataset=cath task=inverse_folding
+        workshop train scheduler=<SCHEDULER_NAME> encoder=gvp dataset=cath task=inverse_folding trainer=cpu
+        # or
+        python proteinworkshop/train.py scheduler=<SCHEDULER_NAME> encoder=gvp dataset=cath task=inverse_folding trainer=cpu # or trainer=cpu
 
     where ``<SCHEDULER_NAME>`` is the name of the scheduler config.
 
