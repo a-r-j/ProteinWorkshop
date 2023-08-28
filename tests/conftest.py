@@ -20,7 +20,7 @@ def cfg_train_global() -> DictConfig:
     :return: A DictConfig object containing a default Hydra configuration for
         training.
     """
-    with initialize(version_base="1.3", config_path=str(constants.HYDRA_CONFIG_PATH)):
+    with initialize(version_base="1.3", config_path="../ProteinWorkshop/config"):
         cfg = compose(
             config_name="train.yaml",
             return_hydra_config=True,
@@ -53,7 +53,7 @@ def cfg_finetune_global() -> DictConfig:
 
     :return: A DictConfig containing a default Hydra configuration for evaluation.
     """
-    with initialize(version_base="1.3", config_path=str(constants.HYDRA_CONFIG_PATH)):
+    with initialize(version_base="1.3", config_path="../ProteinWorkshop/config"):
         cfg = compose(
             config_name="finetune.yaml",
             return_hydra_config=True,
