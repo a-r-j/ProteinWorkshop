@@ -165,11 +165,8 @@ python proteinworkshop/scripts/download_pdb_mmtf.py
 Launching an experiment minimally requires specification of a dataset, structural encoder, and task:
 
 ```bash
-<<<<<<< HEAD
 workshop train dataset=cath encoder=egnn task=inverse_folding trainer=cpu env.paths.data=where/you/want/data/
 # or
-=======
->>>>>>> e8ffed6 (add cpu/gpu to readme command)
 python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding trainer=cpu # or trainer=gpu
 ```
 
