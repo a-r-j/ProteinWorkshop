@@ -105,7 +105,7 @@ if __name__ == "__main__":
     from graphein.protein.tensor.data import get_random_protein
 
     config = omegaconf.OmegaConf.load(
-        "../../configs/transforms/torsional_denoising.yaml"
+        "../proteinworkshop/config/transforms/torsional_denoising.yaml"
     )
 
     a = get_random_protein()

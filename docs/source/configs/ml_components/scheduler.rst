@@ -22,7 +22,7 @@ ReduceLROnPlateau (``plateau``)
     python proteinworkshop/train.py ... scheduler=plateau scheduler.scheduler.patience=10
 
 
-.. literalinclude:: ../../../../configs/scheduler/plateau.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/scheduler/plateau.yaml
    :language: yaml
 
 
@@ -34,5 +34,5 @@ LinearWarmupCosineDecay (``linear_warmup_cosine_decay``)
     # Example usage:
     python proteinworkshop/train.py ... scheduler=linear_warmup_cosine_decay scheduler.scheduler.warmup_epochs=10
 
-.. literalinclude:: ../../../../configs/scheduler/linear_warmup_cosine_decay.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/scheduler/linear_warmup_cosine_decay.yaml
    :language: yaml

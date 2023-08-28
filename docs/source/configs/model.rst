@@ -44,9 +44,9 @@ Scalar features are update from iteration :math:`t`` to :math:`t+1` via:
         \vs_i^{(t+1)} & \defeq \vs_i^{(t)} + \sum_{j \in \mathcal{N}_i} f_1 \left( \vs_j^{(t)} , \ \Vert \vec{\vx}_{ij} \Vert \right) \label{eq:schnet}
     \end{align}
 
-.. literalinclude:: ../../../configs/encoder/schnet.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/schnet.yaml
     :language: yaml
-    :caption: configs/encoder/schnet.yaml
+    :caption: config/encoder/schnet.yaml
 
 
 :py:class:`DimeNet++ <proteinworkshop.models.graph_encoders.dimenetpp.DimeNetPPModel>` (``dimenet_plus_plus``)
@@ -61,9 +61,9 @@ DimeNet is an E(3) invariant GNN which uses both distances :math:`\Vert \vec{\vx
     \end{align}
 
 
-.. literalinclude:: ../../../configs/encoder/dimenet_plus_plus.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/dimenet_plus_plus.yaml
     :language: yaml
-    :caption: configs/encoder/dimenet_plus_plus.yaml
+    :caption: config/encoder/dimenet_plus_plus.yaml
 
 :py:class:`GearNet <proteinworkshop.models.graph_encoders.gear_net.GearNet>` (``gear_net``, ``gear_net_edge``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -99,14 +99,14 @@ The edge message passing layer is defined for relation type :math:`r` as:
 where :math:`\mathrm{FC(\cdot)}` denotes a linear transformation upon the message function.
 
 
-.. literalinclude:: ../../../configs/encoder/gear_net.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/gear_net.yaml
     :language: yaml
-    :caption: configs/encoder/gear_net.yaml
+    :caption: config/encoder/gear_net.yaml
 
 
-.. literalinclude:: ../../../configs/encoder/gear_net_edge.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/gear_net_edge.yaml
     :language: yaml
-    :caption: configs/encoder/gear_net_edge.yaml
+    :caption: config/encoder/gear_net_edge.yaml
 
 
 Vector-Equivariant Encoders
@@ -127,16 +127,16 @@ We consider E(3) equivariant GNN layers proposed by Satorras et al. (2021) which
         \vec{\vx}_i^{(t+1)} & \defeq \vec{\vx}_i^{(t)} + \sum_{j \in \mathcal{N}_i} \vec{\vx}_{ij}^{(t)} \odot f_3 \left( \vs_i^{(t)} , \vs_j^{(t)} , \ \Vert \vec{\vx}_{ij}^{(t)} \Vert \right)
     \end{align}
 
-.. literalinclude:: ../../../configs/encoder/egnn.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/egnn.yaml
     :language: yaml
-    :caption: configs/encoder/egnn.yaml
+    :caption: config/encoder/egnn.yaml
 
 
 :py:class:`GVP <proteinworkshop.models.graph_encoders.gvp.GVPGNNModel>` (``gvp``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. literalinclude:: ../../../configs/encoder/gvp.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/gvp.yaml
     :language: yaml
-    :caption: configs/encoder/gvp.yaml
+    :caption: config/encoder/gvp.yaml
 
 
 :py:class:`GCPNet <proteinworkshop.models.graph_encoders.gcpnet.GCPNetModel>` (``gcpnet``)
@@ -157,9 +157,9 @@ GCPNet is an SE(3) equivariant architecture that jointly learns scalar and vecto
 where the geometry-complete and chirality-sensitive local frames for node :math:`i` (i.e., its edges) are defined as :math:`\mathbf{\mathcal{F}}_{ij} = (\va_{ij}, \vb_{ij}, \vc_{ij})`, with :math:`\va_{ij} = \frac{\vx_{i} - \vx_{j}}{ \lVert \vx_{i} - \vx_{j} \rVert }, \vb_{ij} = \frac{\vx_{i} \times \vx_{j}}{ \lVert \vx_{i} \times \vx_{j} \rVert },` and :math:`\vc_{ij} = \va_{ij} \times \vb_{ij}`, respectively.
 
 
-.. literalinclude:: ../../../configs/encoder/gcpnet.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/gcpnet.yaml
     :language: yaml
-    :caption: configs/encoder/gcpnet.yaml
+    :caption: config/encoder/gcpnet.yaml
 
 
 Tensor-Equivariant Encoders
@@ -186,9 +186,9 @@ The higher order tensors :math:`\tilde \vh_{i}` are updated via tensor products 
 where the weights :math:`\vw` of the tensor product are computed via a learnt radial basis function of the relative distance, i.e. :math:`\vw = f \left( \Vert \vec{\vx}_{ij} \Vert \right)`.
 
 
-.. literalinclude:: ../../../configs/encoder/tfn.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/tfn.yaml
     :language: yaml
-    :caption: configs/encoder/tfn.yaml
+    :caption: config/encoder/tfn.yaml
 
 
 :py:class:`Multi-Atomic Cluster Expansion <proteinworkshop.models.graph_encoders.mace.MACEModel>` (``mace``)
@@ -205,9 +205,9 @@ In our formalism, this corresponds to:
         \tilde \vh_{i}^{(t+1)} & \defeq \underbrace {\tilde \vh_{i}^{(t+1)} \otimes_{\vw} \dots \otimes_{\vw} \tilde \vh_{i}^{(t+1)} }_\text{$k-1$ times} \ ,
     \end{align}
 
-.. literalinclude:: ../../../configs/encoder/mace.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/mace.yaml
     :language: yaml
-    :caption: configs/encoder/mace.yaml
+    :caption: config/encoder/mace.yaml
 
 
 Decoder Models
@@ -217,13 +217,13 @@ Decoder models are used to predict the target property from the learned represen
 
 Decoder configs are dictionaries indexed by the name of the output to which they are applied.
 
-These are configured in the task config. See :doc:`/configs/task` for more details.
+These are configured in the task config. See :doc:`/config/task` for more details.
 
 For example, the ``residue_type`` decoder:
 
 .. seealso::
-    :doc:`/configs/task`
+    :doc:`/config/task`
 
-.. literalinclude:: ../../../configs/decoder/residue_type.yaml
+.. literalinclude:: ../../../proteinworkshop/config/decoder/residue_type.yaml
     :language: yaml
-    :caption: configs/decoder/residue_type.yaml
+    :caption: config/decoder/residue_type.yaml

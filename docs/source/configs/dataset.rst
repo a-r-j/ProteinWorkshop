@@ -43,16 +43,16 @@ ASTRAL provides compendia of protein domain structures, regions of proteins that
 can maintain their structure and function independently of the rest of the protein. Domains typically
 exhibit highly-specific functions and can be considered structural building blocks of proteins.
 
-.. literalinclude:: ../../../configs/dataset/astral.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/astral.yaml
     :language: yaml
-    :caption: configs/dataset/astral.yaml
+    :caption: config/dataset/astral.yaml
 
 
 :py:class:`CATH <proteinworkshop.datasets.cath.CATHDataModule>` (``cath``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. literalinclude:: ../../../configs/dataset/cath.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/cath.yaml
     :language: yaml
-    :caption: configs/dataset/cath.yaml
+    :caption: config/dataset/cath.yaml
 
 :py:class:`PDB <proteinworkshop.datasets.pdb_dataset.PDBDataModule>` (``pdb``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -60,9 +60,9 @@ exhibit highly-specific functions and can be considered structural building bloc
 .. seealso::
     :py:class:`proteinworkshop.datasets.pdb_dataset.PDBData`
 
-.. literalinclude:: ../../../configs/dataset/pdb.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/pdb.yaml
     :language: yaml
-    :caption: configs/dataset/pdb.yaml
+    :caption: config/dataset/pdb.yaml
 
 
 
@@ -71,48 +71,48 @@ exhibit highly-specific functions and can be considered structural building bloc
 This is a dataset of approx. 3m protein structures from the alphafold database
 collated by , following structural clustering with FoldSeek.
 
-.. literalinclude:: ../../../configs/dataset/afdb_rep_v4.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/afdb_rep_v4.yaml
     :language: yaml
-    :caption: configs/dataset/afdb_rep_v4.yaml
+    :caption: config/dataset/afdb_rep_v4.yaml
 
 
 :py:class:`AFdb Dark Proteome <graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule>` (``afdb_rep_dark_v4``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/dataset/afdb_rep_dark_v4.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/afdb_rep_dark_v4.yaml
     :language: yaml
-    :caption: configs/dataset/afdb_rep_dark_v4.yaml
+    :caption: config/dataset/afdb_rep_dark_v4.yaml
 
 
 :py:class:`ESM Atlas <graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule>` (``esmatlas_v2023_02``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/dataset/esmatlas_v2023_02.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/esmatlas_v2023_02.yaml
     :language: yaml
-    :caption: configs/dataset/esmatlas_v2023_02.yaml
+    :caption: config/dataset/esmatlas_v2023_02.yaml
 
 :py:class:`ESM Atlas (High Quality) <graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule>` (``highquality_clust30``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. literalinclude:: ../../../configs/dataset/highquality_clust30.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/highquality_clust30.yaml
     :language: yaml
-    :caption: configs/dataset/highquality_clust30.yaml
+    :caption: config/dataset/highquality_clust30.yaml
 
 
 :py:class:`UniProt (Alphafold) <graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule>` (``afdb_uniprot_v4``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/dataset/afdb_uniprot_v4.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/afdb_uniprot_v4.yaml
     :language: yaml
-    :caption: configs/dataset/afdb_uniprot_v4.yaml
+    :caption: config/dataset/afdb_uniprot_v4.yaml
 
 
 
 :py:class:`SwissProt (Alphafold) <graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule>` (``afdb_swissprot_v4``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/dataset/afdb_swissprot_v4.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/afdb_swissprot_v4.yaml
     :language: yaml
-    :caption: configs/dataset/afdb_swissprot_v4.yaml
+    :caption: config/dataset/afdb_swissprot_v4.yaml
 
 
 
@@ -137,9 +137,9 @@ Impact: From a benchmarking perspective, this task is important as it enables ta
 assessment of models on a specific (immunoglobulin) fold, providing insight into whether general-
 purpose structure-based encoders can be applicable to fold-specific tasks.
 
-.. literalinclude:: ../../../configs/dataset/antibody_developability.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/antibody_developability.yaml
     :language: yaml
-    :caption: configs/dataset/antibody_developability.yaml
+    :caption: config/dataset/antibody_developability.yaml
 
 :py:class:`Atom3D Mutation Stability Prediction <proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule>` (``atom3d_msp``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -158,9 +158,9 @@ As per their documentation:
 **Downloads**: The full dataset, split data, and split indices are available for download via Zenodo (doi:10.5281/zenodo.4962515)
 
 
-.. literalinclude:: ../../../configs/dataset/atom3d_msp.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/atom3d_msp.yaml
     :language: yaml
-    :caption: configs/dataset/atom3d_msp.yaml
+    :caption: config/dataset/atom3d_msp.yaml
 
 :py:class:`Atom3D Protein Structure Ranking <proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule>` (``atom3d_psr``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -179,24 +179,24 @@ As per their documentation:
 **Downloads**: The full dataset, split data, and split indices are available for download via Zenodo (doi:10.5281/zenodo.4915648)
 
 
-.. literalinclude:: ../../../configs/dataset/atom3d_psr.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/atom3d_psr.yaml
     :language: yaml
-    :caption: configs/dataset/atom3d_psr.yaml
+    :caption: config/dataset/atom3d_psr.yaml
 
 
 :py:class:`Deep Sea Protein Classification <proteinworkshop.datasets.deep_sea_proteins.DeepSeaProteinsDataModule>` (``deep_sea_proteins``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. literalinclude:: ../../../configs/dataset/deep_sea_proteins.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/deep_sea_proteins.yaml
     :language: yaml
-    :caption: configs/dataset/deepsea.yaml
+    :caption: config/dataset/deepsea.yaml
 
 
 :py:class:`Enzyme Commission Number Prediction <proteinworkshop.datasets.ec_reaction.EnzymeCommissionReactionDataset>` (``ec_reaction``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/dataset/ec_reaction.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/ec_reaction.yaml
     :language: yaml
-    :caption: configs/dataset/ec_reaction.yaml
+    :caption: config/dataset/ec_reaction.yaml
 
 
 :py:class:`Fold Classification <proteinworkshop.datasets.fold_classification.FoldClassificationDataModule>` (``fold-family``, ``fold-superfamily``, ``fold-fold``)
@@ -213,15 +213,15 @@ classes likely learn limited or low-quality structural representations.214
 
 **Splitting Criteria**:
 
-.. literalinclude:: ../../../configs/dataset/fold_family.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/fold_family.yaml
     :language: yaml
-    :caption: configs/dataset/fold_family.yaml
+    :caption: config/dataset/fold_family.yaml
 
 Gene Ontology (``go-bp``, ``go-cc``, ``go-mf``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. literalinclude:: ../../../configs/dataset/go-bp.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/go-bp.yaml
     :language: yaml
-    :caption: configs/dataset/go-bp.yaml / configs/dataset/go-cc.yaml / configs/dataset/go-mf.yaml
+    :caption: config/dataset/go-bp.yaml / config/dataset/go-cc.yaml / config/dataset/go-mf.yaml
 
 
 Node-level Datasets
@@ -241,45 +241,45 @@ As per their documentation:
 
 **Splitting criteria**: We split residue environments by domain-level CATH protein topology class.
 
-.. literalinclude:: ../../../configs/dataset/atom3d_res.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/atom3d_res.yaml
     :language: yaml
-    :caption: configs/dataset/atom3d_res.yaml
+    :caption: config/dataset/atom3d_res.yaml
 
 CCPDB Ligand Binding (``ccpdb_ligand``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/dataset/ccpdb_ligands.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/ccpdb_ligands.yaml
     :language: yaml
-    :caption: configs/dataset/ccpdb_ligand.yaml
+    :caption: config/dataset/ccpdb_ligand.yaml
 
 CCPDB Metal Binding (``ccpdb_metal``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/dataset/ccpdb_metal.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/ccpdb_metal.yaml
     :language: yaml
-    :caption: configs/dataset/ccpdb_metal.yaml
+    :caption: config/dataset/ccpdb_metal.yaml
 
 CCPDB Nucleic Acid Binding (``ccpdb_nucleic``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/dataset/ccpdb_nucleic.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/ccpdb_nucleic.yaml
     :language: yaml
-    :caption: configs/dataset/ccpdb_nucleic.yaml
+    :caption: config/dataset/ccpdb_nucleic.yaml
 
 
 CCPDB Nucleotide Binding (``ccpdb_nucleotides``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/dataset/ccpdb_nucleotides.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/ccpdb_nucleotides.yaml
     :language: yaml
-    :caption: configs/dataset/ccpdb_nucleotides.yaml
+    :caption: config/dataset/ccpdb_nucleotides.yaml
 
 
 Post Translational Modifications (``ptm``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. literalinclude:: ../../../configs/dataset/ptm.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/ptm.yaml
     :language: yaml
-    :caption: configs/dataset/ptm.yaml
+    :caption: config/dataset/ptm.yaml
 
 
 PPI Site Prediction (``masif_site``)
@@ -294,6 +294,6 @@ the ZDock benchmark, PDBBind and SabDab. Splits are performed using CD-HIT and s
 are performed using TM-algin.
 
 
-.. literalinclude:: ../../../configs/dataset/masif_site.yaml
+.. literalinclude:: ../../../proteinworkshop/config/dataset/masif_site.yaml
     :language: yaml
-    :caption: configs/dataset/masif_site.yaml
+    :caption: config/dataset/masif_site.yaml

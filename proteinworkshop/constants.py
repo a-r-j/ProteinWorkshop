@@ -33,7 +33,7 @@ else:
 #   the corresponding `.env` environment variables if they are set.
 #   We provide them simply as a fallback for users who do not want to
 #   use hydra or environment variables. Plese see the README and
-#   `configs/env/default.yaml` for more information on how to configure paths.
+#   `proteinworkshop/config/env/default.yaml` for more information on how to configure paths.
 if os.environ.get("ROOT_DIR") is None:
     ROOT_DIR = str(PROJECT_PATH)
     os.environ["ROOT_DIR"] = str(ROOT_DIR)

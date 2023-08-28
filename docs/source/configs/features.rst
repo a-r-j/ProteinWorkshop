@@ -18,39 +18,39 @@ Default Features
 :math:`C_{\alpha}` Only (``ca_base``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/features/ca_base.yaml
+.. literalinclude:: ../../../proteinworkshop/config/features/ca_base.yaml
     :language: yaml
-    :caption: configs/features/ca_base.yaml
+    :caption: config/features/ca_base.yaml
 
 
 :math:`C_{\alpha}` + Sequence (``ca_seq``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/features/ca_seq.yaml
+.. literalinclude:: ../../../proteinworkshop/config/features/ca_seq.yaml
     :language: yaml
-    :caption: configs/features/ca_seq.yaml
+    :caption: config/features/ca_seq.yaml
 
 
 :math:`C_{\alpha}` + Virtual Angles (``ca_angles``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/features/ca_angles.yaml
+.. literalinclude:: ../../../proteinworkshop/config/features/ca_angles.yaml
     :language: yaml
-    :caption: configs/features/ca_angles.yaml
+    :caption: config/features/ca_angles.yaml
 
 
 :math:`C_{\alpha}` + Sequence + Backbone (``ca_bb``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/features/ca_bb.yaml
+.. literalinclude:: ../../../proteinworkshop/config/features/ca_bb.yaml
     :language: yaml
-    :caption: configs/features/ca_seq_bb.yaml
+    :caption: config/features/ca_seq_bb.yaml
 
 
 :math:`C_{\alpha}` + Sequence + Backbone + Sidechains (``ca_sc``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../configs/features/ca_sc.yaml
+.. literalinclude:: ../../../proteinworkshop/config/features/ca_sc.yaml
     :language: yaml
-    :caption: configs/features/ca_sc.yaml
+    :caption: config/features/ca_sc.yaml
 

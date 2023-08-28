@@ -20,9 +20,9 @@ defaults:
   - extras: default
   - hydra: default
   - metrics: none
-  - task: inverse_folding # See: /configs/task/
+  - task: inverse_folding # See: /proteinworkshop/config/task/
   - logger: wandb # wandb, tensorboard, csv
-  - finetune: default # Specifies finetuning config. See: configs/finetune/
+  - finetune: default # Specifies finetuning config. See: proteinworkshop/config/finetune/
   # debugging config (enable through command line, e.g. `python train.py debug=default)
   - debug: null
   - _self_ # see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.

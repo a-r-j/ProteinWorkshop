@@ -4,7 +4,7 @@ Callbacks
 Default
 ---------
 
-.. literalinclude:: ../../../../configs/callbacks/default.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/callbacks/default.yaml
    :language: yaml
 
 
@@ -13,29 +13,29 @@ Training
 
 Early Stopping (``early_stopping``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. literalinclude:: ../../../../configs/callbacks/early_stopping.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/callbacks/early_stopping.yaml
    :language: yaml
-   :caption: configs/callbacks/early_stopping.yaml
+   :caption: config/callbacks/early_stopping.yaml
 
 Checkpointing (``model_checkpoint``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. literalinclude:: ../../../../configs/callbacks/model_checkpoint.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/callbacks/model_checkpoint.yaml
    :language: yaml
-   :caption: configs/callbacks/model_checkpoint.yaml
+   :caption: config/callbacks/model_checkpoint.yaml
 
 Stop on NaN (``stop_on_nan``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. literalinclude:: ../../../../configs/callbacks/stop_on_nan.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/callbacks/stop_on_nan.yaml
    :language: yaml
-   :caption: configs/callbacks/stop_on_nan.yaml
+   :caption: config/callbacks/stop_on_nan.yaml
 
 
 Exponential Moving Average (``ema``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../../configs/callbacks/ema.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/callbacks/ema.yaml
    :language: yaml
-   :caption: configs/callbacks/ema.yaml
+   :caption: config/callbacks/ema.yaml
 
 
 
@@ -49,9 +49,9 @@ Model Summary (``model_summary``)
 
    :py:class:`lightning.pytorch.callbacks.RichModelSummary`
 
-.. literalinclude:: ../../../../configs/callbacks/model_summary.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/callbacks/model_summary.yaml
    :language: yaml
-   :caption: configs/callbacks/model_summary.yaml
+   :caption: config/callbacks/model_summary.yaml
 
 
 Rich Progress Bar (``rich_progress_bar``)
@@ -61,19 +61,19 @@ Rich Progress Bar (``rich_progress_bar``)
 
    :py:class:`lightning.pytorch.callbacks.RichProgressBar`
 
-.. literalinclude:: ../../../../configs/callbacks/rich_progress_bar.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/callbacks/rich_progress_bar.yaml
    :language: yaml
-   :caption: configs/callbacks/rich_progress_bar.yaml
+   :caption: config/callbacks/rich_progress_bar.yaml
 
 Learning Rate Monitor (``learning_rate_monitor``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This is automatically configured when using a learning rate scheduler. See :doc:`/configs/ml_components/scheduler`
+This is automatically configured when using a learning rate scheduler. See :doc:`/config/ml_components/scheduler`
 
 .. seealso::
 
    :py:class:`lightning.pytorch.callbacks.LearningRateMonitor`
 
-.. literalinclude:: ../../../../configs/callbacks/learning_rate_monitor.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/callbacks/learning_rate_monitor.yaml
    :language: yaml
-   :caption: configs/callbacks/learning_rate_monitor.yaml
+   :caption: config/callbacks/learning_rate_monitor.yaml

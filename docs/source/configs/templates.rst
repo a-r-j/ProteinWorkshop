@@ -13,7 +13,7 @@ Training
 
 This config can be used for both training a model from scratch and pre-training a model.
 
-.. literalinclude:: ../../../configs/train.yaml
+.. literalinclude:: ../../../proteinworkshop/config/train.yaml
     :language: yaml
     :caption: config/train.yaml
     :linenos:
@@ -25,7 +25,7 @@ Finetuning
 
 This config should be used to finetune a pre-trained model on a downstream task.
 
-.. literalinclude:: ../../../configs/finetune.yaml
+.. literalinclude:: ../../../proteinworkshop/config/finetune.yaml
     :language: yaml
     :caption: config/finetune.yaml
     :linenos:

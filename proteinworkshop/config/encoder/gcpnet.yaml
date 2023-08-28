@@ -1,7 +1,7 @@
 _target_: proteinworkshop.models.graph_encoders.gcpnet.GCPNetModel
 # overrides for feature config #
 features:
-  # note: will manually be injected into `/features` via `validate_gcpnet_config()` of `proteinworkshop/configs/config.py`
+  # note: will manually be injected into `/features` via `validate_gcpnet_config()` of `proteinworkshop/config/config.py`
   vector_node_features: ["orientation"]
   vector_edge_features: ["edge_vectors"]
 # global config #
