@@ -118,7 +118,10 @@ def main():
         _valid = "\n\t".join(
             ["\n\tinstall", "\tdownload", "\ttrain", "\tfinetune"]
         )
-        raise ValueError(f"Invalid command. Valid commands are: {_valid}")
+        if args.command is None:
+            raise ValueError(f"Missing command. Valid commands are: {_valid}")
+        else:
+            raise ValueError(f"Invalid command. Valid commands are: {_valid}")
 
     print("Done.")
 
