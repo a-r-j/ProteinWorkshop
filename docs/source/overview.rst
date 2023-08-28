@@ -56,7 +56,7 @@ Models
 ==========
 
 :py:class:`proteinworkshop.models.base.BaseModel` and :py:class:`proteinworkshop.models.base.BenchMarkModel` Base classes
-==============================================================================================================
+============================================================================================================================
 
 These objects orchestrate model training and validation logic. The :py:class:`proteinworkshop.models.base.BaseModel` class is a subclass of :py:class:`pytorch_lightning.LightningModule`.
 The :py:class:`proteinworkshop.models.base.BenchMarkModel` class is a subclass of :py:class:`proteinworkshop.models.base.BaseModel` and is used as the primary orchestrator in the framework.

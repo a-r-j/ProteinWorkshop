@@ -9,10 +9,10 @@ Welcome to Protein Workshop's documentation!
 
 .. mdinclude:: ../../README.md
     :start-line: 1
-    :end-line: 9
+    :end-line: 12
 .. mdinclude:: ../../README.md
-    :start-line: 12
-    :end-line: 14
+    :start-line: 14
+    :end-line: 22
 
 
 .. toctree::

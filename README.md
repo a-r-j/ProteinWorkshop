@@ -20,7 +20,7 @@ The benchmark can be used as a working template for a protein representation lea
 
 [Processed datasets](https://zenodo.org/record/8282470) and [pre-trained weights](https://zenodo.org/record/8287754) are made available. Downloading datasets is not required; upon first run all datasets will be downloaded and processed from their respective source.
 
-Configuration files to run the experiments described in the manuscript are provided in the `configs/sweeps/` directory.
+Configuration files to run the experiments described in the manuscript are provided in the `proteinworkshop/config/sweeps/` directory.
 
 ## Contents
 
@@ -55,7 +55,7 @@ Configuration files to run the experiments described in the manuscript are provi
     - [Edge Construction](#edge-construction)
     - [Invariant Edge Features](#invariant-edge-features)
     - [Equivariant Edge Features](#equivariant-edge-features)
-- [For developers](#for-developers)
+  - [For developers](#for-developers)
 
 ## Installation
 
@@ -63,10 +63,17 @@ Below, we outline how one may set up a virtual environment for `proteinworkshop`
 
 ### From PyPI
 
-`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects.
+`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Beforehand, make sure to install [PyTorch](https://pytorch.org/) (version `2.0.0`) using its official `pip` installation instructions (with CUDA support as desired).
 
 ```bash
-pip install proteinworkshop
+# install `proteinworkshop` from PyPI
+pip install proteinworkshop --no-cache-dir
+
+# install PyTorch Geometric using the (now-installed) CLI
+workshop install pyg
+
+# set a custom data directory for file downloads; otherwise, all data will be downloaded to `site-packages`
+export DATA_PATH="where/you/want/data/"
 ```
 
 However, for full exploration we recommend cloning the repository and building from source.
@@ -105,14 +112,16 @@ However, for full exploration we recommend cloning the repository and building f
       deactivate
     ```
 
-5. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
+5. With the environment activated, install [PyTorch](https://pytorch.org/) (version `2.0.0`) using its official `pip` installation instructions (with CUDA support as desired - N.B. make sure to add `--no-cache-dir` to the end of the `pip` installation command), and then use the (newly-installed) CLI to install [PyTorch Geometric](https://pyg.org/)
 
     ```bash
-      # hint: to see the list of dependencies that are currently installed in the environment, run:
+      workshop install pyg
+
+      # N.B. to list all dependencies currently installed, run:
       poetry show
     ```
 
-6. Configure paths in `.env`. See [`.env.example`](https://github.com/a-r-j/proteinworkshop/blob/main/.env.example) for an example.
+6. Configure paths in `.env` (optional, will override default paths if set). See [`.env.example`](https://github.com/a-r-j/proteinworkshop/blob/main/.env.example) for an example.
 
 7. Download PDB data:
 
@@ -155,16 +164,20 @@ python proteinworkshop/scripts/download_pdb_mmtf.py
 
 ### Training a model
 
-Launching an experiment minimally requires specification of a dataset, structural encoder, and task:
+Launching an experiment minimally requires specification of a dataset, structural encoder, and task (devices can be specified with `trainer=cpu/gpu`):
 
 ```bash
-python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding
+workshop train dataset=cath encoder=egnn task=inverse_folding trainer=cpu env.paths.data=where/you/want/data/
+# or
+python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding trainer=cpu # or trainer=gpu
 ```
 
 This command uses the default configurations in `configs/train.yaml`, which can be overwritten by equivalently named options. For instance, you can use a different input featurisation using the `features` option, or set the display name of your experiment on wandb using the `name` option:
 
 ```bash
-python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding features=ca_bb name=MY-EXPT-NAME
+workshop train dataset=cath encoder=egnn task=inverse_folding features=ca_bb name=MY-EXPT-NAME trainer=cpu env.paths.data=where/you/want/data/
+# or
+python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding features=ca_bb name=MY-EXPT-NAME trainer=cpu # or trainer=gpu
 ```
 
 ### Finetuning a model
@@ -172,19 +185,21 @@ python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding f
 Finetuning a model additionally requires specification of a checkpoint.
 
 ```bash
-python proteinworkshop/finetune.py dataset=cath encoder=egnn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
+workshop finetune dataset=cath encoder=egnn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT trainer=cpu env.paths.data=where/you/want/data/
+# or
+python proteinworkshop/finetune.py dataset=cath encoder=egnn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT trainer=cpu # or trainer=gpu
 ```
 
 ### Running a sweep/experiment
 
 We can make use of the hydra wandb sweeper plugin to configure experiments as sweeps, allowing searches over hyperparameters, architectures, pre-training/auxiliary tasks and datasets.
 
-See `configs/sweeps/` for examples.
+See `proteinworkshop/config/sweeps/` for examples.
 
 1. Create the sweep with weights and biases
 
   ```bash
-  wandb sweep configs/sweeps/my_new_sweep_config.yaml
+  wandb sweep proteinworkshop/config/sweeps/my_new_sweep_config.yaml
   ```
 
 2. Launch job workers
@@ -214,23 +229,23 @@ Reproduce the sweeps performed in the manuscript:
 
 ```bash
 # reproduce the baseline tasks sweep (i.e., those performed without pre-training each model)
-wandb sweep configs/sweeps/baseline_fold.yaml
+wandb sweep proteinworkshop/config/sweeps/baseline_fold.yaml
 wandb agent mywandbgroup/proteinworkshop/2awtt7oy --count 8
-wandb sweep configs/sweeps/baseline_ppi.yaml
+wandb sweep proteinworkshop/config/sweeps/baseline_ppi.yaml
 wandb agent mywandbgroup/proteinworkshop/2bwtt7oy --count 8
-wandb sweep configs/sweeps/baseline_inverse_folding.yaml
+wandb sweep proteinworkshop/config/sweeps/baseline_inverse_folding.yaml
 wandb agent mywandbgroup/proteinworkshop/2cwtt7oy --count 8
 
 # reproduce the model pre-training sweep
-wandb sweep configs/sweeps/pre_train.yaml
+wandb sweep proteinworkshop/config/sweeps/pre_train.yaml
 wandb agent mywandbgroup/proteinworkshop/2dwtt7oy --count 8
 
 # reproduce the pre-trained tasks sweep (i.e., those performed after pre-training each model)
-wandb sweep configs/sweeps/pt_fold.yaml
+wandb sweep proteinworkshop/config/sweeps/pt_fold.yaml
 wandb agent mywandbgroup/proteinworkshop/2ewtt7oy --count 8
-wandb sweep configs/sweeps/pt_ppi.yaml
+wandb sweep proteinworkshop/config/sweeps/pt_ppi.yaml
 wandb agent mywandbgroup/proteinworkshop/2fwtt7oy --count 8
-wandb sweep configs/sweeps/pt_inverse_folding.yaml
+wandb sweep proteinworkshop/config/sweeps/pt_inverse_folding.yaml
 wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 ```
 
@@ -472,10 +487,10 @@ Where the suffix after `knn` or `eps` specifies $k$ (number of neighbours) or $\
 | ----------- | ----------- | ----------- |
 | `edge_vectors` | Edge directional vectors (unit-normalized)        |      1  |
 
-# For developers
-To keep with the code style for the `proteinworkshop` repository, please format your commits requests before opening a merge request with the following lines:
+## For developers
+To keep with the code style for the `proteinworkshop` repository, using the following lines please format your commits before opening a pull request:
 ```bash
-# assuming you're in the `ProteinWorkshop` top-level directory
+# assuming you are located in the `ProteinWorkshop` top-level directory
 isort . 
 autoflake -r --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports . 
 black --config=pyproject.toml .

@@ -5,5 +5,5 @@ Installation
     :doc:`/configs/framework_components/env`
 
 .. mdinclude:: ../../README.md
-    :start-line: 41
-    :end-line: 72
+    :start-line: 61
+    :end-line: 123

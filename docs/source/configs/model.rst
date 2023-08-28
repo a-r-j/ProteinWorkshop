@@ -10,6 +10,8 @@ To switch between different encoder architectures, simply change the ``encoder``
 
 .. code-block:: bash
 
+    workshop train encoder=<ENCODER_NAME> dataset=cath task=inverse_folding
+    # or
     python proteinworkshop/train.py encoder=<ENCODER_NAME> dataset=cath task=inverse_folding
 
 Where ``<ENCODER_NAME>`` is given by bracketed name in the listing below. For example, the encoder name for SchNet is ``schnet``.
@@ -23,6 +25,8 @@ Where ``<ENCODER_NAME>`` is given by bracketed name in the listing below. For ex
 
     .. code-block:: bash
 
+        workshop train encoder=<ENCODER_NAME> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
+        # or
         python proteinworkshop/train.py encoder=<ENCODER_NAME> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
 
 
@@ -30,8 +34,8 @@ Invariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 184
-    :end-line: 191
+    :start-line: 309
+    :end-line: 316
 
 :py:class:`SchNet <proteinworkshop.models.graph_encoders.schnet.SchNetModel>` (``schnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -44,13 +48,13 @@ Scalar features are update from iteration :math:`t`` to :math:`t+1` via:
         \vs_i^{(t+1)} & \defeq \vs_i^{(t)} + \sum_{j \in \mathcal{N}_i} f_1 \left( \vs_j^{(t)} , \ \Vert \vec{\vx}_{ij} \Vert \right) \label{eq:schnet}
     \end{align}
 
-.. literalinclude:: ../../../configs/encoder/schnet.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/schnet.yaml
     :language: yaml
-    :caption: configs/encoder/schnet.yaml
+    :caption: config/encoder/schnet.yaml
 
 
 :py:class:`DimeNet++ <proteinworkshop.models.graph_encoders.dimenetpp.DimeNetPPModel>` (``dimenet_plus_plus``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 DimeNet is an E(3) invariant GNN which uses both distances :math:`\Vert \vec{\vx}_{ij} \Vert` and angles :math:`\vec{\vx}_{ij} \cdot \vec{\vx}_{ik}` to perform message passing among triplets, as follows:
 
@@ -61,9 +65,9 @@ DimeNet is an E(3) invariant GNN which uses both distances :math:`\Vert \vec{\vx
     \end{align}
 
 
-.. literalinclude:: ../../../configs/encoder/dimenet_plus_plus.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/dimenet_plus_plus.yaml
     :language: yaml
-    :caption: configs/encoder/dimenet_plus_plus.yaml
+    :caption: config/encoder/dimenet_plus_plus.yaml
 
 :py:class:`GearNet <proteinworkshop.models.graph_encoders.gear_net.GearNet>` (``gear_net``, ``gear_net_edge``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -99,25 +103,25 @@ The edge message passing layer is defined for relation type :math:`r` as:
 where :math:`\mathrm{FC(\cdot)}` denotes a linear transformation upon the message function.
 
 
-.. literalinclude:: ../../../configs/encoder/gear_net.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/gear_net.yaml
     :language: yaml
-    :caption: configs/encoder/gear_net.yaml
+    :caption: config/encoder/gear_net.yaml
 
 
-.. literalinclude:: ../../../configs/encoder/gear_net_edge.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/gear_net_edge.yaml
     :language: yaml
-    :caption: configs/encoder/gear_net_edge.yaml
+    :caption: config/encoder/gear_net_edge.yaml
 
 
 Vector-Equivariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 195
-    :end-line: 201
+    :start-line: 320
+    :end-line: 326
 
 :py:class:`EGNN <proteinworkshop.models.graph_encoders.egnn.EGNNModel>` (``egnn``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We consider E(3) equivariant GNN layers proposed by Satorras et al. (2021) which updates both scalar features :math:`\vs_i` as well as node coordinates :math:`\vec{\vx}_{i}`, as follows:
 
@@ -127,16 +131,16 @@ We consider E(3) equivariant GNN layers proposed by Satorras et al. (2021) which
         \vec{\vx}_i^{(t+1)} & \defeq \vec{\vx}_i^{(t)} + \sum_{j \in \mathcal{N}_i} \vec{\vx}_{ij}^{(t)} \odot f_3 \left( \vs_i^{(t)} , \vs_j^{(t)} , \ \Vert \vec{\vx}_{ij}^{(t)} \Vert \right)
     \end{align}
 
-.. literalinclude:: ../../../configs/encoder/egnn.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/egnn.yaml
     :language: yaml
-    :caption: configs/encoder/egnn.yaml
+    :caption: config/encoder/egnn.yaml
 
 
 :py:class:`GVP <proteinworkshop.models.graph_encoders.gvp.GVPGNNModel>` (``gvp``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. literalinclude:: ../../../configs/encoder/gvp.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/gvp.yaml
     :language: yaml
-    :caption: configs/encoder/gvp.yaml
+    :caption: config/encoder/gvp.yaml
 
 
 :py:class:`GCPNet <proteinworkshop.models.graph_encoders.gcpnet.GCPNetModel>` (``gcpnet``)
@@ -157,17 +161,17 @@ GCPNet is an SE(3) equivariant architecture that jointly learns scalar and vecto
 where the geometry-complete and chirality-sensitive local frames for node :math:`i` (i.e., its edges) are defined as :math:`\mathbf{\mathcal{F}}_{ij} = (\va_{ij}, \vb_{ij}, \vc_{ij})`, with :math:`\va_{ij} = \frac{\vx_{i} - \vx_{j}}{ \lVert \vx_{i} - \vx_{j} \rVert }, \vb_{ij} = \frac{\vx_{i} \times \vx_{j}}{ \lVert \vx_{i} \times \vx_{j} \rVert },` and :math:`\vc_{ij} = \va_{ij} \times \vb_{ij}`, respectively.
 
 
-.. literalinclude:: ../../../configs/encoder/gcpnet.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/gcpnet.yaml
     :language: yaml
-    :caption: configs/encoder/gcpnet.yaml
+    :caption: config/encoder/gcpnet.yaml
 
 
 Tensor-Equivariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 203
-    :end-line: 208
+    :start-line: 328
+    :end-line: 333
 
 
 :py:class:`Tensor Field Networks <proteinworkshop.models.graph_encoders.tfn.TensorProductModel>` (``tfn``)
@@ -186,13 +190,13 @@ The higher order tensors :math:`\tilde \vh_{i}` are updated via tensor products 
 where the weights :math:`\vw` of the tensor product are computed via a learnt radial basis function of the relative distance, i.e. :math:`\vw = f \left( \Vert \vec{\vx}_{ij} \Vert \right)`.
 
 
-.. literalinclude:: ../../../configs/encoder/tfn.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/tfn.yaml
     :language: yaml
-    :caption: configs/encoder/tfn.yaml
+    :caption: config/encoder/tfn.yaml
 
 
 :py:class:`Multi-Atomic Cluster Expansion <proteinworkshop.models.graph_encoders.mace.MACEModel>` (``mace``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 MACE (Batatia et al., 2022) is a higher order E(3) or SE(3) equivariant GNN originally developed for molecular dynamics simulations.
 MACE provides an efficient approach to computing high body order equivariant features in the Tensor Field Network framework via Atomic Cluster Expansion:
@@ -205,9 +209,9 @@ In our formalism, this corresponds to:
         \tilde \vh_{i}^{(t+1)} & \defeq \underbrace {\tilde \vh_{i}^{(t+1)} \otimes_{\vw} \dots \otimes_{\vw} \tilde \vh_{i}^{(t+1)} }_\text{$k-1$ times} \ ,
     \end{align}
 
-.. literalinclude:: ../../../configs/encoder/mace.yaml
+.. literalinclude:: ../../../proteinworkshop/config/encoder/mace.yaml
     :language: yaml
-    :caption: configs/encoder/mace.yaml
+    :caption: config/encoder/mace.yaml
 
 
 Decoder Models
@@ -224,6 +228,6 @@ For example, the ``residue_type`` decoder:
 .. seealso::
     :doc:`/configs/task`
 
-.. literalinclude:: ../../../configs/decoder/residue_type.yaml
+.. literalinclude:: ../../../proteinworkshop/config/decoder/residue_type.yaml
     :language: yaml
-    :caption: configs/decoder/residue_type.yaml
+    :caption: config/decoder/residue_type.yaml

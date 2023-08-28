@@ -4,7 +4,7 @@ Loggers
 Wandb (``wandb``)
 ^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../../configs/logger/wandb.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/logger/wandb.yaml
    :language: yaml
    :caption: config/debug/wandb.yaml
 
@@ -12,14 +12,14 @@ Wandb (``wandb``)
 Tensorboard (``tensorboard``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../../configs/logger/tensorboard.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/logger/tensorboard.yaml
    :language: yaml
    :caption: config/debug/tensorboard.yaml
 
 CSV (``csv``)
 ^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../../configs/logger/csv.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/logger/csv.yaml
    :language: yaml
    :caption: config/debug/csv.yaml
 

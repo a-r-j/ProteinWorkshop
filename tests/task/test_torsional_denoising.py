@@ -10,8 +10,7 @@ from proteinworkshop import constants
 
 def test_instantiate_transform():
     config_path = (
-        constants.PROJECT_PATH
-        / "configs"
+        constants.HYDRA_CONFIG_PATH
         / "transforms"
         / "torsional_denoising.yaml"
     )

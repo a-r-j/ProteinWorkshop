@@ -17,7 +17,7 @@ PROJECT_PATH = SRC_PATH.parent
 # Data paths are configured using the `.env` file in the project root.
 
 if not os.path.exists(PROJECT_PATH / ".env"):
-    DATA_PATH = str(PROJECT_PATH / "data")
+    DATA_PATH = str(SRC_PATH / "data")
     os.environ["DATA_PATH"] = str(DATA_PATH)
 
 else:
@@ -33,7 +33,7 @@ else:
 #   the corresponding `.env` environment variables if they are set.
 #   We provide them simply as a fallback for users who do not want to
 #   use hydra or environment variables. Plese see the README and
-#   `configs/env/default.yaml` for more information on how to configure paths.
+#   `proteinworkshop/config/env/default.yaml` for more information on how to configure paths.
 if os.environ.get("ROOT_DIR") is None:
     ROOT_DIR = str(PROJECT_PATH)
     os.environ["ROOT_DIR"] = str(ROOT_DIR)
@@ -45,7 +45,8 @@ if os.environ.get("RUNS_PATH") is None:
     os.environ["RUNS_PATH"] = str(RUNS_PATH)
 
 # ---------------- HYDRA CONSTANTS ----------------
-HYDRA_CONFIG_PATH = PROJECT_PATH / "configs"
+#HYDRA_CONFIG_PATH = PROJECT_PATH / "configs"
+HYDRA_CONFIG_PATH = SRC_PATH / "config"
 
 WANDB_API_KEY = os.environ.get("WANDB_API_KEY")
 """API key for wandb."""

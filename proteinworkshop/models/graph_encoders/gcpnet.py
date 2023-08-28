@@ -46,7 +46,7 @@ class GCPNetModel(torch.nn.Module):
         Note: Each of the model's keyword arguments listed here
         are also referenced in the corresponding `DictConfigs` within `kwargs`.
         They are simply listed here to highlight some of the key arguments available.
-        See `configs/encoder/gcpnet.yaml` for a full list of all available arguments.
+        See `proteinworkshop/config/encoder/gcpnet.yaml` for a full list of all available arguments.
 
         :param num_layers: Number of layers in the model (default: ``5``)
         :type num_layers: int

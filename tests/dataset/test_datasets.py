@@ -6,7 +6,7 @@ from lightning import LightningDataModule
 
 from proteinworkshop import constants
 
-DATASET_CONFIG_DIR = constants.PROJECT_PATH / "configs" / "dataset"
+DATASET_CONFIG_DIR = constants.HYDRA_CONFIG_PATH / "dataset"
 
 
 def test_instantiate_datasets(tmp_path):

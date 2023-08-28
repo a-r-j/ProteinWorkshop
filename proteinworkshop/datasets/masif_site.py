@@ -195,7 +195,7 @@ if __name__ == "__main__":
 
     from proteinworkshop import constants
 
-    config = omegaconf.OmegaConf.load("../../configs/dataset/masif_site.yaml")
+    config = omegaconf.OmegaConf.load("../proteinworkshop/config/dataset/masif_site.yaml")
     config.datamodule.path = pathlib.Path(constants.DATA_PATH) / "MasifSite"  # type: ignore
     config.datamodule.pdb_dir = pathlib.Path(constants.DATA_PATH) / "pdb"  # type: ignore
     config.datamodule.transforms = None

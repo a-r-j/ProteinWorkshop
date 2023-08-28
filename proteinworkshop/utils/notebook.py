@@ -16,7 +16,6 @@ from proteinworkshop import constants
 try:
     # Convenient for debugging
     import lovely_tensors as lt
-    from icecream import ic  # noqa
 
     lt.monkey_patch()
 except:

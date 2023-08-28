@@ -30,7 +30,7 @@ ADAM (``adam``)
     # Example usage:
     python proteinworkshop/train.py ... optimiser=adam optimiser.optimizer.lr=0.0001 ...
 
-.. literalinclude:: ../../../../configs/optimiser/adam.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/optimiser/adam.yaml
    :language: yaml
 
 
@@ -43,7 +43,7 @@ ADAM-W (``adamw``)
     python proteinworkshop/train.py ... optimiser=adamw optimiser.optimizer.lr=0.0001 ...
 
 
-.. literalinclude:: ../../../../configs/optimiser/adamw.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/optimiser/adamw.yaml
    :language: yaml
 
 
@@ -55,5 +55,5 @@ Lion (``lion``)
     # Example usage:
     python proteinworkshop/train.py ... optimiser=lion optimiser.optimizer.lr=0.0001 ...
 
-.. literalinclude:: ../../../../configs/optimiser/lion.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/optimiser/lion.yaml
    :language: yaml
