@@ -1,3 +1,4 @@
+"""Tests for the training module."""
 import os
 from pathlib import Path
 
