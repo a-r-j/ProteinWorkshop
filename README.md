@@ -63,7 +63,7 @@ Below, we outline how one may set up a virtual environment for `proteinworkshop`
 
 ### From PyPI
 
-`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Beforehand, make sure to install [PyTorch](https://pytorch.org/) using its official `pip` installation instructions (with CUDA support as desired).
+`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Beforehand, make sure to install [PyTorch](https://pytorch.org/) (version `2.0.0`) using its official `pip` installation instructions (with CUDA support as desired).
 
 ```bash
 # install `proteinworkshop` from PyPI
@@ -112,7 +112,7 @@ However, for full exploration we recommend cloning the repository and building f
       deactivate
     ```
 
-5. With the environment activated, install [PyTorch](https://pytorch.org/) using its official `pip` installation instructions (with CUDA support as desired - N.B. make sure to add `--no-cache-dir` to the end of the `pip` installation command), and then use the (newly-installed) CLI to install [PyTorch Geometric](https://pyg.org/)
+5. With the environment activated, install [PyTorch](https://pytorch.org/) (version `2.0.0`) using its official `pip` installation instructions (with CUDA support as desired - N.B. make sure to add `--no-cache-dir` to the end of the `pip` installation command), and then use the (newly-installed) CLI to install [PyTorch Geometric](https://pyg.org/)
 
     ```bash
       workshop install pyg
