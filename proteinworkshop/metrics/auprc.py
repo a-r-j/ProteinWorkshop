@@ -6,17 +6,37 @@ from torchmetrics import Metric
 
 
 class AUPRC(Metric):
+    """Class for AUPRC metric."""
+
     def __init__(self, compute_on_cpu: bool = True) -> None:
+        """Initialises the AUPRC metric.
+
+        :param compute_on_cpu: Whether to compute the metric on CPU,
+            defaults to ``True``.
+        :type compute_on_cpu: bool, optional
+        """
         super().__init__()
         self.add_state("preds", default=[], dist_reduce_fx="cat")
         self.add_state("targets", default=[], dist_reduce_fx="cat")
         self.compute_on_cpu = compute_on_cpu
 
     def update(self, preds: torch.Tensor, target: torch.Tensor) -> None:
+        """Updates the current state of the metric.
+
+        :param preds: Tensor of predictions
+        :type preds: torch.Tensor
+        :param target: Tensor of targets
+        :type target: torch.Tensor
+        """
         self.preds.append(preds)
         self.targets.append(target)
 
-    def compute(self) -> Any:
+    def compute(self) -> torch.Tensor:
+        """Computes the AUPRC metric.
+
+        :return: AUPRC metric value
+        :rtype: torch.Tensor
+        """
         return self.auprc(
             torch.cat(self.preds).flatten(), torch.cat(self.targets).flatten()
         )
