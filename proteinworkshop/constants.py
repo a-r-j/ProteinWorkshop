@@ -17,7 +17,7 @@ PROJECT_PATH = SRC_PATH.parent
 # Data paths are configured using the `.env` file in the project root.
 
 if not os.path.exists(PROJECT_PATH / ".env"):
-    DATA_PATH = str(PROJECT_PATH / "data")
+    DATA_PATH = str(SRC_PATH / "data")
     os.environ["DATA_PATH"] = str(DATA_PATH)
 
 else:
