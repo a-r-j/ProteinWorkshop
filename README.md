@@ -63,7 +63,7 @@ Below, we outline how one may set up a virtual environment for `proteinworkshop`
 
 ### From PyPI
 
-`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects.
+`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Beforehand, make sure to install [PyTorch](https://pytorch.org/) using its official `pip` installation instructions (with CUDA support as desired).
 
 ```bash
 # install `proteinworkshop` from PyPI
@@ -72,7 +72,7 @@ pip install proteinworkshop
 # install PyTorch Geometric using the (now-installed) CLI
 workshop install pyg
 
-# set a custom data directory for file downloads
+# set a custom data directory for file downloads; otherwise, all data will be downloaded to `site-packages`
 export DATA_PATH="where/you/want/data/"
 ```
 
@@ -112,10 +112,12 @@ However, for full exploration we recommend cloning the repository and building f
       deactivate
     ```
 
-5. With the environment activated, install [PyTorch](https://pytorch.org/) and [PyTorch Geometric](https://pyg.org/) using their official `pip` installation instructions (with CUDA support as desired)
+5. With the environment activated, install [PyTorch](https://pytorch.org/) using its official `pip` installation instructions (with CUDA support as desired), and then use the (newly-installed) CLI to install [PyTorch Geometric](https://pyg.org/)
 
     ```bash
-      # hint: to see the list of dependencies that are currently installed in the environment, run:
+      workshop install pyg
+
+      # N.B. to list all dependencies currently installed, run:
       poetry show
     ```
 
@@ -486,9 +488,9 @@ Where the suffix after `knn` or `eps` specifies $k$ (number of neighbours) or $\
 | `edge_vectors` | Edge directional vectors (unit-normalized)        |      1  |
 
 # For developers
-To keep with the code style for the `proteinworkshop` repository, please format your commits requests before opening a merge request with the following lines:
+To keep with the code style for the `proteinworkshop` repository, using the following lines please format your commits before opening a pull request:
 ```bash
-# assuming you're in the `ProteinWorkshop` top-level directory
+# assuming you are located in the `ProteinWorkshop` top-level directory
 isort . 
 autoflake -r --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports . 
 black --config=pyproject.toml .
