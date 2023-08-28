@@ -224,7 +224,7 @@ class ProteinDataset(Dataset):
         format: Literal["mmtf", "pdb"] = "pdb",
         in_memory: bool = False,
         store_het: bool = False,
-        out_names: Optional[List[str]] = None
+        out_names: Optional[List[str]] = None,
     ):
         """Dataset for loading protein structures.
 
@@ -259,19 +259,24 @@ class ProteinDataset(Dataset):
         :param transform: List of transforms to apply to each example,
             defaults to ``None``.
         :type transform: Optional[List[Callable]], optional
-        :param pre_transform: _description_, defaults to None
+        :param pre_transform: Transform to apply to each example before
+            processing, defaults to ``None``.
         :type pre_transform: Optional[Callable], optional
-        :param pre_filter: _description_, defaults to None
+        :param pre_filter: Filter to apply to each example before processing,
+            defaults to ``None``.
         :type pre_filter: Optional[Callable], optional
-        :param log: _description_, defaults to True
+        :param log: Whether to log. If ``True``, logs will be printed to
+            stdout, defaults to ``True``.
         :type log: bool, optional
-        :param overwrite: _description_, defaults to False
+        :param overwrite: Whether to overwrite existing files, defaults to
+            ``False``.
         :type overwrite: bool, optional
-        :param format: _description_, defaults to "pdb"
-        :type format: Literal[&quot;mmtf&quot;, &quot;pdb&quot;], optional
-        :param in_memory: _description_, defaults to False
+        :param format: Format to save structures in, defaults to "pdb".
+        :type format: Literal[mmtf, pdb, optional
+        :param in_memory: Whether to load data into memory, defaults to False.
         :type in_memory: bool, optional
-        :param store_het: _description_, defaults to False
+        :param store_het: Whether to store heteroatoms in the graph,
+            defaults to ``False``.
         :type store_het: bool, optional
         """
         self.pdb_codes = [pdb.lower() for pdb in pdb_codes]
@@ -428,7 +433,11 @@ class ProteinDataset(Dataset):
             if self.out_names is not None:
                 fname = self.out_names[i] + ".pt"
             else:
-                fname = f"{pdb}.pt" if self.chains is None else f"{pdb}_{self.chains[i]}.pt"
+                fname = (
+                    f"{pdb}.pt"
+                    if self.chains is None
+                    else f"{pdb}_{self.chains[i]}.pt"
+                )
 
             graph.id = fname.split(".")[0]
 
