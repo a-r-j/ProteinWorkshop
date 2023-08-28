@@ -73,6 +73,8 @@ class CATHDataModule(ProteinDataModule):
         self.dataset_fraction = dataset_fraction
         self.excluded_chains: List[str] = self.exclude_pdbs()
 
+        self.prepare_data_per_node = False
+
     def download(self):
         """Downloads raw data from Ingraham et al."""
         self._download_chain_list()

@@ -117,7 +117,7 @@ However, for full exploration we recommend cloning the repository and building f
 7. Download PDB data:
 
     ```bash
-      python scripts/download_pdb_mmtf.py
+      python proteinworkshop/scripts/download_pdb_mmtf.py
     ```
 
 ## Tutorials
@@ -150,7 +150,7 @@ If you wish to build datasets from source, we recommend first downloading the en
 ```bash
 workshop download pdb
 # or
-python scripts/download_pdb_mmtf.py
+python proteinworkshop/scripts/download_pdb_mmtf.py
 ```
 
 ### Training a model
