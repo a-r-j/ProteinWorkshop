@@ -368,6 +368,7 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 
 | Name      | Description   | Source | License |
 | ----------- | ----------- | ----------- | ---- |
+| `antibody_developability` | Antibody developability prediction | [Chen et al.](https://www.biorxiv.org/content/10.1101/2020.06.18.159798v1.abstract) | [CC-BY 3.0](https://tdcommons.ai/single_pred_tasks/develop/#sabdab-chen-et-al) |
 | `atom3d_msp` | Mutation stability prediction      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
 | `atom3d_ppi` | Protein-protein interaction prediction      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
 | `atom3d_psr` | Protein structure ranking      | [Townshend et al.](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/c45147dee729311ef5b5c3003946c48f-Paper-round1.pdf) | [MIT](https://github.com/drorlab/atom3d/blob/master/LICENSE) |
