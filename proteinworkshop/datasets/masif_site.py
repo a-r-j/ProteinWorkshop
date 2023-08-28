@@ -110,6 +110,7 @@ class MaSIFPPISP(ProteinDataModule):
             transform=self.transform,
             format=self.format,
             in_memory=self.in_memory,
+            out_names=[f"{id[0]}_{id[1]}" for id in ids]
         )
 
     def train_dataloader(self) -> ProteinDataLoader:

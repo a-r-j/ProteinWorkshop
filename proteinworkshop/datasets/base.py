@@ -224,6 +224,7 @@ class ProteinDataset(Dataset):
         format: Literal["mmtf", "pdb"] = "pdb",
         in_memory: bool = False,
         store_het: bool = False,
+        out_names: Optional[List[str]] = None
     ):
         """Dataset for loading protein structures.
 
@@ -284,6 +285,7 @@ class ProteinDataset(Dataset):
         self.root = root
         self.in_memory = in_memory
         self.store_het = store_het
+        self.out_names = out_names
 
         super().__init__(root, transform, pre_transform, pre_filter, log)
         self.structures = pdb_codes if pdb_codes is not None else pdb_paths
@@ -370,6 +372,8 @@ class ProteinDataset(Dataset):
         :return: List of processed file names.
         :rtype: Union[str, List[str], Tuple]
         """
+        if self.out_names is not None:
+            return [f"{name}.pt" for name in self.out_names]
         if self.chains is not None:
             return [
                 f"{pdb}_{chain}.pt"
@@ -421,11 +425,10 @@ class ProteinDataset(Dataset):
                 )  # type: ignore
                 raise e
 
-            fname = (
-                f"{pdb}.pt"
-                if self.chains is None
-                else f"{pdb}_{self.chains[i]}.pt"
-            )
+            if self.out_names is not None:
+                fname = self.out_names[i] + ".pt"
+            else:
+                fname = f"{pdb}.pt" if self.chains is None else f"{pdb}_{self.chains[i]}.pt"
 
             graph.id = fname.split(".")[0]
 
@@ -448,7 +451,9 @@ class ProteinDataset(Dataset):
         if self.in_memory:
             return self.data[idx]
 
-        if self.chains is not None:
+        if self.out_names is not None:
+            fname = f"{self.out_names[idx]}.pt"
+        elif self.chains is not None:
             fname = f"{self.pdb_codes[idx]}_{self.chains[idx]}.pt"
         else:
             fname = f"{self.pdb_codes[idx]}.pt"
