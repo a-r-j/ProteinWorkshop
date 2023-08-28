@@ -73,7 +73,7 @@ pip install proteinworkshop --no-cache-dir
 workshop install pyg
 
 # set a custom data directory for file downloads; otherwise, all data will be downloaded to `site-packages`
-export DATA_PATH="where/you/want/data/"
+export DATA_PATH="where/you/want/data/" # e.g., `export DATA_PATH="proteinworkshop/data"`
 ```
 
 However, for full exploration we recommend cloning the repository and building from source.
