@@ -10,6 +10,8 @@ To switch between different datasets, simply change the `dataset` argument in th
 
 .. code-block:: bash
 
+    workshop train encoder=gear_net dataset=<DATASET_NAME> task=inverse_folding
+    # or 
     python proteinworkshop/train.py encoder=gear_net dataset=<DATASET_NAME> task=inverse_folding
 
 Where ``<DATASET_NAME>`` is given by bracketed name in the listing below. For example, the dataset name for CATH is ``cath``.
@@ -23,6 +25,8 @@ Where ``<DATASET_NAME>`` is given by bracketed name in the listing below. For ex
 
     .. code-block:: bash
 
+        workshop train encoder=<encoder_name> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
+        # or
         python proteinworkshop/train.py encoder=<encoder_name> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
 
 
@@ -32,8 +36,8 @@ Unlabelled Datasets
 
 
 .. mdinclude:: ../../../README.md
-    :start-line: 210
-    :end-line: 251
+    :start-line: 343
+    :end-line: 385
 
 
 :py:class:`ASTRAL <proteinworkshop.datasets.astral.AstralDataModule>` (``astral``)
@@ -68,8 +72,7 @@ exhibit highly-specific functions and can be considered structural building bloc
 
 :py:class:`AFdb Rep. v4 <graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule>` (``afdb_rep_v4``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This is a dataset of approx. 3m protein structures from the alphafold database
-collated by , following structural clustering with FoldSeek.
+This is a dataset of approximately 3 million protein structures from the AlphaFold database, structurally clustered using FoldSeek.
 
 .. literalinclude:: ../../../proteinworkshop/config/dataset/afdb_rep_v4.yaml
     :language: yaml

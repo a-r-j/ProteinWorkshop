@@ -10,6 +10,8 @@ To switch between different encoder architectures, simply change the ``encoder``
 
 .. code-block:: bash
 
+    workshop train encoder=<ENCODER_NAME> dataset=cath task=inverse_folding
+    # or
     python proteinworkshop/train.py encoder=<ENCODER_NAME> dataset=cath task=inverse_folding
 
 Where ``<ENCODER_NAME>`` is given by bracketed name in the listing below. For example, the encoder name for SchNet is ``schnet``.
@@ -23,6 +25,8 @@ Where ``<ENCODER_NAME>`` is given by bracketed name in the listing below. For ex
 
     .. code-block:: bash
 
+        workshop train encoder=<ENCODER_NAME> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
+        # or
         python proteinworkshop/train.py encoder=<ENCODER_NAME> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
 
 
@@ -30,8 +34,8 @@ Invariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 184
-    :end-line: 191
+    :start-line: 307
+    :end-line: 314
 
 :py:class:`SchNet <proteinworkshop.models.graph_encoders.schnet.SchNetModel>` (``schnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -113,8 +117,8 @@ Vector-Equivariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 195
-    :end-line: 201
+    :start-line: 318
+    :end-line: 324
 
 :py:class:`EGNN <proteinworkshop.models.graph_encoders.egnn.EGNNModel>` (``egnn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -166,8 +170,8 @@ Tensor-Equivariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 203
-    :end-line: 208
+    :start-line: 326
+    :end-line: 331
 
 
 :py:class:`Tensor Field Networks <proteinworkshop.models.graph_encoders.tfn.TensorProductModel>` (``tfn``)

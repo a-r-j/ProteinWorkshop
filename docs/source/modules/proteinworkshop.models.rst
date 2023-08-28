@@ -4,6 +4,8 @@ To switch between different encoder architectures, simply change the ``encoder``
 
 .. code-block:: bash
 
+    workshop train encoder=<encoder_name> dataset=cath task=inverse_folding
+    # or 
     python proteinworkshop/train.py encoder=<encoder_name> dataset=cath task=inverse_folding
 
 Where ``<encoder_name>`` is given by bracketed name in the listing below. For example, the encoder name for SchNet is ``schnet``.
@@ -17,6 +19,8 @@ Where ``<encoder_name>`` is given by bracketed name in the listing below. For ex
 
     .. code-block:: bash
 
+        workshop train encoder=<encoder_name> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
+        # or
         python proteinworkshop/train.py encoder=<encoder_name> encoder.num_layer=3 encoder.readout=mean dataset=cath task=inverse_folding
 
 The following structural encoders are currently supported:

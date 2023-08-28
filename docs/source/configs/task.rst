@@ -16,6 +16,8 @@ Specific training objects are achieved through the use of :doc:`/configs/transfo
 
     .. code-block:: bash
 
+        workshop train task=<TASK_NAME> dataset=cath encoder=gvp ...
+        # or
         python proteinworkshop/train.py task=<TASK_NAME> dataset=cath encoder=gvp ...
 
     Where ``<TASK_NAME>`` is one of the tasks listed below.
