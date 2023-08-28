@@ -1,3 +1,4 @@
+"""Implements a transform for corrupting the Cartesian coordinates of a protein structure."""
 import copy
 from typing import Literal, Set, Union
 
@@ -9,6 +10,20 @@ from torch_geometric.transforms import BaseTransform
 
 
 class StructuralNoiseTransform(BaseTransform):
+    """Adds noise to the coordinates of a protein structure.
+
+    Sets the following attributes on the protein data object:
+
+    - ``coords_uncorrupted``: The original coordinates of the protein.
+    - ``noise``: The noise added to the coordinates.
+    - ``coords``: The original coordinates + noise.
+
+    :param corruption_rate: Magnitude of corruption to apply to the coordinates.
+    :type corruption_rate: float
+    :param corruption_strategy: Noise strategy to use for corruption.
+    :type corruption_strategy: Literal["uniform", "gaussian"]
+    """
+
     def __init__(
         self,
         corruption_rate: float,
@@ -23,6 +38,14 @@ class StructuralNoiseTransform(BaseTransform):
 
     @beartype
     def __call__(self, x: Union[Data, Protein]) -> Union[Data, Protein]:
+        """Adds noise to the coordinates of a protein structure.
+
+        :param x: Protein data object
+        :type x: Union[Data, Protein]
+        :raises ValueError: If the corruption strategy is not supported.
+        :return: Protein data object with corrupted coordinates.
+        :rtype: Union[Data, Protein]
+        """
         x.coords_uncorrupted = copy.deepcopy(x.coords)
 
         with torch.no_grad():

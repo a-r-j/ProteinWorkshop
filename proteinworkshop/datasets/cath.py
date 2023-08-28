@@ -26,6 +26,27 @@ class CATHDataModule(ProteinDataModule):
         dataset_fraction: float = 1.0,
         transforms: Optional[Iterable[Callable]] = None,
     ) -> None:
+        """Data module for CATH dataset.
+
+        :param path: Path to store data.
+        :type path: str
+        :param batch_size: Batch size for dataloaders.
+        :type batch_size: int
+        :param format: Format to load PDB files in.
+        :type format: Literal["mmtf", "pdb"]
+        :param pdb_dir: Path to directory containing PDB files.
+        :type pdb_dir: str
+        :param pin_memory: Whether to pin memory for dataloaders.
+        :type pin_memory: bool
+        :param in_memory: Whether to load the entire dataset into memory.
+        :type in_memory: bool
+        :param num_workers: Number of workers for dataloaders.
+        :type num_workers: int
+        :param dataset_fraction: Fraction of dataset to use.
+        :type dataset_fraction: float
+        :param transforms: List of transforms to apply to dataset.
+        :type transforms: Optional[List[Callable]]
+        """
         super().__init__()
 
         self.data_dir = Path(path)
@@ -53,15 +74,18 @@ class CATHDataModule(ProteinDataModule):
         self.excluded_chains: List[str] = self.exclude_pdbs()
 
     def download(self):
-        self.download_chain_list()
+        """Downloads raw data from Ingraham et al."""
+        self._download_chain_list()
 
     def parse_labels(self):
+        """Not implemented for CATH dataset"""
         pass
 
     def exclude_pdbs(self):
+        """Not implemented for CATH dataset"""
         return []
 
-    def download_chain_list(self):  # sourcery skip: move-assign
+    def _download_chain_list(self):  # sourcery skip: move-assign
         URL = "http://people.csail.mit.edu/ingraham/graph-protein-design/data/cath/chain_set_splits.json"
         if not os.path.exists(self.data_dir / "chain_set_splits.json"):
             logger.info("Downloading dataset index file...")
@@ -71,6 +95,14 @@ class CATHDataModule(ProteinDataModule):
 
     @functools.lru_cache
     def parse_dataset(self) -> Dict[str, List[str]]:
+        """Parses dataset index file
+
+        Returns a dictionary with keys "train", "validation", and "test" and
+        values as lists of PDB IDs.
+
+        :return: Dictionary of PDB IDs
+        :rtype: Dict[str, List[str]]
+        """
         fpath = self.data_dir / "chain_set_splits.json"
 
         with open(fpath, "r") as file:
@@ -113,7 +145,12 @@ class CATHDataModule(ProteinDataModule):
         logger.info(f"{len(self.test_pdbs)} remaining test chains")
         return data
 
-    def train_dataset(self):
+    def train_dataset(self) -> ProteinDataset:
+        """Returns the training dataset.
+
+        :return: Training dataset
+        :rtype: ProteinDataset
+        """
         if not hasattr(self, "train_pdbs"):
             self.parse_dataset()
         pdb_codes = [pdb.split(".")[0] for pdb in self.train_pdbs]
@@ -130,6 +167,11 @@ class CATHDataModule(ProteinDataModule):
         )
 
     def val_dataset(self) -> ProteinDataset:
+        """Returns the validation dataset.
+
+        :return: Validation dataset
+        :rtype: ProteinDataset
+        """
         if not hasattr(self, "val_pdbs"):
             self.parse_dataset()
 
@@ -147,6 +189,11 @@ class CATHDataModule(ProteinDataModule):
         )
 
     def test_dataset(self) -> ProteinDataset:
+        """Returns the test dataset.
+
+        :return: Test dataset
+        :rtype: ProteinDataset
+        """
         if not hasattr(self, "test_pdbs"):
             self.parse_dataset()
         pdb_codes = [pdb.split(".")[0] for pdb in self.test_pdbs]
@@ -163,6 +210,11 @@ class CATHDataModule(ProteinDataModule):
         )
 
     def train_dataloader(self) -> ProteinDataLoader:
+        """Returns the training dataloader.
+
+        :return: Training dataloader
+        :rtype: ProteinDataLoader
+        """
         if not hasattr(self, "train_ds"):
             self.train_ds = self.train_dataset()
         return ProteinDataLoader(
@@ -187,6 +239,11 @@ class CATHDataModule(ProteinDataModule):
         )
 
     def test_dataloader(self) -> ProteinDataLoader:
+        """Returns the test dataloader.
+
+        :return: Test dataloader
+        :rtype: ProteinDataLoader
+        """
         if not hasattr(self, "test_ds"):
             self.test_ds = self.test_dataset()
         return ProteinDataLoader(

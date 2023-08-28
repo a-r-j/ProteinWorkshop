@@ -7,7 +7,19 @@ from torchmetrics import Metric
 
 
 class F1Max(Metric):
+    """
+    Implements the protein-centric F1 Max metric.
+    """
+
     def __init__(self, num_classes: int, compute_on_cpu: bool = True) -> None:
+        """Initializes the F1Max metric.
+
+        :param num_classes: Number of classes.
+        :type num_classes: int
+        :param compute_on_cpu: Whether to compute the metric on CPU,
+            defaults to ``True``.
+        :type compute_on_cpu: bool, optional
+        """
         super().__init__()
         self.add_state("preds", default=[], dist_reduce_fx="cat")
         self.add_state("targets", default=[], dist_reduce_fx="cat")
@@ -18,6 +30,14 @@ class F1Max(Metric):
         self.targets.append(target)
 
     def compute(self) -> Any:
+        """Computes the F1Max metric.
+
+        .. seealso::
+            :py:class:`proteinworkshop.metrics.f1_max.F1Max.f1_max`
+
+        :return: F1Max metric value
+        :rtype: Any
+        """
         return self.f1_max(torch.cat(self.preds), torch.cat(self.targets))
 
     def f1_max(self, pred, target):

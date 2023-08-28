@@ -4,7 +4,7 @@ import pathlib
 import subprocess
 import zipfile
 from functools import partial
-from typing import Callable, Iterable, Optional
+from typing import Callable, Dict, Iterable, Literal, Optional
 
 import numpy as np
 import omegaconf
@@ -13,11 +13,26 @@ import torch
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from graphein.protein.utils import download_alphafold_structure
 from loguru import logger as log
-from torch_geometric.data import Dataset
 from tqdm import tqdm
 from tqdm.contrib.concurrent import process_map
 
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+
+PTM13_SITE_TYPES = {
+    "Hydro_K",
+    "Hydro_P",
+    "Methy_K",
+    "Methy_R",
+    "N6-ace_K",
+    "Palm_C",
+    "Phos_ST",
+    "Phos_Y",
+    "Pyro_Q",
+    "SUMO_K",
+    "Ubi_K",
+    "glyco_N",
+    "glyco_ST",
+}
 
 
 class PTMDataModule(ProteinDataModule):
@@ -31,6 +46,24 @@ class PTMDataModule(ProteinDataModule):
         num_workers: int = 16,
         transforms: Optional[Iterable[Callable]] = None,
     ) -> None:
+        """Data module for PTM datasets.
+
+        :param path: Path to store data.
+        :type path: str
+        :param batch_size: Batch size for dataloaders.
+        :type batch_size: int
+        :param dataset_name: Dataset to use, defaults to "ptm_13"
+        :type dataset_name: str, optional
+        :param in_memory: Whether to load the entire dataset into memory, defaults to False
+        :type in_memory: bool, optional
+        :param pin_memory: Whether to pin dataloader memory, defaults to True
+        :type pin_memory: bool, optional
+        :param num_workers: Number of dataloader workers, defaults to 16
+        :type num_workers: int, optional
+        :param transforms: List of transforms to apply, defaults to None
+        :type transforms: Optional[Iterable[Callable]], optional
+        :raises NotImplementedError: If dataset_name is "optm".
+        """
         super().__init__()
         self.dataset_name: str = dataset_name
 
@@ -75,21 +108,7 @@ class PTMDataModule(ProteinDataModule):
         self.unavailable_structures += ["q8wyj6", "q95jn5", "q80xa6", "p30545"]
 
         if self.dataset_name == "ptm_13":
-            self.SITE_TYPES = {
-                "Hydro_K",
-                "Hydro_P",
-                "Methy_K",
-                "Methy_R",
-                "N6-ace_K",
-                "Palm_C",
-                "Phos_ST",
-                "Phos_Y",
-                "Pyro_Q",
-                "SUMO_K",
-                "Ubi_K",
-                "glyco_N",
-                "glyco_ST",
-            }
+            self.SITE_TYPES = PTM13_SITE_TYPES
             self.SITE_TO_NUM = {
                 site: i for i, site in enumerate(self.SITE_TYPES)
             }
@@ -98,9 +117,11 @@ class PTMDataModule(ProteinDataModule):
             raise NotImplementedError
 
     def exclude_pdbs(self):
+        """Not used for PTM datasets"""
         pass
 
     def setup(self, stage: Optional[str] = None):
+        """Sequence of steps to download and prepare data for all splits."""
         self.download_dataset()
         for split in {"train", "val", "test"}:
             data = self.parse_dataset(split)
@@ -133,9 +154,11 @@ class PTMDataModule(ProteinDataModule):
                 f.write("\n".join(self.unavailable_structures))
 
     def download(self):
+        """Downloads PTM dataset and PDB structures."""
         self.download_dataset()
 
     def download_structures(self, data: pd.DataFrame):
+        """Downloads PDB structures for a given dataset."""
         uniprot_ids = list(data["uniprot_id"].unique())
         to_download = [
             id
@@ -154,6 +177,7 @@ class PTMDataModule(ProteinDataModule):
         )
 
     def download_dataset(self):
+        """Downloads PTM dataset from Zenodo if not already downloaded."""
         file_paths = [
             self.root / f"PTM_{split}.json"
             for split in ["train", "val", "test"]
@@ -171,7 +195,16 @@ class PTMDataModule(ProteinDataModule):
         else:
             raise NotImplementedError
 
-    def parse_dataset(self, split: str) -> pd.DataFrame:
+    def parse_dataset(
+        self, split: Literal["train", "val", "test"]
+    ) -> pd.DataFrame:
+        """Parses PTM dataset for a given split.
+
+        :param split: Split to parse.
+        :type split: Literal["train", "val", "test"]
+        :return: DataFrame containing PTM dataset.
+        :rtype: pd.DataFrame
+        """
         data = json.load(open(self.root / f"PTM_{split}.json", "r"))
         data = pd.DataFrame.from_records(data).T
         data["uniprot_id"] = data.index
@@ -186,7 +219,14 @@ class PTMDataModule(ProteinDataModule):
         log.info(f"Found {len(data)} examples in {split}")
         return data
 
-    def parse_labels(self, df: pd.DataFrame):
+    def parse_labels(self, df: pd.DataFrame) -> Dict[str, torch.Tensor]:
+        """Parses labels from PTM dataset.
+
+        :param df: DataFrame containing PTM dataset.
+        :type df: pd.DataFrame
+        :return: Dictionary of labels.
+        :rtype: Dict[str, torch.Tensor]
+        """
         labels = df["label"].values
         labels = [
             torch.zeros((length, len(self.SITE_TYPES)))
@@ -208,6 +248,7 @@ class PTMDataModule(ProteinDataModule):
         return label_map
 
     def _get_dataset(self, split: str) -> ProteinDataset:
+        """Returns the dataset for a given split."""
         data = self.parse_dataset(split)
         labels = self.parse_labels(data)
 
@@ -221,16 +262,37 @@ class PTMDataModule(ProteinDataModule):
             in_memory=self.in_memory,
         )
 
-    def train_dataset(self):
+    def train_dataset(self) -> ProteinDataset:
+        """Returns the training dataset.
+
+        :return: Training dataset.
+        :rtype: ProteinDataset
+        """
         return self._get_dataset("train")
 
-    def val_dataset(self) -> Dataset:
+    def val_dataset(self) -> ProteinDataset:
+        """Returns the validation dataset.
+
+        :return: Validation dataset.
+        :rtype: Dataset
+        """
         return self._get_dataset("val")
 
-    def test_dataset(self) -> Dataset:
+    def test_dataset(self) -> ProteinDataset:
+        """Returns the test dataset.
+
+        :return: Test dataset.
+        :rtype: Dataset
+        """
         return self._get_dataset("test")
 
-    def train_dataloader(self):
+    def train_dataloader(self) -> ProteinDataLoader:
+        """Returns the training dataloader.
+
+
+        :return: Training dataloader.
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.train_dataset(),
             batch_size=self.batch_size,
@@ -240,6 +302,11 @@ class PTMDataModule(ProteinDataModule):
         )
 
     def val_dataloader(self) -> ProteinDataLoader:
+        """Returns the validation dataloader.
+
+        :return: Returns the validation dataloader.
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.val_dataset(),
             batch_size=self.batch_size,
@@ -249,6 +316,11 @@ class PTMDataModule(ProteinDataModule):
         )
 
     def test_dataloader(self) -> ProteinDataLoader:
+        """Returns the test dataloader.
+
+        :return: Test dataloader.
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.test_dataset(),
             batch_size=self.batch_size,

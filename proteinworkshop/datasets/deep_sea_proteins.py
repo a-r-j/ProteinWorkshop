@@ -21,15 +21,38 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         self,
         path: os.PathLike,
         pdb_dir: os.PathLike,
-        validation_fold: int,
+        validation_fold: Literal["0", "1", "2", "3", "4"],
         batch_size: int,
         in_memory: bool = False,
         pin_memory: bool = True,
         num_workers: int = 16,
-        obsolete_strategy: str = "drop",
+        obsolete_strategy: Literal["drop", "replace"] = "drop",
         format: Literal["mmtf", "pdb"] = "mmtf",
         transforms: Optional[Iterable[Callable]] = None,
     ):
+        """Data module for Deep Sea Proteins dataset.
+
+        :param path: Path to store data.
+        :type path: os.PathLike
+        :param pdb_dir: Path to directory containing PDB files.
+        :type pdb_dir: os.PathLike
+        :param validation_fold: Name of validation fold to use.
+        :type validation_fold: int
+        :param batch_size: Batch size for dataloaders.
+        :type batch_size: int
+        :param in_memory: Whether to load the entire dataset into memory, defaults to False
+        :type in_memory: bool, optional
+        :param pin_memory: Whether to pin dataloader memory, defaults to True
+        :type pin_memory: bool, optional
+        :param num_workers: Number of dataloader workers, defaults to 16
+        :type num_workers: int, optional
+        :param obsolete_strategy: Strategy to deal with obsolete PDbs, defaults to "drop"
+        :type obsolete_strategy: str, optional
+        :param format: Format of the structure files, defaults to "mmtf"
+        :type format: Literal[mmtf, pdb], optional
+        :param transforms: Transforms to apply, defaults to None
+        :type transforms: Optional[Iterable[Callable]], optional
+        """
         super().__init__()
         self.data_dir = pathlib.Path(path)
         if not os.path.exists(self.data_dir):
@@ -69,6 +92,7 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         self.prepare_data_per_node = True
 
     def download(self):
+        """Downloads the Deep Sea Protein dataset to the data directory."""
         if not os.path.exists(self.data_dir / self.ZIP_FNAME):
             log.info(
                 f"Downloading Deep Sea Protein dataset to {self.data_dir}"
@@ -93,6 +117,13 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
             )
 
     def parse_dataset(self, split: str) -> pd.DataFrame:
+        """Parses the source raw dataset.
+
+        :param split: Split to parse.
+        :type split: str
+        :return: Parsed dataset
+        :rtype: pd.DataFrame
+        """
         log.info(f"Parsing dataset from {self.data_dir / 'folds.tsv'}")
         df = pd.read_csv(self.data_dir / "folds.tsv", sep="\t")
         df[["pdb_code", "chain"]] = df["sample"].str.split("_", expand=True)
@@ -128,10 +159,12 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
             raise ValueError(f"Split {split} not recognized")
 
     def parse_labels(self):
+        """Not implemented. Labels handled in ``parse_dataset``."""
         # Labels are already in the dataset
         pass
 
     def exclude_pdbs(self):
+        """Not implemented for Deep Sea Proteins dataset"""
         pass
 
     def _get_dataset(self, split: str) -> ProteinDataset:
@@ -148,15 +181,35 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         )
 
     def train_dataset(self) -> ProteinDataset:
+        """Returns the training dataset.
+
+        :return: Training dataset
+        :rtype: ProteinDataset
+        """
         return self._get_dataset("train")
 
     def val_dataset(self) -> ProteinDataset:
+        """Returns the validation dataset.
+
+        :return: Validation dataset
+        :rtype: ProteinDataset
+        """
         return self._get_dataset("validation")
 
     def test_dataset(self) -> ProteinDataset:
+        """Returns the test dataset.
+
+        :return: Test dataset
+        :rtype: ProteinDataset
+        """
         return self._get_dataset("test")
 
     def train_dataloader(self) -> ProteinDataLoader:
+        """Returns the training dataloader.
+
+        :return: Training dataloader
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.train_dataset(),
             batch_size=self.batch_size,
@@ -166,6 +219,11 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         )
 
     def val_dataloader(self) -> ProteinDataLoader:
+        """Returns the validation dataloader.
+
+        :return: Validation dataloader
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.val_dataset(),
             batch_size=self.batch_size,
@@ -175,6 +233,11 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         )
 
     def test_dataloader(self) -> ProteinDataLoader:
+        """Returns the test dataloader.
+
+        :return: Test dataloader
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.test_dataset(),
             batch_size=self.batch_size,
