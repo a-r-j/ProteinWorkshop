@@ -112,7 +112,7 @@ However, for full exploration we recommend cloning the repository and building f
       deactivate
     ```
 
-5. With the environment activated, install [PyTorch](https://pytorch.org/) using its official `pip` installation instructions (with CUDA support as desired), and then use the (newly-installed) CLI to install [PyTorch Geometric](https://pyg.org/)
+5. With the environment activated, install [PyTorch](https://pytorch.org/) using its official `pip` installation instructions (with CUDA support as desired - N.B. make sure to add `--no-cache-dir` to the end of the `pip` installation command), and then use the (newly-installed) CLI to install [PyTorch Geometric](https://pyg.org/)
 
     ```bash
       workshop install pyg
