@@ -55,7 +55,7 @@ Configuration files to run the experiments described in the manuscript are provi
     - [Edge Construction](#edge-construction)
     - [Invariant Edge Features](#invariant-edge-features)
     - [Equivariant Edge Features](#equivariant-edge-features)
-- [For developers](#for-developers)
+  - [For developers](#for-developers)
 
 ## Installation
 
@@ -487,7 +487,7 @@ Where the suffix after `knn` or `eps` specifies $k$ (number of neighbours) or $\
 | ----------- | ----------- | ----------- |
 | `edge_vectors` | Edge directional vectors (unit-normalized)        |      1  |
 
-# For developers
+## For developers
 To keep with the code style for the `proteinworkshop` repository, using the following lines please format your commits before opening a pull request:
 ```bash
 # assuming you are located in the `ProteinWorkshop` top-level directory
