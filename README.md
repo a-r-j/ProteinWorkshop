@@ -158,7 +158,7 @@ python proteinworkshop/scripts/download_pdb_mmtf.py
 Launching an experiment minimally requires specification of a dataset, structural encoder, and task:
 
 ```bash
-python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding
+python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding trainer=cpu # or trainer=gpu
 ```
 
 This command uses the default configurations in `configs/train.yaml`, which can be overwritten by equivalently named options. For instance, you can use a different input featurisation using the `features` option, or set the display name of your experiment on wandb using the `name` option:
