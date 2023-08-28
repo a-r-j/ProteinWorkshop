@@ -3,7 +3,7 @@ Downloading Datasets
 
 Raw datasets will be downloaded from their respective sources and built the first time it is used. This may take a while.
 
-Processed datasets are available from Zenodo and we provide a CLI tool to download them.
+Processed datasets are available from Zenodo (https://zenodo.org/record/8282470) and we provide a CLI tool to download them.
 
 .. note::
 
@@ -13,12 +13,21 @@ Processed datasets are available from Zenodo and we provide a CLI tool to downlo
 
             export DATA_PATH=/path/to/where/you/want/datasets
 
-.. code-block::bash
+
+.. code-block:: bash
+
     workshop download <DATASET_NAME>
+    # Download pre-training datasets
     workshop download pdb
     workshop download afdb_rep_v4
     workshop download cath
+
+    # Download downstream datasets
+    workshop download ec_reaction
+    workshop download fold_classification
+    workshop download antibody_developability
     ...
 
 .. seealso::
-    :doc:`configs/datasets`
+
+    :doc:`/configs/datasets`
