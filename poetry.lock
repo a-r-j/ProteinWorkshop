@@ -328,12 +328,14 @@ lxml = ["lxml"]
 
 [[package]]
 name = "biopandas"
-version = "0.5.0.dev0"
+version = "0.5.1.dev0"
 description = "Machine Learning Library Extensions"
 optional = false
 python-versions = "*"
-files = []
-develop = false
+files = [
+    {file = "biopandas-0.5.1.dev0-py3-none-any.whl", hash = "sha256:db9e73e9bea642a6421d57479d0577747dcc25ba2284e6bfe8cdb7f539c1d1fb"},
+    {file = "biopandas-0.5.1.dev0.tar.gz", hash = "sha256:6dc9de631babf8221c1ac60230133717039e08911f15e8ac48498c787022de12"},
+]
 
 [package.dependencies]
 looseversion = "1.1.2"
@@ -343,13 +345,7 @@ pandas = ">=0.24.2"
 setuptools = "*"
 
 [package.extras]
-test = ["flake8", "pytest", "pytest-cov"]
-
-[package.source]
-type = "git"
-url = "https://github.com/BioPandas/biopandas.git"
-reference = "HEAD"
-resolved_reference = "e88a093a20c89e674778e56e3082142460510b97"
+test = ["flake8", "nose", "pytest", "pytest-cov"]
 
 [[package]]
 name = "biopython"
@@ -1441,17 +1437,17 @@ gitdb = ">=4.0.1,<5"
 
 [[package]]
 name = "graphein"
-version = "1.7.1"
+version = "1.7.2"
 description = "Protein & Interactomic Graph Construction for Machine Learning"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "graphein-1.7.1-py3-none-any.whl", hash = "sha256:dda9319da3552ca817acda2f3bab8e313b5b608a8079a43eeae7c58306867638"},
-    {file = "graphein-1.7.1.tar.gz", hash = "sha256:6fa95ac4e9f103aed593b7fcbc67633ffa8fdcb170618ef3f2651dd65be6bdaa"},
+    {file = "graphein-1.7.2-py3-none-any.whl", hash = "sha256:ef09d925ca50094a547bd1c55b6e30ff296f6ed41741d6223a078d82892bae0d"},
+    {file = "graphein-1.7.2.tar.gz", hash = "sha256:3047c54da593432849be6fa3a36eb97755a9753e5cd0dc54fd08ab00c286bee8"},
 ]
 
 [package.dependencies]
-biopandas = "0.5.0.dev0"
+biopandas = ">=0.5.0.dev0"
 biopython = "*"
 bioservices = ">=1.10.0"
 deepdiff = "*"
@@ -5609,4 +5605,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">= 3.9, < 3.11"
-content-hash = "41e39d3129dc3182478a50d1d7ba82eee30d4e293e0f363f1b69ad2f6f3b18a6"
+content-hash = "3d76ff0bb25b7a10b33ed6399d7dd05d00b1857b9b45080fa54662237cc20cd7"
