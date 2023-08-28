@@ -57,6 +57,10 @@ def pair_data(a: Data, b: Data) -> Data:
 
 
 class ProteinDataModule(L.LightningDataModule, ABC):
+    prepare_data_per_node = (
+        True  # class default for lighting 2.0 compatability
+    )
+
     @abstractmethod
     def download(self):
         """

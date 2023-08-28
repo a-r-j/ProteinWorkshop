@@ -30,6 +30,7 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         format: Literal["mmtf", "pdb"] = "mmtf",
         transforms: Optional[Iterable[Callable]] = None,
     ):
+        super().__init__()
         self.data_dir = pathlib.Path(path)
         if not os.path.exists(self.data_dir):
             log.info(f"Creating data directory: {self.data_dir}")
