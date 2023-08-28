@@ -66,7 +66,14 @@ Below, we outline how one may set up a virtual environment for `proteinworkshop`
 `proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects.
 
 ```bash
+# install `proteinworkshop` from PyPI
 pip install proteinworkshop
+
+# install PyTorch Geometric using the (now-installed) CLI
+workshop install pyg
+
+# set a custom data directory for file downloads
+export DATA_PATH="where/you/want/data/"
 ```
 
 However, for full exploration we recommend cloning the repository and building from source.
@@ -158,12 +165,16 @@ python proteinworkshop/scripts/download_pdb_mmtf.py
 Launching an experiment minimally requires specification of a dataset, structural encoder, and task:
 
 ```bash
+workshop train dataset=cath encoder=egnn task=inverse_folding trainer=cpu env.paths.data=where/you/want/data/
+# or
 python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding trainer=cpu # or trainer=gpu
 ```
 
 This command uses the default configurations in `configs/train.yaml`, which can be overwritten by equivalently named options. For instance, you can use a different input featurisation using the `features` option, or set the display name of your experiment on wandb using the `name` option:
 
 ```bash
+workshop train dataset=cath encoder=egnn task=inverse_folding features=ca_bb name=MY-EXPT-NAME env.paths.data=where/you/want/data/
+# or
 python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding features=ca_bb name=MY-EXPT-NAME
 ```
 
@@ -172,6 +183,8 @@ python proteinworkshop/train.py dataset=cath encoder=egnn task=inverse_folding f
 Finetuning a model additionally requires specification of a checkpoint.
 
 ```bash
+workshop finetune dataset=cath encoder=egnn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT env.paths.data=where/you/want/data/
+# or
 python proteinworkshop/finetune.py dataset=cath encoder=egnn task=inverse_folding ckpt_path=PATH/TO/CHECKPOINT
 ```
 
