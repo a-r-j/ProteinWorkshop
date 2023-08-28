@@ -11,3 +11,4 @@ Quickstart
 
     quickstart_component/pretrain
     quickstart_component/downstream
+    quickstart_component/download
