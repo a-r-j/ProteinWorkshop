@@ -18,6 +18,7 @@ def str2bool(v: str) -> bool:
 
 class FLIPDatamodule(ProteinDataModule):
     def __init__(self, root: str, dataset_name: str, split: str) -> None:
+        super().__init__()
         self.root = Path(root)
         os.makedirs(self.root / dataset_name, exist_ok=True)
         self.dataset_name = dataset_name

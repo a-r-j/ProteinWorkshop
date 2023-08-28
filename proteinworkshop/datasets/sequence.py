@@ -12,7 +12,6 @@ from loguru import logger
 from torch_geometric.data import Data, Dataset
 from tqdm import tqdm
 
-
 try:
     import esm
 except:

@@ -30,6 +30,7 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         format: Literal["mmtf", "pdb"] = "mmtf",
         transforms: Optional[Iterable[Callable]] = None,
     ):
+        super().__init__()
         self.data_dir = pathlib.Path(path)
         if not os.path.exists(self.data_dir):
             log.info(f"Creating data directory: {self.data_dir}")
@@ -63,6 +64,9 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
             "deep_sea_species.tsv",
             "protein_pairs.tsv",
         }
+
+        # required in lightning >= 2.0
+        self.prepare_data_per_node = True
 
     def download(self):
         if not os.path.exists(self.data_dir / self.ZIP_FNAME):

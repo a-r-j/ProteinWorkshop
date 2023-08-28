@@ -3,8 +3,6 @@ import importlib.metadata
 from graphein import verbose
 from omegaconf import OmegaConf
 
-from proteinworkshop.models.utils import get_input_dim
-
 # Disable graphein import warnings
 verbose(False)
 
@@ -16,6 +14,8 @@ def register_custom_omegaconf_resolvers():
     """
     Register custom OmegaConf resolvers for use in Hydra config files.
     """
+    # lazy import
+    from proteinworkshop.models.utils import get_input_dim  # noqa: F401
 
     OmegaConf.register_new_resolver("plus", lambda x, y: x + y)
     OmegaConf.register_new_resolver(
