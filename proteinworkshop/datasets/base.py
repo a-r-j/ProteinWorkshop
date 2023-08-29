@@ -296,6 +296,17 @@ class ProteinDataset(Dataset):
         self.store_het = store_het
         self.out_names = out_names
 
+        # Determine whether to download raw structures
+        if not self.overwrite and all(
+            os.path.exists(p) for p in self.raw_paths
+        ):
+            logger.info(
+                f"All structures already processed and overwrite=False. Skipping download."
+            )
+            self._skip_download = True
+        else:
+            self._skip_download = False
+
         super().__init__(root, transform, pre_transform, pre_filter, log)
         self.structures = pdb_codes if pdb_codes is not None else pdb_paths
         if self.in_memory:
@@ -366,6 +377,8 @@ class ProteinDataset(Dataset):
         :return: List of raw file names.
         :rtype: List[str]
         """
+        if self._skip_download:
+            return []
         if self.pdb_paths is None:
             return [f"{pdb}.{format}" for pdb in self.pdb_codes]
         else:
