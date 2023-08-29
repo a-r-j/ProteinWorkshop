@@ -298,7 +298,7 @@ class ProteinDataset(Dataset):
 
         # Determine whether to download raw structures
         if not self.overwrite and all(
-            os.path.exists(self.processed_dir / p)
+            os.path.exists(Path(self.root) / "processed" / p)
             for p in self.processed_file_names
         ):
             logger.info(
