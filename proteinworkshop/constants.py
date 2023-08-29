@@ -6,6 +6,7 @@ Paths are configured using the `.env` file in the project root.
 import logging
 import os
 import pathlib
+from loguru import logger
 
 # ---------------- PATH CONSTANTS ----------------
 SRC_PATH = pathlib.Path(__file__).parent
@@ -14,12 +15,19 @@ SRC_PATH = pathlib.Path(__file__).parent
 PROJECT_PATH = SRC_PATH.parent
 """Path to the project root."""
 
+# ---------------- ENVIRONMENT VARIABLES ----------------
 # Data paths are configured using the `.env` file in the project root.
 
 if not os.path.exists(PROJECT_PATH / ".env"):
-    DATA_PATH = str(SRC_PATH / "data")
-    os.environ["DATA_PATH"] = str(DATA_PATH)
-
+    logger.debug("No `.env` file found in project root. Checking for env vars...")
+    # If no `.env` file found, check for an env var
+    if os.environ.get("DATA_PATH") is not None:
+        logger.debug("Found env var `DATA_PATH`:.")
+        DATA_PATH = os.environ.get("DATA_PATH")
+    else:
+        logger.debug("No env var `DATA_PATH` found. Setting default...")
+        DATA_PATH = str(SRC_PATH / "data")
+        os.environ["DATA_PATH"] = str(DATA_PATH)
 else:
     import dotenv  # lazy import to avoid dependency on dotenv
 
@@ -28,6 +36,7 @@ else:
     DATA_PATH = os.environ.get("DATA_PATH")
     """Root path to the data directory. """
 
+logger.info("DATA_PATH: {DATA_PATH}")
 # Set default environment paths as fallback if not specified in .env file
 #  NOTE: These will be overridden by paths in the hydra config or by
 #   the corresponding `.env` environment variables if they are set.
@@ -45,7 +54,7 @@ if os.environ.get("RUNS_PATH") is None:
     os.environ["RUNS_PATH"] = str(RUNS_PATH)
 
 # ---------------- HYDRA CONSTANTS ----------------
-#HYDRA_CONFIG_PATH = PROJECT_PATH / "configs"
+# HYDRA_CONFIG_PATH = PROJECT_PATH / "configs"
 HYDRA_CONFIG_PATH = SRC_PATH / "config"
 
 WANDB_API_KEY = os.environ.get("WANDB_API_KEY")
