@@ -9,7 +9,7 @@ import datetime
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 project = "Protein Workshop"
 author = "Arian R. Jamasb"
-release = "0.2.0"
+release = "0.2.1"
 copyright = f"{datetime.datetime.now().year}, {author}"
 
 # -- General configuration ---------------------------------------------------

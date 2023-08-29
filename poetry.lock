@@ -1978,13 +1978,13 @@ referencing = ">=0.28.0"
 
 [[package]]
 name = "jupyter-client"
-version = "8.3.0"
+version = "8.3.1"
 description = "Jupyter protocol implementation and client libraries"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jupyter_client-8.3.0-py3-none-any.whl", hash = "sha256:7441af0c0672edc5d28035e92ba5e32fadcfa8a4e608a434c228836a89df6158"},
-    {file = "jupyter_client-8.3.0.tar.gz", hash = "sha256:3af69921fe99617be1670399a0b857ad67275eefcfa291e2c81a160b7b650f5f"},
+    {file = "jupyter_client-8.3.1-py3-none-any.whl", hash = "sha256:5eb9f55eb0650e81de6b7e34308d8b92d04fe4ec41cd8193a913979e33d8e1a5"},
+    {file = "jupyter_client-8.3.1.tar.gz", hash = "sha256:60294b2d5b869356c893f57b1a877ea6510d60d45cf4b38057f1672d85699ac9"},
 ]
 
 [package.dependencies]
@@ -4495,13 +4495,13 @@ stats = ["scipy (>=1.3)", "statsmodels (>=0.10)"]
 
 [[package]]
 name = "sentry-sdk"
-version = "1.29.2"
+version = "1.30.0"
 description = "Python client for Sentry (https://sentry.io)"
 optional = false
 python-versions = "*"
 files = [
-    {file = "sentry-sdk-1.29.2.tar.gz", hash = "sha256:a99ee105384788c3f228726a88baf515fe7b5f1d2d0f215a03d194369f158df7"},
-    {file = "sentry_sdk-1.29.2-py2.py3-none-any.whl", hash = "sha256:3e17215d8006612e2df02b0e73115eb8376c37e3f586d8436fa41644e605074d"},
+    {file = "sentry-sdk-1.30.0.tar.gz", hash = "sha256:7dc873b87e1faf4d00614afd1058bfa1522942f33daef8a59f90de8ed75cd10c"},
+    {file = "sentry_sdk-1.30.0-py2.py3-none-any.whl", hash = "sha256:2e53ad63f96bb9da6570ba2e755c267e529edcf58580a2c0d2a11ef26e1e678b"},
 ]
 
 [package.dependencies]
@@ -4524,6 +4524,7 @@ httpx = ["httpx (>=0.16.0)"]
 huey = ["huey (>=2)"]
 loguru = ["loguru (>=0.5)"]
 opentelemetry = ["opentelemetry-distro (>=0.35b0)"]
+opentelemetry-experimental = ["opentelemetry-distro (>=0.40b0,<1.0)", "opentelemetry-instrumentation-aiohttp-client (>=0.40b0,<1.0)", "opentelemetry-instrumentation-django (>=0.40b0,<1.0)", "opentelemetry-instrumentation-fastapi (>=0.40b0,<1.0)", "opentelemetry-instrumentation-flask (>=0.40b0,<1.0)", "opentelemetry-instrumentation-requests (>=0.40b0,<1.0)", "opentelemetry-instrumentation-sqlite3 (>=0.40b0,<1.0)", "opentelemetry-instrumentation-urllib (>=0.40b0,<1.0)"]
 pure-eval = ["asttokens", "executing", "pure-eval"]
 pymongo = ["pymongo (>=3.1)"]
 pyspark = ["pyspark (>=2.4.4)"]
@@ -5165,19 +5166,18 @@ test = ["onnx", "onnxruntime", "pytest", "pytest-cov"]
 
 [[package]]
 name = "torchmetrics"
-version = "1.1.0"
+version = "1.1.1"
 description = "PyTorch native Metrics"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "torchmetrics-1.1.0-py3-none-any.whl", hash = "sha256:16afba73195495844248f9120d1629e4067c998194458f4a37bf05642223d29d"},
-    {file = "torchmetrics-1.1.0.tar.gz", hash = "sha256:94b51aeb3d5ff55503fa47086bbc2af9e26efabb840e2d3c2381db9623dda5fd"},
+    {file = "torchmetrics-1.1.1-py3-none-any.whl", hash = "sha256:903b4fc30537acfc5221505c48f7627e58dbf6d9dea85c16ea7b4323f9e13793"},
+    {file = "torchmetrics-1.1.1.tar.gz", hash = "sha256:65ea34205c0506eecfd06b98f63f4d2a2c5c0e17367cf324e1747adc854c80a5"},
 ]
 
 [package.dependencies]
 lightning-utilities = ">=0.8.0"
 numpy = ">1.20.0"
-packaging = "*"
 torch = ">=1.8.1"
 
 [package.extras]
@@ -5366,13 +5366,13 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 
 [[package]]
 name = "wandb"
-version = "0.15.8"
+version = "0.15.9"
 description = "A CLI and library for interacting with the Weights and Biases API."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "wandb-0.15.8-py3-none-any.whl", hash = "sha256:0cff71d412a9e6bed0f60cc0dd77d2b9898d3baf0a4aa31c741d3653e84dbd6b"},
-    {file = "wandb-0.15.8.tar.gz", hash = "sha256:2c39e129fb8dc69c7ff813aa52c2ce7f98e3a0f25c12dd96b1de7528d9443a84"},
+    {file = "wandb-0.15.9-py3-none-any.whl", hash = "sha256:879365e5fcd00444874785b02f56f25973e7064420d9de3cc08a9948ecdf565b"},
+    {file = "wandb-0.15.9.tar.gz", hash = "sha256:3c41f59e72f3116177705d88d6049f443e238fa1451d1dda6fa89e055caf230f"},
 ]
 
 [package.dependencies]
