@@ -5,13 +5,13 @@ on:
     paths-ignore:
       - "README.md"
       - "docs/**"
-      - ".gitignore"
+      - "CHANGELOG.md"
 
     pull_request:
       paths-ignore:
         - "README.md"
         - "docs/**"
-        - ".gitignore"
+        - "CHANGELOG.md"
 
 jobs:
   buld_cpu:
