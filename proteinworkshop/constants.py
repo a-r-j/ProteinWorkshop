@@ -36,7 +36,7 @@ else:
     DATA_PATH = os.environ.get("DATA_PATH")
     """Root path to the data directory. """
 
-logger.info("DATA_PATH: {DATA_PATH}")
+logger.info(f"DATA_PATH: {DATA_PATH}")
 # Set default environment paths as fallback if not specified in .env file
 #  NOTE: These will be overridden by paths in the hydra config or by
 #   the corresponding `.env` environment variables if they are set.
