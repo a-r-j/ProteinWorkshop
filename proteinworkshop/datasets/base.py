@@ -331,6 +331,10 @@ class ProteinDataset(Dataset):
 
         Downloaded files are stored in ``self.raw_dir``.
         """
+        if self._skip_download:
+            logger.info(
+                "All structures already processed and overwrite=False. Skipping download."
+            )
         if self.pdb_codes is not None:
             to_download = (
                 self.pdb_codes
