@@ -56,6 +56,7 @@ class DummyDataModule(ProteinDataModule):
 
         self.format = format
         self.in_memory = in_memory
+        self.overwrite = overwrite
 
         if transforms is not None:
             self.transform = self.compose_transforms(
