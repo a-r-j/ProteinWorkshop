@@ -7,4 +7,5 @@ datamodule:
   pin_memory: True # Pin memory for dataloader
   num_workers: 16 # Number of workers for dataloader
   transforms: ${transforms} # Transforms to apply to dataset examples
+  overwrite: False # Whether to overwrite existing dataset files
 num_classes: 13 # Number of classes

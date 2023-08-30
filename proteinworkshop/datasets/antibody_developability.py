@@ -27,6 +27,7 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
         format: Literal["mmtf", "pdb"] = "mmtf",
         obsolete_strategy: str = "drop",
         transforms: Optional[List[Callable]] = None,
+        overwrite: bool = False,
     ) -> None:
         """
         Data module for antibody developability dataset from Chen et al.
@@ -49,6 +50,9 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
         :type obsolete_strategy: str
         :param transforms: List of transforms to apply to dataset.
         :type transforms: Optional[List[Callable]]
+        :param overwrite: Whether or not to overwrite existing processed data.
+            Defaults t o ``False``.
+        :type overwrite: bool
         """
         super().__init__()
         self.root = pathlib.Path(path)
@@ -64,6 +68,7 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
 
         self.format = format
         self.obsolete_strategy = obsolete_strategy
+        self.overwrite = overwrite
 
         if transforms is not None:
             self.transform = self.compose_transforms(
@@ -136,6 +141,7 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
             format=self.format,
             transform=self.transform,
             in_memory=self.in_memory,
+            overwrite=self.overwrite,
         )
 
     def train_dataset(self) -> ProteinDataset:

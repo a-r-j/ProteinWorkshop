@@ -23,6 +23,7 @@ class Metal3DDataModule(ProteinDataModule):
         num_workers: int = 0,
         pin_memory: bool = True,
         obsolete_strategy: str = "drop",  # Or replace
+        overwrite: bool = False,
     ) -> None:
         super().__init__()
 
@@ -34,6 +35,7 @@ class Metal3DDataModule(ProteinDataModule):
 
         self.format = format
         self.in_memory = in_memory
+        self.overwrite = overwrite
 
         if transforms is not None:
             self.transform = self.compose_transforms(
@@ -110,6 +112,7 @@ class Metal3DDataModule(ProteinDataModule):
             format=self.format,
             in_memory=self.in_memory,
             store_het=True,
+            overwrite=self.overwrite,
         )
 
     def train_dataset(self) -> ProteinDataset:

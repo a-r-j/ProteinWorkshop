@@ -5,6 +5,7 @@ datamodule:
   num_workers: 4 # Number of workers for dataloader
   pin_memory: True # Pin memory for dataloader
   transforms: ${transforms} # Transforms to apply to dataset examples
+  overwrite: False # Whether to overwrite existing dataset files
 
   pdb_dataset:
     _target_: "proteinworkshop.datasets.pdb_dataset.PDBData"

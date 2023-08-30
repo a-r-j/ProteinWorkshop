@@ -27,6 +27,7 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
         dataset_fraction: float = 1.0,
         shuffle_labels: bool = False,
         transforms: Optional[Iterable[Callable]] = None,
+        overwrite: bool = False,
     ) -> None:
         super().__init__()
         self.data_dir = Path(path)
@@ -99,7 +100,7 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
             pdb_codes=list(df.pdb),
             chains=list(df.chain),
             graph_labels=[torch.tensor(a) for a in list(df.label)],
-            overwrite=False,
+            overwrite=self.overwrite,
             transform=self.transform,
             format=self.format,
             in_memory=self.in_memory,

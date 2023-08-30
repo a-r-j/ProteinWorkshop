@@ -20,6 +20,7 @@ class DummyDataModule(ProteinDataModule):
         num_workers: int = 0,
         pin_memory: bool = True,
         obsolete_strategy: Literal["drop", "replace"] = "drop",  # Or replace
+        overwrite: bool = True,
     ) -> None:
         """Data module for dummy dataset. Small dataset for testing purposes.
 
@@ -41,6 +42,9 @@ class DummyDataModule(ProteinDataModule):
         :type pin_memory: bool, optional
         :param obsolete_strategy: How to handle obsolete PDBs, defaults to "drop"
         :type obsolete_strategy: Literal["drop", "replace"], optional
+        :param overwrite: Whether to overwrite existing data, defaults to
+            ``True``
+        :type overwrite: bool, optional
         """
         super().__init__()
 
@@ -98,6 +102,7 @@ class DummyDataModule(ProteinDataModule):
             format=self.format,
             in_memory=self.in_memory,
             store_het=True,
+            overwrite=self.overwrite,
         )
 
     def train_dataset(self) -> ProteinDataset:

@@ -136,12 +136,14 @@ class PDBDataModule(ProteinDataModule):
         batch_size: int = 32,
         num_workers: int = 0,
         pin_memory: bool = False,
+        overwrite: bool = False,
     ):
         super().__init__()
         self.root = path
         self.dataset = pdb_dataset
         self.dataset.path = path
         self.format = "mmtf.gz"
+        self.overwrite = overwrite
 
         self.in_memory = in_memory
 
@@ -207,6 +209,7 @@ class PDBDataModule(ProteinDataModule):
             format=self.format,
             transform=self.transform,
             in_memory=self.in_memory,
+            overwrite=self.overwrite,
         )
 
     def train_dataset(self) -> Dataset:

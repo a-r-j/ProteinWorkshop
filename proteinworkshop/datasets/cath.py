@@ -25,6 +25,7 @@ class CATHDataModule(ProteinDataModule):
         num_workers: int = 16,
         dataset_fraction: float = 1.0,
         transforms: Optional[Iterable[Callable]] = None,
+        overwrite: bool = False,
     ) -> None:
         """Data module for CATH dataset.
 
@@ -46,6 +47,9 @@ class CATHDataModule(ProteinDataModule):
         :type dataset_fraction: float
         :param transforms: List of transforms to apply to dataset.
         :type transforms: Optional[List[Callable]]
+        :param overwrite: Whether to overwrite existing data.
+            Defaults to ``False``.
+        :type overwrite: bool
         """
         super().__init__()
 
@@ -166,6 +170,7 @@ class CATHDataModule(ProteinDataModule):
             transform=self.transform,
             format=self.format,
             in_memory=self.in_memory,
+            overwrite=self.overwrite,
         )
 
     def val_dataset(self) -> ProteinDataset:
@@ -188,6 +193,7 @@ class CATHDataModule(ProteinDataModule):
             transform=self.transform,
             format=self.format,
             in_memory=self.in_memory,
+            overwrite=self.overwrite,
         )
 
     def test_dataset(self) -> ProteinDataset:
@@ -209,6 +215,7 @@ class CATHDataModule(ProteinDataModule):
             transform=self.transform,
             format=self.format,
             in_memory=self.in_memory,
+            overwrite=self.overwrite,
         )
 
     def train_dataloader(self) -> ProteinDataLoader:

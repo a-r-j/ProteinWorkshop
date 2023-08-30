@@ -45,6 +45,7 @@ class PTMDataModule(ProteinDataModule):
         pin_memory: bool = True,
         num_workers: int = 16,
         transforms: Optional[Iterable[Callable]] = None,
+        overwrite: bool = False,
     ) -> None:
         """Data module for PTM datasets.
 
@@ -62,6 +63,8 @@ class PTMDataModule(ProteinDataModule):
         :type num_workers: int, optional
         :param transforms: List of transforms to apply, defaults to None
         :type transforms: Optional[Iterable[Callable]], optional
+        :param overwrite: Whether to overwrite existing data, defaults to False
+        :type overwrite: bool, optional
         :raises NotImplementedError: If dataset_name is "optm".
         """
         super().__init__()
@@ -76,6 +79,7 @@ class PTMDataModule(ProteinDataModule):
             os.makedirs(self.pdb_dir, exist_ok=True)
 
         self.in_memory = in_memory
+        self.overwrite = overwrite
 
         self.batch_size = batch_size
         self.pin_memory = pin_memory
@@ -260,6 +264,7 @@ class PTMDataModule(ProteinDataModule):
             transform=self.transform,
             format="pdb",
             in_memory=self.in_memory,
+            overwrite=self.overwrite,
         )
 
     def train_dataset(self) -> ProteinDataset:

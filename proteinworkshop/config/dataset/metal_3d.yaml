@@ -9,4 +9,5 @@ datamodule:
   num_workers: 8 # Number of workers for dataloader
   transforms: ${transforms}
   obsolete_strategy: "drop"  # Or replace
+  overwrite: False
 num_classes: 2

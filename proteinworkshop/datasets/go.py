@@ -47,6 +47,7 @@ class GeneOntologyDataset(ProteinDataModule):
         pin_memory: bool = True,
         num_workers: int = 16,
         transforms: Optional[Iterable[Callable]] = None,
+        overwrite: bool = False,
     ) -> None:
         super().__init__()
         self.pdb_dir = pdb_dir
@@ -136,7 +137,7 @@ class GeneOntologyDataset(ProteinDataModule):
             pdb_codes=list(df.pdb),
             chains=list(df.chain),
             graph_labels=list(list(df.label)),
-            overwrite=False,
+            overwrite=self.overwrite,
             transform=self.transform,
             format=self.format,
             in_memory=self.in_memory,
