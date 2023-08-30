@@ -41,6 +41,7 @@ class FoldClassificationDataModule(ProteinDataModule):
         shuffle_labels: bool = False,
         transforms: Optional[Iterable[Callable]] = None,
         in_memory: bool = False,
+        overwrite: bool = False,
     ) -> None:
         super().__init__()
         self.data_dir = pathlib.Path(path)
@@ -164,7 +165,7 @@ class FoldClassificationDataModule(ProteinDataModule):
             pdb_codes=list(df.id),
             format="ent",
             graph_labels=[torch.tensor(a) for a in list(df.label)],
-            overwrite=False,
+            overwrite=self.overwrite,
             transform=self.transform,
             in_memory=self.in_memory,
         )

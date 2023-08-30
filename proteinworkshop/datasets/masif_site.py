@@ -26,6 +26,7 @@ class MaSIFPPISP(ProteinDataModule):
         num_workers: int = 16,
         shuffle_labels: bool = False,
         transforms: Optional[Iterable[Callable]] = None,
+        overwrite: bool = False,
     ):
         super().__init__()
 
@@ -106,11 +107,11 @@ class MaSIFPPISP(ProteinDataModule):
             pdb_codes=pdb_codes,
             chains=["all"] * len(pdb_codes),
             graph_labels=chains,  # Hack to store the chain IDs to extract per-residue labels later via the transform.,
-            overwrite=False,
+            overwrite=self.overwrite,
             transform=self.transform,
             format=self.format,
             in_memory=self.in_memory,
-            out_names=[f"{id[0]}_{id[1]}" for id in ids]
+            out_names=[f"{id[0]}_{id[1]}" for id in ids],
         )
 
     def train_dataloader(self) -> ProteinDataLoader:
@@ -195,7 +196,9 @@ if __name__ == "__main__":
 
     from proteinworkshop import constants
 
-    config = omegaconf.OmegaConf.load("../proteinworkshop/config/dataset/masif_site.yaml")
+    config = omegaconf.OmegaConf.load(
+        "../proteinworkshop/config/dataset/masif_site.yaml"
+    )
     config.datamodule.path = pathlib.Path(constants.DATA_PATH) / "MasifSite"  # type: ignore
     config.datamodule.pdb_dir = pathlib.Path(constants.DATA_PATH) / "pdb"  # type: ignore
     config.datamodule.transforms = None

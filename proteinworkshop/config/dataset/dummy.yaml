@@ -8,5 +8,6 @@ datamodule:
   obsolete_strategy: "drop"
   format: "mmtf.gz" # Format of the raw PDB/MMTF files
   transforms: ${transforms}
+  overwrite: True
 
 num_classes: 2 # Number of classes in the dataset

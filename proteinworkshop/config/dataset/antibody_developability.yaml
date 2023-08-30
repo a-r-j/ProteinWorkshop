@@ -9,4 +9,5 @@ datamodule:
   format: "mmtf" # Format of the structure files
   obsolete_strategy: "drop" # What to do with obsolete PDB entries
   transforms: ${transforms} # Transforms to apply to dataset examples
+  overwrite: False
 num_classes: 2 # Number of classes

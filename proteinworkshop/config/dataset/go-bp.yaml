@@ -10,4 +10,5 @@ datamodule:
   num_workers: 8 # Number of workers for dataloader
   split: "BP" # Split of the dataset to use (`BP`, `MF`, `CC`)
   transforms: ${transforms} # Transforms to apply to dataset examples
+  overwrite: False # Whether to overwrite existing dataset files
 num_classes: 2 # Number of classes

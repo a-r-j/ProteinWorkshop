@@ -14,5 +14,6 @@ datamodule:
   val_fraction: 0.1 # Fraction of the dataset to use for validation
   test_fraction: 0.1 # Fraction of the dataset to use for testing
   transforms: ${transforms}
+  overwrite: False # Whether to overwrite the dataset if it already exists
 
 num_classes: 7 # Number of classes

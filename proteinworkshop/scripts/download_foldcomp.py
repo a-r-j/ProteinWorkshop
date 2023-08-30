@@ -39,12 +39,14 @@ def download_foldcomp(dataset_name: str, data_dir: Optional[str] = None):
         os.makedirs(data_dir, exist_ok=True)
 
     logger.info(f"Downloading {dataset_name} to {data_dir}.")
+    run_dir = os.getcwd()
+    os.chdir(data_dir)
     foldcomp.setup(dataset_name)
-
+    os.chdir(run_dir)
     # Move the downloaded files to the specified directory
-    for i in ["", ".index", ".dbtype", ".lookup", ".source"]:
-        fname = dataset_name + i
-        shutil.move(fname, data_dir / fname)
+    # for i in ["", ".index", ".dbtype", ".lookup", ".source"]:
+    #    fname = dataset_name + i
+    #    shutil.move(fname, data_dir / fname)
 
     logger.info(f"Download of {dataset_name} complete.")
 

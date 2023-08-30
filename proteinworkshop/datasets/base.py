@@ -296,6 +296,18 @@ class ProteinDataset(Dataset):
         self.store_het = store_het
         self.out_names = out_names
 
+        # Determine whether to download raw structures
+        if not self.overwrite and all(
+            os.path.exists(Path(self.root) / "processed" / p)
+            for p in self.processed_file_names
+        ):
+            logger.info(
+                f"All structures already processed and overwrite=False. Skipping download."
+            )
+            self._skip_download = True
+        else:
+            self._skip_download = False
+
         super().__init__(root, transform, pre_transform, pre_filter, log)
         self.structures = pdb_codes if pdb_codes is not None else pdb_paths
         if self.in_memory:
@@ -319,6 +331,11 @@ class ProteinDataset(Dataset):
 
         Downloaded files are stored in ``self.raw_dir``.
         """
+        if self._skip_download:
+            logger.info(
+                "All structures already processed and overwrite=False. Skipping download."
+            )
+            return
         if self.pdb_codes is not None:
             to_download = (
                 self.pdb_codes
@@ -366,6 +383,8 @@ class ProteinDataset(Dataset):
         :return: List of raw file names.
         :rtype: List[str]
         """
+        if self._skip_download:
+            return []
         if self.pdb_paths is None:
             return [f"{pdb}.{format}" for pdb in self.pdb_codes]
         else:
@@ -419,7 +438,7 @@ class ProteinDataset(Dataset):
             pdb_codes = self.pdb_codes
 
         raw_dir = Path(self.raw_dir)
-        for i, pdb in tqdm(pdb_codes):
+        for i, pdb in enumerate(tqdm(pdb_codes)):
             try:
                 path = raw_dir / f"{pdb}.{self.format}"
                 if path.exists():
@@ -473,7 +492,7 @@ class ProteinDataset(Dataset):
         :return: PyTorch Geometric Data object.
         """
         if self.in_memory:
-            return self.data[idx]
+            return self._batch_format(self.data[idx])
 
         if self.out_names is not None:
             fname = f"{self.out_names[idx]}.pt"

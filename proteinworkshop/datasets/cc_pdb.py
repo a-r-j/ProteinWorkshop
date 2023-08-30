@@ -13,25 +13,67 @@ from sklearn.model_selection import train_test_split
 
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
+CCPDB_DATASET_NAMES = Literal["metal", "ligands", "nucleotides", "nucliec"]
+
 
 class CCPDBDataModule(ProteinDataModule):
     def __init__(
         self,
         path: str,
         pdb_dir: str,
-        name: str,
+        name: CCPDB_DATASET_NAMES,
         batch_size: int,
         num_workers: int,
         pin_memory: bool,
         in_memory=False,
         format: Literal["mmtf", "pdb"] = "mmtf",
         obsolete_strategy: str = "drop",
-        split_strategy: str = "random",  # or stratified
+        split_strategy: Literal["random", "stratified"] = "random",
         train_fraction: float = 0.8,
         val_fraction: float = 0.1,
         test_fraction: float = 0.1,
         transforms: Optional[List[Callable]] = None,
+        overwrite: bool = False,
     ):
+        """Data module for CCPDB datasets.
+
+        :param path: Path to store data.
+        :type path: str
+        :param pdb_dir: Path to directory containing structure files.
+        :type pdb_dir: str
+        :param name: Name of dataset to use.
+        :type name: CCPDB_DATASET_NAMES
+        :param batch_size: Batch size for dataloaders.
+        :type batch_size: int
+        :param num_workers: Number of workers for dataloaders.
+        :type num_workers: int
+        :param pin_memory: Whether to pin memory for dataloaders.
+        :type pin_memory: bool
+        :param in_memory: Whether to load dataset into memory, defaults to
+            ``False``
+        :type in_memory: bool, optional
+        :param format: Format of the structure files, defaults to ``"mmtf"``.
+        :type format: Literal[mmtf, pdb], optional
+        :param obsolete_strategy: How to deal with obsolete PDBs,
+            defaults to "drop"
+        :type obsolete_strategy: str, optional
+        :param split_strategy: How to split the data,
+            defaults to ``"random"``
+        :type split_strategy: Literal["random", 'stratified"], optional
+        :param val_fraction: Fraction of the dataset to use for validation,
+            defaults to ``0.1``
+        :type val_fraction: float, optional
+        :param test_fraction: Fraction of the dataset to use for testing,
+            defaults to ``0.1``.
+        :type test_fraction: float, optional
+        :param transforms: List of transforms to apply to each example,
+            defaults to ``None``.
+        :type transforms: Optional[List[Callable]], optional
+        :param overwrite: Whether to overwrite existing data, defaults to
+            ``False``
+        :type overwrite: bool, optional
+        :raises ValueError: If train, val, and test fractions do not sum to 1.
+        """
         super().__init__()
         self.root = pathlib.Path(path)
         if not os.path.exists(self.root):
@@ -54,6 +96,7 @@ class CCPDBDataModule(ProteinDataModule):
         self.train_fraction = train_fraction
         self.val_fraction = val_fraction
         self.test_fraction = test_fraction
+        self.overwrite = overwrite
 
         if transforms is not None:
             self.transform = self.compose_transforms(
@@ -147,6 +190,7 @@ class CCPDBDataModule(ProteinDataModule):
             format=self.format,
             transform=self.transform,
             in_memory=self.in_memory,
+            overwrite=self.overwrite,
         )
 
     def val_dataset(self) -> ProteinDataset:
@@ -162,6 +206,7 @@ class CCPDBDataModule(ProteinDataModule):
             format=self.format,
             transform=self.transform,
             in_memory=self.in_memory,
+            overwrite=self.overwrite,
         )
 
     def test_dataset(self) -> ProteinDataset:
@@ -177,6 +222,7 @@ class CCPDBDataModule(ProteinDataModule):
             format=self.format,
             transform=self.transform,
             in_memory=self.in_memory,
+            overwrite=self.overwrite,
         )
 
     def train_dataloader(self) -> ProteinDataLoader:

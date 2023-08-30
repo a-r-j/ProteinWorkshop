@@ -8,4 +8,5 @@ datamodule:
   dataset_fraction: 1.0 # Fraction of dataset to use
   shuffle_labels: False # Whether to shuffle labels for permutation testing
   transforms: ${transforms} # Transforms to apply to dataset examples
+  overwrite: False # Whether to overwrite existing dataset files
 num_classes: 1195 # Number of classes

@@ -9,4 +9,5 @@ datamodule:
   obsolete_strategy: "drop"
   format: "mmtf" # Format of the raw PDB/MMTF files
   transforms: ${transforms}
+  overwrite: False
 num_classes: 2
