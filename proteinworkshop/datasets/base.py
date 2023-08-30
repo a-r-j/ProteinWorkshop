@@ -433,7 +433,7 @@ class ProteinDataset(Dataset):
             pdb_codes = self.pdb_codes
 
         raw_dir = Path(self.raw_dir)
-        for i, pdb in tqdm(pdb_codes):
+        for i, pdb in enumerate(tqdm(pdb_codes)):
             try:
                 path = raw_dir / f"{pdb}.{self.format}"
                 if path.exists():
