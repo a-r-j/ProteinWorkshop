@@ -335,6 +335,7 @@ class ProteinDataset(Dataset):
             logger.info(
                 "All structures already processed and overwrite=False. Skipping download."
             )
+            return
         if self.pdb_codes is not None:
             to_download = (
                 self.pdb_codes
