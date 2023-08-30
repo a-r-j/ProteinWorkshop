@@ -492,7 +492,7 @@ class ProteinDataset(Dataset):
         :return: PyTorch Geometric Data object.
         """
         if self.in_memory:
-            return self.data[idx]
+            return self._batch_format(self.data[idx])
 
         if self.out_names is not None:
             fname = f"{self.out_names[idx]}.pt"
