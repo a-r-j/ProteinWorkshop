@@ -1,3 +1,7 @@
+### 2.0.3
+
+* Minor patch; adds missing `overwrite` attribute to `CATHDataModule`.
+
 ### 2.0.2 (Unreleased)
 
 * Fixes raw data download triggered by absence of PDB when using pre-processed datasets ([#24](https://github.com/a-r-j/ProteinWorkshop/pull/24))
