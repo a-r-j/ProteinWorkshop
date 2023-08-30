@@ -1466,13 +1466,13 @@ gitdb = ">=4.0.1,<5"
 
 [[package]]
 name = "graphein"
-version = "1.7.2"
+version = "1.7.3"
 description = "Protein & Interactomic Graph Construction for Machine Learning"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "graphein-1.7.2-py3-none-any.whl", hash = "sha256:ef09d925ca50094a547bd1c55b6e30ff296f6ed41741d6223a078d82892bae0d"},
-    {file = "graphein-1.7.2.tar.gz", hash = "sha256:3047c54da593432849be6fa3a36eb97755a9753e5cd0dc54fd08ab00c286bee8"},
+    {file = "graphein-1.7.3-py3-none-any.whl", hash = "sha256:64650c746f4d2523d25dac33dca0ed17adeeb31ecc87699e948f02514f814ec1"},
+    {file = "graphein-1.7.3.tar.gz", hash = "sha256:e2618020c8da3046df31fee6942959a36b8147cc104d49a86d2516f6cb407462"},
 ]
 
 [package.dependencies]
@@ -5869,4 +5869,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">= 3.9, < 3.11"
-content-hash = "a6a83a152645cfdbb54ef251a3436df5b0ac197a82d2768bc6fa7bae4d92cc4f"
+content-hash = "3195169dc543eeb7855104e9df448eb65d81a35c2032545faeaca6563ba92b6c"

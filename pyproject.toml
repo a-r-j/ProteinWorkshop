@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "proteinworkshop"
-version = "0.2.1"
+version = "0.2.2"
 description = ""
 authors = ["Arian Jamasb <arian@jamasb.io>"]
 readme = "README.md"
@@ -29,7 +29,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">= 3.9, < 3.11"
-graphein = "^1.7.2"
+graphein = "^1.7.3"
 loguru = "^0.7.0"
 fair-esm = "^2.0.0"
 hydra-core = "^1.3.2"
