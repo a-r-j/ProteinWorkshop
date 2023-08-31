@@ -52,6 +52,22 @@ def test_datasets_have_overwrite_attr():
         for t in os.listdir(DATASET_CONFIG_DIR):
             config_path = DATASET_CONFIG_DIR / t
             cfg = omegaconf.OmegaConf.load(config_path)
+
+            if "data_dir" in cfg.datamodule:
+            cfg.datamodule.data_dir = tmp_path
+
+            if "path" in cfg.datamodule:
+                cfg.datamodule.path = tmp_path
+
+            if "pdb_dir" in cfg.datamodule:
+                cfg.datamodule.pdb_dir = tmp_path
+
+            if "transforms" in cfg.datamodule:
+                cfg.datamodule.transforms = None
+
+            if "transform" in cfg.datamodule:
+                cfg.datamodule.transform = None
+
             if cfg.datamodule._target_ == "graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule":
                 continue 
             else:
