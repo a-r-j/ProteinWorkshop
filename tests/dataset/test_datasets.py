@@ -48,7 +48,7 @@ def test_instantiate_datasets(tmp_path):
         assert isinstance(dataset, LightningDataModule)
 
 
-def test_datasets_have_overwrite_attr():
+def test_datasets_have_overwrite_attr(tmp_path):
         for t in os.listdir(DATASET_CONFIG_DIR):
             config_path = DATASET_CONFIG_DIR / t
             cfg = omegaconf.OmegaConf.load(config_path)
