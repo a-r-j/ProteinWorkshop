@@ -46,3 +46,14 @@ def test_instantiate_datasets(tmp_path):
 
         assert dataset, f"Dataset {t} not instantiated!"
         assert isinstance(dataset, LightningDataModule)
+
+
+def test_datasets_have_overwrite_attr():
+        for t in os.listdir(DATASET_CONFIG_DIR):
+            config_path = DATASET_CONFIG_DIR / t
+            cfg = omegaconf.OmegaConf.load(config_path)
+            if cfg.datamodule._target_ = "graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule":
+                continue 
+            else:
+                dm = instantiate(cfg.datamodule)
+                assert hasattr(dm, "overwrite"), f"Datamodules {dm} has no overwrite attribute"
