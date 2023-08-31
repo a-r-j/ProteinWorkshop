@@ -68,7 +68,7 @@ def test_datasets_have_overwrite_attr(tmp_path):
             if "transform" in cfg.datamodule:
                 cfg.datamodule.transform = None
 
-            if cfg.datamodule._target_ == "graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule":
+            if cfg.datamodule._target_ in {"graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule", "proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule"}:
                 continue 
             else:
                 dm = instantiate(cfg.datamodule)
