@@ -55,6 +55,7 @@ class FoldClassificationDataModule(ProteinDataModule):
         self.structure_dir = self.data_dir / "pdbstyle-1.75"
 
         self.in_memory = in_memory
+        self.overwrite = overwrite
 
         self.dataset_fraction = dataset_fraction
         self.batch_size = batch_size
