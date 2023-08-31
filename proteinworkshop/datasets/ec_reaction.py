@@ -50,6 +50,7 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
         self.num_workers = num_workers
         self.shuffle_labels = shuffle_labels
         self.format = format
+        self.overwrite = overwrite
 
         self.prepare_data_per_node = True
         logger.info(
