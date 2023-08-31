@@ -42,6 +42,7 @@ class MaSIFPPISP(ProteinDataModule):
         else:
             self.transform = None
 
+        self.overwrite = overwrite
         self.in_memory = in_memory
         self.dataset_fraction = dataset_fraction
         self.obsolete = obsolete
