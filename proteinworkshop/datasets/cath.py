@@ -67,6 +67,7 @@ class CATHDataModule(ProteinDataModule):
             self.transform = None
 
         self.in_memory = in_memory
+        self.overwrite = overwrite
 
         self.batch_size = batch_size
         self.pin_memory = pin_memory
