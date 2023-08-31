@@ -54,7 +54,7 @@ def test_datasets_have_overwrite_attr():
             cfg = omegaconf.OmegaConf.load(config_path)
 
             if "data_dir" in cfg.datamodule:
-            cfg.datamodule.data_dir = tmp_path
+                cfg.datamodule.data_dir = tmp_path
 
             if "path" in cfg.datamodule:
                 cfg.datamodule.path = tmp_path
