@@ -1,6 +1,12 @@
+### 0.2.4
+
+* Fixes error in Metal3D processed download link ([#28](https://github.com/a-r-j/ProteinWorkshop/pull/28))
+
+
 ### 0.2.3 (31/08/2023)
 
 * Minor patch; adds missing `overwrite` attribute to `CATHDataModule`, `FoldClassificationDataModule` and `GeneOntologyDataModule`. ([#25](https://github.com/a-r-j/ProteinWorkshop/pull/25))
+
 
 ### 0.2.2 (30/08/2023)
 
