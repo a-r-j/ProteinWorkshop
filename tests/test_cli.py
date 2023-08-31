@@ -40,4 +40,4 @@ def test_download_urls():
     for f in fnames:
         url = f"https://zenodo.org/record/{_ZENODO_RECORD}/files/{f}.tar.gz?download=1"
         response = requests.head(url)
-        assert resonse.status_code == 200, f"URL {url} not found."
+        assert response.status_code == 200, f"URL {url} not found."

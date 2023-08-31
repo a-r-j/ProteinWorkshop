@@ -1,3 +1,8 @@
+### 0.2.4
+
+* Fixes error in Metal3D processed download link ([#28](https://github.com/a-r-j/ProteinWorkshop/pull/28))
+
+
 ### 0.2.2 (30/08/2023)
 
 * Fixes raw data download triggered by absence of PDB when using pre-processed datasets ([#24](https://github.com/a-r-j/ProteinWorkshop/pull/24))
