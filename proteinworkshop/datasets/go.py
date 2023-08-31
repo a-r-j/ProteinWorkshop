@@ -61,6 +61,7 @@ class GeneOntologyDataset(ProteinDataModule):
         self.format = format
 
         self.in_memory = in_memory
+        self.overwrite = overwrite
 
         self.batch_size = batch_size
         self.pin_memory = pin_memory
