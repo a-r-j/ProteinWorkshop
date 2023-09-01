@@ -1,7 +1,7 @@
 ### 0.2.4
 
 * Fixes error in Metal3D processed download link ([#28](https://github.com/a-r-j/ProteinWorkshop/pull/28))
-
+* Fixes typo in wandb run name setting ([#30](https://github.com/a-r-j/ProteinWorkshop/pull/30))
 
 ### 0.2.3 (31/08/2023)
 
