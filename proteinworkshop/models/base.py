@@ -272,7 +272,10 @@ class BaseModel(L.LightningModule, abc.ABC):
             for k, v in loss_dict.items()
         }
 
-    def on_after_batch_transfer(
+    def transfer_batch_to_device(self, batch: Union[Batch, ProteinBatch], dataloader_idx: int) -> Union[Batch, ProteinBatch]:
+        return batch.to(self.device, list(self.encoder.required_batch_attributes))
+
+    def on_before_batch_transfer(
         self, batch: Union[Batch, ProteinBatch], dataloader_idx: int
     ) -> Union[Batch, ProteinBatch]:
         """
