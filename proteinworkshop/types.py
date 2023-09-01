@@ -15,7 +15,9 @@ TASK_TYPES = Literal[
 ActivationType = Literal[
     "relu", "elu", "leaky_relu", "tanh", "sigmoid", "none", "silu", "swish"
 ]
-LossType = Literal["cross_entropy", "nll_loss", "mse_loss", "l1_loss", "dihedral_loss"]
+LossType = Literal[
+    "cross_entropy", "nll_loss", "mse_loss", "l1_loss", "dihedral_loss"
+]
 
 EncoderOutput = NewType("EncoderOutput", Dict[str, torch.Tensor])
 
@@ -29,9 +31,15 @@ NodeFeatureTensor = NewType(
     "NodeFeatureTensor", Float[torch.Tensor, "n_nodes n_features"]
 )
 
-OrientationTensor = NewType("OrientationTensor", Float[torch.Tensor, "n_nodes 2 3"])
+OrientationTensor = NewType(
+    "OrientationTensor", Float[torch.Tensor, "n_nodes 2 3"]
+)
 
-GRAPH_CLASSIFICATION_DATASETS = ["EnzymeCommission", "GeneOntology", "ProteinFamily"]
+GRAPH_CLASSIFICATION_DATASETS = [
+    "EnzymeCommission",
+    "GeneOntology",
+    "ProteinFamily",
+]
 
 GRAPH_REGRESSION_DATASETS = ["LBA", "PSR"]
 
@@ -82,7 +90,7 @@ GRAPH_ENCODERS: List[str] = ["EGNN", "GVP", "GNN"]
 
 
 ScalarNodeFeature = Literal[
-    "amino_acid_onehot",
+    "amino_acid_one_hot",
     "alpha",
     "kappa",
     "dihedrals",

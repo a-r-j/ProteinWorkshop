@@ -1,0 +1,13 @@
+_target_: proteinworkshop.models.graph_encoders.schnet.SchNetModel
+hidden_channels: 512 # Number of channels in the hidden layers
+out_dim: 32 # Output dimension of the model
+num_layers: 6 # Number of filters used in convolutional layers
+num_filters: 128 # Number of convolutional layers in the model
+num_gaussians: 50 # Number of Gaussian functions used for radial filters
+cutoff: 10.0 # Cutoff distance for interactions
+max_num_neighbors: 32 # Maximum number of neighboring atoms to consider
+readout: "add" # Global pooling method to be used
+dipole: False
+mean: null
+std: null
+atomref: null

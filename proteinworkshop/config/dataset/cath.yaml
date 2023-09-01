@@ -1,0 +1,12 @@
+datamodule:
+  _target_: "proteinworkshop.datasets.cath.CATHDataModule"
+  path: ${env.paths.data}/cath/ # Directory where the dataset is stored
+  pdb_dir: ${env.paths.data}/pdb/ # Directory where raw PDB/mmtf files are stored
+  format: "mmtf" # Format of the raw PDB/MMTF files
+  num_workers: 4 # Number of workers for dataloader
+  pin_memory: True # Pin memory for dataloader
+  batch_size: 32 # Batch size for dataloader
+  dataset_fraction: 1.0 # Fraction of the dataset to use
+  transforms: ${transforms} # Transforms to apply to dataset examples
+  overwrite: False # Whether to overwrite the dataset if it already exists
+num_classes: 23 # Number of classes

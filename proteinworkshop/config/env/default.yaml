@@ -1,0 +1,39 @@
+# @package _global_
+env:
+  # You can set these in your `.env` file at the top-level dir of the project to avoid
+  # these from being logged explicitly, or add them here directly (in which case they will
+  # show up in the logged config.)
+  # For ease of use we have added basic defaults here, but we highly recommend you use
+  # a `.env` file instead. To do so, create the `.env` file and populate it with the 
+  # following:
+  #  ```.env
+  #     ROOT_DIR="/path/to/this/project"
+  #     RUNS_PATH="/path/to/where/runs/will/be/stored/"
+  #     DATA_PATH="/path/to/where/data/is/stored/"
+  #     WANB_API_KEY="YOUR_WANDB_API_KEY" # Optional
+  #     WANDB_ENTITY="WANDB_ENTITY_NAME" # Optional
+  #     WANDB_PROJECT="WANDB_PROJECT_NAME" # Optional
+  #  ```
+  #  To use these, simply uncomment the ${oc.env:VAR_NAME} lines below.
+  paths:
+    root_dir: ${oc.env:ROOT_DIR}
+    data: ${oc.env:DATA_PATH}
+    output_dir: ${hydra:runtime.output_dir}
+    # path to working directory
+    work_dir: ${hydra:runtime.cwd}
+    # path to logging directory
+    log_dir: ${env.paths.root_dir}/logs/
+    runs: ${oc.env:RUNS_PATH}
+    run_dir: ${env.paths.runs}/${name}/${env.init_time}
+
+  python:
+    version: ${python_version:micro}
+
+  init_time: ${now:%y-%m-%d_%H:%M:%S}
+
+# Hydra config overrides:
+hydra:
+  run:
+    dir: ${env.paths.run_dir}
+  sweep:
+    dir: ${env.paths.run_dir}

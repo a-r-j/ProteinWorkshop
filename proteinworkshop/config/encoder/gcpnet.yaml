@@ -1,0 +1,69 @@
+_target_: proteinworkshop.models.graph_encoders.gcpnet.GCPNetModel
+# overrides for feature config #
+features:
+  # note: will manually be injected into `/features` via `validate_gcpnet_config()` of `proteinworkshop/configs/config.py`
+  vector_node_features: ["orientation"]
+  vector_edge_features: ["edge_vectors"]
+# global config #
+num_layers: 6 # Number of layers in the model
+emb_dim: 128
+node_s_emb_dim: ${.emb_dim} # Dimension of the node state embeddings
+node_v_emb_dim: 16 # Dimension of the node vector embeddings
+edge_s_emb_dim: 32 # Dimension of the edge state embeddings
+edge_v_emb_dim: 4 # Dimension of the edge vector embeddings
+r_max: 10.0 # Maximum distance for radial basis functions
+num_rbf: 8 # Number of radial basis functions 
+activation: silu # Activation function to use in each GCP layer
+pool: sum # Global pooling method to be used
+# module config #
+module_cfg:
+  norm_pos_diff: true
+  scalar_gate: 0
+  vector_gate: true
+  scalar_nonlinearity: ${..activation}
+  vector_nonlinearity: ${..activation}
+  nonlinearities:
+    - ${..scalar_nonlinearity}
+    - ${..vector_nonlinearity}
+  r_max: ${..r_max}
+  num_rbf: ${..num_rbf}
+  bottleneck: 4
+  vector_linear: true
+  vector_identity: true
+  default_bottleneck: 4
+  predict_node_positions: false  # note: if `false`, then the input node positions will not be updated
+  predict_node_rep: true  # note: if `false`, then a final projection of the node features will not be performed
+  node_positions_weight: 1.0
+  update_positions_with_vector_sum: false
+  enable_e3_equivariance: false
+  pool: ${..pool}
+# model config #
+model_cfg:
+  h_input_dim: ${resolve_feature_config_dim:${features},scalar_node_features,${task},true}
+  chi_input_dim: ${resolve_feature_config_dim:${features},vector_node_features,${task},false}
+  e_input_dim: ${plus:${resolve_feature_config_dim:${features},scalar_edge_features,${task},true},${..num_rbf}}
+  xi_input_dim: ${resolve_feature_config_dim:${features},vector_edge_features,${task},false}
+  # note: each `hidden_dim` must be evenly divisible by `bottleneck`
+  h_hidden_dim: ${..node_s_emb_dim}
+  chi_hidden_dim: ${..node_v_emb_dim}
+  e_hidden_dim: ${..edge_s_emb_dim}
+  xi_hidden_dim: ${..edge_v_emb_dim}
+  num_layers: ${..num_layers}
+  dropout: 0.0
+# layer config #
+layer_cfg:
+  pre_norm: false
+  use_gcp_norm: true
+  use_gcp_dropout: true
+  use_scalar_message_attention: true
+  num_feedforward_layers: 2
+  dropout: 0.0
+  nonlinearity_slope: 1e-2
+  # message-passing config #
+  mp_cfg:
+    edge_encoder: false
+    edge_gate: false
+    num_message_layers: 4
+    message_residual: 0
+    message_ff_multiplier: 1
+    self_message: true

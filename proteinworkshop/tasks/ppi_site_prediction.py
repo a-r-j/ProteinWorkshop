@@ -4,9 +4,10 @@ import numpy as np
 import scipy.spatial as spatial
 import torch
 from graphein.protein.tensor.data import Protein
-from proteinworkshop.features.representation import get_full_atom_coords
 from torch_geometric import transforms as T
 from torch_geometric.data import Data
+
+from proteinworkshop.features.representation import get_full_atom_coords
 
 
 class BindingSiteTransform(T.BaseTransform):
@@ -29,7 +30,9 @@ class BindingSiteTransform(T.BaseTransform):
         self.fill_value = 1e-5
         self.ca_only = ca_only
         charstr: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        self.chain_map: Dict[str, int] = {charstr[i]: i for i in range(len(charstr))}
+        self.chain_map: Dict[str, int] = {
+            charstr[i]: i for i in range(len(charstr))
+        }
 
     def __call__(self, data: Union[Protein, Data]):
         # Map the chain labels to integers
@@ -58,7 +61,9 @@ class BindingSiteTransform(T.BaseTransform):
         # Unwrap the coordinates
         other_chains = other_chains.reshape(-1, 3)
         # Remove any rows with 1e-5
-        other_chains = other_chains[~torch.all(other_chains == self.fill_value, dim=1)]
+        other_chains = other_chains[
+            ~torch.all(other_chains == self.fill_value, dim=1)
+        ]
 
         # Create a KDTree
         # If Ca only, we only see if the interacting chains are within the

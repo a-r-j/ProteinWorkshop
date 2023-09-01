@@ -1,15 +1,16 @@
-from math import sqrt
 from typing import Callable, Set, Union
 
 import torch
 import torch_scatter
 from graphein.protein.tensor.data import ProteinBatch
-from proteinworkshop.models.graph_encoders.components.blocks import \
-    DimeNetEmbeddingBlock
-from proteinworkshop.models.utils import get_activations
-from proteinworkshop.types import EncoderOutput
 from torch_geometric.data import Batch
 from torch_geometric.nn.models.dimenet import DimeNetPlusPlus, triplets
+
+from proteinworkshop.models.graph_encoders.components.blocks import (
+    DimeNetEmbeddingBlock,
+)
+from proteinworkshop.models.utils import get_activations
+from proteinworkshop.types import EncoderOutput
 
 
 class DimeNetPPModel(DimeNetPlusPlus):
@@ -50,7 +51,7 @@ class DimeNetPPModel(DimeNetPlusPlus):
         :param int_emb_size: Embedding size for interaction features
             (default: ``64``)
         :type int_emb_size: int
-        :param basis_emb_size: Embedding size for basis functions.
+        :param basis_emb_size: Embedding size for basis functions
             (default: ``8``)
         :type basis_emb_size: int
         :param out_emb_channels: Number of channels in the output embeddings
@@ -161,7 +162,9 @@ class DimeNetPPModel(DimeNetPlusPlus):
                 "node_embedding": P,
                 "graph_embedding": P.sum(dim=0)
                 if batch is None
-                else torch_scatter.scatter(P, batch.batch, dim=0, reduce=self.readout),
+                else torch_scatter.scatter(
+                    P, batch.batch, dim=0, reduce=self.readout
+                ),
             }
         )
 

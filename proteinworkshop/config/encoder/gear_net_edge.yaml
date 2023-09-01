@@ -1,0 +1,11 @@
+_target_: proteinworkshop.models.graph_encoders.gear_net.GearNet
+input_dim: ${resolve_feature_config_dim:${features},scalar_node_features,${task},true} # Dimension of the input node features
+num_relation: ${resolve_num_edge_types:${features}} # Number of edge types
+num_layers: 6 # Number of layers in the model
+emb_dim: 512 # Dimension of the node embeddings
+short_cut: True # Whether to use short cut connections
+concat_hidden: True # Whether to concatenate hidden representations
+batch_norm: True # Whether to use batch norm
+num_angle_bin: 7 # Number of angle bins for edge message passing
+activation: "relu" # Activation function to use
+pool: sum # Pooling operation to use

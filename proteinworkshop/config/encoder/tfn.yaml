@@ -1,0 +1,13 @@
+_target_: proteinworkshop.models.graph_encoders.tfn.TensorProductModel
+r_max: 10.0 # Maximum distance for Bessel basis functions
+num_bessel: 8 # Number of Bessel basis functions
+num_polynomial_cutoff: 5 # Number of polynomial cutoff basis functions
+max_ell: 2 # Maximum degree/order of spherical harmonics basis functions and node feature tensors
+num_layers: 4 # Number of layers in the model
+emb_dim: 64 # Number of hidden channels/embedding dimension for each node feature tensor order
+mlp_dim: 256 # Dimension of MLP for computing tensor product weights
+aggr: "sum" # Aggregation function to use
+pool: "sum" # Pooling operation to use
+residual: True # Whether to use residual connections
+batch_norm: True # Whether to use e3nn batch normalization
+gate: False # Whether to use gated non-linearity

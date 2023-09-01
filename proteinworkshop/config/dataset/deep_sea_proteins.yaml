@@ -1,0 +1,13 @@
+datamodule:
+  _target_: proteinworkshop.datasets.deep_sea_proteins.DeepSeaProteinsDataModule
+  path: ${env.paths.data}/deep-sea-proteins/ # Directory where the dataset is stored
+  pdb_dir: ${env.paths.data}/pdb/ # Directory where raw PDB/mmtf files are stored
+  validation_fold: "4" # Fold to use for validation (one of '1', '2', '3', '4', 'PM_group')
+  batch_size: 32 # Batch size for dataloader
+  pin_memory: True # Pin memory for dataloader
+  num_workers: 8 # Number of workers for dataloader
+  obsolete_strategy: "drop"
+  format: "mmtf" # Format of the raw PDB/MMTF files
+  transforms: ${transforms}
+  overwrite: False
+num_classes: 2

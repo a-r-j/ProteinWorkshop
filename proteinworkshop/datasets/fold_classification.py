@@ -10,6 +10,7 @@ import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
 from loguru import logger as log
+
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
@@ -20,7 +21,10 @@ def flatten_dir(dir: os.PathLike):
     for dirpath, _, filenames in os.walk(dir):
         for filename in filenames:
             try:
-                os.rename(os.path.join(dirpath, filename), os.path.join(dir, filename))
+                os.rename(
+                    os.path.join(dirpath, filename),
+                    os.path.join(dir, filename),
+                )
             except OSError:
                 print(f"Could not move {os.path.join(dirpath, filename)}")
 
@@ -37,6 +41,7 @@ class FoldClassificationDataModule(ProteinDataModule):
         shuffle_labels: bool = False,
         transforms: Optional[Iterable[Callable]] = None,
         in_memory: bool = False,
+        overwrite: bool = False,
     ) -> None:
         super().__init__()
         self.data_dir = pathlib.Path(path)
@@ -50,6 +55,7 @@ class FoldClassificationDataModule(ProteinDataModule):
         self.structure_dir = self.data_dir / "pdbstyle-1.75"
 
         self.in_memory = in_memory
+        self.overwrite = overwrite
 
         self.dataset_fraction = dataset_fraction
         self.batch_size = batch_size
@@ -72,7 +78,9 @@ class FoldClassificationDataModule(ProteinDataModule):
 
     def download_data_files(self):  # sourcery skip: move-assign
         """Downloads dataset index files."""
-        logger.info(f"Downloading Protein Function. Fraction {self.dataset_fraction}")
+        logger.info(
+            f"Downloading Protein Function. Fraction {self.dataset_fraction}"
+        )
         BASE_URL = "https://raw.githubusercontent.com/phermosilla/IEConv_proteins/master/Datasets/data/HomologyTAPE/"
 
         TRAIN_URL = f"{BASE_URL}training.txt"
@@ -87,17 +95,26 @@ class FoldClassificationDataModule(ProteinDataModule):
             wget.download(TRAIN_URL, out=str(self.data_dir / "training.txt"))
         if not os.path.exists(self.data_dir / "validation.txt"):
             logger.info(f"Downloading validation data to {self.data_dir}...")
-            wget.download(VALIDATION_URL, out=str(self.data_dir / "validation.txt"))
+            wget.download(
+                VALIDATION_URL, out=str(self.data_dir / "validation.txt")
+            )
         if not os.path.exists(self.data_dir / "test_fold.txt"):
             logger.info(f"Downloading test fold data to {self.data_dir}...")
-            wget.download(TEST_FOLD_URL, out=str(self.data_dir / "test_fold.txt"))
+            wget.download(
+                TEST_FOLD_URL, out=str(self.data_dir / "test_fold.txt")
+            )
         if not os.path.exists(self.data_dir / "test_family.txt"):
             logger.info(f"Downloading test family data to {self.data_dir}...")
-            wget.download(TEST_FAMILY_URL, out=str(self.data_dir / "test_family.txt"))
-        if not os.path.exists(self.data_dir / "test_superfamily.txt"):
-            logger.info(f"Downloading test superfamily data to {self.data_dir}...")
             wget.download(
-                TEST_SUPERFAMILY_URL, out=str(self.data_dir / "test_superfamily.txt")
+                TEST_FAMILY_URL, out=str(self.data_dir / "test_family.txt")
+            )
+        if not os.path.exists(self.data_dir / "test_superfamily.txt"):
+            logger.info(
+                f"Downloading test superfamily data to {self.data_dir}..."
+            )
+            wget.download(
+                TEST_SUPERFAMILY_URL,
+                out=str(self.data_dir / "test_superfamily.txt"),
             )
         if not os.path.exists(self.data_dir / "class_map.txt"):
             logger.info(f"Downloading class map data to {self.data_dir}...")
@@ -105,7 +122,9 @@ class FoldClassificationDataModule(ProteinDataModule):
 
     def download_structures(self):  # sourcery skip: extract-method
         """Downloads SCOPe structures."""
-        if not os.path.exists(self.data_dir / "pdbstyle-sel-gs-bib-95-1.75.tgz"):
+        if not os.path.exists(
+            self.data_dir / "pdbstyle-sel-gs-bib-95-1.75.tgz"
+        ):
             log.info(
                 f"Downloading SCOPe structures from: {self.scop_url} to {self.data_dir}"
             )
@@ -116,7 +135,9 @@ class FoldClassificationDataModule(ProteinDataModule):
             )
         if not os.path.exists(self.structure_dir):
             log.info(f"Extracting tarfile to {self.data_dir}")
-            tar = tarfile.open(str(self.data_dir / "pdbstyle-sel-gs-bib-95-1.75.tgz"))
+            tar = tarfile.open(
+                str(self.data_dir / "pdbstyle-sel-gs-bib-95-1.75.tgz")
+            )
             tar.extractall(str(self.data_dir))
             tar.close()
             log.info("Flattening directory")
@@ -126,7 +147,9 @@ class FoldClassificationDataModule(ProteinDataModule):
 
     def parse_class_map(self) -> Dict[str, str]:
         log.info(f"Reading labels from: {self.data_dir / 'class_map.txt'}")
-        class_map = pd.read_csv(self.data_dir / "class_map.txt", sep="\t", header=None)
+        class_map = pd.read_csv(
+            self.data_dir / "class_map.txt", sep="\t", header=None
+        )
         return dict(class_map.values)
 
     def setup(self, stage: Optional[str] = None):
@@ -143,7 +166,7 @@ class FoldClassificationDataModule(ProteinDataModule):
             pdb_codes=list(df.id),
             format="ent",
             graph_labels=[torch.tensor(a) for a in list(df.label)],
-            overwrite=False,
+            overwrite=self.overwrite,
             transform=self.transform,
             in_memory=self.in_memory,
         )
@@ -207,7 +230,9 @@ class FoldClassificationDataModule(ProteinDataModule):
         class_map = self.parse_class_map()
 
         # Read in IDs of structures in split
-        data = pd.read_csv(self.data_dir / f"{split}.txt", sep="\t", header=None)
+        data = pd.read_csv(
+            self.data_dir / f"{split}.txt", sep="\t", header=None
+        )
 
         logger.info(f"Found {len(data)} original examples in {split}")
         # Assign columns to DataFrame
@@ -240,13 +265,16 @@ class FoldClassificationDataModule(ProteinDataModule):
 if __name__ == "__main__":
     import hydra
     import omegaconf
+
     from proteinworkshop import constants
 
     # Fold Dataset
     cfg = omegaconf.OmegaConf.load(
         constants.HYDRA_CONFIG_PATH / "dataset" / "fold_fold.yaml"
     )
-    cfg.datamodule.path = pathlib.Path(constants.DATA_PATH) / "FoldClassification"
+    cfg.datamodule.path = (
+        pathlib.Path(constants.DATA_PATH) / "FoldClassification"
+    )
     datamodule = hydra.utils.instantiate(cfg.datamodule)
     print(datamodule)
     datamodule.setup()
@@ -255,7 +283,9 @@ if __name__ == "__main__":
     cfg = omegaconf.OmegaConf.load(
         constants.HYDRA_CONFIG_PATH / "dataset" / "fold_family.yaml"
     )
-    cfg.datamodule.path = pathlib.Path(constants.DATA_PATH) / "FoldClassification"
+    cfg.datamodule.path = (
+        pathlib.Path(constants.DATA_PATH) / "FoldClassification"
+    )
     datamodule = hydra.utils.instantiate(cfg.datamodule)
     print(datamodule)
     datamodule.setup()
@@ -264,7 +294,9 @@ if __name__ == "__main__":
     cfg = omegaconf.OmegaConf.load(
         constants.HYDRA_CONFIG_PATH / "dataset" / "fold_superfamily.yaml"
     )
-    cfg.datamodule.path = pathlib.Path(constants.DATA_PATH) / "FoldClassification"
+    cfg.datamodule.path = (
+        pathlib.Path(constants.DATA_PATH) / "FoldClassification"
+    )
     datamodule = hydra.utils.instantiate(cfg.datamodule)
     print(datamodule)
     datamodule.setup()

@@ -4,8 +4,9 @@ import random
 import numpy as np
 import torch
 from atom3d.datasets import LMDBDataset
-from proteinworkshop.datasets.components.atom3d_dataset import BaseTransform
 from torch.utils.data import IterableDataset
+
+from proteinworkshop.datasets.components.atom3d_dataset import BaseTransform
 
 _amino_acids = lambda x: {
     "ALA": 0,
@@ -58,9 +59,13 @@ class RESDataset(IterableDataset):
     def __iter__(self):
         worker_info = torch.utils.data.get_worker_info()
         if worker_info is None:
-            gen = self._dataset_generator(list(range(len(self.idx))), shuffle=True)
+            gen = self._dataset_generator(
+                list(range(len(self.idx))), shuffle=True
+            )
         else:
-            per_worker = int(math.ceil(len(self.idx) / float(worker_info.num_workers)))
+            per_worker = int(
+                math.ceil(len(self.idx) / float(worker_info.num_workers))
+            )
             worker_id = worker_info.id
             iter_start = worker_id * per_worker
             iter_end = min(iter_start + per_worker, len(self.idx))

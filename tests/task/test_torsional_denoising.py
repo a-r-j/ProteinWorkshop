@@ -10,7 +10,9 @@ from proteinworkshop import constants
 
 def test_instantiate_transform():
     config_path = (
-        constants.PROJECT_PATH / "configs" / "transforms" / "torsional_denoising.yaml"
+        constants.HYDRA_CONFIG_PATH
+        / "transforms"
+        / "torsional_denoising.yaml"
     )
 
     config = omegaconf.OmegaConf.load(config_path)
@@ -26,4 +28,3 @@ def test_instantiate_transform():
         return torch.sqrt(torch.mean((a - b) ** 2))
 
     assert rmsd(out.coords, b.coords[:, :3, :]) > 3
-

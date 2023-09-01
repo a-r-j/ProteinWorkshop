@@ -1,0 +1,17 @@
+_target_: proteinworkshop.models.graph_encoders.dimenetpp.DimeNetPPModel
+hidden_channels: 512  # Number of channels in the hidden layers
+out_dim: 32  # Output dimension of the model
+num_layers: 6  # Number of layers in the model
+int_emb_size: 64  # Embedding size for interaction features
+basis_emb_size: 8  # Embedding size for basis functions
+out_emb_channels: 256  # Number of channels in the output embeddings
+num_spherical: 7  # Number of spherical harmonics
+num_radial: 6  # Number of radial basis functions
+cutoff: 10.0  # Cutoff distance for interactions
+max_num_neighbors: 32  # Maximum number of neighboring atoms to consider
+envelope_exponent: 5  # Exponent of the envelope function
+num_before_skip: 1  # Number of layers before the skip connections
+num_after_skip: 2  # Number of layers after the skip connections
+num_output_layers: 3  # Number of output layers
+act: "swish"  # Activation function to use
+readout: "add"  # Global pooling method to be used

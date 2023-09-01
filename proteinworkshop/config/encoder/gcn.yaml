@@ -1,0 +1,10 @@
+_target_: proteinworkshop.models.graph_encoders.gnn.GNNModel
+model_name: "GCN" # Name of the GNN layer to use
+layer_types: ["GCN", "GCN"] # List of GNN layer types
+n_hid: [128, 128] # List of hidden dimensions
+activations: ["relu", "relu"] # List of activation functions
+dropout: 0.0 # Amount of dropout to apply
+readout: "sum" # Readout function to use
+edge_types: 1 # These are overwritten in config validation
+edge_weight: False # These are overwritten in config validation
+edge_features: False # These are overwritten in config validation

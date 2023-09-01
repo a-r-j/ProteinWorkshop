@@ -11,7 +11,9 @@ from torch_geometric.transforms import BaseTransform
 
 class SequenceNoiseTransform(BaseTransform):
     def __init__(
-        self, corruption_rate: float, corruption_strategy: Literal["mutate", "mask"]
+        self,
+        corruption_rate: float,
+        corruption_strategy: Literal["mutate", "mask"],
     ):
         """Corrupts the sequence of a protein by randomly flipping residues to
         another type or masking them.
@@ -61,7 +63,9 @@ class SequenceNoiseTransform(BaseTransform):
             )
         elif self.corruption_strategy == "mask":
             # Set indices to 23 -> "UNK"
-            x.residue_type[indices] = 23  # TODO: probably best to not hardcode this
+            x.residue_type[
+                indices
+            ] = 23  # TODO: probably best to not hardcode this
         else:
             raise NotImplementedError(
                 f"Corruption strategy: {self.corruption_strategy} not supported."
@@ -84,14 +88,18 @@ if __name__ == "__main__":
 
     orig_residues = p.residue_type
 
-    task = SequenceNoiseTransform(corruption_rate=0.99, corruption_strategy="mutate")
+    task = SequenceNoiseTransform(
+        corruption_rate=0.99, corruption_strategy="mutate"
+    )
 
     p = task(p)
 
     print(p.residue_type)
     print(p.residue_type_uncorrupted)
 
-    task = SequenceNoiseTransform(corruption_rate=0.99, corruption_strategy="mask")
+    task = SequenceNoiseTransform(
+        corruption_rate=0.99, corruption_strategy="mask"
+    )
 
     p = task(p)
     print(p.residue_type)

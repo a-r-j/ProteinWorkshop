@@ -1,12 +1,11 @@
 ###########################################################################################
 # Radial basis and cutoff
 # Authors: Ilyes Batatia, Gregor Simm
-# This program is distributed under the ASL License (see ASL.md)
+# This program is distributed under the MIT License (see MIT.md)
 ###########################################################################################
 
 import numpy as np
 import torch
-
 from beartype import beartype
 from jaxtyping import Float, jaxtyped
 
@@ -17,7 +16,9 @@ class BesselBasis(torch.nn.Module):
     Equation (7)
     """
 
-    def __init__(self, r_max: float, num_basis: int = 8, trainable: bool = False):
+    def __init__(
+        self, r_max: float, num_basis: int = 8, trainable: bool = False
+    ):
         super().__init__()
 
         bessel_weights = (
@@ -40,7 +41,9 @@ class BesselBasis(torch.nn.Module):
         )
         self.register_buffer(
             "prefactor",
-            torch.tensor(np.sqrt(2.0 / r_max), dtype=torch.get_default_dtype()),
+            torch.tensor(
+                np.sqrt(2.0 / r_max), dtype=torch.get_default_dtype()
+            ),
         )
 
     def forward(
@@ -68,7 +71,9 @@ class PolynomialCutoff(torch.nn.Module):
 
     def __init__(self, r_max: float, p: int = 6):
         super().__init__()
-        self.register_buffer("p", torch.tensor(p, dtype=torch.get_default_dtype()))
+        self.register_buffer(
+            "p", torch.tensor(p, dtype=torch.get_default_dtype())
+        )
         self.register_buffer(
             "r_max", torch.tensor(r_max, dtype=torch.get_default_dtype())
         )
@@ -105,9 +110,13 @@ def compute_rbf(
     That is, if `distances` has shape `[..., dims]`, then the returned Tensor will have
     shape `[..., dims, num_rbf]`.
     """
-    distance_mu = torch.linspace(min_distance, max_distance, num_rbf, device=distances.device)
+    distance_mu = torch.linspace(
+        min_distance, max_distance, num_rbf, device=distances.device
+    )
     distance_mu = distance_mu.view([1, -1])
     distance_sigma = (max_distance - min_distance) / num_rbf
     distance_expanded = torch.unsqueeze(distances, -1)
-    rbf = torch.exp(-((distance_expanded - distance_mu) / distance_sigma) ** 2)
+    rbf = torch.exp(
+        -(((distance_expanded - distance_mu) / distance_sigma) ** 2)
+    )
     return rbf

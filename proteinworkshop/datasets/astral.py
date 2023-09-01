@@ -2,16 +2,15 @@ import os
 import pathlib
 import random
 import tarfile
-from typing import Callable, Dict, Iterable, List, Optional
+from typing import Callable, Dict, Iterable, List, Literal, Optional
 
 import omegaconf
 import pandas as pd
-import torch
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
-from loguru import logger
 from loguru import logger as log
 from sklearn.model_selection import train_test_split
+
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 from proteinworkshop.datasets.utils import flatten_dir
 
@@ -24,13 +23,38 @@ class AstralDataModule(ProteinDataModule):
         pin_memory: bool,
         num_workers: int,
         release: str = "1.75",
-        identity: str = "95",
+        identity: Literal["40", "95"] = "95",
         dataset_fraction: float = 1.0,
         transforms: Optional[Iterable[Callable]] = None,
         in_memory: bool = False,
         train_val_test: List[float] = [0.8, 0.1, 0.1],
         overwrite: bool = False,
     ) -> None:
+        """Data module for ASTRAL dataset.
+
+        :param path: Path to store data.
+        :type path: str
+        :param batch_size: Batch size for dataloaders.
+        :type batch_size: int
+        :param pin_memory: Whether to pin memory for dataloaders.
+        :type pin_memory: bool
+        :param num_workers: Number of workers for dataloaders.
+        :type num_workers: int
+        :param release: ASTRAL release to use. Defaults to ``"1.75"``.
+        :type release: str
+        :param identity: ASTRAL sequence identity cutoff to use.
+        :type identity: Literal["40", "95"]
+        :param dataset_fraction: Fraction of dataset to use. Defaults to ``1.0``.
+        :type dataset_fraction: float
+        :param transforms: List of transforms to apply to dataset. Defaults to ``None``.
+        :type transforms: Optional[List[Callable]]
+        :param in_memory: Whether to load the entire dataset into memory. Defaults to ``False``.
+        :type in_memory: bool
+        :param train_val_test: Train/val/test split sizes. Defaults to ``[0.8, 0.1, 0.1]``.
+        :type train_val_test: List[float]
+        :param overwrite: Whether to overwrite existing data. Defaults to ``False``.
+        :type overwrite: bool
+        """
         super().__init__()
         self.data_dir = pathlib.Path(path)
         if not os.path.exists(self.data_dir):
@@ -40,12 +64,14 @@ class AstralDataModule(ProteinDataModule):
         self.release = str(release)
         self.identity = str(identity)
         if self.identity not in {"95", "40"}:
-            raise ValueError(f"Identity must be one of {95, 40} not {self.identity}")
+            raise ValueError(
+                f"Identity must be one of {95, 40} not {self.identity}"
+            )
 
-        self.ASTRAL_GZ_FNAME = f"pdbstyle-sel-gs-bib-{identity}-{self.release}.tgz"
-        self.scop_url = (
-            f"https://scop.berkeley.edu/downloads/pdbstyle/{self.ASTRAL_GZ_FNAME}"
+        self.ASTRAL_GZ_FNAME = (
+            f"pdbstyle-sel-gs-bib-{identity}-{self.release}.tgz"
         )
+        self.scop_url = f"https://scop.berkeley.edu/downloads/pdbstyle/{self.ASTRAL_GZ_FNAME}"
 
         self.structure_dir = self.data_dir / f"pdbstyle-{self.release}"
 
@@ -70,9 +96,10 @@ class AstralDataModule(ProteinDataModule):
         self.overwrite = overwrite
 
     def download(self):
-        self.download_structures()
+        """Downloads ASTRAL structures from SCOPe."""
+        self._download_structures()
 
-    def download_structures(self):  # sourcery skip: extract-method
+    def _download_structures(self):  # sourcery skip: extract-method
         """Downloads SCOPe structures."""
         if not os.path.exists(self.data_dir / self.ASTRAL_GZ_FNAME):
             log.info(
@@ -99,14 +126,30 @@ class AstralDataModule(ProteinDataModule):
             log.info("Found SCOPe structures in: ")  # TODO
 
     def parse_class_map(self) -> Dict[str, str]:
+        """Parses class map from ASTRAL dataset.
+
+        :return: Class map.
+        :rtype: Dict[str, str]
+        """
         log.info(f"Reading labels from: {self.data_dir / 'class_map.txt'}")
-        class_map = pd.read_csv(self.data_dir / "class_map.txt", sep="\t", header=None)
+        class_map = pd.read_csv(
+            self.data_dir / "class_map.txt", sep="\t", header=None
+        )
         return dict(class_map.values)
 
     def setup(self, stage: Optional[str] = None):
         self.download()
 
-    def parse_dataset(self, split: str) -> List[str]:
+    def parse_dataset(
+        self, split: Literal["train", "val", "test"]
+    ) -> List[str]:
+        """Parses ASTRAL dataset. Returns a list of IDs for each split.
+
+        :param split: Split to parse.
+        :type split: Literal["train", "val", "test"]
+        :return: List of IDs for split.
+        :rtype: List[str]
+        """
         # If we've already split, return the split data
         if hasattr(self, f"{split}_ids"):
             return getattr(self, f"{split}_ids")
@@ -115,7 +158,9 @@ class AstralDataModule(ProteinDataModule):
         structs = [s for s in structs if s.endswith(".ent")]
         structs = [s.replace(".ent", "") for s in structs]
 
-        structs = random.sample(structs, int(len(structs) * self.dataset_fraction))
+        structs = random.sample(
+            structs, int(len(structs) * self.dataset_fraction)
+        )
 
         train_size, val_size, test_size = self.train_val_test
         log.info(
@@ -123,8 +168,12 @@ class AstralDataModule(ProteinDataModule):
         )
 
         train, val = train_test_split(structs, test_size=val_size + test_size)
-        val, test = train_test_split(val, test_size=test_size / (val_size + test_size))
-        log.info(f"Split sizes: {len(train)} train, {len(val)} val, {len(test)} test")
+        val, test = train_test_split(
+            val, test_size=test_size / (val_size + test_size)
+        )
+        log.info(
+            f"Split sizes: {len(train)} train, {len(val)} val, {len(test)} test"
+        )
 
         self.train_ids = train
         self.val_ids = val
@@ -146,15 +195,36 @@ class AstralDataModule(ProteinDataModule):
         )
 
     def train_dataset(self) -> ProteinDataset:
+        """Returns the training dataset.
+
+        .. seealso::
+            :py:class:`proteinworkshop.datasets.base.ProteinDataset`
+
+        :return: Training dataset.
+        :rtype: ProteinDataset
+        """
         return self._get_dataset("train")
 
     def val_dataset(self) -> ProteinDataset:
+        """Returns the validation dataset.
+
+        .. seealso::
+            :py:class:`proteinworkshop.datasets.base.ProteinDataset`
+
+        :return: Validation dataset.
+        :rtype: ProteinDataset
+        """
         return self._get_dataset("val")
 
     def test_dataset(self) -> ProteinDataset:
         return self._get_dataset("test")
 
     def train_dataloader(self) -> ProteinDataLoader:
+        """Returns the training dataloader.
+
+        :return: Training dataloader.
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.train_dataset(),
             batch_size=self.batch_size,
@@ -164,6 +234,11 @@ class AstralDataModule(ProteinDataModule):
         )
 
     def val_dataloader(self) -> ProteinDataLoader:
+        """Returns the validation dataloader.
+
+        :return: Validation dataloader.
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.val_dataset(),
             batch_size=self.batch_size,
@@ -173,6 +248,11 @@ class AstralDataModule(ProteinDataModule):
         )
 
     def test_dataloader(self) -> ProteinDataLoader:
+        """Returns the test dataloader.
+
+        :return: Test dataloader.
+        :rtype: ProteinDataLoader
+        """
         return ProteinDataLoader(
             self.test_dataset(),
             batch_size=self.batch_size,
@@ -193,7 +273,9 @@ class AstralDataModule(ProteinDataModule):
         )
 
     def parse_labels(self):
+        """Not implemented for ASTRAL dataset."""
         pass
 
     def exclude_pdbs(self):
+        """Not implemented for ASTRAL dataset."""
         pass

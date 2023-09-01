@@ -5,13 +5,13 @@ on:
     paths-ignore:
       - "README.md"
       - "docs/**"
-      - ".gitignore"
+      - "CHANGELOG.md"
 
     pull_request:
       paths-ignore:
         - "README.md"
         - "docs/**"
-        - ".gitignore"
+        - "CHANGELOG.md"
 
 jobs:
   buld_cpu:
@@ -45,10 +45,7 @@ jobs:
           poetry check --no-interaction
           poetry config virtualenvs.in-project true
           poetry install --no-interaction --without docs
-          poe install-torch-cluster
-          poe install-torch-sparse
-          poe install-torch-scatter
-          poe install-torch-spline-conv
+          poetry run install_pyg_workshop
           poe install-torchdrug
 
       - name: Run tests

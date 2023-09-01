@@ -5,10 +5,11 @@ import omegaconf
 import pandas as pd
 from graphein.ml.datasets import PDBManager
 from loguru import logger as log
-from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
-from proteinworkshop.datasets.utils import download_pdb_mmtf
 from torch_geometric.data import Dataset
 from torch_geometric.loader import DataLoader
+
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
+from proteinworkshop.datasets.utils import download_pdb_mmtf
 
 
 class PDBData:
@@ -81,14 +82,18 @@ class PDBData:
         pdb_manager.resolution_better_than_or_equal_to(
             self.worst_resolution, update=True
         )
-        pdb_manager.resolution_worse_than_or_equal_to(self.best_resolution, update=True)
+        pdb_manager.resolution_worse_than_or_equal_to(
+            self.best_resolution, update=True
+        )
         log.info(f"{len(pdb_manager.df)} chains remaining")
 
         if self.remove_ligands:
             log.info(
                 f"Removing chains with ligands in selection: {self.remove_ligands}..."
             )
-            pdb_manager.has_ligands(self.remove_ligands, inverse=True, update=True)
+            pdb_manager.has_ligands(
+                self.remove_ligands, inverse=True, update=True
+            )
             log.info(f"{len(pdb_manager.df)} chains remaining")
 
         if self.has_ligands:
@@ -110,7 +115,9 @@ class PDBData:
         log.info(f"Splitting dataset into {self.split_sizes}...")
         split_names = ["train", "val", "test"]
         splits = pdb_manager.split_df_proportionally(
-            df=pdb_manager.df, splits=split_names, split_ratios=self.split_sizes
+            df=pdb_manager.df,
+            splits=split_names,
+            split_ratios=self.split_sizes,
         )
         # log.info(splits["train"])
         # log.info(pdb_manager.df)
@@ -129,11 +136,14 @@ class PDBDataModule(ProteinDataModule):
         batch_size: int = 32,
         num_workers: int = 0,
         pin_memory: bool = False,
+        overwrite: bool = False,
     ):
+        super().__init__()
         self.root = path
         self.dataset = pdb_dataset
         self.dataset.path = path
         self.format = "mmtf.gz"
+        self.overwrite = overwrite
 
         self.in_memory = in_memory
 
@@ -199,6 +209,7 @@ class PDBDataModule(ProteinDataModule):
             format=self.format,
             transform=self.transform,
             in_memory=self.in_memory,
+            overwrite=self.overwrite,
         )
 
     def train_dataset(self) -> Dataset:
@@ -216,6 +227,7 @@ if __name__ == "__main__":
 
     import hydra
     import omegaconf
+
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(

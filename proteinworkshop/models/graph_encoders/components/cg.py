@@ -1,7 +1,7 @@
 ###########################################################################################
 # Higher Order Real Clebsch Gordan (based on e3nn by Mario Geiger)
 # Authors: Ilyes Batatia
-# This program is distributed under the ASL License (see ASL.md)
+# This program is distributed under the MIT License (see MIT.md)
 ###########################################################################################
 
 import collections
@@ -60,7 +60,9 @@ def _wigner_nj(
 
                 C = torch.einsum("jk,ijl->ikl", C_left.flatten(1), C)
                 C = C.reshape(
-                    ir_out.dim, *(irreps.dim for irreps in irrepss_left), ir.dim
+                    ir_out.dim,
+                    *(irreps.dim for irreps in irrepss_left),
+                    ir.dim,
                 )
                 for u in range(mul):
                     E = torch.zeros(
@@ -78,7 +80,9 @@ def _wigner_nj(
                                 op=(ir_left, ir, ir_out),
                                 args=(
                                     path_left,
-                                    _INPUT(len(irrepss_left), sl.start, sl.stop),
+                                    _INPUT(
+                                        len(irrepss_left), sl.start, sl.stop
+                                    ),
                                 ),
                             ),
                             E,

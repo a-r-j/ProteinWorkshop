@@ -1,7 +1,7 @@
 ###########################################################################################
 # Elementary Block for Building O(3) Equivariant Higher Order Message Passing Neural Network
 # Authors: Ilyes Batatia, Gregor Simm
-# This program is distributed under the ASL License (see ASL.md)
+# This program is distributed under the MIT License (see MIT.md)
 ###########################################################################################
 
 import math
@@ -12,11 +12,15 @@ import numpy as np
 import torch
 import torch.nn.functional
 from e3nn import nn, o3
+
 # from mace.tools.scatter import scatter_sum
 from torch_scatter import scatter_sum
 
-from .irreps_tools import (linear_out_irreps, reshape_irreps,
-                           tp_out_irreps_with_instructions)
+from .irreps_tools import (
+    linear_out_irreps,
+    reshape_irreps,
+    tp_out_irreps_with_instructions,
+)
 from .radial import BesselBasis, PolynomialCutoff
 from .symmetric_contraction import SymmetricContraction
 
@@ -26,7 +30,7 @@ class DimeNetEmbeddingBlock(torch.nn.Module):
         super().__init__()
         self.act = act
 
-        #self.emb = Embedding(95, hidden_channels)
+        # self.emb = Embedding(95, hidden_channels)
         self.emb = torch.nn.LazyLinear(hidden_channels)
         self.lin_rbf = torch.nn.Linear(num_radial, hidden_channels)
         self.lin = torch.nn.Linear(3 * hidden_channels, hidden_channels)
@@ -38,7 +42,13 @@ class DimeNetEmbeddingBlock(torch.nn.Module):
         self.lin_rbf.reset_parameters()
         self.lin.reset_parameters()
 
-    def forward(self, x: torch.Tensor, rbf: torch.Tensor, i: torch.Tensor, j: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self,
+        x: torch.Tensor,
+        rbf: torch.Tensor,
+        i: torch.Tensor,
+        j: torch.Tensor,
+    ) -> torch.Tensor:
         x = self.emb(x)
         rbf = self.act(self.lin_rbf(rbf))
         return self.act(self.lin(torch.cat([x[i], x[j], rbf], dim=-1)))
@@ -57,11 +67,15 @@ class LinearNodeEmbeddingBlock(torch.nn.Module):
 
 
 class LinearReadoutBlock(torch.nn.Module):
-    def __init__(self, irreps_in: o3.Irreps, irreps_out: o3.Irreps = o3.Irreps("0e")):
+    def __init__(
+        self, irreps_in: o3.Irreps, irreps_out: o3.Irreps = o3.Irreps("0e")
+    ):
         super().__init__()
         self.linear = o3.Linear(irreps_in=irreps_in, irreps_out=irreps_out)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:  # [n_nodes, irreps]  # [..., ]
+    def forward(
+        self, x: torch.Tensor
+    ) -> torch.Tensor:  # [n_nodes, irreps]  # [..., ]
         return self.linear(x)  # [n_nodes, irreps_out]
 
 
@@ -75,11 +89,19 @@ class NonLinearReadoutBlock(torch.nn.Module):
     ):
         super().__init__()
         self.hidden_irreps = MLP_irreps
-        self.linear_1 = o3.Linear(irreps_in=irreps_in, irreps_out=self.hidden_irreps)
-        self.non_linearity = nn.Activation(irreps_in=self.hidden_irreps, acts=[gate])
-        self.linear_2 = o3.Linear(irreps_in=self.hidden_irreps, irreps_out=irreps_out)
+        self.linear_1 = o3.Linear(
+            irreps_in=irreps_in, irreps_out=self.hidden_irreps
+        )
+        self.non_linearity = nn.Activation(
+            irreps_in=self.hidden_irreps, acts=[gate]
+        )
+        self.linear_2 = o3.Linear(
+            irreps_in=self.hidden_irreps, irreps_out=irreps_out
+        )
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:  # [n_nodes, irreps]  # [..., ]
+    def forward(
+        self, x: torch.Tensor
+    ) -> torch.Tensor:  # [n_nodes, irreps]  # [..., ]
         x = self.non_linearity(self.linear_1(x))
         return self.linear_2(x)  # [n_nodes, irreps_out]
 
@@ -102,12 +124,16 @@ class AtomicEnergiesBlock(torch.nn.Module):
         return torch.matmul(x, self.atomic_energies)
 
     def __repr__(self):
-        formatted_energies = ", ".join([f"{x:.4f}" for x in self.atomic_energies])
+        formatted_energies = ", ".join(
+            [f"{x:.4f}" for x in self.atomic_energies]
+        )
         return f"{self.__class__.__name__}(energies=[{formatted_energies}])"
 
 
 class RadialEmbeddingBlock(torch.nn.Module):
-    def __init__(self, r_max: float, num_bessel: int, num_polynomial_cutoff: int):
+    def __init__(
+        self, r_max: float, num_bessel: int, num_polynomial_cutoff: int
+    ):
         super().__init__()
         self.bessel_fn = BesselBasis(r_max=r_max, num_basis=num_bessel)
         self.cutoff_fn = PolynomialCutoff(r_max=r_max, p=num_polynomial_cutoff)
@@ -209,7 +235,9 @@ nonlinearities = {1: torch.nn.SiLU(), -1: torch.nn.Tanh()}
 
 
 class TensorProductWeightsBlock(torch.nn.Module):
-    def __init__(self, num_elements: int, num_edge_feats: int, num_feats_out: int):
+    def __init__(
+        self, num_elements: int, num_edge_feats: int, num_feats_out: int
+    ):
         super().__init__()
 
         weights = torch.empty(
@@ -225,7 +253,10 @@ class TensorProductWeightsBlock(torch.nn.Module):
         edge_feats: torch.Tensor,
     ):
         return torch.einsum(
-            "be, ba, aek -> bk", edge_feats, sender_or_receiver_node_attrs, self.weights
+            "be, ba, aek -> bk",
+            edge_feats,
+            sender_or_receiver_node_attrs,
+            self.weights,
         )
 
     def __repr__(self):
@@ -266,7 +297,10 @@ class ResidualElementDependentInteractionBlock(InteractionBlock):
         self.irreps_out = linear_out_irreps(irreps_mid, self.target_irreps)
         self.irreps_out = self.irreps_out.simplify()
         self.linear = o3.Linear(
-            irreps_mid, self.irreps_out, internal_weights=True, shared_weights=True
+            irreps_mid,
+            self.irreps_out,
+            internal_weights=True,
+            shared_weights=True,
         )
 
         # Selector TensorProduct
@@ -330,7 +364,10 @@ class AgnosticNonlinearInteractionBlock(InteractionBlock):
         self.irreps_out = linear_out_irreps(irreps_mid, self.target_irreps)
         self.irreps_out = self.irreps_out.simplify()
         self.linear = o3.Linear(
-            irreps_mid, self.irreps_out, internal_weights=True, shared_weights=True
+            irreps_mid,
+            self.irreps_out,
+            internal_weights=True,
+            shared_weights=True,
         )
 
         # Selector TensorProduct
@@ -395,7 +432,10 @@ class AgnosticResidualNonlinearInteractionBlock(InteractionBlock):
         self.irreps_out = linear_out_irreps(irreps_mid, self.target_irreps)
         self.irreps_out = self.irreps_out.simplify()
         self.linear = o3.Linear(
-            irreps_mid, self.irreps_out, internal_weights=True, shared_weights=True
+            irreps_mid,
+            self.irreps_out,
+            internal_weights=True,
+            shared_weights=True,
         )
 
         # Selector TensorProduct
@@ -462,7 +502,10 @@ class RealAgnosticInteractionBlock(InteractionBlock):
         irreps_mid = irreps_mid.simplify()
         self.irreps_out = self.target_irreps
         self.linear = o3.Linear(
-            irreps_mid, self.irreps_out, internal_weights=True, shared_weights=True
+            irreps_mid,
+            self.irreps_out,
+            internal_weights=True,
+            shared_weights=True,
         )
 
         # Selector TensorProduct
@@ -533,7 +576,10 @@ class RealAgnosticResidualInteractionBlock(InteractionBlock):
         irreps_mid = irreps_mid.simplify()
         self.irreps_out = self.target_irreps
         self.linear = o3.Linear(
-            irreps_mid, self.irreps_out, internal_weights=True, shared_weights=True
+            irreps_mid,
+            self.irreps_out,
+            internal_weights=True,
+            shared_weights=True,
         )
 
         # Selector TensorProduct
@@ -583,6 +629,4 @@ class ScaleShiftBlock(torch.nn.Module):
         return self.scale * x + self.shift
 
     def __repr__(self):
-        return (
-            f"{self.__class__.__name__}(scale={self.scale:.6f}, shift={self.shift:.6f})"
-        )
+        return f"{self.__class__.__name__}(scale={self.scale:.6f}, shift={self.shift:.6f})"

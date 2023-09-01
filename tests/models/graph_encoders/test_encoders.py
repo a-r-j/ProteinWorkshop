@@ -1,11 +1,12 @@
+import copy
 import os
 from typing import List
+
 import omegaconf
 import pytest
 from hydra.utils import instantiate
-from proteinworkshop import register_custom_omegaconf_resolvers
-from proteinworkshop import constants
-import copy
+
+from proteinworkshop import constants, register_custom_omegaconf_resolvers
 
 ENCODERS: List[str] = [
     "gvp",
@@ -19,21 +20,25 @@ ENCODERS: List[str] = [
     "identity",
 ]
 
-FEATURES = os.listdir(constants.PROJECT_PATH / "configs" / "features")
+FEATURES = os.listdir(constants.HYDRA_CONFIG_PATH / "features")
 
 register_custom_omegaconf_resolvers()
 
 
 def test_instantiate_encoders():
     for encoder in ENCODERS:
-        config_path = constants.PROJECT_PATH / "configs" / "encoder" / f"{encoder}.yaml"
+        config_path = (
+            constants.HYDRA_CONFIG_PATH / "encoder" / f"{encoder}.yaml"
+        )
         cfg = omegaconf.OmegaConf.create()
         cfg.encoder = omegaconf.OmegaConf.load(config_path)
         cfg.features = omegaconf.OmegaConf.load(
-            constants.PROJECT_PATH / "configs" / "features" / "ca_bb.yaml"
+            constants.HYDRA_CONFIG_PATH / "features" / "ca_bb.yaml"
         )
         cfg.task = omegaconf.OmegaConf.load(
-            constants.PROJECT_PATH / "configs" / "task" / "ppi_site_prediction.yaml"
+            constants.HYDRA_CONFIG_PATH
+            / "task"
+            / "ppi_site_prediction.yaml"
         )
 
         enc = instantiate(cfg.encoder)
@@ -45,16 +50,22 @@ def test_instantiate_encoders():
 def test_encoder_forward_pass(example_batch):
     for encoder in ENCODERS:
         for feature in FEATURES:
-            encoder_config_path = constants.PROJECT_PATH / "configs" / "encoder" / f"{encoder}.yaml"
-            feature_config_path = constants.PROJECT_PATH / "configs" / "features" / feature
+            encoder_config_path = (
+                constants.HYDRA_CONFIG_PATH
+                / "encoder"
+                / f"{encoder}.yaml"
+            )
+            feature_config_path = (
+                constants.HYDRA_CONFIG_PATH / "features" / feature
+            )
 
             cfg = omegaconf.OmegaConf.create()
             cfg.encoder = omegaconf.OmegaConf.load(encoder_config_path)
-            cfg.features = omegaconf.OmegaConf.load(
-                feature_config_path
-            )
+            cfg.features = omegaconf.OmegaConf.load(feature_config_path)
             cfg.task = omegaconf.OmegaConf.load(
-                constants.PROJECT_PATH / "configs" / "task" / "ppi_site_prediction.yaml"
+                constants.HYDRA_CONFIG_PATH
+                / "task"
+                / "ppi_site_prediction.yaml"
             )
 
             enc = instantiate(cfg.encoder)

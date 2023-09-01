@@ -1,20 +1,26 @@
+from functools import partial
+from typing import List, Union
+
 import hydra
 import torch
 import torch.nn as nn
-
 from beartype import beartype
-from functools import partial
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import jaxtyped
 from omegaconf import DictConfig
 from torch_geometric.data import Batch
-from typing import List, Union
 
 import proteinworkshop.models.graph_encoders.layers.gcp as gcp
-
 from proteinworkshop import constants
-from proteinworkshop.models.graph_encoders.components.wrappers import ScalarVector
-from proteinworkshop.models.utils import (centralize, decentralize, get_aggregation, localize)
+from proteinworkshop.models.graph_encoders.components.wrappers import (
+    ScalarVector,
+)
+from proteinworkshop.models.utils import (
+    centralize,
+    decentralize,
+    get_aggregation,
+    localize,
+)
 from proteinworkshop.types import EncoderOutput
 
 
@@ -40,7 +46,7 @@ class GCPNetModel(torch.nn.Module):
         Note: Each of the model's keyword arguments listed here
         are also referenced in the corresponding `DictConfigs` within `kwargs`.
         They are simply listed here to highlight some of the key arguments available.
-        See `configs/encoder/gcpnet.yaml` for a full list of all available arguments.
+        See `proteinworkshop/config/encoder/gcpnet.yaml` for a full list of all available arguments.
 
         :param num_layers: Number of layers in the model (default: ``5``)
         :type num_layers: int
@@ -81,14 +87,24 @@ class GCPNetModel(torch.nn.Module):
         self.predict_node_rep = module_cfg.predict_node_rep
 
         # Feature dimensionalities
-        edge_input_dims = ScalarVector(model_cfg.e_input_dim, model_cfg.xi_input_dim)
-        node_input_dims = ScalarVector(model_cfg.h_input_dim, model_cfg.chi_input_dim)
-        self.edge_dims = ScalarVector(model_cfg.e_hidden_dim, model_cfg.xi_hidden_dim)
-        self.node_dims = ScalarVector(model_cfg.h_hidden_dim, model_cfg.chi_hidden_dim)
+        edge_input_dims = ScalarVector(
+            model_cfg.e_input_dim, model_cfg.xi_input_dim
+        )
+        node_input_dims = ScalarVector(
+            model_cfg.h_input_dim, model_cfg.chi_input_dim
+        )
+        self.edge_dims = ScalarVector(
+            model_cfg.e_hidden_dim, model_cfg.xi_hidden_dim
+        )
+        self.node_dims = ScalarVector(
+            model_cfg.h_hidden_dim, model_cfg.chi_hidden_dim
+        )
 
         # Position-wise operations
         self.centralize = partial(centralize, key="pos")
-        self.localize = partial(localize, norm_pos_diff=module_cfg.norm_pos_diff)
+        self.localize = partial(
+            localize, norm_pos_diff=module_cfg.norm_pos_diff
+        )
         self.decentralize = partial(decentralize, key="pos")
 
         # Input embeddings
@@ -144,7 +160,9 @@ class GCPNetModel(torch.nn.Module):
     @beartype
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
         # Centralize node positions to make them translation-invariant
-        pos_centroid, batch.pos = self.centralize(batch, batch_index=batch.batch)
+        pos_centroid, batch.pos = self.centralize(
+            batch, batch_index=batch.batch
+        )
 
         # Install `h`, `chi`, `e`, and `xi` using corresponding features built by the `FeatureFactory`
         batch.h, batch.chi, batch.e, batch.xi = (
@@ -163,7 +181,11 @@ class GCPNetModel(torch.nn.Module):
         # Update graph features using a series of geometric message-passing layers
         for layer in self.interaction_layers:
             (h, chi), batch.pos = layer(
-                (h, chi), (e, xi), batch.edge_index, batch.f_ij, node_pos=batch.pos
+                (h, chi),
+                (e, xi),
+                batch.edge_index,
+                batch.f_ij,
+                node_pos=batch.pos,
             )
 
         # Record final version of each feature in `Batch` object
@@ -182,7 +204,9 @@ class GCPNetModel(torch.nn.Module):
                 _, centralized_node_pos = self.centralize(
                     batch, batch_index=batch.batch
                 )
-                batch.f_ij = self.localize(centralized_node_pos, batch.edge_index)
+                batch.f_ij = self.localize(
+                    centralized_node_pos, batch.edge_index
+                )
             encoder_outputs["pos"] = batch.pos  # (n, 3) -> (batch_size, 3)
 
         # Summarize intermediate node representations as final predictions

@@ -1,4 +1,4 @@
-from typing import List, Union, Set
+from typing import Set, Union
 
 import torch
 import torch.nn.functional as F
@@ -31,16 +31,6 @@ class GVPGNNModel(torch.nn.Module):
         Initializes an instance of the GVPGNNModel class with the provided
         parameters.
 
-        :param r_max: Maximum distance for Bessel basis functions
-            (default: ``10.0``)
-        :type r_max: float
-        :param num_bessel: Number of Bessel basis functions (default: ``8``)
-        :type num_bessel: int
-        :param num_polynomial_cutoff: Number of polynomial cutoff basis
-            functions (default: ``5``)
-        :type num_polynomial_cutoff: int
-        :param num_layers: Number of layers in the model (default: ``5``)
-        :type num_layers: int
         :param s_dim: Dimension of the node state embeddings (default: ``128``)
         :type s_dim: int
         :param v_dim: Dimension of the node vector embeddings (default: ``16``)
@@ -51,6 +41,16 @@ class GVPGNNModel(torch.nn.Module):
         :param v_dim_edge: Dimension of the edge vector embeddings
             (default: ``1``)
         :type v_dim_edge: int
+        :param r_max: Maximum distance for Bessel basis functions
+            (default: ``10.0``)
+        :type r_max: float
+        :param num_bessel: Number of Bessel basis functions (default: ``8``)
+        :type num_bessel: int
+        :param num_polynomial_cutoff: Number of polynomial cutoff basis
+            functions (default: ``5``)
+        :type num_polynomial_cutoff: int
+        :param num_layers: Number of layers in the model (default: ``5``)
+        :type num_layers: int
         :param pool: Global pooling method to be used
             (default: ``"sum"``)
         :type pool: str
@@ -73,7 +73,7 @@ class GVPGNNModel(torch.nn.Module):
                 (s_dim, 0),
                 _DEFAULT_V_DIM,
                 activations=(None, None),
-                vector_gate=True
+                vector_gate=True,
             ),
         )
         # Edge embedding
@@ -109,7 +109,7 @@ class GVPGNNModel(torch.nn.Module):
                 _DEFAULT_V_DIM,
                 (s_dim, 0),
                 activations=activations,
-                vector_gate=True
+                vector_gate=True,
             ),
         )
         # Global pooling/readout function
@@ -148,7 +148,9 @@ class GVPGNNModel(torch.nn.Module):
         vectors = (
             batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]
         )  # [n_edges, 3]
-        lengths = torch.linalg.norm(vectors, dim=-1, keepdim=True)  # [n_edges, 1]
+        lengths = torch.linalg.norm(
+            vectors, dim=-1, keepdim=True
+        )  # [n_edges, 1]
 
         h_V = self.emb_in(batch.x)
         h_E = (
@@ -164,11 +166,15 @@ class GVPGNNModel(torch.nn.Module):
 
         out = self.W_out(h_V)
 
-        return EncoderOutput({
-            "node_embedding": out,
-            "graph_embedding": self.readout(out, batch.batch),  # (n, d) -> (batch_size, d)
-            # "pos": pos  # TODO it is possible to output pos with GVP if needed
-        })
+        return EncoderOutput(
+            {
+                "node_embedding": out,
+                "graph_embedding": self.readout(
+                    out, batch.batch
+                ),  # (n, d) -> (batch_size, d)
+                # "pos": pos  # TODO it is possible to output pos with GVP if needed
+            }
+        )
 
 
 if __name__ == "__main__":
@@ -179,8 +185,6 @@ if __name__ == "__main__":
 
     cfg = omegaconf.OmegaConf.load(
         constants.PROJECT_PATH / "configs" / "encoder" / "gvp.yaml"
-        )
+    )
     enc = hydra.utils.instantiate(cfg)
     print(enc)
-
-

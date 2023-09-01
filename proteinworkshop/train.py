@@ -3,6 +3,7 @@ Main module to load and train the model. This should be the program entry
 point.
 """
 import copy
+import sys
 from typing import List, Optional
 
 import graphein
@@ -17,7 +18,11 @@ from lightning.pytorch.loggers import Logger
 from loguru import logger as log
 from omegaconf import DictConfig
 
-from proteinworkshop import constants, register_custom_omegaconf_resolvers, utils
+from proteinworkshop import (
+    constants,
+    register_custom_omegaconf_resolvers,
+    utils,
+)
 from proteinworkshop.configs import config
 from proteinworkshop.models.base import BenchMarkModel
 
@@ -25,7 +30,9 @@ graphein.verbose(False)
 lt.monkey_patch()
 
 
-def _num_training_steps(train_dataset: ProteinDataLoader, trainer: L.Trainer) -> int:
+def _num_training_steps(
+    train_dataset: ProteinDataLoader, trainer: L.Trainer
+) -> int:
     """
     Returns total training steps inferred from datamodule and devices.
 
@@ -49,12 +56,16 @@ def _num_training_steps(train_dataset: ProteinDataLoader, trainer: L.Trainer) ->
 
     num_devices = max(1, trainer.num_devices)
     effective_batch_size = (
-        train_dataset.batch_size * trainer.accumulate_grad_batches * num_devices
+        train_dataset.batch_size
+        * trainer.accumulate_grad_batches
+        * num_devices
     )
     return (dataset_size // effective_batch_size) * trainer.max_epochs
 
 
-def train_model(cfg: DictConfig, encoder: Optional[nn.Module] = None):  # sourcery skip: extract-method
+def train_model(
+    cfg: DictConfig, encoder: Optional[nn.Module] = None
+):  # sourcery skip: extract-method
     """
     Trains a model from a config.
 
@@ -84,11 +95,17 @@ def train_model(cfg: DictConfig, encoder: Optional[nn.Module] = None):  # source
     # set seed for random number generators in pytorch, numpy and python.random
     L.seed_everything(cfg.seed)
 
-    log.info(f"Instantiating datamodule: <{cfg.dataset.datamodule._target_}...")
-    datamodule: L.LightningDataModule = hydra.utils.instantiate(cfg.dataset.datamodule)
+    log.info(
+        f"Instantiating datamodule: <{cfg.dataset.datamodule._target_}..."
+    )
+    datamodule: L.LightningDataModule = hydra.utils.instantiate(
+        cfg.dataset.datamodule
+    )
 
     log.info("Instantiating callbacks...")
-    callbacks: List[Callback] = utils.callbacks.instantiate_callbacks(cfg.get("callbacks"))
+    callbacks: List[Callback] = utils.callbacks.instantiate_callbacks(
+        cfg.get("callbacks")
+    )
 
     log.info("Instantiating loggers...")
     logger: List[Logger] = utils.loggers.instantiate_loggers(cfg.get("logger"))
@@ -104,9 +121,15 @@ def train_model(cfg: DictConfig, encoder: Optional[nn.Module] = None):  # source
             == "flash.core.optimizers.LinearWarmupCosineAnnealingLR"
             and cfg.scheduler.interval == "step"
         ):
-            num_steps = _num_training_steps(datamodule.train_dataloader(), trainer)
-            log.info(f"Setting number of training steps in scheduler to: {num_steps}")
-            cfg.scheduler.scheduler.warmup_epochs = num_steps / trainer.max_epochs
+            num_steps = _num_training_steps(
+                datamodule.train_dataloader(), trainer
+            )
+            log.info(
+                f"Setting number of training steps in scheduler to: {num_steps}"
+            )
+            cfg.scheduler.scheduler.warmup_epochs = (
+                num_steps / trainer.max_epochs
+            )
             cfg.scheduler.scheduler.max_epochs = num_steps
             log.info(cfg.scheduler)
 
@@ -154,7 +177,9 @@ def train_model(cfg: DictConfig, encoder: Optional[nn.Module] = None):  # source
 
     if cfg.get("task_name") == "train":
         log.info("Starting training!")
-        trainer.fit(model=model, datamodule=datamodule, ckpt_path=cfg.get("ckpt_path"))
+        trainer.fit(
+            model=model, datamodule=datamodule, ckpt_path=cfg.get("ckpt_path")
+        )
 
     if cfg.get("test"):
         log.info("Starting testing!")
@@ -189,6 +214,17 @@ def _main(cfg: DictConfig) -> None:
     utils.extras(cfg)
     cfg = config.validate_config(cfg)
     train_model(cfg)
+
+
+def _script_main(args: List[str]) -> None:
+    """
+    Provides an entry point for the script dispatcher.
+
+    Sets the sys.argv to the provided args and calls the main train function.
+    """
+    sys.argv = args
+    register_custom_omegaconf_resolvers()
+    _main()
 
 
 if __name__ == "__main__":

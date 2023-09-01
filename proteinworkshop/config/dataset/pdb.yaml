@@ -1,0 +1,25 @@
+datamodule:
+  _target_: "proteinworkshop.datasets.pdb_dataset.PDBDataModule"
+  path: ${env.paths.data}/pdb/ # Directory where the dataset is stored
+  batch_size: 32 # Batch size for dataloader
+  num_workers: 4 # Number of workers for dataloader
+  pin_memory: True # Pin memory for dataloader
+  transforms: ${transforms} # Transforms to apply to dataset examples
+  overwrite: False # Whether to overwrite existing dataset files
+
+  pdb_dataset:
+    _target_: "proteinworkshop.datasets.pdb_dataset.PDBData"
+    fraction: 1.0 # Fraction of dataset to use
+    molecule_type: "protein" # Type of molecule for which to select
+    experiment_types: ["diffraction", "NMR", "EM", "other"] # All experiment types
+    max_length: 1000 # Exclude polypeptides greater than length 1000
+    min_length: 10 # Exclude peptides of length 10
+    oligomeric_min: 1 # Include only monomeric proteins
+    oligomeric_max: 5 # Include up to 5-meric proteins 
+    best_resolution: 0.0 # Include only proteins with resolution >= 0.0
+    worst_resolution: 8.0 # Include only proteins with resolution <= 8.0
+    has_ligands: ["ZN"] # Include only proteins containing the ligand `ZN`
+    remove_ligands: [] # Exclude specific ligands from any available protein-ligand complexes
+    remove_non_standard_residues: True # Include only proteins containing standard amino acid residues
+    remove_pdb_unavailable: True # Include only proteins that are available to download
+    split_sizes: [0.8, 0.1, 0.1] # Cross-validation ratios to use for train, val, and test splits

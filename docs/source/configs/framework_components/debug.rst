@@ -4,7 +4,7 @@ Debug
 Default
 ^^^^^^^^^^^^
 
-.. literalinclude:: ../../../../configs/debug/default.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/debug/default.yaml
    :language: yaml
    :caption: config/debug/default.yaml
 

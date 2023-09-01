@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Callable, Dict, Iterable, Optional
+from typing import Callable, Dict, Iterable, Literal, Optional
 
 import omegaconf
 import pandas as pd
@@ -8,8 +8,9 @@ import torch
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
-from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 from torch_geometric.data import Dataset
+
+from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
 class EnzymeCommissionReactionDataset(ProteinDataModule):
@@ -18,7 +19,7 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
         path: str,
         batch_size: int,
         pdb_dir: Optional[str] = None,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         obsolete: str = "drop",
         in_memory: bool = False,
         pin_memory: bool = True,
@@ -26,6 +27,7 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
         dataset_fraction: float = 1.0,
         shuffle_labels: bool = False,
         transforms: Optional[Iterable[Callable]] = None,
+        overwrite: bool = False,
     ) -> None:
         super().__init__()
         self.data_dir = Path(path)
@@ -48,6 +50,7 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
         self.num_workers = num_workers
         self.shuffle_labels = shuffle_labels
         self.format = format
+        self.overwrite = overwrite
 
         self.prepare_data_per_node = True
         logger.info(
@@ -98,7 +101,7 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
             pdb_codes=list(df.pdb),
             chains=list(df.chain),
             graph_labels=[torch.tensor(a) for a in list(df.label)],
-            overwrite=False,
+            overwrite=self.overwrite,
             transform=self.transform,
             format=self.format,
             in_memory=self.in_memory,
@@ -156,12 +159,18 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
 
         # Read in IDs of structures in split
         if split == "training":
-            data = pd.read_csv(self.data_dir / "training.txt", sep=",", header=None)
+            data = pd.read_csv(
+                self.data_dir / "training.txt", sep=",", header=None
+            )
             data = data.sample(frac=self.dataset_fraction)
         elif split == "validation":
-            data = pd.read_csv(self.data_dir / "validation.txt", sep=",", header=None)
+            data = pd.read_csv(
+                self.data_dir / "validation.txt", sep=",", header=None
+            )
         elif split == "testing":
-            data = pd.read_csv(self.data_dir / "testing.txt", sep=",", header=None)
+            data = pd.read_csv(
+                self.data_dir / "testing.txt", sep=",", header=None
+            )
         else:
             raise ValueError(f"Unknown split: {split}")
 
@@ -177,7 +186,9 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
                 f"Found {len(data)} examples in {split} after dropping obsolete PDBs"
             )
         else:
-            raise NotImplementedError("Obsolete PDB replacement not implemented")
+            raise NotImplementedError(
+                "Obsolete PDB replacement not implemented"
+            )
 
         # Map labels to IDs in dataframe
         data["label"] = data[0].map(class_map)
@@ -196,6 +207,7 @@ if __name__ == "__main__":
 
     import hydra
     import omegaconf
+
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(

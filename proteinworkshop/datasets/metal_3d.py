@@ -1,12 +1,13 @@
 import os
 import pathlib
-from typing import Callable, Iterable, Optional, Union
+from typing import Callable, Iterable, Literal, Optional, Union
 
 import omegaconf
 import pandas as pd
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
+
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
@@ -15,13 +16,14 @@ class Metal3DDataModule(ProteinDataModule):
         self,
         path: str,
         pdb_dir: Optional[Union[str, os.PathLike]] = None,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         in_memory: bool = False,
         transforms: Optional[Iterable[Callable]] = None,
         batch_size: int = 32,
         num_workers: int = 0,
         pin_memory: bool = True,
         obsolete_strategy: str = "drop",  # Or replace
+        overwrite: bool = False,
     ) -> None:
         super().__init__()
 
@@ -33,6 +35,7 @@ class Metal3DDataModule(ProteinDataModule):
 
         self.format = format
         self.in_memory = in_memory
+        self.overwrite = overwrite
 
         if transforms is not None:
             self.transform = self.compose_transforms(
@@ -63,17 +66,23 @@ class Metal3DDataModule(ProteinDataModule):
             log.info(
                 f"Downloading training data from {self.BASE_URL} to {self.root_dir}"
             )
-            wget.download(f"{self.BASE_URL}train.txt", str(self.root_dir / "train.txt"))
+            wget.download(
+                f"{self.BASE_URL}train.txt", str(self.root_dir / "train.txt")
+            )
         if not os.path.exists(self.root_dir / "val.txt"):
             log.info(
                 f"Downloading training data from {self.BASE_URL} to {self.root_dir}"
             )
-            wget.download(f"{self.BASE_URL}val.txt", str(self.root_dir / "val.txt"))
+            wget.download(
+                f"{self.BASE_URL}val.txt", str(self.root_dir / "val.txt")
+            )
         if not os.path.exists(self.root_dir / "test.txt"):
             log.info(
                 f"Downloading training data from {self.BASE_URL} to {self.root_dir}"
             )
-            wget.download(f"{self.BASE_URL}test.txt", str(self.root_dir / "test.txt"))
+            wget.download(
+                f"{self.BASE_URL}test.txt", str(self.root_dir / "test.txt")
+            )
 
     def parse_dataset(self, split: str) -> pd.DataFrame:
         df = pd.read_csv(self.root_dir / f"{split}.txt", header=None)
@@ -103,6 +112,7 @@ class Metal3DDataModule(ProteinDataModule):
             format=self.format,
             in_memory=self.in_memory,
             store_het=True,
+            overwrite=self.overwrite,
         )
 
     def train_dataset(self) -> ProteinDataset:

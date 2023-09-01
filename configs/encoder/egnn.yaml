@@ -1,8 +1,0 @@
-_target_: "proteinworkshop.models.graph_encoders.egnn.EGNNModel"
-num_layers: 6
-emb_dim: 512
-activation: relu
-norm: layer
-aggr: "sum"
-pool: "sum"
-residual: True

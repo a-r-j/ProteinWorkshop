@@ -1,0 +1,11 @@
+datamodule:
+  _target_: "proteinworkshop.datasets.ptm.PTMDataModule"
+  dataset_name: "ptm_13" # Options currently include (`ptm_13`, `optm`)
+  path: ${env.paths.data}/PostTranslationalModification/ # Directory where the dataset is stored
+  batch_size: 32 # Batch size for dataloader
+  in_memory: False # Load the dataset in memory
+  pin_memory: True # Pin memory for dataloader
+  num_workers: 16 # Number of workers for dataloader
+  transforms: ${transforms} # Transforms to apply to dataset examples
+  overwrite: False # Whether to overwrite existing dataset files
+num_classes: 13 # Number of classes

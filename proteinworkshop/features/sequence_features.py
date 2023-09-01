@@ -8,7 +8,9 @@ from torch_geometric.data import Batch, Data
 
 
 @beartype
-def amino_acid_one_hot(x: Union[Batch, Data], num_classes: int = 23) -> torch.Tensor:
+def amino_acid_one_hot(
+    x: Union[Batch, Data], num_classes: int = 23
+) -> torch.Tensor:
     """Returns one-hot encoding of amino acid sequence.
 
     :param x: Protein data object containing a ``residue_type`` attribute.

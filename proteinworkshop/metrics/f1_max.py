@@ -7,11 +7,21 @@ from torchmetrics import Metric
 
 
 class F1Max(Metric):
+    """
+    Implements the protein-centric F1 Max metric.
+    """
+
     def __init__(self, num_classes: int, compute_on_cpu: bool = True) -> None:
+        """Initializes the F1Max metric.
+
+        :param num_classes: Number of classes.
+        :type num_classes: int
+        :param compute_on_cpu: Whether to compute the metric on CPU,
+            defaults to ``True``.
+        :type compute_on_cpu: bool, optional
+        """
         super().__init__()
-        self.add_state(
-            "preds", default=[], dist_reduce_fx="cat"
-        )
+        self.add_state("preds", default=[], dist_reduce_fx="cat")
         self.add_state("targets", default=[], dist_reduce_fx="cat")
         self.compute_on_cpu = compute_on_cpu
 
@@ -20,10 +30,15 @@ class F1Max(Metric):
         self.targets.append(target)
 
     def compute(self) -> Any:
-        return self.f1_max(
-            torch.cat(self.preds),
-            torch.cat(self.targets)
-            )
+        """Computes the F1Max metric.
+
+        .. seealso::
+            :py:class:`proteinworkshop.metrics.f1_max.F1Max.f1_max`
+
+        :return: F1Max metric value
+        :rtype: Any
+        """
+        return self.f1_max(torch.cat(self.preds), torch.cat(self.targets))
 
     def f1_max(self, pred, target):
         """
@@ -67,5 +82,10 @@ class F1Max(Metric):
             is_start, torch.zeros_like(recall), recall[all_order - 1]
         )
         all_recall = all_recall.cumsum(0) / pred.shape[0]
-        all_f1 = 2 * all_precision * all_recall / (all_precision + all_recall + 1e-10)
+        all_f1 = (
+            2
+            * all_precision
+            * all_recall
+            / (all_precision + all_recall + 1e-10)
+        )
         return all_f1.max()

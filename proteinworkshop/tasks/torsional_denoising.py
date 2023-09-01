@@ -30,7 +30,9 @@ class TorsionalNoiseTransform(T.BaseTransform):
     """
 
     def __init__(
-        self, corruption_strategy: str = "gaussian", corruption_rate: float = 0.1
+        self,
+        corruption_strategy: str = "gaussian",
+        corruption_rate: float = 0.1,
     ):
         """Adds noise to the torsional angles of a protein.
 
@@ -57,7 +59,10 @@ class TorsionalNoiseTransform(T.BaseTransform):
         # calculated as theta = s / r, where r is the radius of the circle.
         # Since the circle is a unit circle, r = 1, so theta = s.
         if self.corruption_strategy == "gaussian":
-            noise = torch.randn((dihedral_angles.shape[0], 3)) * self.corruption_rate
+            noise = (
+                torch.randn((dihedral_angles.shape[0], 3))
+                * self.corruption_rate
+            )
         elif self.corruption_strategy == "uniform":
             # Uniform noise in the range [-noise_std, noise_std]
             noise = (
@@ -84,7 +89,9 @@ class TorsionalNoiseTransform(T.BaseTransform):
 
         # Recompute coordinates from noisy dihedral angles using pNeRF
         # Uses uncorrupted bond lengths and angles
-        noised_coords = pnerf.reconstruct_dihedrals(noised_angles, batch.coords)
+        noised_coords = pnerf.reconstruct_dihedrals(
+            noised_angles, batch.coords
+        )
         batch.coords = noised_coords.reshape(-1, 3, 3)
         return batch
 
@@ -98,7 +105,7 @@ if __name__ == "__main__":
     from graphein.protein.tensor.data import get_random_protein
 
     config = omegaconf.OmegaConf.load(
-        "../../configs/transforms/torsional_denoising.yaml"
+        "../proteinworkshop/config/transforms/torsional_denoising.yaml"
     )
 
     a = get_random_protein()

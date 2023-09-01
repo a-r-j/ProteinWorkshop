@@ -1,0 +1,19 @@
+datamodule:
+  _target_: proteinworkshop.datasets.cc_pdb.CCPDBDataModule
+  path: ${env.paths.data}/ccpdb/metal/ # Path to the dataset
+  pdb_dir: ${env.paths.data}/pdb/ # Path to the PDB files
+  name: "metal" # Name of the ccPDB dataset
+
+  batch_size: 32 # Batch size
+  pin_memory: True # Pin memory for the dataloader
+  num_workers: 4 # Number of workers for the dataloader
+  format: "mmtf" # Format of the structure files
+  obsolete_strategy: "drop" # What to do with obsolete PDB entries
+  split_strategy: "random" # (or 'stratified') How to split the dataset
+  train_fraction: 0.8 # Fraction of the dataset to use for training
+  val_fraction: 0.1 # Fraction of the dataset to use for validation
+  test_fraction: 0.1 # Fraction of the dataset to use for testing
+  transforms: ${transforms}
+  overwrite: False # Whether to overwrite the dataset if it already exists
+
+num_classes: 7 # Number of classes

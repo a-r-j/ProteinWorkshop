@@ -13,24 +13,39 @@ from proteinworkshop.constants import PROJECT_PATH
 
 class ExperimentConfigurationError(Exception):
     """Exception to raise when the experiment configuration is invalid."""
-    pass
 
 
-TASKS = ["graph_property_prediction", "node_property_prediction", "inverse_folding", "backbone_dihedral_angle_prediction", "torsional_denoising"]
+TASKS = [
+    "graph_property_prediction",
+    "node_property_prediction",
+    "inverse_folding",
+    "backbone_dihedral_angle_prediction",
+    "torsional_denoising",
+]
 """List of task names."""
 
-SELF_SUPERVISION_OUTPUTS = ["residue_type", "dihedrals", "pos", "edge_distance", "b_factor"]
+SELF_SUPERVISION_OUTPUTS = [
+    "residue_type",
+    "dihedrals",
+    "pos",
+    "edge_distance",
+    "b_factor",
+]
 
 CLASSIFICATION_OUTPUTS = ["graph_label", "node_label"]
 
-REGRESSION_OUTPUTS = ["graph_label", "node_label", "torsional_noise", "dihedrals", "pos", "edge_distance", "b_factor"]
+REGRESSION_OUTPUTS = [
+    "graph_label",
+    "node_label",
+    "torsional_noise",
+    "dihedrals",
+    "pos",
+    "edge_distance",
+    "b_factor",
+]
 
 OUTPUTS = list(
-    set(
-        SELF_SUPERVISION_OUTPUTS +
-        CLASSIFICATION_OUTPUTS
-        + REGRESSION_OUTPUTS
-    )
+    set(SELF_SUPERVISION_OUTPUTS + CLASSIFICATION_OUTPUTS + REGRESSION_OUTPUTS)
 )
 
 
@@ -56,7 +71,9 @@ def load_config(run_id: str) -> DictConfig:
     overrides = metadata["args"]
 
     # Compose config
-    return hydra.compose("template", return_hydra_config=False, overrides=overrides)
+    return hydra.compose(
+        "template", return_hydra_config=False, overrides=overrides
+    )
 
 
 def get_start_time(run_id: str) -> str:
@@ -96,13 +113,16 @@ def validate_inverse_folding(cfg: DictConfig):
     if "amino_acid_one_hot" in cfg.features.scalar_node_features:
         logger.warning(
             "You are launching an inverse folding experiment with amino_acid_one_hot as a feature. This will be removed."
-            )
+        )
         cfg.features.scalar_node_features.remove("amino_acid_one_hot")
     if "sidechain_torsions" in cfg.features.scalar_node_features:
-        raise ExperimentConfigurationError("You are launching an inverse folding experiment with sidechain_torsions as a feature. This will be removed.")
+        raise ExperimentConfigurationError(
+            "You are launching an inverse folding experiment with sidechain_torsions as a feature. This will be removed."
+        )
     if cfg.features.scalar_node_features == []:
-        raise ExperimentConfigurationError("You are launching an inverse folding experiment with no scalar node features.")
-
+        raise ExperimentConfigurationError(
+            "You are launching an inverse folding experiment with no scalar node features."
+        )
 
 
 def validate_early_stopping_config(cfg: DictConfig):
@@ -167,7 +187,9 @@ def validate_loss_config(cfg: DictConfig):
 
     # Assert each supervision target has a loss:
     for k in cfg.task.supervise_on:
-        assert k in cfg.task.losses.keys(), f"Supervision target {k} has no loss"
+        assert (
+            k in cfg.task.losses.keys()
+        ), f"Supervision target {k} has no loss"
 
 
 def validate_supervision_config(cfg: DictConfig) -> DictConfig:
@@ -190,8 +212,12 @@ def validate_output_config(cfg: DictConfig) -> DictConfig:
     # TODO
     return cfg
 
+
 def validate_classification_config(cfg: DictConfig):
-    if (cfg.task.task == "classification") & ("graph_label" not in cfg.task.output and "node_label" not in cfg.task.output):
+    if (cfg.task.task == "classification") & (
+        "graph_label" not in cfg.task.output
+        and "node_label" not in cfg.task.output
+    ):
         raise ExperimentConfigurationError(
             "The `task.output` argument must contain `graph_label` or node_label when \
                 training a classification model."
@@ -205,7 +231,9 @@ def validate_classification_config(cfg: DictConfig):
         "edge_distance_prediction",
         "plddt_prediction",
         "torsional_denoising",
-    ] and set(cfg.task.output).isdisjoint({"graph_label", "node_label", "dataset_features"}):
+    ] and set(cfg.task.output).isdisjoint(
+        {"graph_label", "node_label", "dataset_features"}
+    ):
         raise ExperimentConfigurationError(
             f"Incorrect configuration for task: {cfg.task.task}, \
                 Output: {cfg.task.output}"
@@ -214,19 +242,28 @@ def validate_classification_config(cfg: DictConfig):
 
 def validate_cuda(cfg: DictConfig) -> DictConfig:
     # Make sure cuda config is correct
-    #if cfg.trainer.devices <= 1:
-        #cfg.trainer.strategy = None
-    logger.debug(f"Requested GPUs: {cfg.trainer.devices}")
-    if isinstance(cfg.trainer.devices, int):
-        cfg.trainer.devices = min(torch.cuda.device_count(), cfg.trainer.devices)
+    # if cfg.trainer.devices <= 1:
+    # cfg.trainer.strategy = None
+
+    logger.debug(f"Requested GPUs: {cfg.get('trainer.devices')}.")
+    if isinstance(cfg.get("trainer.devices"), int):
+        cfg.trainer.devices = min(
+            torch.cuda.device_count(), cfg.trainer.devices
+        )
         logger.debug(f"GPU count set to: {cfg.trainer.devices}")
 
-    requesting_multiple_device_indices = isinstance(cfg.trainer.devices, list) and len(cfg.trainer.devices) > 1
-    requesting_multiple_devices = isinstance(cfg.trainer.devices, int) and cfg.trainer.devices > 1
-    if (requesting_multiple_device_indices or requesting_multiple_devices) and cfg.get("test"):
+    requesting_multiple_device_indices = (
+        isinstance(cfg.get("trainer.devices"), list) and len(cfg.get("trainer.devices")) > 1
+    )
+    requesting_multiple_devices = (
+        isinstance(cfg.get("trainer.devices"), int) and cfg.get("trainer.devices") > 1
+    )
+    if (
+        requesting_multiple_device_indices or requesting_multiple_devices
+    ) and cfg.get("test"):
         logger.warning(
             "You are running a test with multiple GPUs. This is not recommended and testing will be disabled on this run."
-            )
+        )
         del cfg.test
     return cfg
 
@@ -265,6 +302,7 @@ def validate_gcpnet_config(cfg: DictConfig):
     for feature in cfg.encoder.features:
         cfg.features[feature] = cfg.encoder.features[feature]
 
+
 def validate_multiprocessing(cfg: DictConfig) -> DictConfig:
     # Make sure num_workers isn't too high.
     core_count = psutil.cpu_count(logical=False)
@@ -285,9 +323,11 @@ def validate_backbone_dihedral_angle_prediction(cfg: DictConfig):
     if "dihedrals" in cfg.features.scalar_node_features:
         raise ExperimentConfigurationError(
             "You are launching a masked attribute dihedral prediction experiment with dihedrals as a feature. This will be removed."
-            )
+        )
     if cfg.features.scalar_node_features == []:
-        raise ExperimentConfigurationError("You are launching a  masked attribute dihedral prediction experiment with no scalar node features.")
+        raise ExperimentConfigurationError(
+            "You are launching a  masked attribute dihedral prediction experiment with no scalar node features."
+        )
 
 
 def validate_config(cfg: DictConfig) -> DictConfig:
@@ -296,18 +336,26 @@ def validate_config(cfg: DictConfig) -> DictConfig:
     """
     if cfg.name is None:
         raise TypeError("The `run_name` argument is mandatory.")
-
     validate_classification_config(cfg)
     cfg = validate_output_config(cfg)
 
     cfg = validate_supervision_config(cfg)
     validate_loss_config(cfg)
 
-    if cfg.encoder._target_ == "proteinworkshop.model.graph_encoders.egnn.EGNNModel":
+    if (
+        cfg.encoder._target_
+        == "proteinworkshop.model.graph_encoders.egnn.EGNNModel"
+    ):
         validate_egnn_config(cfg)
-    elif cfg.encoder._target_ == "proteinworkshop.models.graph_encoders.gnn.GNNModel":
+    elif (
+        cfg.encoder._target_
+        == "proteinworkshop.models.graph_encoders.gnn.GNNModel"
+    ):
         validate_gnn_config(cfg)
-    elif cfg.encoder._target_ == "proteinworkshop.models.graph_encoders.gcpnet.GCPNetModel":
+    elif (
+        cfg.encoder._target_
+        == "proteinworkshop.models.graph_encoders.gcpnet.GCPNetModel"
+    ):
         validate_gcpnet_config(cfg)
 
     # Validate task

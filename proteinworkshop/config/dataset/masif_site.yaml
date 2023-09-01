@@ -1,0 +1,13 @@
+datamodule:
+  _target_: proteinworkshop.datasets.masif_site.MaSIFPPISP
+  path: ${env.paths.data}/masif_site/ # Directory where the dataset is stored
+  pdb_dir: ${env.paths.data}/pdb/ # Directory where raw PDB/mmtf files are stored
+  format: "mmtf" # Format of the raw PDB/MMTF files
+  batch_size: 32 # Batch size for dataloader
+  pin_memory: True # Pin memory for dataloader
+  num_workers: 8 # Number of workers for dataloader
+  dataset_fraction: 1.0 # Fraction of the dataset to use
+  shuffle_labels: False # Whether to shuffle labels for permutation testing
+  transforms: ${transforms} # Transforms to apply to dataset examples
+  overwrite: False # Whether to overwrite existing dataset files
+num_classes: 2 # Number of classes

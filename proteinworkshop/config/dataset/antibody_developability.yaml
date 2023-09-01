@@ -1,0 +1,13 @@
+datamodule:
+  _target_: proteinworkshop.datasets.antibody_developability.AntibodyDevelopabilityDataModule
+  path: ${env.paths.data}/AntibodyDevelopability # Directory where the dataset is stored
+  pdb_dir: ${env.paths.data}/pdb/ # Path to all downloaded PDB files
+  batch_size: 32 # Batch size for dataloader
+  pin_memory: True # Pin memory for dataloader
+  num_workers: 4 # Number of workers for dataloader
+  in_memory: False # Load the dataset in memory
+  format: "mmtf" # Format of the structure files
+  obsolete_strategy: "drop" # What to do with obsolete PDB entries
+  transforms: ${transforms} # Transforms to apply to dataset examples
+  overwrite: False
+num_classes: 2 # Number of classes

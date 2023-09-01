@@ -1,12 +1,13 @@
 import os
 import pathlib
-from typing import Callable, Iterable, Optional
+from typing import Callable, Iterable, Literal, Optional
 
 import omegaconf
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
 from sklearn.model_selection import train_test_split
+
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
@@ -17,7 +18,7 @@ class MaSIFPPISP(ProteinDataModule):
         pdb_dir: str,
         batch_size: int,
         dataset_fraction: float = 1.0,
-        format: str = "mmtf",
+        format: Literal["mmtf", "pdb"] = "mmtf",
         obsolete: str = "drop",
         val_fraction: float = 0.1,
         in_memory: bool = False,
@@ -25,6 +26,7 @@ class MaSIFPPISP(ProteinDataModule):
         num_workers: int = 16,
         shuffle_labels: bool = False,
         transforms: Optional[Iterable[Callable]] = None,
+        overwrite: bool = False,
     ):
         super().__init__()
 
@@ -40,6 +42,7 @@ class MaSIFPPISP(ProteinDataModule):
         else:
             self.transform = None
 
+        self.overwrite = overwrite
         self.in_memory = in_memory
         self.dataset_fraction = dataset_fraction
         self.obsolete = obsolete
@@ -63,13 +66,17 @@ class MaSIFPPISP(ProteinDataModule):
 
     def download(self):
         if not os.path.exists(self.path / "training.txt"):
-            logger.info(f"Downloading training data from {self.TRAIN_DATA_URL}")
+            logger.info(
+                f"Downloading training data from {self.TRAIN_DATA_URL}"
+            )
             wget.download(
                 self.TRAIN_DATA_URL,
                 out=str(self.path / "training.txt"),
             )
         else:
-            logger.info(f"Training data already exists at {self.path / 'training.txt'}")
+            logger.info(
+                f"Training data already exists at {self.path / 'training.txt'}"
+            )
 
         if not os.path.exists(self.path / "testing.txt"):
             wget.download(
@@ -77,7 +84,9 @@ class MaSIFPPISP(ProteinDataModule):
                 out=str(self.path / "testing.txt"),
             )
         else:
-            logger.info(f"Test data already exists at {self.path / 'training.txt'}")
+            logger.info(
+                f"Test data already exists at {self.path / 'training.txt'}"
+            )
 
     def parse_labels(self):
         pass
@@ -99,10 +108,11 @@ class MaSIFPPISP(ProteinDataModule):
             pdb_codes=pdb_codes,
             chains=["all"] * len(pdb_codes),
             graph_labels=chains,  # Hack to store the chain IDs to extract per-residue labels later via the transform.,
-            overwrite=False,
+            overwrite=self.overwrite,
             transform=self.transform,
             format=self.format,
             in_memory=self.in_memory,
+            out_names=[f"{id[0]}_{id[1]}" for id in ids],
         )
 
     def train_dataloader(self) -> ProteinDataLoader:
@@ -177,14 +187,19 @@ class MaSIFPPISP(ProteinDataModule):
                     f"Found {len(data)} examples in {split} after dropping obsolete PDBs"
                 )
             else:
-                raise NotImplementedError("Obsolete PDB replacement not implemented")
+                raise NotImplementedError(
+                    "Obsolete PDB replacement not implemented"
+                )
 
 
 if __name__ == "__main__":
     import hydra
+
     from proteinworkshop import constants
 
-    config = omegaconf.OmegaConf.load("../../configs/dataset/masif_site.yaml")
+    config = omegaconf.OmegaConf.load(
+        "../proteinworkshop/config/dataset/masif_site.yaml"
+    )
     config.datamodule.path = pathlib.Path(constants.DATA_PATH) / "MasifSite"  # type: ignore
     config.datamodule.pdb_dir = pathlib.Path(constants.DATA_PATH) / "pdb"  # type: ignore
     config.datamodule.transforms = None

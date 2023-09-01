@@ -6,6 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch_scatter
 from loguru import logger
+
 from proteinworkshop.models.utils import get_activations
 from proteinworkshop.types import ActivationType
 
@@ -132,8 +133,12 @@ class MLPDecoder(nn.Module):
             # Iterate over remaining layers
             for i, _ in enumerate(self.hidden_dim):
                 if i < len(self.hidden_dim) - 1:
-                    decoder_layers.append(nn.LazyLinear(self.hidden_dim[i + 1]))
-                    decoder_layers.append(get_activations(self.activations[i + 1]))
+                    decoder_layers.append(
+                        nn.LazyLinear(self.hidden_dim[i + 1])
+                    )
+                    decoder_layers.append(
+                        get_activations(self.activations[i + 1])
+                    )
                     decoder_layers.append(nn.Dropout(self.dropout))
 
             # Last layer
@@ -215,7 +220,10 @@ class PositionDecoder(nn.Module):
         self.requires_pos = True
 
     def forward(
-        self, edge_index: torch.Tensor, scalar_features: torch.Tensor, pos: torch.Tensor
+        self,
+        edge_index: torch.Tensor,
+        scalar_features: torch.Tensor,
+        pos: torch.Tensor,
     ) -> torch.Tensor:
         """
         Implement forward pass of MLP decoder for equivariant position prediction.
@@ -236,7 +244,11 @@ class PositionDecoder(nn.Module):
 
         dists = self.distance_mlp(dists)
         message_input = torch.cat(
-            [scalar_features[edge_index[0]], scalar_features[edge_index[1]], dists],
+            [
+                scalar_features[edge_index[0]],
+                scalar_features[edge_index[1]],
+                dists,
+            ],
             dim=-1,
         )
         message = self.message_mlp(message_input)

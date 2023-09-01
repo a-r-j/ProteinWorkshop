@@ -106,7 +106,6 @@ celerybeat.pid
 .env
 .venv
 venv/
-ENV/
 env.bak/
 venv.bak/
 
@@ -136,10 +135,13 @@ outputs/
 *.pdb
 *.pt
 *.ent
-data/afdb_swissprot_v4
-data/ATOM3D/
-data/cath/
-data/pdb/
+chain_set_splits.json
+proteinworkshop/data/pdb.tar
+proteinworkshop/data/afdb_swissprot_v4
+raw/
+proteinworkshop/data/ATOM3D/
+proteinworkshop/data/cath/
+proteinworkshop/data/pdb/
 
 logs/
 wandb/

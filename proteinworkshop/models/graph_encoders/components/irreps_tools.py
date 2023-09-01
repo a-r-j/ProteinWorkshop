@@ -1,7 +1,7 @@
 ###########################################################################################
 # Elementary tools for handling irreducible representations
 # Authors: Ilyes Batatia, Gregor Simm
-# This program is distributed under the ASL License (see ASL.md)
+# This program is distributed under the MIT License (see MIT.md)
 ###########################################################################################
 
 from typing import List, Tuple
@@ -42,7 +42,9 @@ def tp_out_irreps_with_instructions(
     return irreps_out, instructions
 
 
-def linear_out_irreps(irreps: o3.Irreps, target_irreps: o3.Irreps) -> o3.Irreps:
+def linear_out_irreps(
+    irreps: o3.Irreps, target_irreps: o3.Irreps
+) -> o3.Irreps:
     # Assuming simplified irreps
     irreps_mid = []
     for _, ir_in in irreps:

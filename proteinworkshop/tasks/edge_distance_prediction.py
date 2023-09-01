@@ -37,7 +37,9 @@ class EdgeDistancePredictionTransform(T.BaseTransform):
         """
         return {"num_edges", "edge_index", "pos"}
 
-    def __call__(self, batch: Union[ProteinBatch, Batch]) -> Union[Batch, ProteinBatch]:
+    def __call__(
+        self, batch: Union[ProteinBatch, Batch]
+    ) -> Union[Batch, ProteinBatch]:
         # Sample edges
         indices = torch.randint(
             0,

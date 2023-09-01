@@ -75,26 +75,26 @@ def _norm_no_nan(x, axis=-1, keepdims=False, eps=1e-8, sqrt=True):
 
 
 def _split(x, nv):
-    '''
-    Splits a merged representation of (s, V) back into a tuple. 
-    Should be used only with `_merge(s, V)` and only if the tuple 
+    """
+    Splits a merged representation of (s, V) back into a tuple.
+    Should be used only with `_merge(s, V)` and only if the tuple
     representation cannot be used.
-    
+
     :param x: the `torch.Tensor` returned from `_merge`
     :param nv: the number of vector channels in the input to `_merge`
-    '''
-    s = x[..., :-3 * nv]
-    v = x[..., -3 * nv:].contiguous().view(x.shape[0], nv, 3)
+    """
+    s = x[..., : -3 * nv]
+    v = x[..., -3 * nv :].contiguous().view(x.shape[0], nv, 3)
     return s, v
 
 
 def _merge(s, v):
-    '''
+    """
     Merges a tuple (s, V) into a single `torch.Tensor`, where the
     vector channels are flattened and appended to the scalar channels.
     Should be used only if the tuple representation cannot be used.
     Use `_split(x, nv)` to reverse.
-    '''
+    """
     v = v.contiguous().view(v.shape[0], v.shape[1] * 3)
     return torch.cat([s, v], -1)
 
@@ -156,15 +156,21 @@ class GVP(nn.Module):
                 v = torch.transpose(v, -1, -2)
                 if self.vector_gate:
                     gate = (
-                        self.wsv(self.vector_act(s)) if self.vector_act else self.wsv(s)
+                        self.wsv(self.vector_act(s))
+                        if self.vector_act
+                        else self.wsv(s)
                     )
                     v = v * torch.sigmoid(gate).unsqueeze(-1)
                 elif self.vector_act:
-                    v = v * self.vector_act(_norm_no_nan(v, axis=-1, keepdims=True))
+                    v = v * self.vector_act(
+                        _norm_no_nan(v, axis=-1, keepdims=True)
+                    )
         else:
             s = self.ws(x)
             if self.vo:
-                v = torch.zeros(s.shape[0], self.vo, 3, device=self.dummy_param.device)
+                v = torch.zeros(
+                    s.shape[0], self.vo, 3, device=self.dummy_param.device
+                )
         if self.scalar_act:
             s = self.scalar_act(s)
 
@@ -281,7 +287,9 @@ class GVPConv(MessagePassing):
         self.so, self.vo = out_dims
         self.se, self.ve = edge_dims
 
-        GVP_ = functools.partial(GVP, activations=activations, vector_gate=vector_gate)
+        GVP_ = functools.partial(
+            GVP, activations=activations, vector_gate=vector_gate
+        )
 
         module_list = module_list or []
         if not module_list:
@@ -295,11 +303,16 @@ class GVPConv(MessagePassing):
                 )
             else:
                 module_list.append(
-                    GVP_((2 * self.si + self.se, 2 * self.vi + self.ve), out_dims)
+                    GVP_(
+                        (2 * self.si + self.se, 2 * self.vi + self.ve),
+                        out_dims,
+                    )
                 )
                 for i in range(n_layers - 2):
                     module_list.append(GVP_(out_dims, out_dims))
-                module_list.append(GVP_(out_dims, out_dims, activations=(None, None)))
+                module_list.append(
+                    GVP_(out_dims, out_dims, activations=(None, None))
+                )
         self.message_func = nn.Sequential(*module_list)
 
     def forward(self, x, edge_index, edge_attr):
@@ -369,22 +382,30 @@ class GVPConvLayer(nn.Module):
             activations=activations,
             vector_gate=vector_gate,
         )
-        GVP_ = functools.partial(GVP, activations=activations, vector_gate=vector_gate)
+        GVP_ = functools.partial(
+            GVP, activations=activations, vector_gate=vector_gate
+        )
         self.norm = nn.ModuleList([LayerNorm(node_dims) for _ in range(2)])
         self.dropout = nn.ModuleList([Dropout(drop_rate) for _ in range(2)])
 
         ff_func = []
         if n_feedforward == 1:
-            ff_func.append(GVP_(node_dims, node_dims, activations=(None, None)))
+            ff_func.append(
+                GVP_(node_dims, node_dims, activations=(None, None))
+            )
         else:
             hid_dims = 4 * node_dims[0], 2 * node_dims[1]
             ff_func.append(GVP_(node_dims, hid_dims))
-            ff_func.extend(GVP_(hid_dims, hid_dims) for _ in range(n_feedforward - 2))
+            ff_func.extend(
+                GVP_(hid_dims, hid_dims) for _ in range(n_feedforward - 2)
+            )
             ff_func.append(GVP_(hid_dims, node_dims, activations=(None, None)))
         self.ff_func = nn.Sequential(*ff_func)
         self.residual = residual
 
-    def forward(self, x, edge_index, edge_attr, autoregressive_x=None, node_mask=None):
+    def forward(
+        self, x, edge_index, edge_attr, autoregressive_x=None, node_mask=None
+    ):
         """
         :param x: tuple (s, V) of `torch.Tensor`
         :param edge_index: array of shape [2, n_edges]
@@ -409,7 +430,9 @@ class GVPConvLayer(nn.Module):
 
             dh = tuple_sum(
                 self.conv(x, edge_index_forward, edge_attr_forward),
-                self.conv(autoregressive_x, edge_index_backward, edge_attr_backward),
+                self.conv(
+                    autoregressive_x, edge_index_backward, edge_attr_backward
+                ),
             )
 
             count = (
@@ -429,10 +452,18 @@ class GVPConvLayer(nn.Module):
             x_ = x
             x, dh = tuple_index(x, node_mask), tuple_index(dh, node_mask)
 
-        x = self.norm[0](tuple_sum(x, self.dropout[0](dh))) if self.residual else dh
+        x = (
+            self.norm[0](tuple_sum(x, self.dropout[0](dh)))
+            if self.residual
+            else dh
+        )
 
         dh = self.ff_func(x)
-        x = self.norm[1](tuple_sum(x, self.dropout[1](dh))) if self.residual else dh
+        x = (
+            self.norm[1](tuple_sum(x, self.dropout[1](dh)))
+            if self.residual
+            else dh
+        )
 
         if node_mask is not None:
             x_[0][node_mask], x_[1][node_mask] = x[0], x[1]

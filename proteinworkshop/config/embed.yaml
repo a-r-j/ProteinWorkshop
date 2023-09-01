@@ -1,0 +1,41 @@
+# @package _global_
+
+# === 1. Set config parameters ===
+name: "" # default name for the experiment, "" means logger (eg. wandb) will generate a unique name
+seed: 52 # seed for random number generators in pytorch, numpy and python.random
+num_workers: 16 # number of subprocesses to use for data loading.
+
+# === 2. Specify defaults here. Defaults will be overwritten by equivalently named options in this file ===
+defaults:
+  - env: default
+  - dataset: cath
+  - features: ca
+  - encoder: egnn
+  - decoder: default
+  - transforms: none
+  - callbacks: default
+  #- trainer: gpu
+  - extras: default
+  - hydra: default
+  - metrics: default
+  - task: graph_classification
+  - logger: wandb
+  - finetune: default
+  # debugging config (enable through command line, e.g. `python train.py debug=default)
+  - debug: null
+  #- sweeper: wandb
+  #- task: classification
+  #- graphein: default
+  # optional hardware config for machine/user specific settings
+  # (optional since it doesn't need to exist and is excluded from version control)
+  #- optional hardware: cpu
+  #- optional output_decoder: ${task.output}_${decoder}
+  - _self_ # see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.
+
+task_name: "finetune"
+
+compile: True
+
+# simply provide checkpoint path to resume training
+ckpt_path: null
+collection_name: null

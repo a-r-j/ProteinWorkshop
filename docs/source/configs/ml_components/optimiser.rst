@@ -8,7 +8,9 @@ These configs (generally) configure PyTorch ``Optimizer`` objects.
 
     .. code-block:: bash
 
-        python proteinworkshop/train.py optimiser=<OPTIMISER_NAME> encoder=gvp dataset=cath task=inverse_folding
+        workshop train optimiser=<OPTIMISER_NAME> encoder=gvp dataset=cath task=inverse_folding trainer=cpu
+        # or
+        python proteinworkshop/train.py optimiser=<OPTIMISER_NAME> encoder=gvp dataset=cath task=inverse_folding trainer=cpu # or trainer=gpu
 
     where ``<OPTIMISER_NAME>`` is the name of the optimiser config.
 
@@ -17,7 +19,9 @@ These configs (generally) configure PyTorch ``Optimizer`` objects.
 
     .. code-block:: bash
 
-        python proteinworkshop/train.py optimizer.lr=0.0001 encoder=gvp dataset=cath task=inverse_folding
+        workshop train optimizer.lr=0.0001 encoder=gvp dataset=cath task=inverse_folding trainer=cpu
+        # or
+        python proteinworkshop/train.py optimizer.lr=0.0001 encoder=gvp dataset=cath task=inverse_folding trainer=cpu # or trainer=gpu
 
     where ``0.0001`` is the new learning rate.
 
@@ -30,7 +34,7 @@ ADAM (``adam``)
     # Example usage:
     python proteinworkshop/train.py ... optimiser=adam optimiser.optimizer.lr=0.0001 ...
 
-.. literalinclude:: ../../../../configs/optimiser/adam.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/optimiser/adam.yaml
    :language: yaml
 
 
@@ -43,7 +47,7 @@ ADAM-W (``adamw``)
     python proteinworkshop/train.py ... optimiser=adamw optimiser.optimizer.lr=0.0001 ...
 
 
-.. literalinclude:: ../../../../configs/optimiser/adamw.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/optimiser/adamw.yaml
    :language: yaml
 
 
@@ -55,5 +59,5 @@ Lion (``lion``)
     # Example usage:
     python proteinworkshop/train.py ... optimiser=lion optimiser.optimizer.lr=0.0001 ...
 
-.. literalinclude:: ../../../../configs/optimiser/lion.yaml
+.. literalinclude:: ../../../../proteinworkshop/config/optimiser/lion.yaml
    :language: yaml

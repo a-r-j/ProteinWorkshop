@@ -1,13 +1,11 @@
 import os
-import torch
+
 import omegaconf
-import pytest
 from hydra.utils import instantiate
-from torch_geometric.transforms import BaseTransform
 
 from proteinworkshop import constants
 
-TRANSFORM_CONFIG_DIR = constants.PROJECT_PATH / "configs" / "transforms"
+TRANSFORM_CONFIG_DIR = constants.HYDRA_CONFIG_PATH / "transforms"
 TRANSFORMS = os.listdir(TRANSFORM_CONFIG_DIR)
 
 
@@ -28,7 +26,7 @@ def test_transform_call(example_batch):
         config_path = TRANSFORM_CONFIG_DIR / t
         cfg = omegaconf.OmegaConf.load(config_path)
         transform = instantiate(cfg)
- 
+
         t = t.removesuffix(".yaml")
 
         if t == "ppi_site_prediction":

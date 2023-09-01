@@ -2,8 +2,8 @@ Tutorials
 ---------------------
 
 .. mdinclude:: ../../README.md
-    :start-line: 82
-    :end-line: 91
+    :start-line: 133
+    :end-line: 142
 
 
 Training a New Model
@@ -13,12 +13,16 @@ Training a New Model
 
 .. code-block:: bash
 
-    python proteinworkshop/train.py dataset=DATASET model=MODEL task=TASK features=FEATURES
+    workshop train dataset=DATASET encoder=MODEL task=TASK features=FEATURES trainer=cpu env.paths.data=where/you/want/data/
+    # or 
+    python proteinworkshop/train.py dataset=DATASET encoder=MODEL task=TASK features=FEATURES trainer=cpu # or trainer=gpu
 
-To override hparams, you can either edit the relevant :doc:`/configs` files directly or via the CLI using Hydra syntax:
+To override hparams, you can either edit the relevant :doc:`/configs/` files directly or via the CLI using Hydra syntax:
 
-.. code-block::
+.. code-block:: bash
 
+    workshop train ... optimiser.optimizer.lr=0.001 dataset.datamodule.batch_size=32
+    # or
     python proteinworkshop/train.py ... optimiser.optimizer.lr=0.001 dataset.datamodule.batch_size=32
 
 2. In a jupyter notebook:
@@ -77,7 +81,8 @@ Evaluating a pre-trained Model
 
 3. Configure the task
 
-.. code-block::
+.. code-block:: python
+
     # Misc. tools
     import os
 
