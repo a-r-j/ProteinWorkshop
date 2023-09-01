@@ -239,7 +239,7 @@ if __name__ == "__main__":
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
-        constants.PROJECT_PATH / "configs" / "encoder" / "gear_net.yaml"
+        constants.SRC_PATH / "config" / "encoder" / "gear_net.yaml"
     )
     enc = hydra.utils.instantiate(cfg)
     print(enc)

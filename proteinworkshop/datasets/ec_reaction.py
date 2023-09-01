@@ -211,7 +211,7 @@ if __name__ == "__main__":
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
-        constants.PROJECT_PATH / "configs" / "dataset" / "ec.yaml"
+        constants.SRC_PATH / "config" / "dataset" / "ec.yaml"
     )
     cfg.datamodule.path = pathlib.Path(constants.DATA_PATH) / "EnzymeCommission"  # type: ignore
     cfg.datamodule.pdb_dir = pathlib.Path(constants.DATA_PATH) / "pdb"  # type: ignore
