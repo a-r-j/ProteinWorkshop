@@ -193,7 +193,7 @@ class TensorProductModel(torch.nn.Module):
         )  # [n_edges, 1]
         edge_attrs = self.spherical_harmonics(vectors)
         edge_feats = self.radial_embedding(lengths)
-
+    
         for conv in self.convs:
             # Message passing layer
             h_update = conv(h, batch.edge_index, edge_attrs, edge_feats)
@@ -225,7 +225,7 @@ if __name__ == "__main__":
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
-        constants.PROJECT_PATH / "configs" / "encoder" / "tfn.yaml"
+        constants.SRC_PATH / "config" / "encoder" / "tfn.yaml"
     )
     enc = hydra.utils.instantiate(cfg)
     print(enc)

@@ -228,7 +228,7 @@ class GCPNetModel(torch.nn.Module):
 
 @hydra.main(
     version_base="1.3",
-    config_path=str(constants.PROJECT_PATH / "configs" / "encoder"),
+    config_path=str(constants.SRC_PATH / "config" / "encoder"),
     config_name="gcpnet.yaml",
 )
 def _main(cfg: DictConfig):

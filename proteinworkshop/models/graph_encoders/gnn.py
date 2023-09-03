@@ -202,7 +202,7 @@ if __name__ == "__main__":
 
     from proteinworkshop import constants
 
-    config_path = constants.PROJECT_PATH / "configs" / "encoder" / "gcn.yaml"
+    config_path = constants.SRC_PATH / "config" / "encoder" / "gcn.yaml"
     cfg = omegaconf.OmegaConf.load(config_path)
     enc = instantiate(cfg)
     print(enc)

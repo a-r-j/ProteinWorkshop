@@ -274,10 +274,10 @@ if __name__ == "__main__":
 
     log.info("Imported libs")
     cfg = omegaconf.OmegaConf.load(
-        constants.PROJECT_PATH / "configs" / "dataset" / "go-cc.yaml"
+        constants.SRC_PATH / "config" / "dataset" / "go-cc.yaml"
     )
-    # cfg = omegaconf.OmegaConf.load(constants.PROJECT_PATH / "configs" / "dataset" / "go-mf.yaml")
-    # cfg = omegaconf.OmegaConf.load(constants.PROJECT_PATH / "configs" / "dataset" / "go-bp.yaml")
+    # cfg = omegaconf.OmegaConf.load(constants.SRC_PATH / "config" / "dataset" / "go-mf.yaml")
+    # cfg = omegaconf.OmegaConf.load(constants.SRC_PATH / "config" / "dataset" / "go-bp.yaml")
     cfg.datamodule.path = pathlib.Path(constants.DATA_PATH) / "GeneOntology"
     cfg.datamodule.pdb_dir = pathlib.Path(constants.DATA_PATH) / "pdb"
     cfg.datamodule.num_workers = 1
