@@ -6,6 +6,7 @@ import torch
 from beartype import beartype
 from torch_geometric.data import Batch
 from torch_geometric.utils import to_dense_batch
+from tqdm import tqdm
 from typing import Dict, List, Optional, Union, Set, Tuple
 from graphein.protein.tensor.data import ProteinBatch
 from graphein.protein.resi_atoms import RESI_THREE_TO_1
@@ -201,12 +202,14 @@ class EvolutionaryScaleModeling(nn.Module):
 
         output = self.model(batch_tokens, repr_layers=[self.repr_layer])
         node_embedding = output["representations"][self.repr_layer]
+        # NOTE: tokens `0` and `N` are always beginning-of-sequence and end-of-sequence tokens,
+        # so the first (real) residue is token `1` and the last is `N - 1`.
+        node_embedding = node_embedding[:, 1:node_embedding.shape[1] - 1, :]
 
         _, batch_mask = to_dense_batch(
             x=torch.rand(batch.coords.shape[0], self.output_dim, device=device),
             batch=batch.batch,
         )
-        # TODO: debug mask shape mismatch issue
         node_embedding = node_embedding[batch_mask]
 
         graph_embedding = self.readout(node_embedding, batch.batch)
@@ -219,8 +222,12 @@ class EvolutionaryScaleModeling(nn.Module):
 if __name__ == "__main__":
     from proteinworkshop.datasets.utils import create_example_batch
 
-    b = create_example_batch()
-    b = b.to("cuda")
-    m = EvolutionaryScaleModeling(path=".")
-    m.model = m.model.to("cuda")
-    m(b, device="cuda")
+    num_steps = 100
+    pbar = tqdm(range(num_steps))
+    for _ in pbar:
+        pbar.set_description("Embedding random batch")
+        b = create_example_batch()
+        b = b.to("cuda")
+        m = EvolutionaryScaleModeling(path=".")
+        m.model = m.model.to("cuda")
+        m(b, device="cuda")
