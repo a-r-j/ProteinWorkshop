@@ -54,7 +54,7 @@ def _download(
             save_file = save_file[: save_file.find("?")]
     save_file = os.path.join(path, save_file)
 
-    if not os.path.exists(save_file) or _compute_md5(save_file) != md5:
+    if not os.path.exists(save_file) or (md5 is not None and _compute_md5(save_file) != md5):
         logger.info(f"Downloading {url} to {save_file}")
         urlretrieve(url, save_file)
     return save_file
@@ -89,7 +89,8 @@ class EvolutionaryScaleModeling(nn.Module):
     model_names: List[str] = list(url.keys())
 
     md5: Dict[str, str] = {
-        "ESM-1b": "ba8914bc3358cae2254ebc8874ee67f6",
+        "ESM-1b": None, # NOTE: for debugging only
+        # "ESM-1b": "ba8914bc3358cae2254ebc8874ee67f6",
         "ESM-1v": "1f04c2d2636b02b544ecb5fbbef8fefd",
         "ESM-1b-regression": "e7fe626dfd516fb6824bd1d30192bdb1",
         "ESM-2-8M": "8039fc9cee7f71cd2633b13b5a38ff50",
@@ -144,6 +145,11 @@ class EvolutionaryScaleModeling(nn.Module):
     @property
     @beartype
     def required_batch_attributes(self) -> Set[str]:
+        """
+        Return the requied attributes for each batch.
+        
+        :return: set of required attributes
+        """
         return {"residues", "id", "coords", "batch"}
 
     @beartype
@@ -173,32 +179,35 @@ class EvolutionaryScaleModeling(nn.Module):
         )
 
     @beartype
-    def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
+    def forward(self, batch: Union[Batch, ProteinBatch], device: Optional[Union[torch.device, str]] = None) -> EncoderOutput:
         """
         Compute the residue representations and the graph representation(s).
 
-        Parameters:
-            graph (Protein): :math:`n` protein(s)
-            input (Tensor): input node representations
+        :param graph (Protein): :math:`n` protein(s)
+        :param input (Tensor): input node representations
+        :param device (torch.device or str, optional): device on which to compute and update representations
 
-        Returns:
-            dict with ``residue_feature`` and ``graph_feature`` fields:
+        :return: dict with ``residue_feature`` and ``graph_feature`` fields:
                 residue representations of shape :math:`(|V_{res}|, d)`, graph representations of shape :math:`(n, d)`
         """
+        device = device if device is not None else batch.coords.device
+
         seqs = ["".join([RESI_THREE_TO_1[s] for s in seq]) for seq in batch.residues]
         seqs = ["".join(seq) for seq in seqs]
         data = list(tuple(zip(batch.id, seqs)))
 
         _, _, batch_tokens = self.batch_converter(data)
+        batch_tokens = batch_tokens.to(device)
 
         output = self.model(batch_tokens, repr_layers=[self.repr_layer])
         node_embedding = output["representations"][self.repr_layer]
 
-        print(node_embedding.shape)
-
-        _, batch_mask = to_dense_batch(torch.rand(batch.coords.shape[0], self.output_dim), batch.batch)
+        _, batch_mask = to_dense_batch(
+            x=torch.rand(batch.coords.shape[0], self.output_dim, device=device),
+            batch=batch.batch,
+        )
+        # TODO: debug mask shape mismatch issue
         node_embedding = node_embedding[batch_mask]
-        print(node_embedding.shape)
 
         graph_embedding = self.readout(node_embedding, batch.batch)
 
@@ -208,8 +217,10 @@ class EvolutionaryScaleModeling(nn.Module):
         )
 
 if __name__ == "__main__":
-    from graphein.protein.tensor.data import get_random_batch
+    from proteinworkshop.datasets.utils import create_example_batch
 
-    b = get_random_batch(4)
+    b = create_example_batch()
+    b = b.to("cuda")
     m = EvolutionaryScaleModeling(path=".")
-    m(b)
+    m.model = m.model.to("cuda")
+    m(b, device="cuda")
