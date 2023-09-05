@@ -90,8 +90,7 @@ class EvolutionaryScaleModeling(nn.Module):
     model_names: List[str] = list(url.keys())
 
     md5: Dict[str, str] = {
-        "ESM-1b": None, # NOTE: for debugging only
-        # "ESM-1b": "ba8914bc3358cae2254ebc8874ee67f6",
+        "ESM-1b": "ba8914bc3358cae2254ebc8874ee67f6",
         "ESM-1v": "1f04c2d2636b02b544ecb5fbbef8fefd",
         "ESM-1b-regression": "e7fe626dfd516fb6824bd1d30192bdb1",
         "ESM-2-8M": "8039fc9cee7f71cd2633b13b5a38ff50",
