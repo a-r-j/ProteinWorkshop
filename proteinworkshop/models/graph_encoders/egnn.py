@@ -72,17 +72,18 @@ class EGNNModel(nn.Module):
         return {"x", "pos", "edge_index", "batch"}
 
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
-        """Performs a forward pass of the EGNN model.
+        """Implements the forward pass of the EGNN encoder.
+        
+        Returns the node embedding and graph embedding in a dictionary.
 
-        Returns the node embedding and graph embedding in a dictionary with
-        fields ``node_embedding`` and ``graph_embedding``. The node embedding
-        is of shape :math:`(n, d)` and the graph embedding is of shape
-        :math:`(batch_size, d)`, where :math:`n` is the number of nodes and
-        :math:`d` is the dimension of the embeddings.
-
-        :param batch: Batch of data to encode
+        :param batch: Batch of data to encode.
         :type batch: Union[Batch, ProteinBatch]
-        :return: Dictionary of node and graph embeddings
+        :return: Dictionary of node and graph embeddings. Contains
+            ``node_embedding`` and ``graph_embedding`` fields. The node
+            embedding is of shape :math:`(|V|, d)` and the graph embedding is
+            of shape :math:`(n, d)`, where :math:`|V|` is the number of nodes
+            and :math:`n` is the number of graphs in the batch and :math:`d` is
+            the dimension of the embeddings.
         :rtype: EncoderOutput
         """
         h = self.emb_in(batch.x)  # (n,) -> (n, d)
