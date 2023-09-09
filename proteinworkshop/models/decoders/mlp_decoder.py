@@ -63,7 +63,7 @@ class LinearSkipBlock(nn.Module):
         self.activations.append(get_activations(self.activation_fns[-1]))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:  # type: ignore
-        """Implement forward pass of MLP with skip connections.
+        """Implements the forward pass of the MLP decoder with skip connections.
 
         :param x: Input tensor
         :type x: torch.Tensor
