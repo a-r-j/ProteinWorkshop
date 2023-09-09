@@ -209,7 +209,9 @@ class MACEModel(torch.nn.Module):
     @jaxtyped
     @beartype
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
-        """Returns the node embedding and graph embedding in a dictionary.
+        """Implements the forward pass of the MACE encoder.
+
+        Returns the node embedding and graph embedding in a dictionary.
 
         :param batch: Batch of data to encode.
         :type batch: Union[Batch, ProteinBatch]

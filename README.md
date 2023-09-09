@@ -55,7 +55,10 @@ Configuration files to run the experiments described in the manuscript are provi
     - [Edge Construction](#edge-construction)
     - [Invariant Edge Features](#invariant-edge-features)
     - [Equivariant Edge Features](#equivariant-edge-features)
-  - [For developers](#for-developers)
+  - [For Developers](#for-developers)
+    - [Dependency Management](#dependency-management)
+    - [Code Formatting](#code-formatting)
+    - [Documentation](#documentation)
 
 ## Installation
 
@@ -63,11 +66,14 @@ Below, we outline how one may set up a virtual environment for `proteinworkshop`
 
 ### From PyPI
 
-`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Beforehand, make sure to install [PyTorch](https://pytorch.org/) (version `2.0.0`) using its official `pip` installation instructions (with CUDA support as desired).
+`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Make sure to install [PyTorch](https://pytorch.org/) (specifically version `2.0.0`) using its official `pip` installation instructions, with CUDA support as desired.
 
 ```bash
 # install `proteinworkshop` from PyPI
 pip install proteinworkshop --no-cache-dir
+
+# e.g., install PyTorch with CUDA 11.8 support on Linux
+pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118 --no-cache-dir
 
 # install PyTorch Geometric using the (now-installed) CLI
 workshop install pyg
@@ -79,54 +85,34 @@ export DATA_PATH="where/you/want/data/" # e.g., `export DATA_PATH="proteinworksh
 However, for full exploration we recommend cloning the repository and building from source.
 
 ### Building from source
-
-1. Clone the project
+With a local virtual environment activated (e.g., one created with `conda create -n proteinworkshop python=3.9`):
+1. Clone and install the project
 
     ```bash
     git clone https://github.com/a-r-j/ProteinWorkshop
     cd ProteinWorkshop
+    pip install -e .
     ```
 
-2. Install `poetry` for platform-agnostic dependency management using its [installation instructions](https://python-poetry.org/docs/)
-
-    After installing `poetry`, to avoid potential [keyring errors](https://github.com/python-poetry/poetry/issues/1917#issuecomment-1235998997), disable its keyring usage by adding `PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring` to your shell's startup configuration and restarting your shell environment (e.g., `echo 'export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring' >> ~/.bashrc && source ~/.bashrc` for a Bash shell environment and likewise for other shell environments).
-
-3. Install project dependencies
+2. Install [PyTorch](https://pytorch.org/) (specifically version `2.0.0`) using its official `pip` installation instructions, with CUDA support as desired (N.B. make sure to add `--no-cache-dir` to the end of the `pip` installation command)
 
     ```bash
-      poetry install
+    # e.g., to install PyTorch with CUDA 11.8 support on Linux:
+    pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118 --no-cache-dir
     ```
 
-4. Activate the newly-created virtual environment following `poetry`'s [usage documentation](https://python-poetry.org/docs/basic-usage/)
+3. Then use the newly-installed `proteinworkshop` CLI to install [PyTorch Geometric](https://pyg.org/)
 
     ```bash
-      # activate the environment on a `posix`-like (e.g., macOS or Linux) system
-      source $(poetry env info --path)/bin/activate
-    ```
-    ```powershell
-      # activate the environment on a `Windows`-like system
-      & ((poetry env info --path) + "\Scripts\activate.ps1")
-    ```
-    ```bash
-      # if desired, deactivate the environment
-      deactivate
+    workshop install pyg
     ```
 
-5. With the environment activated, install [PyTorch](https://pytorch.org/) (version `2.0.0`) using its official `pip` installation instructions (with CUDA support as desired - N.B. make sure to add `--no-cache-dir` to the end of the `pip` installation command), and then use the (newly-installed) CLI to install [PyTorch Geometric](https://pyg.org/)
+4. Configure paths in `.env` (optional, will override default paths if set). See [`.env.example`](https://github.com/a-r-j/proteinworkshop/blob/main/.env.example) for an example.
+
+5. Download PDB data:
 
     ```bash
-      workshop install pyg
-
-      # N.B. to list all dependencies currently installed, run:
-      poetry show
-    ```
-
-6. Configure paths in `.env` (optional, will override default paths if set). See [`.env.example`](https://github.com/a-r-j/proteinworkshop/blob/main/.env.example) for an example.
-
-7. Download PDB data:
-
-    ```bash
-      python proteinworkshop/scripts/download_pdb_mmtf.py
+    python proteinworkshop/scripts/download_pdb_mmtf.py
     ```
 
 ## Tutorials
@@ -220,7 +206,7 @@ Or an example SLURM submission script:
   #SBATCH --array=0-32
 
   source ~/.bashrc
-  source $(poetry env info --path)/bin/activate
+  source $(conda info --base)/envs/proteinworkshop/bin/activate
 
   wandb agent mywandbgroup/proteinworkshop/2wwtt7oy --count 1
   ```
@@ -309,10 +295,10 @@ Read [the docs](https://www.proteins.sh) for a full list of modules available in
 
 | Name      | Source   | Protein Specific |
 | ----------- | ----------- | ----------- |
-| `GearNet`| [Zhang et al.](https://arxiv.org/pdf/2203.06125) | ✓ |
-| `ProNet`   | [Wang et al.](https://arxiv.org/abs/2207.12600) | ✓ |
-| `DimeNet++`   | [Gasteiger et al.](https://arxiv.org/abs/2011.14115) | ✗ |
-| `SchNet`   | [Schütt et al.](https://arxiv.org/abs/1706.08566) | ✗ |
+| `GearNet`| [Zhang et al.](https://arxiv.org/pdf/2203.06125) | ✓
+| `ProNet`   | [Wang et al.](https://arxiv.org/abs/2207.12600) | ✓
+| `DimeNet++`   | [Gasteiger et al.](https://arxiv.org/abs/2011.14115) | ✗
+| `SchNet`   | [Schütt et al.](https://arxiv.org/abs/1706.08566) | ✗
 
 ### Equivariant Graph Encoders
 
@@ -438,7 +424,7 @@ These are likely to be most frequently used with the [`pdb`](https://github.com/
 
 ## Featurisation Schemes
 
-Part of the goal of `proteinworkshop` benchmark is to investigate the impact of the degree to which increasing granularity of structural detail affects performance. To achieve this, we provide several featurisation schemes for protein structures.
+Part of the goal of the `proteinworkshop` benchmark is to investigate the impact of the degree to which increasing granularity of structural detail affects performance. To achieve this, we provide several featurisation schemes for protein structures.
 
 ### Invariant Node Features
 
@@ -487,11 +473,54 @@ Where the suffix after `knn` or `eps` specifies $k$ (number of neighbours) or $\
 | ----------- | ----------- | ----------- |
 | `edge_vectors` | Edge directional vectors (unit-normalized)        |      1  |
 
-## For developers
-To keep with the code style for the `proteinworkshop` repository, using the following lines please format your commits before opening a pull request:
+## For Developers
+
+### Dependency Management
+We use `poetry` to manage the project's underlying dependencies and to push updates to the project's PyPI package. To make changes to the project's dependencies, follow the instructions below to (**1**) install `poetry` on your local machine; (**2**) customize the dependencies; or (**3**) (de)activate the project's virtual environment using `poetry`:
+1. Install `poetry` for platform-agnostic dependency management using its [installation instructions](https://python-poetry.org/docs/)
+
+    After installing `poetry`, to avoid potential [keyring errors](https://github.com/python-poetry/poetry/issues/1917#issuecomment-1235998997), disable its keyring usage by adding `PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring` to your shell's startup configuration and restarting your shell environment (e.g., `echo 'export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring' >> ~/.bashrc && source ~/.bashrc` for a Bash shell environment and likewise for other shell environments).
+
+2. Install, add, or upgrade project dependencies
+
+    ```bash
+      poetry install  # install the latest project dependencies
+      # or
+      poetry add XYZ  # add dependency `XYZ` to the project
+      # or
+      poetry show  # list all dependencies currently installed
+      # or
+      poetry lock  # standardize the (now-)installed dependencies
+    ```
+
+3. Activate the newly-created virtual environment following `poetry`'s [usage documentation](https://python-poetry.org/docs/basic-usage/)
+
+    ```bash
+      # activate the environment on a `posix`-like (e.g., macOS or Linux) system
+      source $(poetry env info --path)/bin/activate
+    ```
+    ```powershell
+      # activate the environment on a `Windows`-like system
+      & ((poetry env info --path) + "\Scripts\activate.ps1")
+    ```
+    ```bash
+      # if desired, deactivate the environment
+      deactivate
+    ```
+
+### Code Formatting
+To keep with the code style for the `proteinworkshop` repository, using the following lines, please format your commits before opening a pull request:
 ```bash
 # assuming you are located in the `ProteinWorkshop` top-level directory
 isort . 
 autoflake -r --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports . 
 black --config=pyproject.toml .
+```
+
+### Documentation
+To build a local version of the project's Sphinx documentation web pages:
+```bash
+# assuming you are located in the `ProteinWorkshop` top-level directory
+pip install -r docs/.docs.requirements # one-time only
+rm -rf docs/build/ && sphinx-build docs/source/ docs/build/ # NOTE: errors can safely be ignored
 ```
