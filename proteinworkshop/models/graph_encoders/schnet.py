@@ -86,13 +86,18 @@ class SchNetModel(SchNet):
         return {"pos", "edge_index", "x", "batch"}
 
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
-        """Implementation of the forward pass of the SchNet model.
+        """Implements the forward pass of the SchNet encoder.
+
+        Returns the node embedding and graph embedding in a dictionary.
 
         :param batch: Batch of data to encode.
         :type batch: Union[Batch, ProteinBatch]
-        :return: Dictionary with ``node_embedding`` and ``graph_embedding``
-            fields: node representations of shape :math:`(|V|, d)`, graph
-            representations of shape :math:`(n, d)`
+        :return: Dictionary of node and graph embeddings. Contains
+            ``node_embedding`` and ``graph_embedding`` fields. The node
+            embedding is of shape :math:`(|V|, d)` and the graph embedding is
+            of shape :math:`(n, d)`, where :math:`|V|` is the number of nodes
+            and :math:`n` is the number of graphs in the batch and :math:`d` is
+            the dimension of the embeddings.
         :rtype: EncoderOutput
         """
         h = self.embedding(batch.x)

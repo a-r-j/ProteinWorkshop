@@ -98,7 +98,7 @@ Tensor-Equivariant Encoders
 
 TFN (``tfn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. automodule:: proteinworkshop.models.graph_encoders.gcpnet
+.. automodule:: proteinworkshop.models.graph_encoders.tfn
     :members:
     :undoc-members:
     :show-inheritance:
@@ -106,7 +106,7 @@ TFN (``tfn``)
 
 Multi-Atomic Cluster Expansion (``mace``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. automodule:: proteinworkshop.models.graph_encoders.gcpnet
+.. automodule:: proteinworkshop.models.graph_encoders.mace
     :members:
     :undoc-members:
     :show-inheritance:
