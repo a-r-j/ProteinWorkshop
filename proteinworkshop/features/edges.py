@@ -9,6 +9,7 @@ from beartype import beartype
 from graphein.protein.tensor.data import Protein, ProteinBatch
 from omegaconf import ListConfig
 from torch_geometric.data import Batch, Data
+from torch_geometric.utils import to_undirected
 
 
 @beartype
@@ -57,7 +58,9 @@ def compute_edges(
     edges = []
     for edge_type in edge_types:
         if edge_type.startswith("knn") or edge_type.startswith("eps"):
-            edges.append(edge_fn(x.pos, edge_type))
+            edges.append(
+                to_undirected(edge_fn(x.pos, edge_type))
+            )
         elif edge_type == "seq_forward":
             edges.append(
                 sequence_edges(x, chains=x.chains, direction="forward")
