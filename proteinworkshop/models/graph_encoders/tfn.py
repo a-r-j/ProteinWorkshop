@@ -135,8 +135,7 @@ class TensorProductModel(torch.nn.Module):
 
     @property
     def required_batch_attributes(self) -> Set[str]:
-        """
-        Required batch attributes for this encoder.
+        """Required batch attributes for this encoder.
 
         - ``x``: Node features (shape: :math:`(n, d)`)
         - ``pos``: Node positions (shape: :math:`(n, 3)`)
@@ -151,7 +150,9 @@ class TensorProductModel(torch.nn.Module):
     @jaxtyped
     @beartype
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
-        """Returns the node embedding and graph embedding in a dictionary.
+        """Implements the forward pass of the TFN encoder.
+        
+        Returns the node embedding and graph embedding in a dictionary.
 
         :param batch: Batch of data to encode.
         :type batch: Union[Batch, ProteinBatch]
