@@ -1,0 +1,412 @@
+{
+  "configs/dataset": [],
+  "configs/features": [],
+  "configs/framework_components/callbacks": [],
+  "configs/framework_components/debug": [],
+  "configs/framework_components/env": [],
+  "configs/framework_components/extras": [],
+  "configs/framework_components/hydra": [],
+  "configs/framework_components/logger": [],
+  "configs/metrics": [],
+  "configs/ml_components/optimiser": [],
+  "configs/ml_components/scheduler": [],
+  "configs/ml_components/trainer": [],
+  "configs/model": [],
+  "configs/task": [],
+  "configs/templates": [],
+  "configs/transforms": [],
+  "framework": [],
+  "index": [],
+  "installation": [],
+  "ml_components": [],
+  "modules/proteinworkshop.constants": [],
+  "modules/proteinworkshop.datasets": [],
+  "modules/proteinworkshop.features": [],
+  "modules/proteinworkshop.metrics": [],
+  "modules/proteinworkshop.models": [
+    {
+      "source": "lr_scheduler_config = {\n    # REQUIRED: The scheduler instance\n    \"scheduler\": lr_scheduler,\n    # The unit of the scheduler's step size, could also be 'step'.\n    # 'epoch' updates the scheduler on epoch end whereas 'step'\n    # updates it after a optimizer update.\n    \"interval\": \"epoch\",\n    # How many epochs/steps should pass between calls to\n    # `scheduler.step()`. 1 corresponds to updating the learning\n    # rate after every epoch/step.\n    \"frequency\": 1,\n    # Metric to to monitor for schedulers like `ReduceLROnPlateau`\n    \"monitor\": \"val_loss\",\n    # If set to `True`, will enforce that the value specified 'monitor'\n    # is available when the scheduler is updated, thus stopping\n    # training if not found. If set to `False`, it will only produce a warning\n    \"strict\": True,\n    # If using the `LearningRateMonitor` callback to monitor the\n    # learning rate progress, this keyword can be used to specify\n    # a custom logged name\n    \"name\": None,\n}",
+      "names": [],
+      "example": {
+        "document": "modules/proteinworkshop.models",
+        "ref_id": "module-proteinworkshop.models.base",
+        "headings": [
+          "protein_workshop.models",
+          "Contents",
+          "Base Classes"
+        ]
+      },
+      "doc_lineno": 18
+    }
+  ],
+  "modules/proteinworkshop.tasks": [],
+  "modules/proteinworkshop.train": [],
+  "modules/proteinworkshop.types": [],
+  "modules/proteinworkshop.utils": [],
+  "overview": [
+    {
+      "source": "from proteinworkshop.types import EncoderOutput\n\ndef forward(self, x: [Batch, ProteinBatch]) -> EncoderOutput:\n    node_emb = x.x\n    graph_emb = self.readout(node_emb, x.batch)\n    return EncoderOutput({\"node_embedding\": node_emb, \"graph_embedding\": graph_embedding})",
+      "names": [
+        {
+          "import_components": [
+            "proteinworkshop",
+            "types"
+          ],
+          "code_str": "proteinworkshop.types",
+          "lineno": 1,
+          "end_lineno": 1,
+          "context": "import_from",
+          "resolved_location": "proteinworkshop.types"
+        }
+      ],
+      "example": {
+        "document": "overview",
+        "ref_id": "proteinworkshop-models-base-basemodel-and-proteinworkshop-models-base-benchmarkmodel-base-classes",
+        "headings": [
+          "Architectural Overview",
+          "proteinworkshop.models.base.BaseModel and proteinworkshop.models.base.BenchMarkModel Base classes"
+        ]
+      },
+      "doc_lineno": 70
+    }
+  ],
+  "quickstart": [
+    {
+      "source": "from proteinworkshop.datasets.cath import CATHDataModule\n\ndatamodule = CATHDataModule(path=\"data/cath/\", pdb_dir=\"data/pdb/\", format=\"mmtf\", batch_size=32)\ndatamodule.download()\n\ntrain_dl = datamodule.train_dataloader()",
+      "names": [
+        {
+          "import_components": [
+            "proteinworkshop",
+            "datasets",
+            "cath"
+          ],
+          "code_str": "proteinworkshop.datasets.cath",
+          "lineno": 1,
+          "end_lineno": 1,
+          "context": "import_from",
+          "resolved_location": "proteinworkshop.datasets.cath"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "datasets",
+            "cath",
+            "CATHDataModule"
+          ],
+          "code_str": "CATHDataModule",
+          "lineno": 1,
+          "end_lineno": 1,
+          "context": "import_target",
+          "resolved_location": "proteinworkshop.datasets.cath.CATHDataModule"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "datasets",
+            "cath",
+            "CATHDataModule"
+          ],
+          "code_str": "CATHDataModule",
+          "lineno": 3,
+          "end_lineno": 3,
+          "context": "none",
+          "resolved_location": "proteinworkshop.datasets.cath.CATHDataModule"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "datasets",
+            "cath",
+            "CATHDataModule",
+            "()"
+          ],
+          "code_str": "datamodule",
+          "lineno": 3,
+          "end_lineno": 3,
+          "context": "none",
+          "resolved_location": "proteinworkshop.datasets.cath.CATHDataModule"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "datasets",
+            "cath",
+            "CATHDataModule",
+            "()",
+            "download"
+          ],
+          "code_str": "datamodule.download",
+          "lineno": 4,
+          "end_lineno": 4,
+          "context": "none",
+          "resolved_location": "proteinworkshop.datasets.cath.CATHDataModule.download"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "datasets",
+            "cath",
+            "CATHDataModule",
+            "()",
+            "train_dataloader"
+          ],
+          "code_str": "datamodule.train_dataloader",
+          "lineno": 6,
+          "end_lineno": 6,
+          "context": "none",
+          "resolved_location": "proteinworkshop.datasets.cath.CATHDataModule.train_dataloader"
+        }
+      ],
+      "example": {
+        "document": "quickstart",
+        "ref_id": "using-proteinworkshop-modules-functionally",
+        "headings": [
+          "Quickstart",
+          "Using proteinworkshop modules functionally"
+        ]
+      },
+      "doc_lineno": 139
+    },
+    {
+      "source": "from proteinworkshop.models.graph_encoders.dimenetpp import DimeNetPPModel\nfrom proteinworkshop.features.factory import ProteinFeaturiser\nfrom proteinworkshop.datasets.utils import create_example_batch\n\nmodel = DimeNetPPModel(hidden_channels=64, num_layers=3)\nca_featuriser = ProteinFeaturiser(\n    representation=\"CA\",\n    scalar_node_features=[\"amino_acid_one_hot\"],\n    vector_node_features=[],\n    edge_types=[\"knn_16\"],\n    scalar_edge_features=[\"edge_distance\"],\n    vector_edge_features=[],\n)\n\nexample_batch = create_example_batch()\nbatch = ca_featuriser(example_batch)\n\nmodel_outputs = model(example_batch)",
+      "names": [
+        {
+          "import_components": [
+            "proteinworkshop",
+            "models",
+            "graph_encoders",
+            "dimenetpp"
+          ],
+          "code_str": "proteinworkshop.models.graph_encoders.dimenetpp",
+          "lineno": 1,
+          "end_lineno": 1,
+          "context": "import_from",
+          "resolved_location": "proteinworkshop.models.graph_encoders.dimenetpp"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "models",
+            "graph_encoders",
+            "dimenetpp",
+            "DimeNetPPModel"
+          ],
+          "code_str": "DimeNetPPModel",
+          "lineno": 1,
+          "end_lineno": 1,
+          "context": "import_target",
+          "resolved_location": "proteinworkshop.models.graph_encoders.dimenetpp.DimeNetPPModel"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "features",
+            "factory"
+          ],
+          "code_str": "proteinworkshop.features.factory",
+          "lineno": 2,
+          "end_lineno": 2,
+          "context": "import_from",
+          "resolved_location": "proteinworkshop.features.factory"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "features",
+            "factory",
+            "ProteinFeaturiser"
+          ],
+          "code_str": "ProteinFeaturiser",
+          "lineno": 2,
+          "end_lineno": 2,
+          "context": "import_target",
+          "resolved_location": "proteinworkshop.features.factory.ProteinFeaturiser"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "datasets",
+            "utils"
+          ],
+          "code_str": "proteinworkshop.datasets.utils",
+          "lineno": 3,
+          "end_lineno": 3,
+          "context": "import_from",
+          "resolved_location": "proteinworkshop.datasets.utils"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "datasets",
+            "utils",
+            "create_example_batch"
+          ],
+          "code_str": "create_example_batch",
+          "lineno": 3,
+          "end_lineno": 3,
+          "context": "import_target",
+          "resolved_location": "proteinworkshop.datasets.utils.create_example_batch"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "models",
+            "graph_encoders",
+            "dimenetpp",
+            "DimeNetPPModel"
+          ],
+          "code_str": "DimeNetPPModel",
+          "lineno": 5,
+          "end_lineno": 5,
+          "context": "none",
+          "resolved_location": "proteinworkshop.models.graph_encoders.dimenetpp.DimeNetPPModel"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "models",
+            "graph_encoders",
+            "dimenetpp",
+            "DimeNetPPModel",
+            "()"
+          ],
+          "code_str": "model",
+          "lineno": 5,
+          "end_lineno": 5,
+          "context": "none",
+          "resolved_location": "proteinworkshop.models.graph_encoders.dimenetpp.DimeNetPPModel"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "features",
+            "factory",
+            "ProteinFeaturiser"
+          ],
+          "code_str": "ProteinFeaturiser",
+          "lineno": 6,
+          "end_lineno": 6,
+          "context": "none",
+          "resolved_location": "proteinworkshop.features.factory.ProteinFeaturiser"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "features",
+            "factory",
+            "ProteinFeaturiser",
+            "()"
+          ],
+          "code_str": "ca_featuriser",
+          "lineno": 6,
+          "end_lineno": 6,
+          "context": "none",
+          "resolved_location": "proteinworkshop.features.factory.ProteinFeaturiser"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "datasets",
+            "utils",
+            "create_example_batch"
+          ],
+          "code_str": "create_example_batch",
+          "lineno": 15,
+          "end_lineno": 15,
+          "context": "none",
+          "resolved_location": "proteinworkshop.datasets.utils.create_example_batch"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "features",
+            "factory",
+            "ProteinFeaturiser",
+            "()"
+          ],
+          "code_str": "ca_featuriser",
+          "lineno": 16,
+          "end_lineno": 16,
+          "context": "none",
+          "resolved_location": "proteinworkshop.features.factory.ProteinFeaturiser"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "models",
+            "graph_encoders",
+            "dimenetpp",
+            "DimeNetPPModel",
+            "()"
+          ],
+          "code_str": "model",
+          "lineno": 18,
+          "end_lineno": 18,
+          "context": "none",
+          "resolved_location": "proteinworkshop.models.graph_encoders.dimenetpp.DimeNetPPModel"
+        }
+      ],
+      "example": {
+        "document": "quickstart",
+        "ref_id": "using-proteinworkshop-modules-functionally",
+        "headings": [
+          "Quickstart",
+          "Using proteinworkshop modules functionally"
+        ]
+      },
+      "doc_lineno": 150
+    }
+  ],
+  "quickstart_component/download": [],
+  "quickstart_component/downstream": [],
+  "quickstart_component/pretrain": [],
+  "tutorials": [
+    {
+      "source": "# Misc. tools\nimport os\n\n# Hydra tools\nimport hydra\n\nfrom hydra.compose import GlobalHydra\nfrom hydra.core.hydra_config import HydraConfig\n\nfrom proteinworkshop.constants import HYDRA_CONFIG_PATH\nfrom proteinworkshop.utils.notebook import init_hydra_singleton\n\nversion_base = \"1.2\"  # Note: Need to update whenever Hydra is upgraded\ninit_hydra_singleton(reload=True, version_base=version_base)\n\npath = HYDRA_CONFIG_PATH\nrel_path = os.path.relpath(path, start=\".\")\n\nGlobalHydra.instance().clear()\nhydra.initialize(rel_path, version_base=version_base)\n\ncfg = hydra.compose(config_name=\"train\", overrides=[\"encoder=schnet\", \"task=inverse_folding\", \"dataset=afdb_swissprot_v4\", \"features=ca_angles\", \"+aux_task=none\"], return_hydra_config=True)\n\n# Note: Customize as needed e.g., when running a sweep\ncfg.hydra.job.num = 0\ncfg.hydra.job.id = 0\ncfg.hydra.hydra_help.hydra_help = False\ncfg.hydra.runtime.output_dir = \"outputs\"\n\nHydraConfig.instance().set_config(cfg)",
+      "names": [
+        {
+          "import_components": [
+            "os"
+          ],
+          "code_str": "os",
+          "lineno": 2,
+          "end_lineno": 2,
+          "context": "import_target",
+          "resolved_location": "os"
+        },
+        {
+          "import_components": [
+            "proteinworkshop",
+            "constants"
+          ],
+          "code_str": "proteinworkshop.constants",
+          "lineno": 10,
+          "end_lineno": 10,
+          "context": "import_from",
+          "resolved_location": "proteinworkshop.constants"
+        },
+        {
+          "import_components": [
+            "os",
+            "path",
+            "relpath"
+          ],
+          "code_str": "os.path.relpath",
+          "lineno": 17,
+          "end_lineno": 17,
+          "context": "none",
+          "resolved_location": "os.path.relpath"
+        }
+      ],
+      "example": {
+        "document": "tutorials",
+        "ref_id": "evaluating-a-pre-trained-model",
+        "headings": [
+          "Tutorials",
+          "Evaluating a pre-trained Model"
+        ]
+      },
+      "doc_lineno": 84
+    }
+  ]
+}
