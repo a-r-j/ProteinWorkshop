@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="no-js" data-content_root="./" lang="en">
+<head><meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="light dark" name="color-scheme"/><meta content="width=device-width, initial-scale=1" name="viewport">
+<script async="" src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', '');
+            
+        </script>
+<meta content="Tutorials" property="og:title"/>
+<meta content="website" property="og:type"/>
+<meta content="tutorials.html" property="og:url"/>
+<meta content="Protein Workshop" property="og:site_name"/>
+<meta content="We provide a five-part tutorial series of Jupyter notebooks to provide users with examples of how to use and extend proteinworkshop, as outlined below. Training a new model, Customizing an existing..." property="og:description"/>
+<meta content="1146" property="og:image:width"/>
+<meta content="600" property="og:image:height"/>
+<meta content="/_images/social_previews/summary_tutorials_09adc415.png" property="og:image"/>
+<meta content="We provide a five-part tutorial series of Jupyter notebooks to provide users with examples of how to use and extend proteinworkshop, as outlined below. Train..." property="og:image:alt"/>
+<meta content="We provide a five-part tutorial series of Jupyter notebooks to provide users with examples of how to use and extend proteinworkshop, as outlined below. Training a new model, Customizing an existing..." name="description"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="genindex.html" rel="index" title="Index"/><link href="search.html" rel="search" title="Search"/><link href="overview.html" rel="next" title="Architectural Overview"/><link href="installation.html" rel="prev" title="Installation"/>
+<!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
+<title>Tutorials - Protein Workshop 0.2.4</title>
+<link href="_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
+<link href="_static/styles/furo.css?v=135e06be" rel="stylesheet" type="text/css"/>
+<link href="_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="_static/tabs.css?v=4c969af8" rel="stylesheet" type="text/css"/>
+<link href="_static/sphinx-codeautolink.css?v=125d5c1c" rel="stylesheet" type="text/css"/>
+<link href="_static/styles/furo-extensions.css?v=36a5483c" rel="stylesheet" type="text/css"/>
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></meta></head>
+<body>
+<script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+<svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+<symbol id="svg-toc" viewbox="0 0 24 24">
+<title>Contents</title>
+<svg fill="currentColor" stroke="currentColor" stroke-width="0" viewbox="0 0 1024 1024">
+<path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"></path>
+</svg>
+</symbol>
+<symbol id="svg-menu" viewbox="0 0 24 24">
+<title>Menu</title>
+<svg class="feather-menu" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<line x1="3" x2="21" y1="12" y2="12"></line>
+<line x1="3" x2="21" y1="6" y2="6"></line>
+<line x1="3" x2="21" y1="18" y2="18"></line>
+</svg>
+</symbol>
+<symbol id="svg-arrow-right" viewbox="0 0 24 24">
+<title>Expand</title>
+<svg class="feather-chevron-right" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</symbol>
+<symbol id="svg-sun" viewbox="0 0 24 24">
+<title>Light mode</title>
+<svg class="feather-sun" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="5"></circle>
+<line x1="12" x2="12" y1="1" y2="3"></line>
+<line x1="12" x2="12" y1="21" y2="23"></line>
+<line x1="4.22" x2="5.64" y1="4.22" y2="5.64"></line>
+<line x1="18.36" x2="19.78" y1="18.36" y2="19.78"></line>
+<line x1="1" x2="3" y1="12" y2="12"></line>
+<line x1="21" x2="23" y1="12" y2="12"></line>
+<line x1="4.22" x2="5.64" y1="19.78" y2="18.36"></line>
+<line x1="18.36" x2="19.78" y1="5.64" y2="4.22"></line>
+</svg>
+</symbol>
+<symbol id="svg-moon" viewbox="0 0 24 24">
+<title>Dark mode</title>
+<svg class="icon-tabler-moon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 0h24v24H0z" fill="none" stroke="none"></path>
+<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"></path>
+</svg>
+</symbol>
+<symbol id="svg-sun-half" viewbox="0 0 24 24">
+<title>Auto light/dark mode</title>
+<svg class="icon-tabler-shadow" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 0h24v24H0z" fill="none" stroke="none"></path>
+<circle cx="12" cy="12" r="9"></circle>
+<path d="M13 12h5"></path>
+<path d="M13 15h4"></path>
+<path d="M13 18h1"></path>
+<path d="M13 9h4"></path>
+<path d="M13 6h1"></path>
+</svg>
+</symbol>
+</svg>
+<input class="sidebar-toggle" id="__navigation" name="__navigation" type="checkbox"/>
+<input class="sidebar-toggle" id="__toc" name="__toc" type="checkbox"/>
+<label class="overlay sidebar-overlay" for="__navigation">
+<div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+<div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+<div class="page">
+<header class="mobile-header">
+<div class="header-left">
+<label class="nav-overlay-icon" for="__navigation">
+<div class="visually-hidden">Toggle site navigation sidebar</div>
+<i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+</label>
+</div>
+<div class="header-center">
+<a href="index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+</div>
+<div class="header-right">
+<div class="theme-toggle-container theme-toggle-header">
+<button class="theme-toggle">
+<div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+<svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+<svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+<svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+</button>
+</div>
+<label class="toc-overlay-icon toc-header-icon" for="__toc">
+<div class="visually-hidden">Toggle table of contents sidebar</div>
+<i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+</label>
+</div>
+</header>
+<aside class="sidebar-drawer">
+<div class="sidebar-container">
+<div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+<div class="sidebar-logo-container">
+<img alt="Logo" class="sidebar-logo" src="_static/workshop_icon.png"/>
+</div>
+<span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+</a><form action="search.html" class="sidebar-search-container" method="get" role="search">
+<input aria-label="Search" class="sidebar-search" name="q" placeholder="Search"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Architectural Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="quickstart.html">Quickstart</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Quickstart</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart_component/pretrain.html">Pre-Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart_component/downstream.html">Downstream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart_component/download.html">Downloading Datasets</a></li>
+</ul>
+</input></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Default Configs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configs/templates.html">Config Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configs/dataset.html">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configs/model.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configs/task.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configs/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="configs/framework_components/callbacks.html">Callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs/framework_components/debug.html">Debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs/framework_components/env.html">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs/framework_components/logger.html">Loggers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs/framework_components/hydra.html">Hydra Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs/framework_components/extras.html">Extras</a></li>
+</ul>
+</input></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ml_components.html">ML Components</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of ML Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="configs/ml_components/trainer.html">Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs/ml_components/optimiser.html">Optimiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs/ml_components/scheduler.html">Schedulers</a></li>
+</ul>
+</input></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.train.html">protein_workshop.train</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.datasets.html">protein_workshop.datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.models.html">protein_workshop.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.features.html">protein_workshop.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<div class="main">
+<div class="content">
+<div class="article-container">
+<a class="back-to-top muted-link" href="#">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+</svg>
+<span>Back to top</span>
+</a>
+<div class="content-icon-container">
+<div class="theme-toggle-container theme-toggle-content">
+<button class="theme-toggle">
+<div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+<svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+<svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+<svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+</button>
+</div>
+<label class="toc-overlay-icon toc-content-icon" for="__toc">
+<div class="visually-hidden">Toggle table of contents sidebar</div>
+<i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+</label>
+</div>
+<article role="main">
+<section id="tutorials">
+<h1>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">#</a></h1>
+<p>We provide a five-part tutorial series of Jupyter notebooks to provide users with examples
+of how to use and extend <code class="docutils literal notranslate"><span class="pre">proteinworkshop</span></code>, as outlined below.</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/training_new_model_tutorial.ipynb">Training a new model</a></p></li>
+<li><p><a class="reference external" href="https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/customizing_existing_dataset_tutorial.ipynb">Customizing an existing dataset</a></p></li>
+<li><p><a class="reference external" href="https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/adding_new_dataset_tutorial.ipynb">Adding a new dataset</a></p></li>
+<li><p><a class="reference external" href="https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/adding_new_model_tutorial.ipynb">Adding a new model</a></p></li>
+<li><p><a class="reference external" href="https://github.com/a-r-j/ProteinWorkshop/blob/main/notebooks/adding_new_task_tutorial.ipynb">Adding a new task</a></p></li>
+</ol>
+<section id="id1">
+<h2>Training a New Model<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Using provided options via the CLI:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workshop<span class="w"> </span>train<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>DATASET<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>MODEL<span class="w"> </span><span class="nv">task</span><span class="o">=</span>TASK<span class="w"> </span><span class="nv">features</span><span class="o">=</span>FEATURES<span class="w"> </span><span class="nv">trainer</span><span class="o">=</span>cpu<span class="w"> </span>env.paths.data<span class="o">=</span>where/you/want/data/
+<span class="c1"># or</span>
+python<span class="w"> </span>proteinworkshop/train.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>DATASET<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>MODEL<span class="w"> </span><span class="nv">task</span><span class="o">=</span>TASK<span class="w"> </span><span class="nv">features</span><span class="o">=</span>FEATURES<span class="w"> </span><span class="nv">trainer</span><span class="o">=</span>cpu<span class="w"> </span><span class="c1"># or trainer=gpu</span>
+</pre></div>
+</div>
+<p>To override hparams, you can either edit the relevant <span class="xref std std-doc">/configs/</span> files directly or via the CLI using Hydra syntax:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>workshop<span class="w"> </span>train<span class="w"> </span>...<span class="w"> </span>optimiser.optimizer.lr<span class="o">=</span><span class="m">0</span>.001<span class="w"> </span>dataset.datamodule.batch_size<span class="o">=</span><span class="m">32</span>
+<span class="c1"># or</span>
+python<span class="w"> </span>proteinworkshop/train.py<span class="w"> </span>...<span class="w"> </span>optimiser.optimizer.lr<span class="o">=</span><span class="m">0</span>.001<span class="w"> </span>dataset.datamodule.batch_size<span class="o">=</span><span class="m">32</span>
+</pre></div>
+</div>
+<ol class="arabic" start="2">
+<li><p>In a jupyter notebook:</p>
+<blockquote>
+<div><p>See: <span class="xref std std-doc">/notebooks/Training a New Model</span></p>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="evaluating-a-pre-trained-model">
+<h2>Evaluating a pre-trained Model<a class="headerlink" href="#evaluating-a-pre-trained-model" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Define a new model class</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">graphein.protein.tensor.data</span> <span class="kn">import</span> <span class="n">ProteinBatch</span>
+<span class="kn">from</span> <span class="nn">proteinworkshop.models.utils</span> <span class="kn">import</span> <span class="n">get_aggregation</span>
+<span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">jaxtyped</span>
+<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
+
+
+<span class="k">class</span> <span class="nc">IdentityModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readout</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"sum"</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readout</span> <span class="o">=</span> <span class="n">get_aggregation</span><span class="p">(</span><span class="n">readout</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">required_batch_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""This property describes the required attributes of the input batch."""</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"x"</span><span class="p">,</span> <span class="s2">"batch"</span><span class="p">}</span>
+
+    <span class="nd">@jaxtyped</span>
+    <span class="nd">@beartype</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        This method does the forward pass of the model.</span>
+
+<span class="sd">        It should take in a batch of data and return a dictionary of outputs.</span>
+<span class="sd">        """</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"node_embedding"</span><span class="p">:</span> <span class="n">batch</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+            <span class="s2">"graph_embedding"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">batch</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Load the model weights</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span> <span class="o">=</span> <span class="n">IdentityModel</span><span class="p">()</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"path/to/model.pt"</span><span class="p">))</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Configure the task</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Misc. tools</span>
+<span class="kn">import</span> <a class="sphinx-codeautolink-a" href="https://docs.python.org/3/library/os.html#module-os" title="os"><span class="nn">os</span></a>
+
+<span class="c1"># Hydra tools</span>
+<span class="kn">import</span> <span class="nn">hydra</span>
+
+<span class="kn">from</span> <span class="nn">hydra.compose</span> <span class="kn">import</span> <span class="n">GlobalHydra</span>
+<span class="kn">from</span> <span class="nn">hydra.core.hydra_config</span> <span class="kn">import</span> <span class="n">HydraConfig</span>
+
+<span class="kn">from</span> <a class="sphinx-codeautolink-a" href="modules/proteinworkshop.constants.html#module-proteinworkshop.constants" title="proteinworkshop.constants"><span class="nn">proteinworkshop.constants</span></a> <span class="kn">import</span> <span class="n">HYDRA_CONFIG_PATH</span>
+<span class="kn">from</span> <span class="nn">proteinworkshop.utils.notebook</span> <span class="kn">import</span> <span class="n">init_hydra_singleton</span>
+
+<span class="n">version_base</span> <span class="o">=</span> <span class="s2">"1.2"</span>  <span class="c1"># Note: Need to update whenever Hydra is upgraded</span>
+<span class="n">init_hydra_singleton</span><span class="p">(</span><span class="n">reload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">version_base</span><span class="o">=</span><span class="n">version_base</span><span class="p">)</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">HYDRA_CONFIG_PATH</span>
+<span class="n">rel_path</span> <span class="o">=</span> <a class="sphinx-codeautolink-a" href="https://docs.python.org/3/library/os.path.html#os.path.relpath" title="os.path.relpath"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span></a><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">"."</span><span class="p">)</span>
+
+<span class="n">GlobalHydra</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="n">hydra</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">rel_path</span><span class="p">,</span> <span class="n">version_base</span><span class="o">=</span><span class="n">version_base</span><span class="p">)</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">hydra</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_name</span><span class="o">=</span><span class="s2">"train"</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="p">[</span><span class="s2">"encoder=schnet"</span><span class="p">,</span> <span class="s2">"task=inverse_folding"</span><span class="p">,</span> <span class="s2">"dataset=afdb_swissprot_v4"</span><span class="p">,</span> <span class="s2">"features=ca_angles"</span><span class="p">,</span> <span class="s2">"+aux_task=none"</span><span class="p">],</span> <span class="n">return_hydra_config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Note: Customize as needed e.g., when running a sweep</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">hydra</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">num</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">hydra</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">hydra</span><span class="o">.</span><span class="n">hydra_help</span><span class="o">.</span><span class="n">hydra_help</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">hydra</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">"outputs"</span>
+
+<span class="n">HydraConfig</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Run the model</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">proteinworkshop.train</span> <span class="kn">import</span> <span class="n">train_model</span>
+
+<span class="n">train_model</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</article>
+</div>
+<footer>
+<div class="related-pages">
+<a class="next-page" href="overview.html">
+<div class="page-info">
+<div class="context">
+<span>Next</span>
+</div>
+<div class="title">Architectural Overview</div>
+</div>
+<svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+</a>
+<a class="prev-page" href="installation.html">
+<svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+<div class="page-info">
+<div class="context">
+<span>Previous</span>
+</div>
+<div class="title">Installation</div>
+</div>
+</a>
+</div>
+<div class="bottom-of-page">
+<div class="left-details">
+<div class="copyright">
+                Copyright © 2023, Arian R. Jamasb
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+</div>
+<div class="right-details">
+</div>
+</div>
+</footer>
+</div>
+<aside class="toc-drawer">
+<div class="toc-sticky toc-scroll">
+<div class="toc-title-container">
+<span class="toc-title">
+            On this page
+          </span>
+</div>
+<div class="toc-tree-container">
+<div class="toc-tree">
+<ul>
+<li><a class="reference internal" href="#">Tutorials</a><ul>
+<li><a class="reference internal" href="#id1">Training a New Model</a></li>
+<li><a class="reference internal" href="#evaluating-a-pre-trained-model">Evaluating a pre-trained Model</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div><script src="_static/jquery.js?v=5d32c60e"></script>
+<script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+<script src="_static/documentation_options.js?v=6ffd866b"></script>
+<script src="_static/doctools.js?v=888ff710"></script>
+<script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="_static/scripts/furo.js?v=32e29ea5"></script>
+<script src="_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="_static/copybutton.js?v=f281be69"></script>
+<script src="_static/tabs.js?v=3ee01567"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+</body>
+</html>
