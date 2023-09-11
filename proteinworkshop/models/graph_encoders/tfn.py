@@ -22,7 +22,7 @@ class TensorProductModel(torch.nn.Module):
         num_basis: int = 16,
         max_ell: int = 2,
         num_layers: int = 4,
-        hidden_irreps = "128x0e + 16x1o + 8x2e",
+        hidden_irreps = "32x0e + 32x0o + 8x1e + 8x1o + 4x2e + 4x2o",
         mlp_dim: int = 256,
         aggr: str = "mean",
         pool: str = "sum",
@@ -47,7 +47,8 @@ class TensorProductModel(torch.nn.Module):
         :type num_layers: int, optional
         :param hidden_irreps: Irreps string for intermediate layer node 
             feature tensors; converted to e3nn.o3.Irreps format 
-            (default: ``128x0e + 16x1o + 8x2e``)
+            (default: SO(3) equivariance: ``32x0e + 32x0o + 8x1e + 8x1o + 4x2e + 4x2o``
+            alternative: O(3) equivariance: ``64x0e + 16x1o + 8x2e``)
         :type hidden_irreps: str, optional
         :param mlp_dim: Dimension of MLP for computing tensor product
             weights (default: ``256``)
