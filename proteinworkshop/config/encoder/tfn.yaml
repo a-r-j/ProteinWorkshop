@@ -5,7 +5,7 @@ max_ell: 2 # Maximum degree/order of spherical harmonics basis functions and nod
 num_layers: 4 # Number of layers in the model
 hidden_irreps: "128x0e + 16x1o + 8x2e" # Irreps string for intermediate layer node feature tensors
 mlp_dim: 256 # Dimension of MLP for computing tensor product weights
-mean" # Aggregation function to use
+aggr: "mean" # Aggregation function to use
 pool: "sum" # Pooling operation to use
 residual: True # Whether to use residual connections
 batch_norm: True # Whether to use e3nn batch normalization
