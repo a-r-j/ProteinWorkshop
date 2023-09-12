@@ -3,7 +3,7 @@ num_layers: 6 # Number of message passing layers
 emb_dim: 512 # Dimension of the node embeddings
 activation: relu # Activation function to use
 norm: batch # Normalisation layer to use
-aggr: "mean" # Aggregation function to use
+aggr: "sum" # Aggregation function to use
 pool: "mean" # Pooling operation to use
 residual: True # Whether to use residual connections
 drop_rate: 0.1 # Dropout rate
