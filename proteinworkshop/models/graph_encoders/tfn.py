@@ -171,9 +171,6 @@ class TensorProductModel(torch.nn.Module):
             the dimension of the embeddings.
         :rtype: EncoderOutput
         """
-        # from torch_geometric.utils import to_undirected
-        # edge_index = to_undirected(batch.edge_index)
-
         # Node embedding
         h = self.emb_in(batch.x)  # (n,) -> (n, d)
 
