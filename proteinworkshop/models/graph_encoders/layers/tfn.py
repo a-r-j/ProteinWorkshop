@@ -16,6 +16,7 @@ class TensorProductConvLayer(torch.nn.Module):
         aggr="add",
         batch_norm=True,
         gate=False,
+        drop_rate=0.1,
     ):
         """Tensor Field Network GNN Layer in e3nn
 
@@ -33,6 +34,7 @@ class TensorProductConvLayer(torch.nn.Module):
             aggr: (str) Message passing aggregator
             batch_norm: (bool) Whether to apply equivariant batch norm
             gate: (bool) Whether to apply gated non-linearity
+            drop_rate: (float) Dropout rate
         """
         super().__init__()
         self.in_irreps = in_irreps
@@ -78,6 +80,7 @@ class TensorProductConvLayer(torch.nn.Module):
         self.fc = torch.nn.Sequential(
             torch.nn.Linear(edge_feats_dim, mlp_dim),
             torch.nn.ReLU(),
+            torch.nn.Dropout(drop_rate),
             torch.nn.Linear(mlp_dim, self.tp.weight_numel),
         )
 
