@@ -17,9 +17,10 @@ class EGNNModel(nn.Module):
         emb_dim: int = 128,
         activation: str = "relu",
         norm: str = "layer",
-        aggr: str = "sum",
-        pool: str = "sum",
+        aggr: str = "mean",
+        pool: str = "mean",
         residual: bool = True,
+        drop_rate: float = 0.1,
     ):
         """E(n) Equivariant GNN model
 
@@ -34,13 +35,15 @@ class EGNNModel(nn.Module):
         :type activation: str, optional
         :param norm: Normalisation layer to use, defaults to ``"layer"``
         :type norm: str, optional
-        :param aggr: Aggregation function to use, defaults to ``"sum"``
+        :param aggr: Aggregation function to use, defaults to ``"mean"``
         :type aggr: str, optional
-        :param pool: Pooling operation to use, defaults to ``"sum"``
+        :param pool: Pooling operation to use, defaults to ``"mean"``
         :type pool: str, optional
         :param residual: Whether to use residual connections, defaults to
             ``True``
         :type residual: bool, optional
+        :param drop_rate: Dropout rate, defaults to ``0.1``
+        :type drop_rate: float, optional
         """
         super().__init__()
 
@@ -50,7 +53,7 @@ class EGNNModel(nn.Module):
         # Stack of GNN layers
         self.convs = torch.nn.ModuleList()
         for _ in range(num_layers):
-            self.convs.append(EGNNLayer(emb_dim, activation, norm, aggr))
+            self.convs.append(EGNNLayer(emb_dim, activation, norm, aggr, drop_rate))
 
         # Global pooling/readout function
         self.pool = get_aggregation(pool)
@@ -96,8 +99,8 @@ class EGNNModel(nn.Module):
             # Update node features (n, d) -> (n, d)
             h = h + h_update if self.residual else h_update
 
-            # Update node coordinates (no residual) (n, 3) -> (n, 3)
-            pos = pos_update
+            # Update node coordinates (n, 3) -> (n, 3)
+            pos = pos + pos_update if self.residual else pos_update
 
         return EncoderOutput(
             {
