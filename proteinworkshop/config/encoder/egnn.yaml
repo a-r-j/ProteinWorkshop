@@ -6,4 +6,4 @@ norm: batch # Normalisation layer to use
 aggr: "sum" # Aggregation function to use
 pool: "mean" # Pooling operation to use
 residual: True # Whether to use residual connections
-drop_rate: 0.1 # Dropout rate
+dropout: 0.1 # Dropout rate

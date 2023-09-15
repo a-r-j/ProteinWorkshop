@@ -15,7 +15,7 @@ class EGNNLayer(MessagePassing):
         activation: str = "relu",
         norm: str = "layer",
         aggr: str = "mean",
-        drop_rate: float = 0.1,
+        dropout: float = 0.1,
     ):
         """E(n) Equivariant GNN Layer
 
@@ -26,7 +26,7 @@ class EGNNLayer(MessagePassing):
             activation: (str) - non-linearity within MLPs (swish/relu)
             norm: (str) - normalisation layer (layer/batch)
             aggr: (str) - aggregation function `\oplus` (sum/mean/max)
-            drop_rate: (float) - dropout rate
+            dropout: (float) - dropout rate
         """
         # Set the aggregation function
         super().__init__(aggr=aggr)
@@ -43,18 +43,18 @@ class EGNNLayer(MessagePassing):
             Linear(2 * emb_dim + 1, emb_dim),
             self.norm(emb_dim),
             self.activation,
-            Dropout(drop_rate),
+            Dropout(dropout),
             Linear(emb_dim, emb_dim),
             self.norm(emb_dim),
             self.activation,
-            Dropout(drop_rate),
+            Dropout(dropout),
         )
         # MLP `\psi_x` for computing messages `\overrightarrow{m}_ij`
         self.mlp_pos = Sequential(
             Linear(emb_dim, emb_dim),
             self.norm(emb_dim),
             self.activation,
-            Dropout(drop_rate),
+            Dropout(dropout),
             Linear(emb_dim, 1),
         )
         # MLP `\phi` for computing updated node features `h_i^{l+1}`
@@ -62,11 +62,11 @@ class EGNNLayer(MessagePassing):
             Linear(2 * emb_dim, emb_dim),
             self.norm(emb_dim),
             self.activation,
-            Dropout(drop_rate),
+            Dropout(dropout),
             Linear(emb_dim, emb_dim),
             self.norm(emb_dim),
             self.activation,
-            Dropout(drop_rate),
+            Dropout(dropout),
         )
 
     def forward(

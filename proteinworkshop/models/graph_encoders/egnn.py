@@ -20,7 +20,7 @@ class EGNNModel(nn.Module):
         aggr: str = "mean",
         pool: str = "mean",
         residual: bool = True,
-        drop_rate: float = 0.1,
+        dropout: float = 0.1,
     ):
         """E(n) Equivariant GNN model
 
@@ -42,8 +42,8 @@ class EGNNModel(nn.Module):
         :param residual: Whether to use residual connections, defaults to
             ``True``
         :type residual: bool, optional
-        :param drop_rate: Dropout rate, defaults to ``0.1``
-        :type drop_rate: float, optional
+        :param dropout: Dropout rate, defaults to ``0.1``
+        :type dropout: float, optional
         """
         super().__init__()
 
@@ -53,7 +53,7 @@ class EGNNModel(nn.Module):
         # Stack of GNN layers
         self.convs = torch.nn.ModuleList()
         for _ in range(num_layers):
-            self.convs.append(EGNNLayer(emb_dim, activation, norm, aggr, drop_rate))
+            self.convs.append(EGNNLayer(emb_dim, activation, norm, aggr, dropout))
 
         # Global pooling/readout function
         self.pool = get_aggregation(pool)

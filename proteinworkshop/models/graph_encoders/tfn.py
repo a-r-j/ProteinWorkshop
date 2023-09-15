@@ -29,7 +29,7 @@ class TensorProductModel(torch.nn.Module):
         residual: bool = True,
         batch_norm: bool = True,
         gate: bool = False,
-        drop_rate: float = 0.1,
+        dropout: float = 0.1,
     ):
         """e3nn-based Tensor Product Convolution Network (Tensor Field Network)
 
@@ -66,8 +66,8 @@ class TensorProductModel(torch.nn.Module):
         :type batch_norm: bool, optional
         :param gate: Whether to use gated non-linearity, defaults to ``False``
         :type gate: bool, optional
-        :param drop_rate: Dropout rate, defaults to ``0.1``
-        :type drop_rate: float, optional
+        :param dropout: Dropout rate, defaults to ``0.1``
+        :type dropout: float, optional
         """
         super().__init__()
         self.r_max = r_max
@@ -105,7 +105,7 @@ class TensorProductModel(torch.nn.Module):
                 aggr=aggr,
                 batch_norm=batch_norm,
                 gate=gate,
-                drop_rate=drop_rate,
+                dropout=dropout,
             )
         )
         # Intermediate conv layers: tensor -> tensor
@@ -119,7 +119,7 @@ class TensorProductModel(torch.nn.Module):
                 aggr=aggr,
                 batch_norm=batch_norm,
                 gate=gate,
-                drop_rate=drop_rate,
+                dropout=dropout,
             )
             self.convs.append(conv)
         # Last conv layer: tensor -> scalar only
@@ -133,7 +133,7 @@ class TensorProductModel(torch.nn.Module):
                 aggr=aggr,
                 batch_norm=batch_norm,
                 gate=gate,
-                drop_rate=drop_rate,
+                dropout=dropout,
             )
         )
 
