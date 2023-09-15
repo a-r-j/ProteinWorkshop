@@ -1,0 +1,52 @@
+program: proteinworkshop/train.py
+method: grid
+name: baseline_inverse_folding_e3nn
+metric: # Does not matter, as we are using sweep to run the experiment.
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  task:
+    values: [inverse_folding]
+
+  dataset:
+    values: [cath]
+
+  dataset.datamodule.num_workers:
+    value: 8
+  
+  # reduced batch size from 32 -> 16 for e3nn's
+  dataset.datamodule.batch_size:
+    value: 16
+
+  encoder:
+    values: [tfn, mace]
+
+  optimiser.optimizer.lr:
+    values: [0.0001]
+
+  features:
+    values: [ca_base, ca_seq, ca_angles, ca_bb]
+
+  scheduler:
+    value: plateau
+
+  extras.enforce_tags:
+    value: False
+
+  +aux_task:
+    values: [none, nn_sequence, nn_structure_torsion, nn_structure_r3]
+
+  trainer.max_epochs:
+    value: 150
+
+  test:
+    value: True
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}
