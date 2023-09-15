@@ -10,7 +10,7 @@ parameters:
     values: [multiple_graph_classification]
 
   dataset:
-    values: [fold-family, fold-superfamily, fold-fold]
+    values: [fold_family, fold_superfamily, fold_fold]
 
   dataset.datamodule.num_workers:
     value: 8
