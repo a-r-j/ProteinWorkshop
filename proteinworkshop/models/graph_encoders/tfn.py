@@ -44,7 +44,7 @@ class TensorProductModel(torch.nn.Module):
         :param max_ell: Maximum degree/order of spherical harmonics basis
             functions and node feature tensors (default: ``2``)
         :type max_ell: int, optional
-        :param num_layers: Number of layers in the model (default: ``5``)
+        :param num_layers: Number of layers in the model (default: ``4``)
         :type num_layers: int, optional
         :param hidden_irreps: Irreps string for intermediate layer node 
             feature tensors; converted to e3nn.o3.Irreps format 
@@ -179,7 +179,7 @@ class TensorProductModel(torch.nn.Module):
             batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]
         )  # [n_edges, 3]
         lengths = torch.linalg.norm(
-            vectors, dim=-1, # keepdim=True
+            vectors, dim=-1,
         )  # [n_edges, 1]
         edge_attrs = self.spherical_harmonics(vectors)
         edge_feats = self.radial_embedding(lengths)
