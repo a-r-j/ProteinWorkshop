@@ -7,6 +7,7 @@ from beartype import beartype
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import jaxtyped
 from torch_geometric.data import Batch
+from torch_geometric.utils import to_undirected
 
 import proteinworkshop.models.graph_encoders.layers.tfn as tfn
 from proteinworkshop.models.graph_encoders.components import (
@@ -222,12 +223,15 @@ class MACEModel(torch.nn.Module):
             the dimension of the embeddings.
         :rtype: EncoderOutput
         """
+        # Convert to undirected edges
+        edge_index = to_undirected(batch.edge_index)
+
         # Node embedding
         h = self.emb_in(batch.x)  # (n,) -> (n, d)
 
         # Edge features
         vectors = (
-            batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]
+            batch.pos[edge_index[0]] - batch.pos[edge_index[1]]
         )  # [n_edges, 3]
         lengths = torch.linalg.norm(
             vectors, dim=-1, keepdim=True
@@ -239,14 +243,14 @@ class MACEModel(torch.nn.Module):
             edge_feats_expanded = torch.cat(
                 [
                     edge_feats, 
-                    h[batch.edge_index[0], :self.emb_dim], 
-                    h[batch.edge_index[1], :self.emb_dim]
+                    h[edge_index[0], :self.emb_dim], 
+                    h[edge_index[1], :self.emb_dim]
                 ], 
                 dim=1
             )
 
             # Message passing layer
-            h_update = conv(h, batch.edge_index, edge_attrs, edge_feats_expanded)
+            h_update = conv(h, edge_index, edge_attrs, edge_feats_expanded)
             
             # Update node features
             sc = F.pad(h, (0, h_update.shape[-1] - h.shape[-1]))
