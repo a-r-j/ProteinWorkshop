@@ -30,11 +30,12 @@ dataset_fname_map = {
     "fold_fold": "FoldClassification",
     "fold_family": "FoldClassification",
     "fold_superfamily": "FoldClassification",
+    "gene_ontology": "GeneOntology",
     "go-bp": "GeneOntology",
     "go-cc": "GeneOntology",
     "go-mf": "GeneOntology",
     "masif_site": "masif_site",
-    "metal_3d": "metal_3d",
+    "metal_3d": "Metal3D",
     "ptm": "PostTranslationalModification",
 }
 
@@ -49,6 +50,9 @@ _MD5_CHECKSUMS: Dict[str, str] = {
     "deep_sea_proteins": "cd17fd7230f710f70cea5162ec73a784",
     "ec_reaction": "8a201370939453ed86847c923c7cd48d",
     "fold_classification": "810fc8b24c6fb6b887f6bd4fc7389838",
+    "fold_fold": "810fc8b24c6fb6b887f6bd4fc7389838",
+    "fold_family": "810fc8b24c6fb6b887f6bd4fc7389838",
+    "fold_superfamily": "810fc8b24c6fb6b887f6bd4fc7389838",
     "go-bp": "a59a559aceb265d8b8b9e15211a864f1",
     "go-cc": "a59a559aceb265d8b8b9e15211a864f1",
     "go-mf": "a59a559aceb265d8b8b9e15211a864f1",

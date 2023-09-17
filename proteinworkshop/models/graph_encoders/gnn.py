@@ -169,7 +169,20 @@ class GNNModel(nn.Module):
     @jaxtyped
     @beartype
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
-        """Implements the forward pass of the GNN encoder."""
+        """Implements the forward pass of the GNN encoder.
+        
+        Returns the node embedding and graph embedding in a dictionary.
+
+        :param batch: Batch of data to encode.
+        :type batch: Union[Batch, ProteinBatch]
+        :return: Dictionary of node and graph embeddings. Contains
+            ``node_embedding`` and ``graph_embedding`` fields. The node
+            embedding is of shape :math:`(|V|, d)` and the graph embedding is
+            of shape :math:`(n, d)`, where :math:`|V|` is the number of nodes
+            and :math:`n` is the number of graphs in the batch and :math:`d` is
+            the dimension of the embeddings.
+        :rtype: EncoderOutput
+        """
         if self.edge_weight:
             x, edge_index, edge_weight = (
                 batch.x,
@@ -202,7 +215,7 @@ if __name__ == "__main__":
 
     from proteinworkshop import constants
 
-    config_path = constants.PROJECT_PATH / "configs" / "encoder" / "gcn.yaml"
+    config_path = constants.SRC_PATH / "config" / "encoder" / "gcn.yaml"
     cfg = omegaconf.OmegaConf.load(config_path)
     enc = instantiate(cfg)
     print(enc)

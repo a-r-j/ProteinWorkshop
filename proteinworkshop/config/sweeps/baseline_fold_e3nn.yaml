@@ -1,6 +1,6 @@
 program: proteinworkshop/train.py
 method: grid
-name: baseline_gc_prediction
+name: baseline_gc_prediction_e3nn
 metric: # Does not matter, as we are using sweep to run the experiment.
   goal: minimize
   name: val/loss/total
@@ -12,8 +12,15 @@ parameters:
   dataset:
     values: [fold_family, fold_superfamily, fold_fold]
 
+  dataset.datamodule.num_workers:
+    value: 8
+  
+  # reduced batch size from 32 -> 16 for e3nn's
+  dataset.datamodule.batch_size:
+    value: 16
+
   encoder:
-    values: [schnet, dimenet_plus_plus, gear_net_edge, egnn, gcpnet]
+    values: [tfn, mace]
 
   optimiser.optimizer.lr:
     value: 0.0001

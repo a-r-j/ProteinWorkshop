@@ -133,14 +133,18 @@ class GearNet(nn.Module):
         }
 
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
-        """
-        Compute the node representations and the graph representation(s).
+        """Implements the forward pass of the GearNet encoder.
+
+        Returns the node embedding and graph embedding in a dictionary.
 
         :param batch: Batch of data to encode.
         :type batch: Union[Batch, ProteinBatch]
-
-        :return: Dictionary  with ``node_feature`` and ``graph_feature`` fields:
-        node representations of shape :math:`(|V|, d)`, graph representations of shape :math:`(n, d)`
+        :return: Dictionary of node and graph embeddings. Contains
+            ``node_embedding`` and ``graph_embedding`` fields. The node
+            embedding is of shape :math:`(|V|, d)` and the graph embedding is
+            of shape :math:`(n, d)`, where :math:`|V|` is the number of nodes
+            and :math:`n` is the number of graphs in the batch and :math:`d` is
+            the dimension of the embeddings.
         :rtype: EncoderOutput
         """
         hiddens = []
@@ -239,7 +243,7 @@ if __name__ == "__main__":
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
-        constants.PROJECT_PATH / "configs" / "encoder" / "gear_net.yaml"
+        constants.SRC_PATH / "config" / "encoder" / "gear_net.yaml"
     )
     enc = hydra.utils.instantiate(cfg)
     print(enc)

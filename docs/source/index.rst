@@ -9,7 +9,13 @@ Welcome to Protein Workshop's documentation!
 
 .. mdinclude:: ../../README.md
     :start-line: 1
-    :end-line: 12
+    :end-line: 10
+
+.. image:: ../_static/workshop_overview.png
+  :alt: Overview of the Protein Workshop
+  :align: center
+  :width: 400
+
 .. mdinclude:: ../../README.md
     :start-line: 14
     :end-line: 22

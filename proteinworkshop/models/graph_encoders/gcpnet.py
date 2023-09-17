@@ -159,6 +159,20 @@ class GCPNetModel(torch.nn.Module):
     @jaxtyped
     @beartype
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
+        """Implements the forward pass of the GCPNet encoder.
+        
+        Returns the node embedding and graph embedding in a dictionary.
+
+        :param batch: Batch of data to encode.
+        :type batch: Union[Batch, ProteinBatch]
+        :return: Dictionary of node and graph embeddings. Contains
+            ``node_embedding`` and ``graph_embedding`` fields. The node
+            embedding is of shape :math:`(|V|, d)` and the graph embedding is
+            of shape :math:`(n, d)`, where :math:`|V|` is the number of nodes
+            and :math:`n` is the number of graphs in the batch and :math:`d` is
+            the dimension of the embeddings.
+        :rtype: EncoderOutput
+        """
         # Centralize node positions to make them translation-invariant
         pos_centroid, batch.pos = self.centralize(
             batch, batch_index=batch.batch
@@ -228,7 +242,7 @@ class GCPNetModel(torch.nn.Module):
 
 @hydra.main(
     version_base="1.3",
-    config_path=str(constants.PROJECT_PATH / "configs" / "encoder"),
+    config_path=str(constants.SRC_PATH / "config" / "encoder"),
     config_name="gcpnet.yaml",
 )
 def _main(cfg: DictConfig):

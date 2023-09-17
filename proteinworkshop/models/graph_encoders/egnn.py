@@ -17,9 +17,10 @@ class EGNNModel(nn.Module):
         emb_dim: int = 128,
         activation: str = "relu",
         norm: str = "layer",
-        aggr: str = "sum",
-        pool: str = "sum",
+        aggr: str = "mean",
+        pool: str = "mean",
         residual: bool = True,
+        dropout: float = 0.1,
     ):
         """E(n) Equivariant GNN model
 
@@ -34,13 +35,15 @@ class EGNNModel(nn.Module):
         :type activation: str, optional
         :param norm: Normalisation layer to use, defaults to ``"layer"``
         :type norm: str, optional
-        :param aggr: Aggregation function to use, defaults to ``"sum"``
+        :param aggr: Aggregation function to use, defaults to ``"mean"``
         :type aggr: str, optional
-        :param pool: Pooling operation to use, defaults to ``"sum"``
+        :param pool: Pooling operation to use, defaults to ``"mean"``
         :type pool: str, optional
         :param residual: Whether to use residual connections, defaults to
             ``True``
         :type residual: bool, optional
+        :param dropout: Dropout rate, defaults to ``0.1``
+        :type dropout: float, optional
         """
         super().__init__()
 
@@ -50,7 +53,7 @@ class EGNNModel(nn.Module):
         # Stack of GNN layers
         self.convs = torch.nn.ModuleList()
         for _ in range(num_layers):
-            self.convs.append(EGNNLayer(emb_dim, activation, norm, aggr))
+            self.convs.append(EGNNLayer(emb_dim, activation, norm, aggr, dropout))
 
         # Global pooling/readout function
         self.pool = get_aggregation(pool)
@@ -72,17 +75,18 @@ class EGNNModel(nn.Module):
         return {"x", "pos", "edge_index", "batch"}
 
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
-        """Performs a forward pass of the EGNN model.
+        """Implements the forward pass of the EGNN encoder.
+        
+        Returns the node embedding and graph embedding in a dictionary.
 
-        Returns the node embedding and graph embedding in a dictionary with
-        fields ``node_embedding`` and ``graph_embedding``. The node embedding
-        is of shape :math:`(n, d)` and the graph embedding is of shape
-        :math:`(batch_size, d)`, where :math:`n` is the number of nodes and
-        :math:`d` is the dimension of the embeddings.
-
-        :param batch: Batch of data to encode
+        :param batch: Batch of data to encode.
         :type batch: Union[Batch, ProteinBatch]
-        :return: Dictionary of node and graph embeddings
+        :return: Dictionary of node and graph embeddings. Contains
+            ``node_embedding`` and ``graph_embedding`` fields. The node
+            embedding is of shape :math:`(|V|, d)` and the graph embedding is
+            of shape :math:`(n, d)`, where :math:`|V|` is the number of nodes
+            and :math:`n` is the number of graphs in the batch and :math:`d` is
+            the dimension of the embeddings.
         :rtype: EncoderOutput
         """
         h = self.emb_in(batch.x)  # (n,) -> (n, d)
@@ -95,8 +99,8 @@ class EGNNModel(nn.Module):
             # Update node features (n, d) -> (n, d)
             h = h + h_update if self.residual else h_update
 
-            # Update node coordinates (no residual) (n, 3) -> (n, 3)
-            pos = pos_update
+            # Update node coordinates (n, 3) -> (n, 3)
+            pos = pos + pos_update if self.residual else pos_update
 
         return EncoderOutput(
             {
@@ -116,7 +120,7 @@ if __name__ == "__main__":
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
-        constants.PROJECT_PATH / "configs" / "encoder" / "egnn.yaml"
+        constants.SRC_PATH / "config" / "encoder" / "egnn.yaml"
     )
     enc = hydra.utils.instantiate(cfg)
     print(enc)

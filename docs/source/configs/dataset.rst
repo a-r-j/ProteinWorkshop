@@ -31,8 +31,8 @@ Unlabelled Datasets
 
 
 .. mdinclude:: ../../../README.md
-    :start-line: 345
-    :end-line: 387
+    :start-line: 331
+    :end-line: 373
 
 
 :py:class:`ASTRAL <proteinworkshop.datasets.astral.AstralDataModule>` (``astral``)

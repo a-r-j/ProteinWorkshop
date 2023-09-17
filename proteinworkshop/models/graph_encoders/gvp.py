@@ -132,7 +132,9 @@ class GVPGNNModel(torch.nn.Module):
     @jaxtyped
     @beartype
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
-        """Returns the node embedding and graph embedding in a dictionary.
+        """Implements the forward pass of the GVP-GNN encoder.
+
+        Returns the node embedding and graph embedding in a dictionary.
 
         :param batch: Batch of data to encode.
         :type batch: Union[Batch, ProteinBatch]
@@ -184,7 +186,7 @@ if __name__ == "__main__":
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
-        constants.PROJECT_PATH / "configs" / "encoder" / "gvp.yaml"
+        constants.SRC_PATH / "config" / "encoder" / "gvp.yaml"
     )
     enc = hydra.utils.instantiate(cfg)
     print(enc)
