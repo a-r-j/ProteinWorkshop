@@ -7,6 +7,7 @@ from beartype import beartype
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import jaxtyped
 from torch_geometric.data import Batch
+from torch_geometric.utils import to_undirected
 
 import proteinworkshop.models.graph_encoders.layers.tfn as tfn
 from proteinworkshop.models.graph_encoders.components import (
@@ -25,14 +26,15 @@ class MACEModel(torch.nn.Module):
         num_polynomial_cutoff: int = 5,
         max_ell: int = 2,
         correlation: int = 3,
-        num_layers: int = 4,
-        emb_dim: int = 64,
+        num_layers: int = 2,
+        hidden_irreps = "32x0e + 32x1o + 32x2e",
         mlp_dim: int = 256,
-        aggr: str = "sum",
+        aggr: str = "mean",
         pool: str = "sum",
         residual: bool = True,
         batch_norm: bool = True,
-        hidden_irreps=None,
+        gate: bool = False,
+        dropout: float = 0.1,
     ):
         """Multi Atomic Cluster Expansion (MACE) model.
 
@@ -53,11 +55,14 @@ class MACEModel(torch.nn.Module):
         :param correlation: Correlation order (= body order - 1) for
             Equivariant Product Basis operation (default: ``3``)
         :type correlation: int, optional
-        :param num_layers: Number of layers in the model (default: ``5``)
+        :param num_layers: Number of layers in the model (default: ``2``)
         :type num_layers: int, optional
-        :param emb_dim: Number of hidden channels/embedding dimension for each
-            node feature tensor order (default: ``64``)
-        :type emb_dim: int, optional
+        :param hidden_irreps: Irreps string for intermediate layer node 
+            feature tensors; number of channels MUST be the same for each 
+            tensor order; converted to e3nn.o3.Irreps format 
+            (default:  O(3) equivariance: ``32x0e + 32x1o + 32x2e``
+            alternative: SO(3) equivariance: ``16x0e + 16x0o + 16x1e + 16x1o + 16x2e + 16x2o``)
+        :type hidden_irreps: str, optional
         :param mlp_dim: Dimension of MLP for computing tensor product
             weights (default: ``256``)
         :type: int, optional
@@ -73,23 +78,19 @@ class MACEModel(torch.nn.Module):
         :type batch_norm: bool, optional
         :param gate: Whether to use gated non-linearity, defaults to ``False``
         :type gate: bool, optional
-        :param hidden_irreps: Irreps for intermediate layer node feature tensors
-            (default: ``None``)
-        :type hidden_irreps: e3nn.o3.Irreps, optional
-
-        .. note::
-            If ``hidden_irreps`` is None, irreps for node feature tensors are
-            computed using ``max_ell`` order of spherical harmonics and ``emb_dim``.
+        :param dropout: Dropout rate, defaults to ``0.1``
+        :type dropout: float, optional
         """
         super().__init__()
         self.r_max = r_max
         self.max_ell = max_ell
         self.num_layers = num_layers
-        self.emb_dim = emb_dim
         self.mlp_dim = mlp_dim
         self.residual = residual
         self.batch_norm = batch_norm
-        self.hidden_irreps = hidden_irreps
+        self.gate = gate
+        self.hidden_irreps = e3nn.o3.Irreps(hidden_irreps)
+        self.emb_dim = self.hidden_irreps[0].dim  # scalar embedding dimension
 
         assert correlation >= 2  # Body order = correlation + 1
 
@@ -99,20 +100,13 @@ class MACEModel(torch.nn.Module):
             num_bessel=num_bessel,
             num_polynomial_cutoff=num_polynomial_cutoff,
         )
-        sh_irreps = e3nn.o3.Irreps.spherical_harmonics(max_ell)
+        self.sh_irreps = e3nn.o3.Irreps.spherical_harmonics(max_ell)
         self.spherical_harmonics = e3nn.o3.SphericalHarmonics(
-            sh_irreps, normalize=True, normalization="component"
+            self.sh_irreps, normalize=True, normalization="component"
         )
 
         # Embedding lookup for initial node features
-        self.emb_in = torch.nn.LazyLinear(emb_dim)
-
-        # Set hidden irreps if none are provided
-        if hidden_irreps is None:
-            hidden_irreps = (sh_irreps * emb_dim).sort()[0].simplify()
-            # Note: This defaults to O(3) equivariant layers. It is
-            #       possible to use SO(3) equivariance by passing
-            #       the appropriate irreps to `hidden_irreps`.
+        self.emb_in = torch.nn.LazyLinear(self.emb_dim)
 
         self.convs = torch.nn.ModuleList()
         self.prods = torch.nn.ModuleList()
@@ -120,23 +114,25 @@ class MACEModel(torch.nn.Module):
         # First conv, reshape, and eq.prod. layers: scalar only -> tensor
         self.convs.append(
             tfn.TensorProductConvLayer(
-                in_irreps=e3nn.o3.Irreps(f"{emb_dim}x0e"),
-                out_irreps=hidden_irreps,
-                sh_irreps=sh_irreps,
-                edge_feats_dim=self.radial_embedding.out_dim,
-                mlp_dim=mlp_dim,
+                in_irreps=e3nn.o3.Irreps(f"{self.emb_dim}x0e"),
+                out_irreps=self.hidden_irreps,
+                sh_irreps=self.sh_irreps,
+                edge_feats_dim=self.radial_embedding.out_dim + 2*self.emb_dim,
+                mlp_dim=self.mlp_dim,
                 aggr=aggr,
                 batch_norm=batch_norm,
-                gate=False,
+                gate=gate,
+                dropout=dropout,
             )
         )
-        self.reshapes.append(irreps_tools.reshape_irreps(hidden_irreps))
+        self.reshapes.append(irreps_tools.reshape_irreps(self.hidden_irreps))
         self.prods.append(
             blocks.EquivariantProductBasisBlock(
-                node_feats_irreps=hidden_irreps,
-                target_irreps=hidden_irreps,
+                node_feats_irreps=self.hidden_irreps,
+                target_irreps=self.hidden_irreps,
                 correlation=correlation,
                 element_dependent=False,
+                batch_norm=batch_norm,
                 use_sc=residual,
             )
         )
@@ -144,46 +140,50 @@ class MACEModel(torch.nn.Module):
         for _ in range(num_layers - 2):
             self.convs.append(
                 tfn.TensorProductConvLayer(
-                    in_irreps=hidden_irreps,
-                    out_irreps=hidden_irreps,
-                    sh_irreps=sh_irreps,
-                    edge_feats_dim=self.radial_embedding.out_dim,
-                    mlp_dim=mlp_dim,
+                    in_irreps=self.hidden_irreps,
+                    out_irreps=self.hidden_irreps,
+                    sh_irreps=self.sh_irreps,
+                    edge_feats_dim=self.radial_embedding.out_dim + 2*self.emb_dim,
+                    mlp_dim=self.mlp_dim,
                     aggr=aggr,
                     batch_norm=batch_norm,
-                    gate=False,
+                    gate=gate,
+                    dropout=dropout,
                 )
             )
-            self.reshapes.append(irreps_tools.reshape_irreps(hidden_irreps))
+            self.reshapes.append(irreps_tools.reshape_irreps(self.hidden_irreps))
             self.prods.append(
                 blocks.EquivariantProductBasisBlock(
-                    node_feats_irreps=hidden_irreps,
-                    target_irreps=hidden_irreps,
+                    node_feats_irreps=self.hidden_irreps,
+                    target_irreps=self.hidden_irreps,
                     correlation=correlation,
                     element_dependent=False,
+                    batch_norm=batch_norm,
                     use_sc=residual,
                 )
             )
-        # Last conv layer: tensor -> scalar only
+        # Last conv, reshape, and eq.prod. layer: tensor -> scalar only
         self.convs.append(
             tfn.TensorProductConvLayer(
-                in_irreps=hidden_irreps,
-                out_irreps=hidden_irreps,
-                sh_irreps=sh_irreps,
-                edge_feats_dim=self.radial_embedding.out_dim,
-                mlp_dim=mlp_dim,
+                in_irreps=self.hidden_irreps,
+                out_irreps=self.hidden_irreps,
+                sh_irreps=self.sh_irreps,
+                edge_feats_dim=self.radial_embedding.out_dim+ 2*self.emb_dim,
+                mlp_dim=self.mlp_dim,
                 aggr=aggr,
                 batch_norm=batch_norm,
-                gate=False,
+                gate=gate,
+                dropout=dropout,
             )
         )
-        self.reshapes.append(irreps_tools.reshape_irreps(hidden_irreps))
+        self.reshapes.append(irreps_tools.reshape_irreps(self.hidden_irreps))
         self.prods.append(
             blocks.EquivariantProductBasisBlock(
-                node_feats_irreps=hidden_irreps,
-                target_irreps=e3nn.o3.Irreps(f"{emb_dim}x0e"),
+                node_feats_irreps=self.hidden_irreps,
+                target_irreps=e3nn.o3.Irreps(f"{self.emb_dim}x0e"),
                 correlation=correlation,
                 element_dependent=False,
+                batch_norm=batch_norm,
                 use_sc=False,
             )
         )
@@ -223,25 +223,35 @@ class MACEModel(torch.nn.Module):
             the dimension of the embeddings.
         :rtype: EncoderOutput
         """
+        # Convert to undirected edges
+        edge_index = to_undirected(batch.edge_index)
+
         # Node embedding
         h = self.emb_in(batch.x)  # (n,) -> (n, d)
 
         # Edge features
         vectors = (
-            batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]
+            batch.pos[edge_index[0]] - batch.pos[edge_index[1]]
         )  # [n_edges, 3]
         lengths = torch.linalg.norm(
             vectors, dim=-1, keepdim=True
         )  # [n_edges, 1]
         edge_attrs = self.spherical_harmonics(vectors)
         edge_feats = self.radial_embedding(lengths)
+        
         for conv, reshape, prod in zip(self.convs, self.reshapes, self.prods):
-            # Message passing layer
-            h_update = conv(h, batch.edge_index, edge_attrs, edge_feats)
-            # TODO it may be useful to concatenate node scalar type l=0 features
-            # from both src and dst nodes into edge_feats (RBF of displacement), as in
-            # https://github.com/gcorso/DiffDock/blob/main/models/score_model.py#L263
+            edge_feats_expanded = torch.cat(
+                [
+                    edge_feats, 
+                    h[edge_index[0], :self.emb_dim], 
+                    h[edge_index[1], :self.emb_dim]
+                ], 
+                dim=1
+            )
 
+            # Message passing layer
+            h_update = conv(h, edge_index, edge_attrs, edge_feats_expanded)
+            
             # Update node features
             sc = F.pad(h, (0, h_update.shape[-1] - h.shape[-1]))
             h = prod(reshape(h_update), sc, None)
