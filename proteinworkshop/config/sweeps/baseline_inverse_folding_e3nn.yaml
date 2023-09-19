@@ -15,10 +15,6 @@ parameters:
   dataset.datamodule.num_workers:
     value: 8
   
-  # reduced batch size from 32 -> 16 for e3nn's
-  dataset.datamodule.batch_size:
-    value: 16
-
   encoder:
     values: [tfn, mace]
 
