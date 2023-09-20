@@ -1,0 +1,55 @@
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}
+method: grid
+metric:
+  goal: minimize
+  name: val/loss/total
+name: baseline_hyperparameter_search_e3nn
+parameters:
+  dataset:
+    values:
+      - fold_family
+  decoder.graph_label.dropout:
+    values:
+      - 0
+      - 0.1
+      - 0.3
+      - 0.5
+  encoder:
+    values:
+      - tfn
+      - mace
+  extras.enforce_tags:
+    value: false
+  features:
+    values:
+      - ca_base
+      - ca_seq
+      - ca_angles
+      - ca_bb
+      - ca_sc
+  logger:
+    value: wandb
+  name:
+    value: ${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_lr_${optimiser.optimizer.lr}_d_${decoder.graph_label.dropout}
+  optimiser.optimizer.lr:
+    values:
+      - 0.00001
+      - 0.0001
+      - 0.0003
+      - 0.001
+  scheduler:
+    value: plateau
+  task:
+    values:
+      - multiclass_graph_classification
+  test:
+    value: true
+  trainer.max_epochs:
+    value: 300
+program: proteinworkshop/train.py
