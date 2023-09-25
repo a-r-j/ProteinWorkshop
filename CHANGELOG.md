@@ -1,3 +1,7 @@
+### 0.2.5 (25/09/2024)
+
+* Implement ESM embedding encoder ([#33](https://github.com/a-r-j/ProteinWorkshop/pull/33), [#41](https://github.com/a-r-j/ProteinWorkshop/pull/33))
+
 ### 0.2.4 (10/09/2024)
 
 * Fixes error in Metal3D processed download link ([#28](https://github.com/a-r-j/ProteinWorkshop/pull/28))

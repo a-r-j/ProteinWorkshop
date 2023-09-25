@@ -73,6 +73,9 @@ class EvolutionaryScaleModeling(nn.Module):
     :param path (str): path to store ESM model weights
     :param model (str): model name. Available model names are ``ESM-1b``, ``ESM-1v`` and ``ESM-1b-regression``.
     :param readout (str): readout function. Available functions are ``sum`` and ``mean``.
+    :param mlp_post_embed (bool): whether to use MLP to combine ESM embeddings with input features
+    :param dropout (float): dropout rate for MLP
+    :param finetune (bool): whether to finetune ESM model
     """
 
     url: Dict[str, str] = {
@@ -125,7 +128,15 @@ class EvolutionaryScaleModeling(nn.Module):
 
     max_input_length = 1024 - 2
 
-    def __init__(self, path: Union[str, os.PathLike], model: str = "ESM-1b", readout: str = "mean"):
+    def __init__(
+            self, 
+            path: Union[str, os.PathLike], 
+            model: str = "ESM-2-650M", 
+            readout: str = "mean",
+            mlp_post_embed: bool = True,
+            dropout: float = 0.1,
+            finetune: bool = False
+        ):
         super(EvolutionaryScaleModeling, self).__init__()
         path = os.path.expanduser(path)
         if not os.path.exists(path):
@@ -139,6 +150,19 @@ class EvolutionaryScaleModeling(nn.Module):
         self.alphabet = alphabet
         self.batch_converter = self.alphabet.get_batch_converter()
         self.repr_layer = self.num_layer[model]
+        self.mlp_post_embed = mlp_post_embed
+        self.finetune = finetune
+
+        if self.mlp_post_embed:
+            self.mlp = nn.Sequential(
+                nn.LazyLinear(self.output_dim),
+                nn.LayerNorm(self.output_dim),
+                nn.ReLU(),
+                nn.Dropout(dropout),
+            )
+        
+        if not self.finetune:
+            self.model.eval()
 
         self.readout = get_aggregation(readout)
 
@@ -177,18 +201,11 @@ class EvolutionaryScaleModeling(nn.Module):
         return esm.pretrained.load_model_and_alphabet_core(
             model_name, model_data, regression_data
         )
-
+    
     @beartype
-    def forward(self, batch: Union[Batch, ProteinBatch], device: Optional[Union[torch.device, str]] = None) -> EncoderOutput:
+    def esm_embed(self, batch: Union[Batch, ProteinBatch], device: Optional[Union[torch.device, str]] = None) -> torch.Tensor:
         """
-        Compute the residue representations and the graph representation(s).
-
-        :param graph (Protein): :math:`n` protein(s)
-        :param input (Tensor): input node representations
-        :param device (torch.device or str, optional): device on which to compute and update representations
-
-        :return: dict with ``residue_feature`` and ``graph_feature`` fields:
-                residue representations of shape :math:`(|V_{res}|, d)`, graph representations of shape :math:`(n, d)`
+        Compute residue ESM embeddings for input proteins
         """
         device = device if device is not None else batch.coords.device
 
@@ -210,6 +227,34 @@ class EvolutionaryScaleModeling(nn.Module):
             batch=batch.batch,
         )
         node_embedding = node_embedding[batch_mask]
+        return node_embedding
+
+    @beartype
+    def forward(self, batch: Union[Batch, ProteinBatch], device: Optional[Union[torch.device, str]] = None) -> EncoderOutput:
+        """
+        Compute the residue representations and the graph representation(s).
+
+        :param graph (Protein): :math:`n` protein(s)
+        :param input (Tensor): input node representations
+        :param device (torch.device or str, optional): device on which to compute and update representations
+
+        :return: dict with ``residue_feature`` and ``graph_feature`` fields:
+                residue representations of shape :math:`(|V_{res}|, d)`, graph representations of shape :math:`(n, d)`
+        """
+        if self.finetune:
+            node_embedding = self.esm_embed(batch, device)
+        else:
+            with torch.no_grad():
+                node_embedding = self.esm_embed(batch, device)
+
+        if self.mlp_post_embed:
+            # combine ESM embeddings with node features
+            node_embedding = self.mlp(
+                torch.concatenate(
+                    [node_embedding, batch.x],
+                    dim=-1
+                )
+            )
 
         graph_embedding = self.readout(node_embedding, batch.batch)
 
