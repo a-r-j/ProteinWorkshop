@@ -125,7 +125,7 @@ class EvolutionaryScaleModeling(nn.Module):
 
     max_input_length = 1024 - 2
 
-    def __init__(self, path: Union[str, os.PathLike], model: str = "ESM-1b", readout: str = "mean"):
+    def __init__(self, path: Union[str, os.PathLike], model: str = "ESM-2-650M", readout: str = "mean"):
         super(EvolutionaryScaleModeling, self).__init__()
         path = os.path.expanduser(path)
         if not os.path.exists(path):
