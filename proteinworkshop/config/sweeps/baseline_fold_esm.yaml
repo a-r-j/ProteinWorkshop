@@ -9,9 +9,6 @@ parameters:
   dataset:
     values: [fold_family, fold_superfamily, fold_fold]
   
-  dataset.datamodule.batch_size:
-    value: 4
-  
   decoder.graph_label.dropout:
     values:
       - 0
@@ -24,8 +21,8 @@ parameters:
   
   encoder.mlp_post_embed:
     values:
-      - False
-      - True
+      - false
+      - true
   
   extras.enforce_tags:
     value: false
@@ -37,7 +34,7 @@ parameters:
     value: wandb
   
   name:
-    value: ${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_lr_${optimiser.optimizer.lr}_d_${decoder.graph_label.dropout}
+    value: ${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_post-mlp_${encoder.mlp_post_embed}_lr_${optimiser.optimizer.lr}_d_${decoder.graph_label.dropout}
   
   optimiser.optimizer.lr:
     values:
@@ -57,7 +54,7 @@ parameters:
     value: true
   
   trainer.max_epochs:
-    value: 20
+    value: 150
 
 command:
   - ${env}
