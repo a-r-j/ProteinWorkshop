@@ -4,6 +4,7 @@
 * Fixes typo in wandb run name setting ([#30](https://github.com/a-r-j/ProteinWorkshop/pull/30))
 * Fixes paths for models and datasets when testing instantiation of each module ([#32](https://github.com/a-r-j/ProteinWorkshop/pull/32))
 * Improvements to TFN, MACE and EGNN models and layers, including DiffDock-style intermediate edge feature creation (TFN), dropout, gaussian RBF, mean global pooling ([#38](https://github.com/a-r-j/ProteinWorkshop/pull/38))
+* Implement ESM embedding encoder ([#33](https://github.com/a-r-j/ProteinWorkshop/pull/33), [#41](https://github.com/a-r-j/ProteinWorkshop/pull/33))
 
 ### 0.2.3 (31/08/2023)
 
