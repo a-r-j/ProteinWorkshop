@@ -1,10 +1,13 @@
+### 0.2.5 (25/09/2024)
+
+* Implement ESM embedding encoder ([#33](https://github.com/a-r-j/ProteinWorkshop/pull/33), [#41](https://github.com/a-r-j/ProteinWorkshop/pull/33))
+
 ### 0.2.4 (10/09/2024)
 
 * Fixes error in Metal3D processed download link ([#28](https://github.com/a-r-j/ProteinWorkshop/pull/28))
 * Fixes typo in wandb run name setting ([#30](https://github.com/a-r-j/ProteinWorkshop/pull/30))
 * Fixes paths for models and datasets when testing instantiation of each module ([#32](https://github.com/a-r-j/ProteinWorkshop/pull/32))
 * Improvements to TFN, MACE and EGNN models and layers, including DiffDock-style intermediate edge feature creation (TFN), dropout, gaussian RBF, mean global pooling ([#38](https://github.com/a-r-j/ProteinWorkshop/pull/38))
-* Implement ESM embedding encoder ([#33](https://github.com/a-r-j/ProteinWorkshop/pull/33), [#41](https://github.com/a-r-j/ProteinWorkshop/pull/33))
 
 ### 0.2.3 (31/08/2023)
 
