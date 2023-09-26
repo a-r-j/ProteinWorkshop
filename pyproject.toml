@@ -94,6 +94,7 @@ install-torch-scatter = "pip install torch_scatter -f https://data.pyg.org/whl/t
 install-torch-spline-conv = "pip install torch_spline_conv -f https://data.pyg.org/whl/torch-2.0.0+cpu.html"
 install-openfold = "pip install git+https://github.com/NVIDIA/dllogger.git@0540a43971f4a8a16693a9de9de73c1072020769 && pip install git+https://github.com/aqlaboratory/openfold.git@4b41059694619831a7db195b7e0988fc4ff3a307"
 install-torchdrug = "pip install torchdrug"
+install-flash = "pip install lightning-flash --no-dependencies"
 
 [tool.poetry.scripts]
 train_workshop = "proteinworkshop.train:_main"
