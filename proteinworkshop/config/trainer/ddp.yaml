@@ -3,7 +3,7 @@ defaults:
 
 # NOTE: https://github.com/facebookresearch/hydra/issues/2070
 # for improved Hydra + Lightning + DDP support is not merged yet
-strategy: ddp
+strategy: ddp_find_unused_parameters_true
 
 accelerator: gpu
 devices: 4
