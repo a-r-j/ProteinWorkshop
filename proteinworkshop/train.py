@@ -13,6 +13,7 @@ import lovely_tensors as lt
 import torch
 import torch.nn as nn
 from graphein.protein.tensor.dataloader import ProteinDataLoader
+from graphein.ml.datasets.foldcomp_dataset import FoldCompLightningDataModule
 from lightning.pytorch.callbacks import Callback
 from lightning.pytorch.loggers import Logger
 from loguru import logger as log
@@ -121,6 +122,8 @@ def train_model(
             == "flash.core.optimizers.LinearWarmupCosineAnnealingLR"
             and cfg.scheduler.interval == "step"
         ):
+            if isinstance(datamodule, FoldCompLightningDataModule):
+                datamodule.setup()
             num_steps = _num_training_steps(
                 datamodule.train_dataloader(), trainer
             )

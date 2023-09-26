@@ -1,0 +1,65 @@
+program: proteinworkshop/train.py
+method: grid
+name: baseline_hyperparameter_search_esm
+metric:
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  dataset:
+    values: [fold_family, fold_superfamily, fold_fold]
+  
+  decoder.graph_label.dropout:
+    values:
+      - 0
+      - 0.1
+      - 0.3
+      - 0.5
+  
+  encoder:
+    value: esm
+  
+  encoder.mlp_post_embed:
+    values:
+      - false
+      - true
+  
+  extras.enforce_tags:
+    value: false
+  
+  features:
+    value: ca_bb
+  
+  logger:
+    value: wandb
+  
+  name:
+    value: ${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_post-mlp_${encoder.mlp_post_embed}_lr_${optimiser.optimizer.lr}_d_${decoder.graph_label.dropout}
+  
+  optimiser.optimizer.lr:
+    values:
+      - 1e-05
+      - 0.0001
+      - 0.0003
+      - 0.001
+  
+  scheduler:
+    value: plateau
+  
+  task:
+    values:
+      - multiclass_graph_classification
+  
+  test:
+    value: true
+  
+  trainer.max_epochs:
+    value: 150
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}
