@@ -316,7 +316,7 @@ Read [the docs](https://www.proteins.sh) for a full list of modules available in
 | `Tensor Field Network` | [Corso et al.](https://arxiv.org/abs/2210.01776) | ✓
 | `Multi-ACE` | [Batatia et al.](https://arxiv.org/abs/2206.07697) | ✗
 
-### (Sequence-based)
+### Sequence-based Encoders
 
 | Name      | Source   | Protein Specific |
 | ----------- | ----------- | ----------- |
