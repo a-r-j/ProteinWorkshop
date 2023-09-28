@@ -295,8 +295,7 @@ Read [the docs](https://www.proteins.sh) for a full list of modules available in
 
 | Name      | Source   | Protein Specific |
 | ----------- | ----------- | ----------- |
-| `GearNet`| [Zhang et al.](https://arxiv.org/pdf/2203.06125) | ✓
-| `ProNet`   | [Wang et al.](https://arxiv.org/abs/2207.12600) | ✓
+| `GearNet`| [Zhang et al.](https://arxiv.org/abs/2203.06125) | ✓
 | `DimeNet++`   | [Gasteiger et al.](https://arxiv.org/abs/2011.14115) | ✗
 | `SchNet`   | [Schütt et al.](https://arxiv.org/abs/1706.08566) | ✗
 
@@ -314,8 +313,14 @@ Read [the docs](https://www.proteins.sh) for a full list of modules available in
 
 | Name      |  Source | Protein Specific |
 | ----------- |  ----------- | --------- |
-| `Tensor Field Network` | [Corso et al.](https://arxiv.org/abs/2210.01776) | ❓
+| `Tensor Field Network` | [Corso et al.](https://arxiv.org/abs/2210.01776) | ✓
 | `Multi-ACE` | [Batatia et al.](https://arxiv.org/abs/2206.07697) | ✗
+
+### (Sequence-based)
+
+| Name      | Source   | Protein Specific |
+| ----------- | ----------- | ----------- |
+| `ESM2`| [Lin et al.](https://www.science.org/doi/10.1126/science.ade2574) | ✓
 
 ## Datasets
 
