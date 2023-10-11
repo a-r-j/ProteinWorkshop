@@ -1,5 +1,11 @@
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.0.292  # Ruff version.
+  hooks:
+    - id: ruff
+      args: [--fix] # <-- Note: This is my personal suggestion to automatically fix linting issues where possible!
+
 - repo: https://github.com/jsh9/pydoclint
-  rev: 0.3.3
+  rev: 0.3.3. # PyDocLint version.
   hooks:
     - id: pydoclint
       args:
