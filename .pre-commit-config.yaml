@@ -1,0 +1,6 @@
+- repo: https://github.com/jsh9/pydoclint
+  rev: 0.3.3
+  hooks:
+    - id: pydoclint
+      args:
+        - "--config=pyproject.toml"
