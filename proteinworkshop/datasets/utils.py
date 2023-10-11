@@ -124,7 +124,7 @@ def create_example_batch(n: int = 4) -> ProteinBatch:
     :rtype: ProteinBatch
     """
     proteins = []
-    for _ in range(4):
+    for _ in range(n):
         p = get_random_protein()
         p.x = p.residue_type
         proteins.append(p)
