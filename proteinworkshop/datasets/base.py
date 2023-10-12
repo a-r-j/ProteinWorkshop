@@ -418,7 +418,7 @@ class ProteinDataset(Dataset):
         """
         if not self.overwrite:
             if self.chains is not None:
-                pdb_codes = [
+                index_pdb_tuples = [
                     (i, pdb)
                     for i, pdb in enumerate(self.pdb_codes)
                     if not os.path.exists(
@@ -426,20 +426,21 @@ class ProteinDataset(Dataset):
                     )
                 ]
             else:
-                pdb_codes = [
+                index_pdb_tuples = [
                     (i, pdb)
                     for i, pdb in enumerate(self.pdb_codes)
                     if not os.path.exists(
                         Path(self.processed_dir) / f"{pdb}.pt"
                     )
                 ]
-            logger.info(f"Processing {len(pdb_codes)} unprocessed structures")
+            logger.info(f"Processing {len(index_pdb_tuples)} unprocessed structures")
         else:
-            pdb_codes = self.pdb_codes
+            index_pdb_tuples = self.pdb_codes
 
         raw_dir = Path(self.raw_dir)
-        for i, pdb in enumerate(tqdm(pdb_codes)):
+        for index_pdb_tuple in tqdm(index_pdb_tuples):
             try:
+                i, pdb = index_pdb_tuple # NOTE: here, we unpack the tuple to get each PDB's original index in `self.pdb_codes`
                 path = raw_dir / f"{pdb}.{self.format}"
                 if path.exists():
                     path = str(path)
