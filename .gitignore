@@ -141,6 +141,8 @@ proteinworkshop/data/afdb_swissprot_v4
 raw/
 proteinworkshop/data/ATOM3D/
 proteinworkshop/data/cath/
+proteinworkshop/data/GeneOntology/
+proteinworkshop/data/masif_site/
 proteinworkshop/data/pdb/
 
 logs/
