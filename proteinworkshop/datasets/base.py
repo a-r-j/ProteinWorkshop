@@ -435,7 +435,7 @@ class ProteinDataset(Dataset):
                 ]
             logger.info(f"Processing {len(index_pdb_tuples)} unprocessed structures")
         else:
-            index_pdb_tuples = self.pdb_codes
+            index_pdb_tuples = [(i, pdb) for i, pdb in enumerate(self.pdb_codes)]
 
         raw_dir = Path(self.raw_dir)
         for index_pdb_tuple in tqdm(index_pdb_tuples):
