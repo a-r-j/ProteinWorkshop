@@ -76,7 +76,7 @@ class DummyDataModule(ProteinDataModule):
         self.download()
 
     def exclude_pdbs(self):
-        """Not implemented. No PDBs to exlcude."""
+        """Not implemented. No PDBs to exclude."""
         pass
 
     def parse_labels(self):
