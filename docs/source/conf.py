@@ -109,7 +109,6 @@ mathjax2_config = {
             "vu": "\\mathbf{u}",
             "vv": "\\mathbf{v}",
             "vw": "\\mathbf{w}",
-            "vx": "\\mathbf{x}",
             "vy": "\\mathbf{y}",
             "vz": "\\mathbf{z}",
         }
