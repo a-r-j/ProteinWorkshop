@@ -2,7 +2,6 @@
 import functools
 from typing import List, Literal, Optional, Tuple, Union
 
-import beartype
 import graphein.protein.tensor.edges as gp
 import torch
 from beartype import beartype

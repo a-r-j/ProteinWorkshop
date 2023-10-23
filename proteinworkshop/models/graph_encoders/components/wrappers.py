@@ -82,7 +82,7 @@ class ScalarVector(tuple):
 
     @jaxtyped
     @beartype
-    def mask(self, node_mask: Bool[torch.Tensor, "n_nodes"]):
+    def mask(self, node_mask: Bool[torch.Tensor, " n_nodes"]):
         return ScalarVector(
             self.scalar * node_mask[:, None],
             self.vector * node_mask[:, None, None],

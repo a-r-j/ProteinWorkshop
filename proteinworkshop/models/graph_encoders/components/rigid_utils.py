@@ -318,6 +318,17 @@ class Rotation:
     rotation cannot be changed in-place. Like Rigid, the class is designed
     to mimic the behavior of a torch Tensor, almost as if each Rotation
     object were a tensor of rotations, in one format or another.
+
+    :param rot_mats: A ``[*, 3, 3]`` rotation matrix tensor. Mutually exclusive
+        with quats. Defaults to ``None``.
+    :type rot_mats: Optional[torch.Tensor]
+    :param quats: A [*, 4] quaternion. Mutually exclusive with rot_mats. If
+        normalize_quats is not ``True``, must be a unit quaternion. Defaults to
+        ``None``.
+    :type quats: Optional[torch.Tensor]
+    :param normalize_quats: If quats is specified, whether to normalize quats.
+        Defaults to ``True``.
+    :type normalize_quats: bool, optional
     """
 
     def __init__(
@@ -326,17 +337,6 @@ class Rotation:
         quats: Optional[torch.Tensor] = None,
         normalize_quats: bool = True,
     ):
-        """
-        Args:
-            rot_mats:
-                A [*, 3, 3] rotation matrix tensor. Mutually exclusive with
-                quats
-            quats:
-                A [*, 4] quaternion. Mutually exclusive with rot_mats. If
-                normalize_quats is not True, must be a unit quaternion
-            normalize_quats:
-                If quats is specified, whether to normalize quats
-        """
         if (rot_mats is None and quats is None) or (
             rot_mats is not None and quats is not None
         ):
@@ -823,6 +823,11 @@ class Rigid:
     around two objects: a Rotation object and a [*, 3] translation
     Designed to behave approximately like a single torch tensor with the
     shape of the shared batch dimensions of its component parts.
+
+    :param rots: A [*, 3, 3] rotation tensor
+    :type rots: Optional[Rotation]
+    :param trans: A corresponding [*, 3] translation tensor
+    :type trans: Optional[torch.Tensor]
     """
 
     def __init__(
@@ -830,11 +835,6 @@ class Rigid:
         rots: Optional[Rotation],
         trans: Optional[torch.Tensor],
     ):
-        """
-        Args:
-            rots: A [*, 3, 3] rotation tensor
-            trans: A corresponding [*, 3] translation tensor
-        """
         # (we need device, dtype, etc. from at least one input)
 
         batch_dims, dtype, device, requires_grad = None, None, None, None
@@ -1285,7 +1285,7 @@ class Rigid:
         Returns:
             A transformation object with a scaled translation.
         """
-        fn = lambda t: t * trans_scale_factor
+        fn = lambda t: t * trans_scale_factor  # noqa: E731
         return self.apply_trans_fn(fn)
 
     def stop_rot_gradient(self):
@@ -1294,7 +1294,7 @@ class Rigid:
         Returns:
             A transformation object with detached rotations
         """
-        fn = lambda r: r.detach()
+        fn = lambda r: r.detach()  # noqa: E731
         return self.apply_rot_fn(fn)
 
     @staticmethod

@@ -169,7 +169,7 @@ def get_loss(
         raise ValueError(f"Incorrect Loss provided: {name}")
 
 
-def flatten_list(l: List[List]) -> List:
+def flatten_list(l: List[List]) -> List:  # noqa: E741
     return [item for sublist in l for item in sublist]
 
 
@@ -179,7 +179,7 @@ def centralize(
     batch: Union[Batch, ProteinBatch],
     key: str,
     batch_index: torch.Tensor,
-    node_mask: Optional[Bool[torch.Tensor, "n_nodes"]] = None,
+    node_mask: Optional[Bool[torch.Tensor, " n_nodes"]] = None,
 ) -> Tuple[
     torch.Tensor, torch.Tensor
 ]:  # note: cannot make assumptions on output shape
@@ -217,7 +217,7 @@ def decentralize(
     key: str,
     batch_index: torch.Tensor,
     entities_centroid: torch.Tensor,
-    node_mask: Optional[Bool[torch.Tensor, "n_nodes"]] = None,
+    node_mask: Optional[Bool[torch.Tensor, " n_nodes"]] = None,
 ) -> torch.Tensor:  # note: cannot make assumptions on output shape
     if node_mask is not None:
         masked_values = torch.ones_like(batch[key]) * torch.inf
@@ -236,7 +236,7 @@ def localize(
     pos: Float[torch.Tensor, "batch_num_nodes 3"],
     edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
     norm_pos_diff: bool = True,
-    node_mask: Optional[Bool[torch.Tensor, "n_nodes"]] = None,
+    node_mask: Optional[Bool[torch.Tensor, " n_nodes"]] = None,
 ) -> Float[torch.Tensor, "batch_num_edges 3 3"]:
     row, col = edge_index[0], edge_index[1]
 

@@ -98,7 +98,7 @@ class PolynomialCutoff(torch.nn.Module):
 @jaxtyped
 @beartype
 def compute_rbf(
-    distances: Float[torch.Tensor, "num_edges"],
+    distances: Float[torch.Tensor, " num_edges"],
     min_distance: float = 0.0,
     max_distance: float = 10.0,
     num_rbf: int = 8,

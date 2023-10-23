@@ -210,6 +210,60 @@ class ProteinDataModule(L.LightningDataModule, ABC):
 
 
 class ProteinDataset(Dataset):
+    """Dataset for loading protein structures.
+
+    :param pdb_codes: List of PDB codes to load. This can also be a list
+        of identifiers to specific to your filenames if you have
+        pre-downloaded structures.
+    :type pdb_codes: List[str]
+    :param root: Path to root directory, defaults to ``None``.
+    :type root: Optional[str], optional
+    :param pdb_dir: Path to directory containing raw PDB files,
+        defaults to ``None``.
+    :type pdb_dir: Optional[str], optional
+    :param processed_dir: Directory to store processed data, defaults to
+        ``None``.
+    :type processed_dir: Optional[str], optional
+    :param pdb_paths: If specified, the dataset will load structures from
+        these paths instead of downloading them from the RCSB PDB or using
+        the identifies in ``pdb_codes``. This is useful if you have already
+        downloaded structures and want to use them. defaults to ``None``
+    :type pdb_paths: Optional[List[str]], optional
+    :param chains: List of chains to load for each PDB code,
+        defaults to ``None``.
+    :type chains: Optional[List[str]], optional
+    :param graph_labels: List of tensors to set as graph labels for each
+        examples. If not specified, no graph labels will be set.
+        defaults to ``None``.
+    :type graph_labels: Optional[List[torch.Tensor]], optional
+    :param node_labels: List of tensors to set as node labels for each
+        examples. If not specified, no node labels will be set.
+        defaults to ``None``.
+    :type node_labels: Optional[List[torch.Tensor]], optional
+    :param transform: List of transforms to apply to each example,
+        defaults to ``None``.
+    :type transform: Optional[List[Callable]], optional
+    :param pre_transform: Transform to apply to each example before
+        processing, defaults to ``None``.
+    :type pre_transform: Optional[Callable], optional
+    :param pre_filter: Filter to apply to each example before processing,
+        defaults to ``None``.
+    :type pre_filter: Optional[Callable], optional
+    :param log: Whether to log. If ``True``, logs will be printed to
+        stdout, defaults to ``True``.
+    :type log: bool, optional
+    :param overwrite: Whether to overwrite existing files, defaults to
+        ``False``.
+    :type overwrite: bool, optional
+    :param format: Format to save structures in, defaults to "pdb".
+    :type format: Literal[mmtf, pdb, optional
+    :param in_memory: Whether to load data into memory, defaults to False.
+    :type in_memory: bool, optional
+    :param store_het: Whether to store heteroatoms in the graph,
+        defaults to ``False``.
+    :type store_het: bool, optional
+    """
+
     def __init__(
         self,
         pdb_codes: List[str],
@@ -230,59 +284,6 @@ class ProteinDataset(Dataset):
         store_het: bool = False,
         out_names: Optional[List[str]] = None,
     ):
-        """Dataset for loading protein structures.
-
-        :param pdb_codes: List of PDB codes to load. This can also be a list
-            of identifiers to specific to your filenames if you have
-            pre-downloaded structures.
-        :type pdb_codes: List[str]
-        :param root: Path to root directory, defaults to ``None``.
-        :type root: Optional[str], optional
-        :param pdb_dir: Path to directory containing raw PDB files,
-            defaults to ``None``.
-        :type pdb_dir: Optional[str], optional
-        :param processed_dir: Directory to store processed data, defaults to
-            ``None``.
-        :type processed_dir: Optional[str], optional
-        :param pdb_paths: If specified, the dataset will load structures from
-            these paths instead of downloading them from the RCSB PDB or using
-            the identifies in ``pdb_codes``. This is useful if you have already
-            downloaded structures and want to use them. defaults to ``None``
-        :type pdb_paths: Optional[List[str]], optional
-        :param chains: List of chains to load for each PDB code,
-            defaults to ``None``.
-        :type chains: Optional[List[str]], optional
-        :param graph_labels: List of tensors to set as graph labels for each
-            examples. If not specified, no graph labels will be set.
-            defaults to ``None``.
-        :type graph_labels: Optional[List[torch.Tensor]], optional
-        :param node_labels: List of tensors to set as node labels for each
-            examples. If not specified, no node labels will be set.
-            defaults to ``None``.
-        :type node_labels: Optional[List[torch.Tensor]], optional
-        :param transform: List of transforms to apply to each example,
-            defaults to ``None``.
-        :type transform: Optional[List[Callable]], optional
-        :param pre_transform: Transform to apply to each example before
-            processing, defaults to ``None``.
-        :type pre_transform: Optional[Callable], optional
-        :param pre_filter: Filter to apply to each example before processing,
-            defaults to ``None``.
-        :type pre_filter: Optional[Callable], optional
-        :param log: Whether to log. If ``True``, logs will be printed to
-            stdout, defaults to ``True``.
-        :type log: bool, optional
-        :param overwrite: Whether to overwrite existing files, defaults to
-            ``False``.
-        :type overwrite: bool, optional
-        :param format: Format to save structures in, defaults to "pdb".
-        :type format: Literal[mmtf, pdb, optional
-        :param in_memory: Whether to load data into memory, defaults to False.
-        :type in_memory: bool, optional
-        :param store_het: Whether to store heteroatoms in the graph,
-            defaults to ``False``.
-        :type store_het: bool, optional
-        """
         self.pdb_codes = [pdb.lower() for pdb in pdb_codes]
         self.pdb_dir = pdb_dir
         self.pdb_paths = pdb_paths
@@ -302,7 +303,7 @@ class ProteinDataset(Dataset):
             for p in self.processed_file_names
         ):
             logger.info(
-                f"All structures already processed and overwrite=False. Skipping download."
+                "All structures already processed and overwrite=False. Skipping download."
             )
             self._skip_download = True
         else:

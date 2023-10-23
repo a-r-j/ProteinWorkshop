@@ -206,7 +206,6 @@ if __name__ == "__main__":
     import pathlib
 
     import hydra
-    import omegaconf
 
     from proteinworkshop import constants
 
