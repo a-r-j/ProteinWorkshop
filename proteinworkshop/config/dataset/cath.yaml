@@ -9,4 +9,5 @@ datamodule:
   dataset_fraction: 1.0 # Fraction of the dataset to use
   transforms: ${transforms} # Transforms to apply to dataset examples
   overwrite: False # Whether to overwrite the dataset if it already exists
+  in_memory: True # Whether to load the entire dataset into memory
 num_classes: 23 # Number of classes
