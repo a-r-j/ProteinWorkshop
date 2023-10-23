@@ -272,10 +272,7 @@ class BaseModel(L.LightningModule, abc.ABC):
             for k, v in loss_dict.items()
         }
 
-    def transfer_batch_to_device(self, batch: Union[Batch, ProteinBatch], dataloader_idx: int) -> Union[Batch, ProteinBatch]:
-        return batch.to(self.device, list(self.encoder.required_batch_attributes))
-
-    def on_before_batch_transfer(
+    def on_after_batch_transfer(
         self, batch: Union[Batch, ProteinBatch], dataloader_idx: int
     ) -> Union[Batch, ProteinBatch]:
         """
@@ -368,9 +365,8 @@ class BaseModel(L.LightningModule, abc.ABC):
         :param batch: Batch of data
         :type batch: Batch
         """
-        # Log loss
-        for k, v in loss.items():
-            self.log(f"{stage}/loss/{k}", v, prog_bar=True, logger=True)
+        # Log losses
+        log_dict = {f"{stage}/loss/{k}": v for k, v in loss.items()}
 
         # Log metrics
         for m in self.metric_names:
@@ -391,14 +387,11 @@ class BaseModel(L.LightningModule, abc.ABC):
                             val = metric(pred, target)
                         except RuntimeError:
                             val = metric(pred, target.unsqueeze(-1))
-                        self.log(
-                            f"{stage}/{output}/{m}",
-                            val,
-                            prog_bar=True,
-                            logger=True,
-                        )
+                        log_dict[f"{stage}/{output}/{m}"] = val
+
                     except (ValueError, RuntimeError):
                         continue
+        self.log_dict(log_dict)
 
 
 class BenchMarkModel(BaseModel):
