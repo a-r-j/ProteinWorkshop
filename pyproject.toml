@@ -89,6 +89,10 @@ watermark = "^2.4.3"
 sphinx-codeautolink = "^0.15.0"
 emoji = "^2.8.0"
 
+[[tool.poetry.source]]
+name = "torch"
+url = "https://download.pytorch.org/whl/cpu/"
+priority = "explicit"
 
 [tool.poe.tasks]
 install-torch-cluster = "pip install torch_cluster -f https://data.pyg.org/whl/torch-2.0.0+cpu.html"
