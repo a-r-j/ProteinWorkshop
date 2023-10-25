@@ -51,9 +51,9 @@ lightning = "^2.0.7"
 python-dotenv = "^1.0.0"
 wget = "^3.2"
 opt-einsum = "^3.3.0"
-torch = ">=2.0.0, !=2.0.1"
+torch = "^2.1.0"
 pyrootutils = "^1.0.4"
-torch-geometric = "^2.3.1"
+torch-geometric = "^2.4.0"
 hydra-colorlog = "^1.2.0"
 foldcomp = "^0.0.5"
 
@@ -62,6 +62,9 @@ foldcomp = "^0.0.5"
 black = "^23.7.0"
 isort = "^5.12.0"
 poethepoet = "^0.22.0"
+ruff = "^0.1.1"
+pydocstyle = "^6.3.0"
+pre-commit = "^3.5.0"
 
 
 [tool.poetry.group.test.dependencies]
@@ -106,6 +109,14 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 # Code-formatting and code-style config
+[tool.ruff]
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
+select = ["E", "F", "I"] # <-- Note: I suggest including the "I" for additional checks!
+ignore = ["F722"] # Ignore Jaxtyping forward references: https://github.com/google/jaxtyping/blob/v0.2.12/FAQ.md
+
+# Assuming you're developing for Python 3.10
+target-version = "py310"
+
 [tool.black]
 exclude = '''
 /(
