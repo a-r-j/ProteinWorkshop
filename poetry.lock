@@ -1355,7 +1355,10 @@ files = [
 
 [package.dependencies]
 cffi = {version = ">=1.12.2", markers = "platform_python_implementation == \"CPython\" and sys_platform == \"win32\""}
-greenlet = {version = ">=2.0.0", markers = "platform_python_implementation == \"CPython\" and python_version < \"3.11\""}
+greenlet = [
+    {version = ">=2.0.0", markers = "platform_python_implementation == \"CPython\" and python_version < \"3.11\""},
+    {version = ">=3.0rc3", markers = "platform_python_implementation == \"CPython\" and python_version >= \"3.11\""},
+]
 "zope.event" = "*"
 "zope.interface" = "*"
 
@@ -3010,7 +3013,8 @@ files = [
 [package.dependencies]
 numpy = [
     {version = ">=1.20.3", markers = "python_version < \"3.10\""},
-    {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
+    {version = ">=1.23.2", markers = "python_version >= \"3.11\""},
+    {version = ">=1.21.0", markers = "python_version >= \"3.10\" and python_version < \"3.11\""},
 ]
 python-dateutil = ">=2.8.1"
 pytz = ">=2020.1"
@@ -5421,5 +5425,5 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = ">= 3.9, < 3.11"
-content-hash = "8c731ed68d4d72668ecc3d2ddce545c73602ad666fc41e232dc5aaf26be9f389"
+python-versions = ">= 3.9, < 3.12"
+content-hash = "cfd35954ea772103f138cccca7fef671d2af804a380b02b195215bfd9d52faee"
