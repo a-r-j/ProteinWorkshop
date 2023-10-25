@@ -38,6 +38,7 @@ class CATHDataModule(ProteinDataModule):
         Defaults to ``False``.
     :type overwrite: bool
     """
+
     def __init__(
         self,
         path: str,

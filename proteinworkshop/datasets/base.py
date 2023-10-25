@@ -256,7 +256,7 @@ class ProteinDataset(Dataset):
         ``False``.
     :type overwrite: bool, optional
     :param format: Format to save structures in, defaults to "pdb".
-    :type format: Literal[mmtf, pdb, optional
+    :type format: Literal[mmtf, pdb], optional
     :param in_memory: Whether to load data into memory, defaults to False.
     :type in_memory: bool, optional
     :param store_het: Whether to store heteroatoms in the graph,
