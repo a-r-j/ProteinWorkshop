@@ -4,6 +4,9 @@ import hydra
 import lightning as L
 import omegaconf
 import torch
+import numpy as np
+import umap
+import umap.plot
 from loguru import logger as log
 from tqdm import tqdm
 
@@ -12,12 +15,15 @@ from proteinworkshop import (
     register_custom_omegaconf_resolvers,
     utils,
 )
+from proteinworkshop.configs import config
 from proteinworkshop.models.base import BenchMarkModel
 
 
 def visualise(cfg: omegaconf.DictConfig):
     assert cfg.ckpt_path, "No checkpoint path provided."
     assert cfg.plot_filepath, "No plot name provided."
+
+    cfg = config.validate_config(cfg)
 
     L.seed_everything(cfg.seed)
 
@@ -28,6 +34,21 @@ def visualise(cfg: omegaconf.DictConfig):
 
     log.info("Instantiating model:... ")
     model: L.LightningModule = BenchMarkModel(cfg)
+
+    # Initialize lazy layers for parameter counts
+    # This is also required for the model to be able to load weights
+    # Otherwise lazy layers will have their parameters reset
+    # https://pytorch.org/docs/stable/generated/torch.nn.modules.lazy.LazyModuleMixin.html#torch.nn.modules.lazy.LazyModuleMixin
+    log.info("Initializing lazy layers...")
+    with torch.no_grad():
+        datamodule.setup()  # type: ignore
+        batch = next(iter(datamodule.val_dataloader()))
+        log.info(f"Unfeaturized batch: {batch}")
+        batch = model.featurise(batch)
+        log.info(f"Featurized batch: {batch}")
+        out = model.forward(batch)
+        log.info(f"Model output: {out}")
+        del batch, out
 
     # Load weights
     # We only want to load weights
@@ -69,13 +90,24 @@ def visualise(cfg: omegaconf.DictConfig):
     collection = []
     with torch.inference_mode():
         for batch in tqdm(datamodule.train_dataloader()):
-            ids = batch.id
+            ids = [id.split("_")[0] for id in batch.id] # e.g., acquire PDB codes as IDs/labels
             batch = model.featuriser(batch)
             out = model.forward(batch)
-            # node_embeddings = out["node_embedding"] # TODO: add node embeddings
             graph_embeddings = out["graph_embedding"]
             node_embeddings = graph_embeddings.tolist()
             collection.append({"embedding": node_embeddings, "ids": ids})
+            break
+
+    # Plot embeddings using UMAP
+    assert len(collection) > 0 and len(collection[0]["embedding"]) > 0, "At least one batch of embeddings must be present to plot with UMAP."
+    emb_dim = len(collection[0]["embedding"][0])
+    umap_data = np.array([x["embedding"] for x in collection]).reshape(-1, emb_dim)
+    umap_labels = np.array([x["ids"] for x in collection]).reshape(-1)
+    mapper = umap.UMAP().fit(umap_data)
+    # umap_axes = umap.plot.points(mapper, labels=umap_labels)
+    umap_axes = umap.plot.points(mapper)
+    umap_figure = umap_axes.figure
+    umap_figure.savefig(cfg.plot_filepath)
 
 
 @hydra.main(

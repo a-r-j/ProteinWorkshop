@@ -187,7 +187,7 @@ class AstralDataModule(ProteinDataModule):
             root=str(self.data_dir),
             pdb_dir=str(self.structure_dir),
             pdb_codes=ids,
-            format="ent",
+            format="mmtf",
             # graph_labels=[torch.tensor(a) for a in list(df.label)],
             overwrite=self.overwrite,
             transform=self.transform,

@@ -31,6 +31,21 @@ def embed(cfg: omegaconf.DictConfig):
     log.info("Instantiating model:... ")
     model: L.LightningModule = BenchMarkModel(cfg)
 
+    # Initialize lazy layers for parameter counts
+    # This is also required for the model to be able to load weights
+    # Otherwise lazy layers will have their parameters reset
+    # https://pytorch.org/docs/stable/generated/torch.nn.modules.lazy.LazyModuleMixin.html#torch.nn.modules.lazy.LazyModuleMixin
+    log.info("Initializing lazy layers...")
+    with torch.no_grad():
+        datamodule.setup()  # type: ignore
+        batch = next(iter(datamodule.val_dataloader()))
+        log.info(f"Unfeaturized batch: {batch}")
+        batch = model.featurise(batch)
+        log.info(f"Featurized batch: {batch}")
+        out = model.forward(batch)
+        log.info(f"Model output: {out}")
+        del batch, out
+
     # Load weights
     # We only want to load weights
     log.info(f"Loading weights from checkpoint {cfg.ckpt_path}...")
