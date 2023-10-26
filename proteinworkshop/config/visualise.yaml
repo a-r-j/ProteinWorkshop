@@ -14,7 +14,7 @@ defaults:
   - decoder: default
   - transforms: none
   - callbacks: default
-  #- trainer: gpu
+  - trainer: gpu
   - extras: default
   - hydra: default
   - metrics: default
@@ -32,10 +32,10 @@ defaults:
   #- optional output_decoder: ${task.output}_${decoder}
   - _self_ # see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.
 
-task_name: "embed"
+task_name: "visualise"
 
 compile: True
 
-# simply provide checkpoint path to embed dataset using chroma
+# simply provide checkpoint path and image filepath to embed dataset and plot embeddings
 ckpt_path: null
-collection_name: null
+plot_filepath: null

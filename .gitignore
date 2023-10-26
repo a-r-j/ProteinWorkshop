@@ -149,3 +149,6 @@ logs/
 wandb/
 .DS_Store
 .env
+
+# Visualisations
+output_visualisations/

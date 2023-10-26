@@ -1,11 +1,9 @@
 import collections
 
-import chromadb
 import hydra
 import lightning as L
 import omegaconf
 import torch
-from chromadb.config import Settings
 from loguru import logger as log
 from tqdm import tqdm
 
@@ -17,9 +15,9 @@ from proteinworkshop import (
 from proteinworkshop.models.base import BenchMarkModel
 
 
-def embed(cfg: omegaconf.DictConfig):
+def visualise(cfg: omegaconf.DictConfig):
     assert cfg.ckpt_path, "No checkpoint path provided."
-    assert cfg.collection_name, "No collection name provided."
+    assert cfg.plot_filepath, "No plot name provided."
 
     L.seed_everything(cfg.seed)
 
@@ -68,40 +66,29 @@ def embed(cfg: omegaconf.DictConfig):
     # Setup datamodule
     datamodule.setup()
 
-    # Initialise chromadb
-    chroma_client = chromadb.Client(
-        Settings(
-            chroma_db_impl="duckdb+parquet",
-            persist_directory=".chromadb",  # Optional, defaults to .chromadb/ in the current directory
-            anonymized_telemetry=False,
-        )
-    )
-    chroma_client.persist()
-
-    collection = chroma_client.create_collection(name=cfg.collection_name)
-
-    for batch in tqdm(datamodule.train_dataloader()):
-        ids = batch.id
-        batch = model.featuriser(batch)
-        out = model.forward(batch)
-        # node_embeddings = out["node_embedding"] # TODO: add node embeddings
-        graph_embeddings = out["graph_embedding"]
-        node_embeddings = graph_embeddings.tolist()
-        collection.add(embeddings=node_embeddings, ids=ids)
-    chroma_client.persist()
+    collection = []
+    with torch.inference_mode():
+        for batch in tqdm(datamodule.train_dataloader()):
+            ids = batch.id
+            batch = model.featuriser(batch)
+            out = model.forward(batch)
+            # node_embeddings = out["node_embedding"] # TODO: add node embeddings
+            graph_embeddings = out["graph_embedding"]
+            node_embeddings = graph_embeddings.tolist()
+            collection.append({"embedding": node_embeddings, "ids": ids})
 
 
 @hydra.main(
     version_base="1.3",
     config_path=str(constants.HYDRA_CONFIG_PATH),
-    config_name="embed.yaml",
+    config_name="visualise.yaml",
 )
 def _main(cfg: omegaconf.DictConfig) -> None:
     # apply extra utilities
     # (e.g. ask for tags if none are provided in cfg, print cfg tree, etc.)
     utils.extras(cfg)
 
-    embed(cfg)
+    visualise(cfg)
 
 
 if __name__ == "__main__":
