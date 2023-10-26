@@ -188,20 +188,21 @@ files = [
 
 [[package]]
 name = "asttokens"
-version = "2.4.0"
+version = "2.4.1"
 description = "Annotate AST trees with source code positions"
 optional = false
 python-versions = "*"
 files = [
-    {file = "asttokens-2.4.0-py2.py3-none-any.whl", hash = "sha256:cf8fc9e61a86461aa9fb161a14a0841a03c405fa829ac6b202670b3495d2ce69"},
-    {file = "asttokens-2.4.0.tar.gz", hash = "sha256:2e0171b991b2c959acc6c49318049236844a5da1d65ba2672c4880c1c894834e"},
+    {file = "asttokens-2.4.1-py2.py3-none-any.whl", hash = "sha256:051ed49c3dcae8913ea7cd08e46a606dba30b79993209636c4875bc1d637bc24"},
+    {file = "asttokens-2.4.1.tar.gz", hash = "sha256:b03869718ba9a6eb027e134bfdf69f38a236d681c83c160d510768af11254ba0"},
 ]
 
 [package.dependencies]
 six = ">=1.12.0"
 
 [package.extras]
-test = ["astroid", "pytest"]
+astroid = ["astroid (>=1,<2)", "astroid (>=2,<4)"]
+test = ["astroid (>=1,<2)", "astroid (>=2,<4)", "pytest"]
 
 [[package]]
 name = "async-timeout"
@@ -1399,13 +1400,13 @@ test = ["black", "coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock", "mypy", "pre
 
 [[package]]
 name = "graphein"
-version = "1.7.3"
+version = "1.7.4"
 description = "Protein & Interactomic Graph Construction for Machine Learning"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "graphein-1.7.3-py3-none-any.whl", hash = "sha256:64650c746f4d2523d25dac33dca0ed17adeeb31ecc87699e948f02514f814ec1"},
-    {file = "graphein-1.7.3.tar.gz", hash = "sha256:e2618020c8da3046df31fee6942959a36b8147cc104d49a86d2516f6cb407462"},
+    {file = "graphein-1.7.4-py3-none-any.whl", hash = "sha256:b0e345dda75099a47892adae745dcce8c66294ad45102e7c1c9353bd184c3d2e"},
+    {file = "graphein-1.7.4.tar.gz", hash = "sha256:4cc0f76becc4990c95dee55ebe945186465adfe9542a43798ac90120fdd22282"},
 ]
 
 [package.dependencies]
@@ -1415,6 +1416,7 @@ bioservices = ">=1.10.0"
 deepdiff = "*"
 jaxtyping = "*"
 loguru = "*"
+looseversion = "*"
 matplotlib = ">=3.4.3"
 multipledispatch = "*"
 networkx = "*"
@@ -5416,4 +5418,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">= 3.9, < 3.11"
-content-hash = "12235e0cb221be5ef120e306f3baa53a7881c69d071ddbacc36df945d5ebb846"
+content-hash = "2c3184dc9980bac43556fd6e3bae038d0472db1d65682461a7de26fef6e8bc7b"
