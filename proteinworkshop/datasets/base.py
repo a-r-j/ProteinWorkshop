@@ -1,3 +1,4 @@
+"""Base classes for protein structure datamodules and datasets."""
 import os
 import pathlib
 from abc import ABC, abstractmethod
@@ -57,6 +58,12 @@ def pair_data(a: Data, b: Data) -> Data:
 
 
 class ProteinDataModule(L.LightningDataModule, ABC):
+    """Base class for Protein datamodules.
+
+    .. seealso::
+        L.LightningDataModule
+    """
+
     prepare_data_per_node = (
         True  # class default for lighting 2.0 compatability
     )
@@ -64,7 +71,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
     @abstractmethod
     def download(self):
         """
-        Implements downloading of raw data.
+        Implement downloading of raw data.
 
         Typically this will be an index file of structure
         identifiers (for datasets derived from the PDB) but
@@ -85,8 +92,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
     @property
     @lru_cache
     def obsolete_pdbs(self) -> Dict[str, str]:
-        """This method returns a mapping of obsolete PDB codes
-        to their updated replacements.
+        """Returns a mapping of obsolete PDB codes to their updated replacement.
 
         :return: Mapping of obsolete PDB codes to their updated replacements.
         :rtype: Dict[str, str]
@@ -95,7 +101,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
 
     @beartype
     def compose_transforms(self, transforms: Iterable[Callable]) -> T.Compose:
-        """Composes an iterable of Transforms into a single transform.
+        """Compose an iterable of Transforms into a single transform.
 
         :param transforms: An iterable of transforms.
         :type transforms: Iterable[Callable]
@@ -113,7 +119,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
     @abstractmethod
     def parse_dataset(self, split: str) -> pd.DataFrame:
         """
-        This methods implements the parsing of the raw dataset to a dataframe.
+        Implement the parsing of the raw dataset to a dataframe.
 
         Override this method to implement custom parsing of raw data.
 
@@ -139,12 +145,13 @@ class ProteinDataModule(L.LightningDataModule, ABC):
 
     @abstractmethod
     def exclude_pdbs(self):
+        """Return a list of PDBs/IDs to exclude from the dataset."""
         ...
 
     @abstractmethod
     def train_dataset(self) -> Dataset:
         """
-        Implements the construction of the training dataset.
+        Implement the construction of the training dataset.
 
         :return: The training dataset.
         :rtype: Dataset
@@ -154,7 +161,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
     @abstractmethod
     def val_dataset(self) -> Dataset:
         """
-        Implements the construction of the validation dataset.
+        Implement the construction of the validation dataset.
 
         :return: The validation dataset.
         :rtype: Dataset
@@ -164,7 +171,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
     @abstractmethod
     def test_dataset(self) -> Dataset:
         """
-        Implements the construction of the test dataset.
+        Implement the construction of the test dataset.
 
         :return: The test dataset.
         :rtype: Dataset
@@ -174,7 +181,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
     @abstractmethod
     def train_dataloader(self) -> ProteinDataLoader:
         """
-        Implements the construction of the training dataloader.
+        Implement the construction of the training dataloader.
 
         :return: The training dataloader.
         :rtype: ProteinDataLoader
@@ -183,7 +190,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
 
     @abstractmethod
     def val_dataloader(self) -> ProteinDataLoader:
-        """Implements the construction of the validation dataloader.
+        """Implement the construction of the validation dataloader.
 
         :return: The validation dataloader.
         :rtype: ProteinDataLoader
@@ -192,7 +199,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
 
     @abstractmethod
     def test_dataloader(self) -> ProteinDataLoader:
-        """Implements the construction of the test dataloader.
+        """Implement the construction of the test dataloader.
 
         :return: The test dataloader.
         :rtype: ProteinDataLoader
@@ -200,6 +207,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
         ...
 
     def get_class_weights(self) -> torch.Tensor:
+        """Return tensor of class weights."""
         labels: Dict[str, torch.Tensor] = self.parse_labels()
         labels = list(labels.values())  # type: ignore
         labels = np.array(labels)  # type: ignore
@@ -256,7 +264,7 @@ class ProteinDataset(Dataset):
         ``False``.
     :type overwrite: bool, optional
     :param format: Format to save structures in, defaults to "pdb".
-    :type format: Literal[mmtf, pdb], optional
+    :type format: Literal[mmtf, pdb, ent], optional
     :param in_memory: Whether to load data into memory, defaults to False.
     :type in_memory: bool, optional
     :param store_het: Whether to store heteroatoms in the graph,
@@ -279,7 +287,7 @@ class ProteinDataset(Dataset):
         pre_filter: Optional[Callable] = None,
         log: bool = True,
         overwrite: bool = False,
-        format: Literal["mmtf", "pdb"] = "pdb",
+        format: Literal["mmtf", "pdb", "ent"] = "pdb",
         in_memory: bool = False,
         store_het: bool = False,
         out_names: Optional[List[str]] = None,
@@ -320,8 +328,7 @@ class ProteinDataset(Dataset):
 
     def download(self):
         """
-        Downloads structure files not already present in the raw directory
-        (``raw_dir``).
+        Download structure files not present in the raw directory (``raw_dir``).
 
         Structures are downloaded from the RCSB PDB using the Graphein
         multiprocessed downloader.
@@ -332,6 +339,11 @@ class ProteinDataset(Dataset):
 
         Downloaded files are stored in ``self.raw_dir``.
         """
+        if self.format == "ent":  # Skip downloads from ASTRAL
+            logger.warning(
+                "Downloads in .ent format are assumed to be from ASTRAL. These data should have already been downloaded"
+            )
+            return
         if self._skip_download:
             logger.info(
                 "All structures already processed and overwrite=False. Skipping download."
@@ -366,6 +378,7 @@ class ProteinDataset(Dataset):
             )
 
     def len(self) -> int:
+        """Return length of the dataset."""
         return len(self.pdb_codes)
 
     @property
@@ -401,6 +414,8 @@ class ProteinDataset(Dataset):
         :return: List of processed file names.
         :rtype: Union[str, List[str], Tuple]
         """
+        if self.overwrite:
+            return ["this_forces_a_processing_cycle"]
         if self.out_names is not None:
             return [f"{name}.pt" for name in self.out_names]
         if self.chains is not None:
@@ -412,8 +427,7 @@ class ProteinDataset(Dataset):
             return [f"{pdb}.pt" for pdb in self.pdb_codes]
 
     def process(self):
-        """Processes the raw data into PyTorch Geometric Data objects using
-        Graphein.
+        """Process raw data into PyTorch Geometric Data objects with Graphein.
 
         Processed data are stored in ``self.processed_dir`` as ``.pt`` files.
         """
@@ -486,7 +500,7 @@ class ProteinDataset(Dataset):
 
     def get(self, idx: int) -> Data:
         """
-        Returns PyTorch Geometric Data object for a given index.
+        Return PyTorch Geometric Data object for a given index.
 
         :param idx: Index to retrieve.
         :type idx: int
