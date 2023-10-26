@@ -28,7 +28,7 @@ packages = [
 "Documentation" = "https://proteins.sh"
 
 [tool.poetry.dependencies]
-python = ">= 3.9, < 3.12"
+python = ">= 3.9, < 3.11"
 graphein = "^1.7.3"
 loguru = "^0.7.0"
 fair-esm = "^2.0.0"
