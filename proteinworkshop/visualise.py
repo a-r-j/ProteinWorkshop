@@ -55,8 +55,10 @@ def draw_simple_ellipse(
 
 
 def visualise(cfg: omegaconf.DictConfig):
-    assert cfg.ckpt_path, "No checkpoint path provided."
-    assert cfg.plot_filepath, "No plot name provided."
+    assert cfg.ckpt_path, "A checkpoint path must be provided."
+    assert cfg.plot_filepath, "A plot name must be provided."
+    if cfg.use_cuda_device and not torch.cuda.is_available():
+        raise RuntimeError("CUDA device requested but CUDA is not available.")
 
     cfg = config.validate_config(cfg)
 
@@ -115,9 +117,14 @@ def visualise(cfg: omegaconf.DictConfig):
         param.requires_grad = False
 
     log.info("Freezing decoder!")
-    model.decoder = None  # TODO make this controllable by config
-    # for param in model.decoder.parameters():
-    #    param.requires_grad = False
+    model.decoder = None
+
+    # Select CUDA computation device, otherwise default to CPU
+    if cfg.use_cuda_device:
+        device = torch.device(f"cuda:{cfg.cuda_device_index}")
+        model = model.to(device)
+    else:
+        device = torch.device("cpu")
 
     # Setup datamodule
     datamodule.setup()
@@ -138,6 +145,7 @@ def visualise(cfg: omegaconf.DictConfig):
                     labels = [class_map[label] for label in labels]
             else:
                 labels = [id.split("_")[0] for id in batch.id]
+            batch = batch.to(device)
             batch = model.featuriser(batch)
             out = model.forward(batch)
             graph_embeddings = out["graph_embedding"]
@@ -146,9 +154,8 @@ def visualise(cfg: omegaconf.DictConfig):
 
     # Plot embeddings using UMAP
     assert len(collection) > 0 and len(collection[0]["embedding"]) > 0, "At least one batch of embeddings must be present to plot with UMAP."
-    emb_dim = len(collection[0]["embedding"][0])
-    umap_data = np.array([x["embedding"] for x in collection]).reshape(-1, emb_dim)
-    umap_labels = np.array([x["labels"] for x in collection]).reshape(-1)
+    umap_data = np.array([batch for x in collection for batch in x["embedding"]])
+    umap_labels = np.array([label for x in collection for label in x["labels"]])
     gaussian_mapper = umap.UMAP(output_metric="gaussian_energy", n_components=5, random_state=42).fit(umap_data)
 
     if class_map_available:
@@ -196,7 +203,7 @@ def visualise(cfg: omegaconf.DictConfig):
                 label_counts[label] = 1
         top_20_labels = sorted(label_counts, key=label_counts.get, reverse=True)[:20]
         legend_handles = [Line2D([0], [0], color=colors[orig_class_map[label]], lw=3, label=label) for label in top_20_labels]
-        plt.legend(handles=legend_handles, title="Top-20 Most Common Labels")
+        plt.legend(handles=legend_handles)
 
     plt.xlabel("")  # Remove x-axis label
     plt.ylabel("")  # Remove y-axis label

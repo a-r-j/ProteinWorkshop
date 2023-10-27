@@ -14,22 +14,13 @@ defaults:
   - decoder: default
   - transforms: none
   - callbacks: default
-  #- trainer: gpu
   - extras: default
   - hydra: default
   - metrics: default
   - task: graph_classification
   - logger: wandb
   - finetune: default
-  # debugging config (enable through command line, e.g. `python train.py debug=default)
   - debug: null
-  #- sweeper: wandb
-  #- task: classification
-  #- graphein: default
-  # optional hardware config for machine/user specific settings
-  # (optional since it doesn't need to exist and is excluded from version control)
-  #- optional hardware: cpu
-  #- optional output_decoder: ${task.output}_${decoder}
   - _self_ # see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.
 
 task_name: "embed"
@@ -37,5 +28,7 @@ task_name: "embed"
 compile: True
 
 # simply provide checkpoint path to embed dataset using chroma
-ckpt_path: null
-collection_name: null
+ckpt_path: null # path to checkpoint to load
+collection_name: null # name of embedding collection to curate
+use_cuda_device: True # if True, use an available CUDA device for embedding generation
+cuda_device_index: 0 # if CUDA devices are targeted and available, which available CUDA device to use for embedding generation

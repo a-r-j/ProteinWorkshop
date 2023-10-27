@@ -18,8 +18,10 @@ from proteinworkshop.models.base import BenchMarkModel
 
 
 def embed(cfg: omegaconf.DictConfig):
-    assert cfg.ckpt_path, "No checkpoint path provided."
-    assert cfg.collection_name, "No collection name provided."
+    assert cfg.ckpt_path, "A checkpoint path must be provided."
+    assert cfg.plot_filepath, "A plot name must be provided."
+    if cfg.use_cuda_device and not torch.cuda.is_available():
+        raise RuntimeError("CUDA device requested but CUDA is not available.")
 
     L.seed_everything(cfg.seed)
 
@@ -77,8 +79,13 @@ def embed(cfg: omegaconf.DictConfig):
 
     log.info("Freezing decoder!")
     model.decoder = None  # TODO make this controllable by config
-    # for param in model.decoder.parameters():
-    #    param.requires_grad = False
+
+    # Select CUDA computation device, otherwise default to CPU
+    if cfg.use_cuda_device:
+        device = torch.device(f"cuda:{cfg.cuda_device_index}")
+        model = model.to(device)
+    else:
+        device = torch.device("cpu")
 
     # Setup datamodule
     datamodule.setup()
@@ -97,6 +104,7 @@ def embed(cfg: omegaconf.DictConfig):
 
     for batch in tqdm(datamodule.train_dataloader()):
         ids = batch.id
+        batch = batch.to(device)
         batch = model.featuriser(batch)
         out = model.forward(batch)
         # node_embeddings = out["node_embedding"] # TODO: add node embeddings
