@@ -7,7 +7,11 @@ import torch
 import numpy as np
 import umap
 import umap.plot
+import matplotlib.pyplot as plt
+from beartype.typing import Any, Dict, Optional
 from loguru import logger as log
+from matplotlib.lines import Line2D
+from matplotlib.patches import Ellipse
 from tqdm import tqdm
 
 from proteinworkshop import (
@@ -17,6 +21,37 @@ from proteinworkshop import (
 )
 from proteinworkshop.configs import config
 from proteinworkshop.models.base import BenchMarkModel
+
+
+def draw_simple_ellipse(
+    position: np.ndarray,
+    width: float,
+    height: float,
+    angle: float,
+    ax: Optional[plt.Axes] = None,
+    from_size: float = 0.1,
+    to_size: float = 0.5,
+    n_ellipses: int = 3,
+    alpha: float = 0.1,
+    color: Optional[str] = None,
+    **kwargs: Dict[str, Any],
+):
+    ax = ax or plt.gca()
+    angle = (angle / np.pi) * 180
+    width, height = np.sqrt(width), np.sqrt(height)
+    for nsig in np.linspace(from_size, to_size, n_ellipses):
+        ax.add_patch(
+            Ellipse(
+                position,
+                nsig * width,
+                nsig * height,
+                angle,
+                alpha=alpha,
+                lw=0,
+                color=color,
+                **kwargs
+            )
+        )
 
 
 def visualise(cfg: omegaconf.DictConfig):
@@ -87,28 +122,88 @@ def visualise(cfg: omegaconf.DictConfig):
     # Setup datamodule
     datamodule.setup()
 
+    # Get class map
+    class_map_available = hasattr(datamodule, "parse_class_map")
+    if class_map_available:
+        # NOTE: e.g., for fold classification, by default the `class_map`
+        # is a mapping from fold name to fold index, so we need to invert it
+        class_map = {v: k for k, v in datamodule.parse_class_map().items()}
+
     collection = []
     with torch.inference_mode():
         for batch in tqdm(datamodule.train_dataloader()):
-            ids = [id.split("_")[0] for id in batch.id] # e.g., acquire PDB codes as IDs/labels
+            if "graph_y" in batch:
+                labels = batch.graph_y.tolist()
+                if class_map_available:
+                    labels = [class_map[label] for label in labels]
+            else:
+                labels = [id.split("_")[0] for id in batch.id]
             batch = model.featuriser(batch)
             out = model.forward(batch)
             graph_embeddings = out["graph_embedding"]
             node_embeddings = graph_embeddings.tolist()
-            collection.append({"embedding": node_embeddings, "ids": ids})
-            break
+            collection.append({"embedding": node_embeddings, "labels": labels})
 
     # Plot embeddings using UMAP
     assert len(collection) > 0 and len(collection[0]["embedding"]) > 0, "At least one batch of embeddings must be present to plot with UMAP."
     emb_dim = len(collection[0]["embedding"][0])
     umap_data = np.array([x["embedding"] for x in collection]).reshape(-1, emb_dim)
-    umap_labels = np.array([x["ids"] for x in collection]).reshape(-1)
-    mapper = umap.UMAP().fit(umap_data)
-    # umap_axes = umap.plot.points(mapper, labels=umap_labels)
-    umap_axes = umap.plot.points(mapper)
-    umap_figure = umap_axes.figure
-    umap_figure.savefig(cfg.plot_filepath)
+    umap_labels = np.array([x["labels"] for x in collection]).reshape(-1)
+    gaussian_mapper = umap.UMAP(output_metric="gaussian_energy", n_components=5, random_state=42).fit(umap_data)
 
+    if class_map_available:
+        orig_class_map = datamodule.parse_class_map()
+        umap_label_indices = np.array([orig_class_map[label] for label in umap_labels])
+    else:
+        umap_label_indices = umap_labels
+
+    # Credit: https://umap-learn.readthedocs.io/en/latest/embedding_space.html#a-practical-example
+    fig = plt.figure(figsize=(10, 10))
+    ax = fig.add_subplot(111)
+    num_unique_labels = len(class_map) if class_map_available else len(np.unique(umap_label_indices))
+    colors = plt.get_cmap("Spectral")(np.linspace(0, 1, num_unique_labels))
+
+    for i in range(gaussian_mapper.embedding_.shape[0]):
+        pos = gaussian_mapper.embedding_[i, :2]
+        draw_simple_ellipse(
+            pos,
+            gaussian_mapper.embedding_[i, 2],
+            gaussian_mapper.embedding_[i, 3],
+            gaussian_mapper.embedding_[i, 4],
+            ax,
+            n_ellipses=1,
+            color=colors[umap_label_indices[i]],
+            from_size=1.0,
+            to_size=1.0,
+            alpha=0.01
+        )
+
+    ax.scatter(
+        gaussian_mapper.embedding_.T[0],
+        gaussian_mapper.embedding_.T[1],
+        c=umap_label_indices,
+        cmap="Spectral",
+        s=3
+    )
+
+    # Create the legend with only the 20 most common labels
+    if class_map_available:
+        label_counts = {}
+        for label in umap_labels:
+            if label in label_counts:
+                label_counts[label] += 1
+            else:
+                label_counts[label] = 1
+        top_20_labels = sorted(label_counts, key=label_counts.get, reverse=True)[:20]
+        legend_handles = [Line2D([0], [0], color=colors[orig_class_map[label]], lw=3, label=label) for label in top_20_labels]
+        plt.legend(handles=legend_handles, title="Top-20 Most Common Superfamilies")
+
+    plt.xlabel("")  # Remove x-axis label
+    plt.ylabel("")  # Remove y-axis label
+    plt.xticks([])  # Remove x-axis ticks
+    plt.yticks([])  # Remove y-axis ticks
+    plt.show()
+    plt.savefig(cfg.plot_filepath)
 
 @hydra.main(
     version_base="1.3",

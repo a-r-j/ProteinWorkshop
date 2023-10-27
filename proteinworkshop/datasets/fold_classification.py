@@ -154,6 +154,7 @@ class FoldClassificationDataModule(ProteinDataModule):
 
     def setup(self, stage: Optional[str] = None):
         self.download_data_files()
+        self.download_structures()
         self.train_ds = self.train_dataset()
         self.val_ds = self.val_dataset()
         self.test_ds = self.test_dataset()
@@ -164,7 +165,7 @@ class FoldClassificationDataModule(ProteinDataModule):
             root=str(self.data_dir),
             pdb_dir=str(self.structure_dir),
             pdb_codes=list(df.id),
-            format="mmtf",
+            format="ent",
             graph_labels=[torch.tensor(a) for a in list(df.label)],
             overwrite=self.overwrite,
             transform=self.transform,
