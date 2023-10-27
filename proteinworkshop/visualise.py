@@ -196,7 +196,7 @@ def visualise(cfg: omegaconf.DictConfig):
                 label_counts[label] = 1
         top_20_labels = sorted(label_counts, key=label_counts.get, reverse=True)[:20]
         legend_handles = [Line2D([0], [0], color=colors[orig_class_map[label]], lw=3, label=label) for label in top_20_labels]
-        plt.legend(handles=legend_handles, title="Top-20 Most Common Superfamilies")
+        plt.legend(handles=legend_handles, title="Top-20 Most Common Labels")
 
     plt.xlabel("")  # Remove x-axis label
     plt.ylabel("")  # Remove y-axis label
