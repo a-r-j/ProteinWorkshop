@@ -1,10 +1,12 @@
 import collections
+import sys
 
 import chromadb
 import hydra
 import lightning as L
 import omegaconf
 import torch
+from beartype.typing import List
 from chromadb.config import Settings
 from loguru import logger as log
 from tqdm import tqdm
@@ -14,6 +16,7 @@ from proteinworkshop import (
     register_custom_omegaconf_resolvers,
     utils,
 )
+from proteinworkshop.configs import config
 from proteinworkshop.models.base import BenchMarkModel
 
 
@@ -100,33 +103,57 @@ def embed(cfg: omegaconf.DictConfig):
     )
     chroma_client.persist()
 
-    collection = chroma_client.create_collection(name=cfg.collection_name)
+    collection = chroma_client.create_collection(name=cfg.embed.collection_name)
 
-    for batch in tqdm(datamodule.train_dataloader()):
-        ids = batch.id
-        batch = batch.to(device)
-        batch = model.featuriser(batch)
-        out = model.forward(batch)
-        # node_embeddings = out["node_embedding"] # TODO: add node embeddings
-        graph_embeddings = out["graph_embedding"]
-        node_embeddings = graph_embeddings.tolist()
-        collection.add(embeddings=node_embeddings, ids=ids)
+    # Iterate over batches and perform embedding
+    dataloaders = {}
+    if "train" in cfg.embed.split:
+        dataloaders["train"] = datamodule.train_dataloader()
+    if "val" in cfg.embed.split:
+        dataloaders["val"] = datamodule.val_dataloader()
+    if "test" in cfg.embed.split:
+        dataloaders["test"] = datamodule.test_dataloader()
+
+    for split, dataloader in dataloaders.items():
+        log.info(f"Performing embedding for split: {split}")
+
+        for batch in tqdm(dataloader):
+            ids = batch.id
+            batch = batch.to(device)
+            batch = model.featuriser(batch)
+            out = model.forward(batch)
+            # node_embeddings = out["node_embedding"] # TODO: add node embeddings
+            graph_embeddings = out["graph_embedding"]
+            node_embeddings = graph_embeddings.tolist()
+            collection.add(embeddings=node_embeddings, ids=ids)
+
     chroma_client.persist()
 
 
+# Load hydra config from yaml files and command line arguments.
 @hydra.main(
     version_base="1.3",
     config_path=str(constants.HYDRA_CONFIG_PATH),
-    config_name="embed.yaml",
+    config_name="embed",
 )
 def _main(cfg: omegaconf.DictConfig) -> None:
-    # apply extra utilities
-    # (e.g. ask for tags if none are provided in cfg, print cfg tree, etc.)
+    """Load and validate the hydra config."""
     utils.extras(cfg)
-
+    cfg = config.validate_config(cfg)
     embed(cfg)
 
 
-if __name__ == "__main__":
+def _script_main(args: List[str]) -> None:
+    """
+    Provides an entry point for the script dispatcher.
+    Sets the sys.argv to the provided args and calls the main train function.
+    """
+    sys.argv = args
     register_custom_omegaconf_resolvers()
     _main()
+
+
+if __name__ == "__main__":
+    # pylint: disable=no-value-for-parameter
+    register_custom_omegaconf_resolvers()
+    _main()  # type: ignore

@@ -26,8 +26,11 @@ task_name: "visualise"
 
 compile: True
 
-# simply provide checkpoint path and image filepath to embed dataset and plot embeddings
+visualise:
+  label: "graph_label" # name of the model output with which to annotate nodes in the embedding plot
+  split: ["train", "val", "test"]
+  plot_filepath: null # path to which to save embeddings plot
+
 ckpt_path: null # path to checkpoint to load
-plot_filepath: null # path to which to save embeddings plot
 use_cuda_device: True # if True, use an available CUDA device for embedding generation
 cuda_device_index: 0 # if CUDA devices are targeted and available, which available CUDA device to use for embedding generation

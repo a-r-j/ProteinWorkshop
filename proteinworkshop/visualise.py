@@ -1,4 +1,5 @@
 import collections
+import sys
 
 import hydra
 import lightning as L
@@ -8,7 +9,7 @@ import numpy as np
 import umap
 import umap.plot
 import matplotlib.pyplot as plt
-from beartype.typing import Any, Dict, Optional
+from beartype.typing import Any, Dict, List, Optional
 from loguru import logger as log
 from matplotlib.lines import Line2D
 from matplotlib.patches import Ellipse
@@ -56,7 +57,7 @@ def draw_simple_ellipse(
 
 def visualise(cfg: omegaconf.DictConfig):
     assert cfg.ckpt_path, "A checkpoint path must be provided."
-    assert cfg.plot_filepath, "A plot name must be provided."
+    assert cfg.visualise.plot_filepath, "A plot name must be provided."
     if cfg.use_cuda_device and not torch.cuda.is_available():
         raise RuntimeError("CUDA device requested but CUDA is not available.")
 
@@ -136,21 +137,35 @@ def visualise(cfg: omegaconf.DictConfig):
         # is a mapping from fold name to fold index, so we need to invert it
         class_map = {v: k for k, v in datamodule.parse_class_map().items()}
 
+    # Iterate over batches and perform visualisation
+    dataloaders = {}
+    if "train" in cfg.visualise.split:
+        dataloaders["train"] = datamodule.train_dataloader()
+    if "val" in cfg.visualise.split:
+        dataloaders["val"] = datamodule.val_dataloader()
+    if "test" in cfg.visualise.split:
+        dataloaders["test"] = datamodule.test_dataloader()
+
     collection = []
     with torch.inference_mode():
-        for batch in tqdm(datamodule.train_dataloader()):
-            if "graph_y" in batch:
-                labels = batch.graph_y.tolist()
-                if class_map_available:
-                    labels = [class_map[label] for label in labels]
-            else:
-                labels = [id.split("_")[0] for id in batch.id]
-            batch = batch.to(device)
-            batch = model.featuriser(batch)
-            out = model.forward(batch)
-            graph_embeddings = out["graph_embedding"]
-            node_embeddings = graph_embeddings.tolist()
-            collection.append({"embedding": node_embeddings, "labels": labels})
+        for split, dataloader in dataloaders.items():
+            log.info(f"Performing visualisation for split: {split}")
+
+            for batch in tqdm(dataloader):
+                if cfg.visualise.label in batch:
+                    labels = batch[cfg.visualise.label].tolist()
+                elif "graph_y" in batch:
+                    labels = batch.graph_y.tolist()
+                    if class_map_available:
+                        labels = [class_map[label] for label in labels]
+                else:
+                    labels = [id.split("_")[0] for id in batch.id]
+                batch = batch.to(device)
+                batch = model.featuriser(batch)
+                out = model.forward(batch)
+                graph_embeddings = out["graph_embedding"]
+                node_embeddings = graph_embeddings.tolist()
+                collection.append({"embedding": node_embeddings, "labels": labels})
 
     # Plot embeddings using UMAP
     assert len(collection) > 0 and len(collection[0]["embedding"]) > 0, "At least one batch of embeddings must be present to plot with UMAP."
@@ -158,7 +173,10 @@ def visualise(cfg: omegaconf.DictConfig):
     umap_labels = np.array([label for x in collection for label in x["labels"]])
     gaussian_mapper = umap.UMAP(output_metric="gaussian_energy", n_components=5, random_state=42).fit(umap_data)
 
-    if class_map_available:
+    graph_label_available = cfg.visualise.label in batch
+    if graph_label_available:
+        umap_label_indices = np.array(list(range(len(umap_labels))))
+    elif class_map_available:
         orig_class_map = datamodule.parse_class_map()
         umap_label_indices = np.array([orig_class_map[label] for label in umap_labels])
     else:
@@ -209,22 +227,33 @@ def visualise(cfg: omegaconf.DictConfig):
     plt.ylabel("")  # Remove y-axis label
     plt.xticks([])  # Remove x-axis ticks
     plt.yticks([])  # Remove y-axis ticks
-    plt.show()
-    plt.savefig(cfg.plot_filepath)
+    plt.savefig(cfg.visualise.plot_filepath)
 
+
+# Load hydra config from yaml files and command line arguments.
 @hydra.main(
     version_base="1.3",
     config_path=str(constants.HYDRA_CONFIG_PATH),
-    config_name="visualise.yaml",
+    config_name="visualise",
 )
 def _main(cfg: omegaconf.DictConfig) -> None:
-    # apply extra utilities
-    # (e.g. ask for tags if none are provided in cfg, print cfg tree, etc.)
+    """Load and validate the hydra config."""
     utils.extras(cfg)
-
+    cfg = config.validate_config(cfg)
     visualise(cfg)
 
 
-if __name__ == "__main__":
+def _script_main(args: List[str]) -> None:
+    """
+    Provides an entry point for the script dispatcher.
+    Sets the sys.argv to the provided args and calls the main train function.
+    """
+    sys.argv = args
     register_custom_omegaconf_resolvers()
     _main()
+
+
+if __name__ == "__main__":
+    # pylint: disable=no-value-for-parameter
+    register_custom_omegaconf_resolvers()
+    _main()  # type: ignore
