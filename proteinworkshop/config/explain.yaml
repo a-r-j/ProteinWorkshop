@@ -23,25 +23,20 @@ defaults:
   - finetune: full_model
   # debugging config (enable through command line, e.g. `python train.py debug=default)
   - debug: null
-  #- sweeper: wandb
-  #- task: classification
-  #- graphein: default
   # optional hardware config for machine/user specific settings
   # (optional since it doesn't need to exist and is excluded from version control)
   #- optional hardware: cpu
-  #- optional output_decoder: ${task.output}_${decoder}
   - _self_ # see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.
 
 task_name: "visualise"
 
 compile: True
 
-explain:
-  n_steps: 50
-  output: "graph_label" # Name of the model output to attribute
-  split: ["train", "val", "test"]
-
-
-# simply provide checkpoint path and image filepath to embed dataset and plot embeddings
+# simply provide checkpoint path and output directory to embed dataset and write attributed PDB files
 ckpt_path: /home/jamasba/scratch/workshop_ckpts/runs/2023-09-18_23-46-54/checkpoints/epoch_038.ckpt
 output_dir: ./explanations
+
+explain:
+  n_steps: 50 # Number of steps to perform Integrated Gradients for
+  output: "graph_label" # Name of the model output to attribute
+  split: ["train", "val", "test"]  # Dataloaders to perform attribution for

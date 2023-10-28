@@ -241,6 +241,21 @@ wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 python proteinworkshop/embed.py dataset=cath encoder=egnn ckpt_path=PATH/TO/CHECKPOINT
 ```
 
+### Performing attribution of a pre-trained model
+
+We provide a utility in `proteinworkshop/explain.py` for performing attribution of a pre-trained model using integrated gradients.
+
+This will
+
+To run it:
+
+```bash
+python proteinworkshop/explain.py ckpt_path=PATH/TO/CHECKPOINT output_dir=ATTRIBUTION/DIRECTORY
+```
+
+See the `explain` section of `proteinworkshop/config/explain.yaml` for additional parameters.
+
+
 ### Verifying a config
 
 ```bash

@@ -3,15 +3,17 @@ import functools
 import os
 import pathlib
 import sys
-from typing import List
+from typing import List, Union
 
 import hydra
 import lightning as L
 import omegaconf
 import torch
 from captum.attr import IntegratedGradients
+from graphein.protein.tensor.data import ProteinBatch
 from graphein.protein.tensor.io import to_dataframe
 from loguru import logger as log
+from torch_geometric.data import Batch
 from torch_geometric.utils import unbatch
 from tqdm import tqdm
 
@@ -26,7 +28,9 @@ from proteinworkshop.models.base import BenchMarkModel
 
 def explain(cfg: omegaconf.DictConfig):
     assert cfg.ckpt_path, "No checkpoint path provided."
-    assert cfg.output_dir, "No plot name provided."
+    assert (
+        cfg.output_dir
+    ), "No output directory for attributed PDB files provided."
 
     cfg = config.validate_config(cfg)
 
@@ -86,15 +90,27 @@ def explain(cfg: omegaconf.DictConfig):
         os.makedirs(output_dir)
 
     # Wrap forward function and pass to captum
-    def _forward_wrapper(model, node_feats, batch, output: str):
-        batch.edge_index = batch.edge_index[:2, :]
-        batch.x = node_feats
+    def _forward_wrapper(
+        model: L.LightningModule,
+        node_feats: torch.Tensor,
+        batch: Union[Batch, ProteinBatch],
+        output: str,
+    ):
+        """Wrapper function around forward pass.
+
+        Sets node features to the provided node features and returns the
+        model output for the specified output.
+
+        The node feature update is necessary to set the interpolated features
+        from IntegratedGradients.
+        """
+        batch.edge_index = batch.edge_index[:2, :]  # Handle GearNet edge case
+        batch.x = node_feats  # Update node features
         return model.forward(batch)[output]
 
     fwd = functools.partial(_forward_wrapper, model.cuda(), output=OUTPUT)
     ig = IntegratedGradients(fwd)
 
-    # Iterate over batches and perform attribution
     dataloaders = {}
     if "train" in cfg.explain.split:
         dataloaders["train"] = datamodule.train_dataloader()
@@ -103,6 +119,7 @@ def explain(cfg: omegaconf.DictConfig):
     if "test" in cfg.explain.split:
         dataloaders["test"] = datamodule.test_dataloader()
 
+    # Iterate over batches and perform attribution
     for split, dataloader in dataloaders.items():
         log.info(f"Performing attribution for split: {split}")
 
