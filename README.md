@@ -235,11 +235,21 @@ wandb sweep proteinworkshop/config/sweeps/pt_inverse_folding.yaml
 wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 ```
 
-### Embedding a dataset (Experimental)
-
+### Embedding a dataset
+We provide a utility in `proteinworkshop/embed.py` for embedding a dataset using a pre-trained model.
+To run it:
 ```bash
-python proteinworkshop/embed.py dataset=cath encoder=egnn ckpt_path=PATH/TO/CHECKPOINT
+python proteinworkshop/embed.py ckpt_path=PATH/TO/CHECKPOINT collection_name=COLLECTION_NAME
 ```
+See the `embed` section of `proteinworkshop/config/embed.yaml` for additional parameters.
+
+### Visualising pre-trained model embeddings for a given dataset
+We provide a utility in `proteinworkshop/visualise.py` for visualising the UMAP embeddings of a pre-trained model for a given dataset.
+To run it:
+```bash
+python proteinworkshop/visualise.py ckpt_path=PATH/TO/CHECKPOINT plot_filepath=VISUALISATION/FILEPATH.png
+```
+See the `visualise` section of `proteinworkshop/config/visualise.yaml` for additional parameters.
 
 ### Verifying a config
 

@@ -27,11 +27,11 @@ task_name: "embed"
 
 compile: True
 
-embed:
-  split: ["train", "val", "test"]
-  collection_name: null # name of embedding collection to curate
-
-# simply provide checkpoint path to embed dataset using chroma
+# simply provide checkpoint path and collection name to embed dataset using chroma
 ckpt_path: null # path to checkpoint to load
+collection_name: null # name of embedding collection to curate
 use_cuda_device: True # if True, use an available CUDA device for embedding generation
 cuda_device_index: 0 # if CUDA devices are targeted and available, which available CUDA device to use for embedding generation
+
+embed:
+  split: ["train", "val", "test"]

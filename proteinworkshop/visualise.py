@@ -57,7 +57,7 @@ def draw_simple_ellipse(
 
 def visualise(cfg: omegaconf.DictConfig):
     assert cfg.ckpt_path, "A checkpoint path must be provided."
-    assert cfg.visualise.plot_filepath, "A plot name must be provided."
+    assert cfg.plot_filepath, "A plot name must be provided."
     if cfg.use_cuda_device and not torch.cuda.is_available():
         raise RuntimeError("CUDA device requested but CUDA is not available.")
 
@@ -227,7 +227,7 @@ def visualise(cfg: omegaconf.DictConfig):
     plt.ylabel("")  # Remove y-axis label
     plt.xticks([])  # Remove x-axis ticks
     plt.yticks([])  # Remove y-axis ticks
-    plt.savefig(cfg.visualise.plot_filepath)
+    plt.savefig(cfg.plot_filepath)
 
 
 # Load hydra config from yaml files and command line arguments.

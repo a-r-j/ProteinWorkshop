@@ -103,7 +103,7 @@ def embed(cfg: omegaconf.DictConfig):
     )
     chroma_client.persist()
 
-    collection = chroma_client.create_collection(name=cfg.embed.collection_name)
+    collection = chroma_client.create_collection(name=cfg.collection_name)
 
     # Iterate over batches and perform embedding
     dataloaders = {}
