@@ -13,6 +13,7 @@ from beartype.typing import Any, Dict, List, Optional
 from loguru import logger as log
 from matplotlib.lines import Line2D
 from matplotlib.patches import Ellipse
+from torchmetrics.functional.clustering import dunn_index
 from tqdm import tqdm
 
 from proteinworkshop import (
@@ -167,46 +168,37 @@ def visualise(cfg: omegaconf.DictConfig):
                 node_embeddings = graph_embeddings.tolist()
                 collection.append({"embedding": node_embeddings, "labels": labels})
 
-    # Plot embeddings using UMAP
+    # Derive clustering of embeddings using UMAP
     assert len(collection) > 0 and len(collection[0]["embedding"]) > 0, "At least one batch of embeddings must be present to plot with UMAP."
-    umap_data = np.array([batch for x in collection for batch in x["embedding"]])
-    umap_labels = np.array([label for x in collection for label in x["labels"]])
-    gaussian_mapper = umap.UMAP(output_metric="gaussian_energy", n_components=5, random_state=42).fit(umap_data)
+    clustering_data = np.array([batch for x in collection for batch in x["embedding"]])
+    clustering_labels = np.array([label for x in collection for label in x["labels"]])
+    umap_embeddings = umap.UMAP(random_state=cfg.seed).fit_transform(clustering_data)
 
     graph_label_available = cfg.visualise.label in batch
     if graph_label_available:
-        umap_label_indices = np.array(list(range(len(umap_labels))))
+        clustering_label_indices = np.array(list(range(len(clustering_labels))))
     elif class_map_available:
         orig_class_map = datamodule.parse_class_map()
-        umap_label_indices = np.array([orig_class_map[label] for label in umap_labels])
+        clustering_label_indices = np.array([orig_class_map[label] for label in clustering_labels])
     else:
-        umap_label_indices = umap_labels
+        clustering_label_indices = clustering_labels
 
-    # Credit: https://umap-learn.readthedocs.io/en/latest/embedding_space.html#a-practical-example
+    # Report Dunn index of clustering
+    dunn_index_data = torch.from_numpy(umap_embeddings)
+    dunn_index_labels = torch.from_numpy(clustering_label_indices)
+    clustering_dunn_index = dunn_index(dunn_index_data, dunn_index_labels)
+    log.info(f"Dunn index of clustering: {clustering_dunn_index.item()}")
+
+    # Plot UMAP clustering
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111)
-    num_unique_labels = len(class_map) if class_map_available else len(np.unique(umap_label_indices))
+    num_unique_labels = len(class_map) if class_map_available else len(np.unique(clustering_label_indices))
     colors = plt.get_cmap("Spectral")(np.linspace(0, 1, num_unique_labels))
 
-    for i in range(gaussian_mapper.embedding_.shape[0]):
-        pos = gaussian_mapper.embedding_[i, :2]
-        draw_simple_ellipse(
-            pos,
-            gaussian_mapper.embedding_[i, 2],
-            gaussian_mapper.embedding_[i, 3],
-            gaussian_mapper.embedding_[i, 4],
-            ax,
-            n_ellipses=1,
-            color=colors[umap_label_indices[i]],
-            from_size=1.0,
-            to_size=1.0,
-            alpha=0.01
-        )
-
     ax.scatter(
-        gaussian_mapper.embedding_.T[0],
-        gaussian_mapper.embedding_.T[1],
-        c=umap_label_indices,
+        umap_embeddings[:, 0],
+        umap_embeddings[:, 1],
+        c=clustering_label_indices,
         cmap="Spectral",
         s=3
     )
@@ -214,7 +206,7 @@ def visualise(cfg: omegaconf.DictConfig):
     # Create the legend with only the 20 most common labels
     if class_map_available:
         label_counts = {}
-        for label in umap_labels:
+        for label in clustering_labels:
             if label in label_counts:
                 label_counts[label] += 1
             else:
