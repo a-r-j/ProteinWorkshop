@@ -527,8 +527,8 @@ We use `poetry` to manage the project's underlying dependencies and to push upda
 To keep with the code style for the `proteinworkshop` repository, using the following lines, please format your commits before opening a pull request:
 ```bash
 # assuming you are located in the `ProteinWorkshop` top-level directory
-isort . 
-autoflake -r --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports . 
+isort .
+autoflake -r --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports .
 black --config=pyproject.toml .
 ```
 
