@@ -151,7 +151,7 @@ def finetune(cfg: DictConfig):
 @hydra.main(
     version_base="1.3",
     config_path=str(constants.HYDRA_CONFIG_PATH),
-    config_name="finetune.yaml",
+    config_name="finetune",
 )
 def _main(cfg: DictConfig) -> None:
     # apply extra utilities
