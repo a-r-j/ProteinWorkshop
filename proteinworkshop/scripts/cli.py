@@ -82,6 +82,28 @@ def main():
         help="Additional arguments passed to the explain script.",
     )
 
+    # ... embed sub-command
+    embed_parser = subparsers.add_parser(
+        "embed",
+        help="embed a dataset. See proteinworkshop/embed.py for more details.",
+    )
+    embed_parser.add_argument(
+        "embed_args",
+        nargs="*",
+        help="Additional arguments passed to the embed script.",
+    )
+
+    # ... visualise sub-command
+    visualise_parser = subparsers.add_parser(
+        "visualise",
+        help="visualise a dataset's embeddings. See proteinworkshop/visualise.py for more details.",
+    )
+    visualise_parser.add_argument(
+        "visualise_args",
+        nargs="*",
+        help="Additional arguments passed to the visualise script.",
+    )
+
     # Parse arguments
     args = parser.parse_args()
 
@@ -130,9 +152,20 @@ def main():
 
         explain_main(args.explain_args)
 
+    elif args.command == "embed":
+        from proteinworkshop.embed import _script_main as embed_main
+
+        embed_main(args.embed_args)
+
+    elif args.command == "visualise":
+        from proteinworkshop.visualise import _script_main as visualise_main
+
+        visualise_main(args.visualise_args)
+
     else:
         _valid = "\n\t".join(
-            ["\n\tinstall", "\tdownload", "\ttrain", "\tfinetune", "\texplain"]
+            ["\n\tinstall", "\tdownload", "\ttrain", "\tfinetune", "\tembed", "\tvisualise", "\texplain"]
+
         )
         if args.command is None:
             raise ValueError(f"Missing command. Valid commands are: {_valid}")

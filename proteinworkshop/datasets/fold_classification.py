@@ -154,6 +154,7 @@ class FoldClassificationDataModule(ProteinDataModule):
 
     def setup(self, stage: Optional[str] = None):
         self.download_data_files()
+        self.download_structures()
         self.train_ds = self.train_dataset()
         self.val_ds = self.val_dataset()
         self.test_ds = self.test_dataset()

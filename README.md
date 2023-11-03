@@ -35,7 +35,8 @@ Configuration files to run the experiments described in the manuscript are provi
     - [Training a model](#training-a-model)
     - [Finetuning a model](#finetuning-a-model)
     - [Running a sweep/experiment](#running-a-sweepexperiment)
-    - [Embedding a dataset](#embedding-a-dataset-experimental)
+    - [Embedding a dataset](#embedding-a-dataset)
+    - [Visualising a dataset's embeddings](#visualising-pre-trained-model-embeddings-for-a-given-dataset)
     - [Verifying a config](#verifying-a-config)
     - [Using `proteinworkshop` modules functionally](#using-proteinworkshop-modules-functionally)
   - [Models](#models)
@@ -235,11 +236,21 @@ wandb sweep proteinworkshop/config/sweeps/pt_inverse_folding.yaml
 wandb agent mywandbgroup/proteinworkshop/2gwtt7oy --count 8
 ```
 
-### Embedding a dataset (Experimental)
-
+### Embedding a dataset
+We provide a utility in `proteinworkshop/embed.py` for embedding a dataset using a pre-trained model.
+To run it:
 ```bash
-python proteinworkshop/embed.py dataset=cath encoder=egnn ckpt_path=PATH/TO/CHECKPOINT
+python proteinworkshop/embed.py ckpt_path=PATH/TO/CHECKPOINT collection_name=COLLECTION_NAME
 ```
+See the `embed` section of `proteinworkshop/config/embed.yaml` for additional parameters.
+
+### Visualising pre-trained model embeddings for a given dataset
+We provide a utility in `proteinworkshop/visualise.py` for visualising the UMAP embeddings of a pre-trained model for a given dataset.
+To run it:
+```bash
+python proteinworkshop/visualise.py ckpt_path=PATH/TO/CHECKPOINT plot_filepath=VISUALISATION/FILEPATH.png
+```
+See the `visualise` section of `proteinworkshop/config/visualise.yaml` for additional parameters.
 
 ### Performing attribution of a pre-trained model
 
@@ -310,8 +321,7 @@ Read [the docs](https://www.proteins.sh) for a full list of modules available in
 
 | Name      | Source   | Protein Specific |
 | ----------- | ----------- | ----------- |
-| `GearNet`| [Zhang et al.](https://arxiv.org/pdf/2203.06125) | ✓
-| `ProNet`   | [Wang et al.](https://arxiv.org/abs/2207.12600) | ✓
+| `GearNet`| [Zhang et al.](https://arxiv.org/abs/2203.06125) | ✓
 | `DimeNet++`   | [Gasteiger et al.](https://arxiv.org/abs/2011.14115) | ✗
 | `SchNet`   | [Schütt et al.](https://arxiv.org/abs/1706.08566) | ✗
 
@@ -329,8 +339,14 @@ Read [the docs](https://www.proteins.sh) for a full list of modules available in
 
 | Name      |  Source | Protein Specific |
 | ----------- |  ----------- | --------- |
-| `Tensor Field Network` | [Corso et al.](https://arxiv.org/abs/2210.01776) | ❓
+| `Tensor Field Network` | [Corso et al.](https://arxiv.org/abs/2210.01776) | ✓
 | `Multi-ACE` | [Batatia et al.](https://arxiv.org/abs/2206.07697) | ✗
+
+### Sequence-based Encoders
+
+| Name      | Source   | Protein Specific |
+| ----------- | ----------- | ----------- |
+| `ESM2`| [Lin et al.](https://www.science.org/doi/10.1126/science.ade2574) | ✓
 
 ## Datasets
 

@@ -14,7 +14,7 @@ logging.getLogger("graphein").setLevel(logging.WARNING)
 # Load hydra config from yaml filses and command line arguments.
 def _main(cfg: DictConfig) -> None:
     """Load and validate the hydra config."""
-    utils.extras.extras(cfg)
+    utils.extras(cfg)
     cfg = config.validate_config(cfg)
 
 
