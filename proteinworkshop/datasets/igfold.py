@@ -112,9 +112,7 @@ class IgFoldDataModule(ProteinDataModule):
                 self.DATASET_URL, out=str(self.data_dir / self.TAR_FILENAME)
             )
         else:
-            logger.info(
-                f"IgFold structures found in {self.data_dir}"
-            )
+            logger.info(f"IgFold structures found in {self.data_dir}")
 
         if not os.path.exists(self.structure_dir):
             logger.info(f"Extracting tarfile to {self.structure_dir}")
