@@ -14,7 +14,6 @@ import torch
 import torch.nn as nn
 import torch_geometric
 from graphein.protein.tensor.dataloader import ProteinDataLoader
-from graphein.ml.datasets.foldcomp_dataset import FoldCompLightningDataModule
 from lightning.pytorch.callbacks import Callback
 from lightning.pytorch.loggers import Logger
 from loguru import logger as log
