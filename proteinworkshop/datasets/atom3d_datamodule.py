@@ -71,7 +71,7 @@ def get_test_data_path(
         # default to testing PPI methods with DB5
         "PPI": f"PPI/splits/{ppi_split}/data/{test_phase}"
         if use_dips_for_testing
-        else f"PPI/raw/DB5/data/",
+        else "PPI/raw/DB5/data/",
         "RES": f"RES/splits/split-by-cath-topology/data/{test_phase}",
         "MSP": f"MSP/splits/split-by-sequence-identity-30/data/{test_phase}",
     }

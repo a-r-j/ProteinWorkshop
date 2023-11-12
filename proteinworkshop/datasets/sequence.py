@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 try:
     import esm
-except:
+except ImportError:
     logger.warning(
         "ESM not installed. If you are using a sequence dataset this will be required to fold structures. See: https://github.com/facebookresearch/esm#quickstart"
     )
@@ -24,6 +24,9 @@ verbose(False)
 
 
 class SequenceDataset(Dataset):
+    """Dataset class for working with Sequence Datasets. Provides utilities
+    for batch folding and embedding with ESM(Fold)."""
+
     def __init__(
         self,
         fasta_file: Optional[str] = None,
@@ -39,8 +42,6 @@ class SequenceDataset(Dataset):
         use_embeddings: bool = True,
         use_structure: bool = True,
     ):
-        """Dataset class for working with Sequence Datasets. Provides utilities
-        for batch folding and embedding with ESM(Fold)."""
         self.root = root if root is not None else os.getcwd()
         if not os.path.exists(self.root):
             os.makedirs(self.root)

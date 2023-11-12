@@ -252,6 +252,21 @@ python proteinworkshop/visualise.py ckpt_path=PATH/TO/CHECKPOINT plot_filepath=V
 ```
 See the `visualise` section of `proteinworkshop/config/visualise.yaml` for additional parameters.
 
+### Performing attribution of a pre-trained model
+
+We provide a utility in `proteinworkshop/explain.py` for performing attribution of a pre-trained model using integrated gradients.
+
+This will write PDB files for all the structures in a dataset for a supervised task with residue-level attributions in the b_factor column. To visualise the attributions, we recommend using the [Protein Viewer VSCode extension](https://marketplace.visualstudio.com/items?itemName=ArianJamasb.protein-viewer) and changing the 3D representation to colour by `Uncertainty/Disorder`.
+
+To run the attribution:
+
+```bash
+python proteinworkshop/explain.py ckpt_path=PATH/TO/CHECKPOINT output_dir=ATTRIBUTION/DIRECTORY
+```
+
+See the `explain` section of `proteinworkshop/config/explain.yaml` for additional parameters.
+
+
 ### Verifying a config
 
 ```bash
@@ -361,7 +376,10 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 | `esmatlas` | [ESMAtlas](https://esmatlas.com/) predictions  (full)     | [Kim et al.](https://academic.oup.com/bioinformatics/article/39/4/btad153/7085592) | | 1 Tb | [GPL-3.0](https://github.com/steineggerlab/foldcomp/blob/master/LICENSE.txt) / [CC-BY 4.0](https://esmatlas.com/about)
 | `esmatlas_v2023_02`| [ESMAtlas](https://esmatlas.com/) predictions (v2023_02 release)      | [Kim et al.](https://academic.oup.com/bioinformatics/article/39/4/btad153/7085592)       | | 137 Gb| [GPL-3.0](https://github.com/steineggerlab/foldcomp/blob/master/LICENSE.txt) / [CC-BY 4.0](https://esmatlas.com/about)
 | `highquality_clust30`| [ESMAtlas](https://esmatlas.com/) High Quality predictions       |  [Kim et al.](https://academic.oup.com/bioinformatics/article/39/4/btad153/7085592)      | 37M Chains | 114 Gb |  [GPL-3.0](https://github.com/steineggerlab/foldcomp/blob/master/LICENSE.txt) / [CC-BY 4.0](https://esmatlas.com/about)
+| `igfold_paired_oas` | IGFold Predictions for [Paired OAS](https://journals.aai.org/jimmunol/article/201/8/2502/107069/Observed-Antibody-Space-A-Resource-for-Data-Mining) | [Ruffolo et al.](https://www.nature.com/articles/s41467-023-38063-x) | 104,994 paired Ab chains | | [CC-BY 4.0](https://www.nature.com/articles/s41467-023-38063-x#rightslink)
+| `igfold_jaffe` | IGFold predictions for [Jaffe2022](https://www.nature.com/articles/s41586-022-05371-z) data | [Ruffolo et al.](https://www.nature.com/articles/s41467-023-38063-x) | 1,340,180 paired Ab chains   | | [CC-BY 4.0](https://www.nature.com/articles/s41467-023-38063-x#rightslink)
 | `pdb`| Experimental structures deposited in the [RCSB Protein Data Bank](https://www.rcsb.org/)       |  [wwPDB consortium](https://academic.oup.com/nar/article/47/D1/D520/5144142)      | ~800k Chains |23 Gb | [CC0 1.0](https://www.rcsb.org/news/feature/611e8d97ef055f03d1f222c6) |
+
 
 <details>
   <summary>Additionally, we provide several species-specific compilations (mostly reference species)</summary>
@@ -528,8 +546,8 @@ We use `poetry` to manage the project's underlying dependencies and to push upda
 To keep with the code style for the `proteinworkshop` repository, using the following lines, please format your commits before opening a pull request:
 ```bash
 # assuming you are located in the `ProteinWorkshop` top-level directory
-isort . 
-autoflake -r --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports . 
+isort .
+autoflake -r --in-place --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports .
 black --config=pyproject.toml .
 ```
 

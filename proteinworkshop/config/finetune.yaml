@@ -25,6 +25,7 @@ defaults:
   - finetune: default # Specifies finetuning config. See: proteinworkshop/config/finetune/
   # debugging config (enable through command line, e.g. `python train.py debug=default)
   - debug: null
+  - optional hparams: ${encoder}_${features}
   - _self_ # see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.
 
 task_name: "finetune"

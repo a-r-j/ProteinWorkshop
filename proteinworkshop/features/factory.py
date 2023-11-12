@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Union, Literal
 
 import torch
 import torch.nn as nn
@@ -27,44 +27,44 @@ from proteinworkshop.types import (
     VectorNodeFeature,
 )
 
+StructureRepresentation = Literal["ca", "ca_bb", "full_atom"]
+
 
 class ProteinFeaturiser(nn.Module):
     """
-    Configurable protein featuriser.
+    Initialise a protein featuriser.
+
+    :param representation: Representation to use for the protein.
+        One of ``"ca", "ca_bb", "full_atom"``.
+    :type representation: StructureRepresentation
+    :param scalar_node_features: List of scalar-values node features to
+        compute. Options: ``"amino_acid_one_hot",
+        "sequence_positional_encoding", "alpha", "kappa", "dihedrals"
+        "sidechain_torsions"``.
+    :type scalar_node_features: List[ScalarNodeFeature]
+    :param vector_node_features: List of vector-valued node features to
+        compute. # TODO types
+    :type vector_node_features: List[VectorNodeFeature]
+    :param edge_types: List of edge types to compute.
+        Options: # TODO types
+    :type edge_types: List[str]
+    :param scalar_edge_features: List of scalar-valued edge features to
+        compute. # TODO types
+    :type scalar_edge_features: List[ScalarEdgeFeature]
+    :param vector_edge_features: List of vector-valued edge features to
+        compute. # TODO types
+    :type vector_edge_features: List[VectorEdgeFeature]
     """
 
     def __init__(
         self,
-        representation: str,
+        representation: StructureRepresentation,
         scalar_node_features: List[ScalarNodeFeature],
         vector_node_features: List[VectorNodeFeature],
         edge_types: List[str],
         scalar_edge_features: List[ScalarEdgeFeature],
         vector_edge_features: List[VectorEdgeFeature],
     ):
-        """Initialise a protein featuriser.
-
-        :param representation: Representation to use for the protein.
-            One of ``"ca", "ca_bb", "full_atom"``. # TODO types
-        :type representation: str
-        :param scalar_node_features: List of scalar-values node features to
-            compute. Options: ``"amino_acid_one_hot",
-            "sequence_positional_encoding", "alpha", "kappa", "dihedrals"
-            "sidechain_torsions"``. # TODO types
-        :type scalar_node_features: List[ScalarNodeFeature]
-        :param vector_node_features: List of vector-valued node features to
-            compute. # TODO types
-        :type vector_node_features: List[VectorNodeFeature]
-        :param edge_types: List of edge types to compute.
-            Options: # TODO types
-        :type edge_types: List[str]
-        :param scalar_edge_features: List of scalar-valued edge features to
-            compute. # TODO types
-        :type scalar_edge_features: List[ScalarEdgeFeature]
-        :param vector_edge_features: List of vector-valued edge features to
-            compute. # TODO types
-        :type vector_edge_features: List[VectorEdgeFeature]
-        """
         super(ProteinFeaturiser, self).__init__()
         self.representation = representation
         self.scalar_node_features = scalar_node_features
@@ -95,14 +95,14 @@ class ProteinFeaturiser(nn.Module):
                 batch.x = self.positional_encoding(slices)
                 # This is necessary to concat node features with the positional encoding
                 concat_nf = True
-
-            scalar_features = compute_scalar_node_features(
-                batch, self.scalar_node_features
-            )
-            if concat_nf:
-                batch.x = torch.cat([batch.x, scalar_features], dim=-1)
-            else:
-                batch.x = scalar_features
+            if self.scalar_node_features != ["sequence_positional_encoding"]:
+                scalar_features = compute_scalar_node_features(
+                    batch, self.scalar_node_features
+                )
+                if concat_nf:
+                    batch.x = torch.cat([batch.x, scalar_features], dim=-1)
+                else:
+                    batch.x = scalar_features
             batch.x = torch.nan_to_num(
                 batch.x, nan=0.0, posinf=0.0, neginf=0.0
             )
@@ -148,7 +148,6 @@ class ProteinFeaturiser(nn.Module):
 if __name__ == "__main__":
     import hydra
     import omegaconf
-    from loguru import logger
 
     from proteinworkshop import constants
 

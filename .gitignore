@@ -147,8 +147,7 @@ wandb/
 .DS_Store
 .env
 
-# Visualisations
-visualisations/
-
 # Explanations
 explanations/
+# Visualisations
+visualisations/

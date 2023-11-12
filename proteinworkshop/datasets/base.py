@@ -305,6 +305,8 @@ class ProteinDataset(Dataset):
         self.store_het = store_het
         self.out_names = out_names
 
+        self._processed_files = []
+
         # Determine whether to download raw structures
         if not self.overwrite and all(
             os.path.exists(Path(self.root) / "processed" / p)
@@ -414,6 +416,8 @@ class ProteinDataset(Dataset):
         :return: List of processed file names.
         :rtype: Union[str, List[str], Tuple]
         """
+        if self._processed_files:
+            return self._processed_files
         if self.overwrite:
             return ["this_forces_a_processing_cycle"]
         if self.out_names is not None:
@@ -497,6 +501,7 @@ class ProteinDataset(Dataset):
                 graph.node_y = self.node_labels[i]  # type: ignore
 
             torch.save(graph, Path(self.processed_dir) / fname)
+            self._processed_files.append(fname)
         logger.info("Completed processing.")
 
     def get(self, idx: int) -> Data:
