@@ -158,11 +158,9 @@ def orientations(
     if X.ndim == 3:
         X = X[:, ca_idx, :]
 
-    device = X.device
-    batch_num_nodes = X.shape[0]
-
     # NOTE: the first item in the coordinates slice index is always 0,
     # and the last item is always the node count of the batch
+    batch_num_nodes = X.shape[0]
     slice_index = coords_slice_index[1:] - 1
     last_node_index = slice_index[:-1]
     first_node_index = slice_index[:-1] + 1
@@ -190,7 +188,7 @@ def orientations(
     # optionally debug/verify the orientations
     # last_node_indices = torch.cat((last_node_index, torch.tensor([batch_num_nodes - 1])), dim=0)
     # first_node_indices = torch.cat((torch.tensor([0]), first_node_index), dim=0)
-    # intermediate_node_indices_mask = torch.ones(batch_num_nodes, device=device, dtype=torch.bool)
+    # intermediate_node_indices_mask = torch.ones(batch_num_nodes, device=X.device, dtype=torch.bool)
     # intermediate_node_indices_mask[last_node_indices] = False
     # intermediate_node_indices_mask[first_node_indices] = False
     # assert not orientations[last_node_indices][:, 0].any() and orientations[last_node_indices][:, 1].any()
