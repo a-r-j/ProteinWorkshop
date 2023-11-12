@@ -213,7 +213,7 @@ where the weights :math:`\vw` of the tensor product are computed via a learnt ra
 
 MACE (Batatia et al., 2022) is a higher order E(3) or SE(3) equivariant GNN originally developed for molecular dynamics simulations.
 MACE provides an efficient approach to computing high body order equivariant features in the Tensor Field Network framework via Atomic Cluster Expansion:
-They first aggregate neighbourhood features analogous to the node update equation for TFN above (the :math:`A` functions in Batatia et al. (2022) (eq.9)) and then take :math:`k-1` repeated self-tensor products of these neighbourhood features. 
+They first aggregate neighbourhood features analogous to the node update equation for TFN above (the :math:`A` functions in Batatia et al. (2022) (eq.9)) and then take :math:`k-1` repeated self-tensor products of these neighbourhood features.
 In our formalism, this corresponds to:
 
 .. math::

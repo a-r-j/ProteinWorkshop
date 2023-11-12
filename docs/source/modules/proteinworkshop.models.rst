@@ -5,7 +5,7 @@ To switch between different encoder architectures, simply change the ``encoder``
 .. code-block:: bash
 
     workshop train encoder=<encoder_name> dataset=cath task=inverse_folding trainer=cpu
-    # or 
+    # or
     python proteinworkshop/train.py encoder=<encoder_name> dataset=cath task=inverse_folding trainer=cpu # or trainer=gpu
 
 Where ``<encoder_name>`` is given by bracketed name in the listing below. For example, the encoder name for SchNet is ``schnet``.
