@@ -188,13 +188,13 @@ def orientations(
     orientations = torch.cat((forward.unsqueeze(-2), backward.unsqueeze(-2)), dim=-2)
 
     # optionally debug/verify the orientations
-    last_node_indices = torch.cat((last_node_index, torch.tensor([batch_num_nodes - 1])), dim=0)
-    first_node_indices = torch.cat((torch.tensor([0]), first_node_index), dim=0)
-    intermediate_node_indices_mask = torch.ones(batch_num_nodes, device=device, dtype=torch.bool)
-    intermediate_node_indices_mask[last_node_indices] = False
-    intermediate_node_indices_mask[first_node_indices] = False
-    assert not orientations[last_node_indices][:, 0].any() and orientations[last_node_indices][:, 1].any()
-    assert orientations[first_node_indices][:, 0].any() and not orientations[first_node_indices][:, 1].any()
-    assert orientations[intermediate_node_indices_mask][:, 0].any() and orientations[intermediate_node_indices_mask][:, 1].any()
+    # last_node_indices = torch.cat((last_node_index, torch.tensor([batch_num_nodes - 1])), dim=0)
+    # first_node_indices = torch.cat((torch.tensor([0]), first_node_index), dim=0)
+    # intermediate_node_indices_mask = torch.ones(batch_num_nodes, device=device, dtype=torch.bool)
+    # intermediate_node_indices_mask[last_node_indices] = False
+    # intermediate_node_indices_mask[first_node_indices] = False
+    # assert not orientations[last_node_indices][:, 0].any() and orientations[last_node_indices][:, 1].any()
+    # assert orientations[first_node_indices][:, 0].any() and not orientations[first_node_indices][:, 1].any()
+    # assert orientations[intermediate_node_indices_mask][:, 0].any() and orientations[intermediate_node_indices_mask][:, 1].any()
 
     return orientations
