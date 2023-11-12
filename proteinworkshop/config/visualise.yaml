@@ -2,7 +2,7 @@
 
 # === 1. Set config parameters ===
 name: "" # default name for the experiment, "" means logger (eg. wandb) will generate a unique name
-seed: 52 # seed for random number generators in pytorch, numpy and python.random
+seed: 52 # seed for random number generators in pytorch, numpy and python.random (as well as in UMAP)
 num_workers: 16 # number of subprocesses to use for data loading.
 
 # === 2. Specify defaults here. Defaults will be overwritten by equivalently named options in this file ===
@@ -29,7 +29,6 @@ compile: True
 # simply provide checkpoint path and plot filepath to embed dataset and plot its UMAP embeddings
 ckpt_path: null # path to checkpoint to load
 plot_filepath: null # path to which to save embeddings plot
-seed: 42 # random seed to be used by the UMAP algorithm
 use_cuda_device: True # if True, use an available CUDA device for embedding generation
 cuda_device_index: 0 # if CUDA devices are targeted and available, which available CUDA device to use for embedding generation
 
