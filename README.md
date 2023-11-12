@@ -324,6 +324,7 @@ Read [the docs](https://www.proteins.sh) for a full list of modules available in
 | `GearNet`| [Zhang et al.](https://arxiv.org/abs/2203.06125) | ✓
 | `DimeNet++`   | [Gasteiger et al.](https://arxiv.org/abs/2011.14115) | ✗
 | `SchNet`   | [Schütt et al.](https://arxiv.org/abs/1706.08566) | ✗
+| `CDConv`   | [Fan et al.](https://openreview.net/forum?id=P5Z-Zl9XJ7) | ✓
 
 ### Equivariant Graph Encoders
 

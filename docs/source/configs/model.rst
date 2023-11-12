@@ -113,6 +113,19 @@ where :math:`\mathrm{FC(\cdot)}` denotes a linear transformation upon the messag
     :caption: config/encoder/gear_net_edge.yaml
 
 
+
+:py:class`CDConv <proteinworkshop.models.graph_encoders.cdconv.CDConvModel>` (``cdconv``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+CDConv is an SE(3) invariant architecture that uses independent learnable weights for sequential displacement, whilst directly encoding geometric displacements.
+
+As a result of the downsampling procedures, this architecture is only suitable for graph-level prediction tasks.
+
+.. literalinclude:: ../../../proteinworkshop/config/encoder/cdconv.yaml
+    :language: yaml
+    :caption: config/encoder/cdconv.yaml
+
+
 Vector-Equivariant Encoders
 =============================
 

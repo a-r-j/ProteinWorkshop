@@ -65,6 +65,12 @@ GearNet (``gear_net``, ``gear_net_edge``)
     :undoc-members:
     :show-inheritance:
 
+CDConv (``cdconv``)
+^^^^^^^^^^^^^^^^^^^^^
+.. automodule:: proteinworkshop.models.graph_encoders.cdconv
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 Vector-Equivariant Encoders
 =============================

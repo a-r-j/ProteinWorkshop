@@ -359,9 +359,7 @@ class ProteinDataset(Dataset):
                     pdb
                     for pdb in self.pdb_codes
                     if not (
-                        os.path.exists(
-                            Path(self.raw_dir) / f"{pdb}.{self.format}"
-                        )
+                        os.path.exists(Path(self.raw_dir) / f"{pdb}.{self.format}")
                         or os.path.exists(
                             Path(self.raw_dir) / f"{pdb}.{self.format}.gz"
                         )
@@ -371,13 +369,9 @@ class ProteinDataset(Dataset):
             to_download = list(set(to_download))
             logger.info(f"Downloading {len(to_download)} structures")
             file_format = (
-                self.format[:-3]
-                if self.format.endswith(".gz")
-                else self.format
+                self.format[:-3] if self.format.endswith(".gz") else self.format
             )
-            download_pdb_multiprocessing(
-                to_download, self.raw_dir, format=file_format
-            )
+            download_pdb_multiprocessing(to_download, self.raw_dir, format=file_format)
 
     def len(self) -> int:
         """Return length of the dataset."""
@@ -424,8 +418,7 @@ class ProteinDataset(Dataset):
             return [f"{name}.pt" for name in self.out_names]
         if self.chains is not None:
             return [
-                f"{pdb}_{chain}.pt"
-                for pdb, chain in zip(self.pdb_codes, self.chains)
+                f"{pdb}_{chain}.pt" for pdb, chain in zip(self.pdb_codes, self.chains)
             ]
         else:
             return [f"{pdb}.pt" for pdb in self.pdb_codes]
@@ -448,9 +441,7 @@ class ProteinDataset(Dataset):
                 index_pdb_tuples = [
                     (i, pdb)
                     for i, pdb in enumerate(self.pdb_codes)
-                    if not os.path.exists(
-                        Path(self.processed_dir) / f"{pdb}.pt"
-                    )
+                    if not os.path.exists(Path(self.processed_dir) / f"{pdb}.pt")
                 ]
             logger.info(f"Processing {len(index_pdb_tuples)} unprocessed structures")
         else:
@@ -459,7 +450,10 @@ class ProteinDataset(Dataset):
         raw_dir = Path(self.raw_dir)
         for index_pdb_tuple in tqdm(index_pdb_tuples):
             try:
-                i, pdb = index_pdb_tuple # NOTE: here, we unpack the tuple to get each PDB's original index in `self.pdb_codes`
+                (
+                    i,
+                    pdb,
+                ) = index_pdb_tuple  # NOTE: here, we unpack the tuple to get each PDB's original index in `self.pdb_codes`
                 path = raw_dir / f"{pdb}.{self.format}"
                 if path.exists():
                     path = str(path)
@@ -478,18 +472,14 @@ class ProteinDataset(Dataset):
                     store_het=self.store_het,
                 )
             except Exception as e:
-                logger.error(
-                    f"Error processing {pdb} {self.chains[i]}: {e}"
-                )  # type: ignore
+                logger.error(f"Error processing {pdb} {self.chains[i]}: {e}")  # type: ignore
                 raise e
 
             if self.out_names is not None:
                 fname = self.out_names[i] + ".pt"
             else:
                 fname = (
-                    f"{pdb}.pt"
-                    if self.chains is None
-                    else f"{pdb}_{self.chains[i]}.pt"
+                    f"{pdb}.pt" if self.chains is None else f"{pdb}_{self.chains[i]}.pt"
                 )
 
             graph.id = fname.split(".")[0]
@@ -528,4 +518,7 @@ class ProteinDataset(Dataset):
         # Set this to ensure proper batching behaviour
         x.x = torch.zeros(x.coords.shape[0])  # type: ignore
         x.amino_acid_one_hot = amino_acid_one_hot(x)
+        x.seq_pos = torch.arange(x.coords.shape[0]).unsqueeze(
+            -1
+        )  # Add sequence position
         return x

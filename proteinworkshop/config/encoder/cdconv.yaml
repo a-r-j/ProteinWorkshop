@@ -1,0 +1,11 @@
+_target_: "proteinworkshop.models.graph_encoders.cdconv.CDConvModel"
+geometric_radius: 4.0
+sequential_kernel_size: 5
+kernel_channels: [24]
+channels: [256, 512, 1024, 2048]
+base_width: 64.0
+embedding_dim: 16
+batch_norm: True
+dropout: 0.2
+bias: False
+readout: "sum"
