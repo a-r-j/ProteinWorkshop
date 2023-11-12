@@ -105,7 +105,7 @@ def compute_vector_node_features(
     vector_node_features = []
     for feature in vector_features:
         if feature == "orientation":
-            vector_node_features.append(orientations(x.coords))
+            vector_node_features.append(orientations(x.coords, x.batch))
         elif feature == "virtual_cb_vector":
             raise NotImplementedError("Virtual CB vector not implemented yet.")
         else:
@@ -153,12 +153,17 @@ def compute_surface_feat(
 @jaxtyped
 @beartype
 def orientations(
-    X: Union[CoordTensor, AtomTensor], ca_idx: int = 1
+    X: Union[CoordTensor, AtomTensor], batch_index: torch.Tensor, ca_idx: int = 1
 ) -> OrientationTensor:
     if X.ndim == 3:
         X = X[:, ca_idx, :]
-    forward = _normalize(X[1:] - X[:-1])
-    backward = _normalize(X[:-1] - X[1:])
-    forward = F.pad(forward, [0, 0, 0, 1])
-    backward = F.pad(backward, [0, 0, 1, 0])
-    return torch.cat((forward.unsqueeze(-2), backward.unsqueeze(-2)), dim=-2)
+    batched_orientations = []
+    for batch_id in batch_index.unique(sorted=True):
+        X_batch = X[batch_index == batch_id]
+        forward = _normalize(X_batch[1:] - X_batch[:-1])
+        backward = _normalize(X_batch[:-1] - X_batch[1:])
+        forward = F.pad(forward, [0, 0, 0, 1])
+        backward = F.pad(backward, [0, 0, 1, 0])
+        orientations = torch.cat((forward.unsqueeze(-2), backward.unsqueeze(-2)), dim=-2)
+        batched_orientations.append(orientations)
+    return torch.cat(batched_orientations, dim=0)
