@@ -12,7 +12,10 @@ import torch.nn.functional as F
 from graphein.protein.tensor.data import ProteinBatch
 from torch_geometric.data import Batch
 
-from proteinworkshop.models.graph_encoders.layers.cdconv import AvgPooling, BasicBlock
+from proteinworkshop.models.graph_encoders.layers.cdconv import (
+    AvgPooling,
+    BasicBlock,
+)
 from proteinworkshop.models.utils import get_aggregation
 from proteinworkshop.types import EncoderOutput
 
@@ -33,9 +36,11 @@ class CDConvModel(nn.Module):
     ) -> nn.Module:
         super().__init__()
 
-        geometric_radii = [geometric_radius * i for i in range(1, len(channels) + 1)]
-        assert (
-            len(geometric_radii) == len(channels)
+        geometric_radii = [
+            geometric_radius * i for i in range(1, len(channels) + 1)
+        ]
+        assert len(geometric_radii) == len(
+            channels
         ), "Model: 'geometric_radii' and 'channels' should have the same number of elements!"
 
         self.embedding = torch.nn.LazyLinear(embedding_dim)
@@ -93,7 +98,8 @@ class CDConvModel(nn.Module):
         o = F.normalize(torch.cross(b, n), p=2, dim=1)
         ori = torch.stack([b, n, o], dim=1)
         return torch.cat(
-            [torch.unsqueeze(ori[0], 0), ori, torch.unsqueeze(ori[-1], 0)], axis=0
+            [torch.unsqueeze(ori[0], 0), ori, torch.unsqueeze(ori[-1], 0)],
+            axis=0,
         )
 
     def forward(self, data: Union[ProteinBatch, Batch]) -> EncoderOutput:
@@ -111,7 +117,9 @@ class CDConvModel(nn.Module):
             if i == len(self.layers) - 1:
                 x = self.readout(x, batch)
             elif i % 2 == 1:
-                x, pos, seq, ori, batch = self.local_mean_pool(x, pos, seq, ori, batch)
+                x, pos, seq, ori, batch = self.local_mean_pool(
+                    x, pos, seq, ori, batch
+                )
 
         return EncoderOutput({"graph_embedding": x, "node_embedding": None})
 

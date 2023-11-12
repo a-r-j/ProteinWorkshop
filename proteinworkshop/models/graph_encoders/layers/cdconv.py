@@ -200,7 +200,9 @@ def kaiming_uniform(tensor, size):
         fan *= size[i]
     gain = math.sqrt(2.0 / (1 + math.sqrt(5) ** 2))
     std = gain / math.sqrt(fan)
-    bound = math.sqrt(3.0) * std  # Calculate uniform bounds from standard deviation
+    bound = (
+        math.sqrt(3.0) * std
+    )  # Calculate uniform bounds from standard deviation
     with torch.no_grad():
         return tensor.uniform_(-bound, bound)
 
@@ -217,11 +219,15 @@ class WeightNet(nn.Module):
 
         for i, channels in enumerate(kernel_channels):
             if i == 0:
-                self.Ws.append(torch.nn.Parameter(torch.empty(l, 3 + 3 + 1, channels)))
+                self.Ws.append(
+                    torch.nn.Parameter(torch.empty(l, 3 + 3 + 1, channels))
+                )
                 self.bs.append(torch.nn.Parameter(torch.empty(l, channels)))
             else:
                 self.Ws.append(
-                    torch.nn.Parameter(torch.empty(l, kernel_channels[i - 1], channels))
+                    torch.nn.Parameter(
+                        torch.empty(l, kernel_channels[i - 1], channels)
+                    )
                 )
                 self.bs.append(torch.nn.Parameter(torch.empty(l, channels)))
 
@@ -230,7 +236,9 @@ class WeightNet(nn.Module):
     def reset_parameters(self):
         for i, channels in enumerate(self.kernel_channels):
             if i == 0:
-                kaiming_uniform(self.Ws[0].data, size=[self.l, 3 + 3 + 1, channels])
+                kaiming_uniform(
+                    self.Ws[0].data, size=[self.l, 3 + 3 + 1, channels]
+                )
             else:
                 kaiming_uniform(
                     self.Ws[i].data,
@@ -243,9 +251,13 @@ class WeightNet(nn.Module):
             W = torch.index_select(self.Ws[i], 0, idx)
             b = torch.index_select(self.bs[i], 0, idx)
             if i == 0:
-                weight = self.relu(torch.bmm(input.unsqueeze(1), W).squeeze(1) + b)
+                weight = self.relu(
+                    torch.bmm(input.unsqueeze(1), W).squeeze(1) + b
+                )
             else:
-                weight = self.relu(torch.bmm(weight.unsqueeze(1), W).squeeze(1) + b)
+                weight = self.relu(
+                    torch.bmm(weight.unsqueeze(1), W).squeeze(1) + b
+                )
 
         return weight
 
@@ -286,9 +298,16 @@ class CDConv(MessagePassing):
         )
 
     def forward(
-        self, x: OptTensor, pos: Tensor, seq: Tensor, ori: Tensor, batch: Tensor
+        self,
+        x: OptTensor,
+        pos: Tensor,
+        seq: Tensor,
+        ori: Tensor,
+        batch: Tensor,
     ) -> Tensor:
-        row, col = radius(pos, pos, self.r, batch, batch, max_num_neighbors=9999)
+        row, col = radius(
+            pos, pos, self.r, batch, batch, max_num_neighbors=9999
+        )
         edge_index = torch.stack([col, row], dim=0)
 
         if self.add_self_loops:
@@ -328,7 +347,9 @@ class CDConv(MessagePassing):
         distance = torch.norm(input=pos, p=2, dim=-1, keepdim=True)
         pos /= distance + 1e-9
 
-        pos = torch.matmul(ori_i.reshape((-1, 3, 3)), pos.unsqueeze(2)).squeeze(2)
+        pos = torch.matmul(
+            ori_i.reshape((-1, 3, 3)), pos.unsqueeze(2)
+        ).squeeze(2)
         ori = torch.sum(
             input=ori_i.reshape((-1, 3, 3)) * ori_j.reshape((-1, 3, 3)),
             dim=2,
@@ -349,10 +370,15 @@ class CDConv(MessagePassing):
         kernel_weight = self.WeightNet(delta, seq_idx)
 
         # smooth: IEConv II
-        smooth = 0.5 - torch.tanh(normed_distance * normed_length * 16.0 - 14.0) * 0.5
+        smooth = (
+            0.5
+            - torch.tanh(normed_distance * normed_length * 16.0 - 14.0) * 0.5
+        )
 
         # convolution
-        msg = torch.matmul((kernel_weight * smooth).unsqueeze(2), x_j.unsqueeze(1))
+        msg = torch.matmul(
+            (kernel_weight * smooth).unsqueeze(2), x_j.unsqueeze(1)
+        )
 
         msg = msg.reshape((-1, msg.size(1) * msg.size(2)))
 
