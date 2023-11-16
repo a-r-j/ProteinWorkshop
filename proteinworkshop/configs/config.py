@@ -244,7 +244,7 @@ def validate_cuda(cfg: DictConfig) -> DictConfig:
     # Make sure cuda config is correct
     # if cfg.trainer.devices <= 1:
     # cfg.trainer.strategy = None
-
+    logger.debug(f"CUDA available: {torch.cuda.is_available()}")
     logger.debug(f"Requested GPUs: {cfg.trainer.get('devices')}.")
     if isinstance(cfg.trainer.get("devices"), int):
         cfg.trainer.devices = min(
