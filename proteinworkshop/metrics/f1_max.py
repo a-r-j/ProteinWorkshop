@@ -2,11 +2,10 @@
 from typing import Any
 
 import torch
-from torch import Tensor
 import torch.nn.functional as F
-from torchmetrics import Metric
-import beartype
 from jaxtyping import Float
+from torch import Tensor
+from torchmetrics import Metric
 
 
 class F1Max(Metric):
@@ -44,7 +43,9 @@ class F1Max(Metric):
         if self.preds[0].ndim == 2:
             # return self.f1_max(torch.stack(self.preds), torch.stack(self.targets))
             return self.f1_max(torch.cat(self.preds), torch.cat(self.targets))
-        return self.f1_max(torch.cat(self.preds, dim=0), torch.cat(self.targets, dim=0))
+        return self.f1_max(
+            torch.cat(self.preds, dim=0), torch.cat(self.targets, dim=0)
+        )
 
     def f1_max(
         self,
@@ -64,7 +65,9 @@ class F1Max(Metric):
         pred = torch.softmax(pred, dim=1)
 
         if target.ndim == 1:
-            target = F.one_hot(target.long(), num_classes=pred.shape[1]).float()
+            target = F.one_hot(
+                target.long(), num_classes=pred.shape[1]
+            ).float()
         order = pred.argsort(descending=True, dim=1)
         target = target.gather(1, order).int()
         precision = target.cumsum(1) / torch.ones_like(target).cumsum(1)
@@ -94,5 +97,10 @@ class F1Max(Metric):
             is_start, torch.zeros_like(recall), recall[all_order - 1]
         )
         all_recall = all_recall.cumsum(0) / pred.shape[0]
-        all_f1 = 2 * all_precision * all_recall / (all_precision + all_recall + 1e-10)
+        all_f1 = (
+            2
+            * all_precision
+            * all_recall
+            / (all_precision + all_recall + 1e-10)
+        )
         return all_f1.max()
