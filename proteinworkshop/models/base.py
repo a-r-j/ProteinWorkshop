@@ -121,8 +121,11 @@ class BaseModel(L.LightningModule, abc.ABC):
                     ).float()
             elif output == "graph_label":
                 labels["graph_label"] = batch.graph_y
-                if isinstance(
-                    self.losses["graph_label"], torch.nn.BCEWithLogitsLoss
+                if (
+                    isinstance(
+                        self.losses["graph_label"], torch.nn.BCEWithLogitsLoss
+                    )
+                    and batch.graph_y.ndim == 1
                 ):
                     labels["graph_label"] = F.one_hot(
                         labels["graph_label"],
@@ -304,6 +307,7 @@ class BaseModel(L.LightningModule, abc.ABC):
             "auprc",
             "accuracy",
             "f1_max",
+            "rocauc",
         }
         REGRESSION_METRICS: Set[str] = {"mse", "mae", "r2", "rmse"}
         CONTINUOUS_OUTPUTS: Set[str] = {
@@ -321,6 +325,13 @@ class BaseModel(L.LightningModule, abc.ABC):
                 for stage in {"train", "val", "test"}:
                     metric = hydra.utils.instantiate(metric_conf)
                     if output == "residue_type":
+                        if metric in {
+                            "auprc",
+                            "f1_score",
+                            "f1_max",
+                            "roc_auc",
+                        }:
+                            continue
                         metric.num_classes = 23
                         metric.task = "multiclass"
 
@@ -391,7 +402,7 @@ class BaseModel(L.LightningModule, abc.ABC):
 
                     except (ValueError, RuntimeError):
                         continue
-        self.log_dict(log_dict)
+        self.log_dict(log_dict, prog_bar=True)
 
 
 class BenchMarkModel(BaseModel):
