@@ -2,8 +2,11 @@
 from typing import Any
 
 import torch
+from torch import Tensor
 import torch.nn.functional as F
 from torchmetrics import Metric
+import beartype
+from jaxtyping import Float
 
 
 class F1Max(Metric):
@@ -38,9 +41,16 @@ class F1Max(Metric):
         :return: F1Max metric value
         :rtype: Any
         """
-        return self.f1_max(torch.cat(self.preds), torch.cat(self.targets))
+        if self.preds[0].ndim == 2:
+            # return self.f1_max(torch.stack(self.preds), torch.stack(self.targets))
+            return self.f1_max(torch.cat(self.preds), torch.cat(self.targets))
+        return self.f1_max(torch.cat(self.preds, dim=0), torch.cat(self.targets, dim=0))
 
-    def f1_max(self, pred, target):
+    def f1_max(
+        self,
+        pred: Float[Tensor, "batch classes"],
+        target: Float[Tensor, "batch classes"],
+    ):
         """
         F1 score with the optimal threshold.
         This function first enumerates all possible thresholds for deciding
@@ -52,9 +62,11 @@ class F1Max(Metric):
             target (Tensor): binary targets of shape :math:`(B, N)`
         """
         pred = torch.softmax(pred, dim=1)
-        target = F.one_hot(target.long(), num_classes=pred.shape[1]).float()
+
+        if target.ndim == 1:
+            target = F.one_hot(target.long(), num_classes=pred.shape[1]).float()
         order = pred.argsort(descending=True, dim=1)
-        target = target.gather(1, order)
+        target = target.gather(1, order).int()
         precision = target.cumsum(1) / torch.ones_like(target).cumsum(1)
         recall = target.cumsum(1) / (target.sum(1, keepdim=True) + 1e-10)
         is_start = torch.zeros_like(target).bool()
@@ -82,10 +94,5 @@ class F1Max(Metric):
             is_start, torch.zeros_like(recall), recall[all_order - 1]
         )
         all_recall = all_recall.cumsum(0) / pred.shape[0]
-        all_f1 = (
-            2
-            * all_precision
-            * all_recall
-            / (all_precision + all_recall + 1e-10)
-        )
+        all_f1 = 2 * all_precision * all_recall / (all_precision + all_recall + 1e-10)
         return all_f1.max()
