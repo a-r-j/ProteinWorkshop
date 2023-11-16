@@ -1,4 +1,4 @@
-from typing import List, Union, Literal
+from typing import List, Literal, Union
 
 import torch
 import torch.nn as nn
@@ -8,7 +8,6 @@ from jaxtyping import jaxtyped
 from loguru import logger
 from torch_geometric.data import Batch
 from torch_geometric.nn.encoding import PositionalEncoding
-from torch_geometric.utils import unbatch
 
 from proteinworkshop.features.edge_features import (
     compute_scalar_edge_features,
@@ -85,14 +84,7 @@ class ProteinFeaturiser(nn.Module):
         if self.scalar_node_features:
             concat_nf = False
             if hasattr(self, "positional_encoding"):
-                lin_range = torch.arange(
-                    0, batch.coords.shape[0], device=batch.coords.device
-                )
-                idx = batch._slice_dict["coords"]
-                slices = unbatch(lin_range, batch.batch)
-                slices = [s - idx[i] for i, s in enumerate(slices)]
-                slices = torch.cat(slices, dim=0)
-                batch.x = self.positional_encoding(slices)
+                batch.x = self.positional_encoding(batch.seq_pos)
                 # This is necessary to concat node features with the positional encoding
                 concat_nf = True
             if self.scalar_node_features != ["sequence_positional_encoding"]:
