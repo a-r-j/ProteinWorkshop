@@ -286,3 +286,6 @@ if __name__ == "__main__":
     dl = ds["datamodule"].val_dataloader()
     for batch in dl:
         print(batch)
+    dl = ds["datamodule"].test_dataloader()
+    for batch in dl:
+        print(batch)
