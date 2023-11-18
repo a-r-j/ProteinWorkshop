@@ -26,8 +26,8 @@ class AUPRC(Metric):
         :param target: Tensor of targets
         :type target: torch.Tensor
         """
-        self.preds.append(preds)
-        self.targets.append(target)
+        self.preds.append(preds.detach())
+        self.targets.append(target.detach())
 
     def compute(self) -> torch.Tensor:
         """Computes the AUPRC metric.

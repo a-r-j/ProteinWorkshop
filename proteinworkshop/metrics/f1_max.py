@@ -28,8 +28,8 @@ class F1Max(Metric):
         self.compute_on_cpu = compute_on_cpu
 
     def update(self, preds: torch.Tensor, target: torch.Tensor) -> None:
-        self.preds.append(preds)
-        self.targets.append(target)
+        self.preds.append(preds.detach())
+        self.targets.append(target.detach())
 
     def compute(self) -> Any:
         """Computes the F1Max metric.
