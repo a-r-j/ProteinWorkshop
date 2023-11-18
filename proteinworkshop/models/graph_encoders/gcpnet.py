@@ -177,6 +177,8 @@ class GCPNetModel(torch.nn.Module):
         pos_centroid, batch.pos = self.centralize(
             batch, batch_index=batch.batch
         )
+        if not self.predict_node_pos:
+            del pos_centroid
 
         # Install `h`, `chi`, `e`, and `xi` using corresponding features built by the `FeatureFactory`
         batch.h, batch.chi, batch.e, batch.xi = (
@@ -185,6 +187,7 @@ class GCPNetModel(torch.nn.Module):
             batch.edge_attr,
             batch.edge_vector_attr,
         )
+        del batch.x, batch.x_vector_attr, batch.edge_attr, batch.edge_vector_attr
 
         # Craft complete local frames corresponding to each edge
         batch.f_ij = self.localize(batch.pos, batch.edge_index)
