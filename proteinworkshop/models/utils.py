@@ -4,9 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch_scatter
-from beartype import beartype
 from graphein.protein.tensor.data import ProteinBatch
-from jaxtyping import Bool, Float, Int64, jaxtyped
 from omegaconf import DictConfig
 from torch_geometric.data import Batch
 from torch_geometric.nn import (
@@ -173,13 +171,11 @@ def flatten_list(l: List[List]) -> List:
     return [item for sublist in l for item in sublist]
 
 
-@jaxtyped
-@beartype
 def centralize(
     batch: Union[Batch, ProteinBatch],
     key: str,
     batch_index: torch.Tensor,
-    node_mask: Optional[Bool[torch.Tensor, "n_nodes"]] = None,
+    node_mask: Optional[torch.Tensor] = None,
 ) -> Tuple[
     torch.Tensor, torch.Tensor
 ]:  # note: cannot make assumptions on output shape
@@ -210,14 +206,12 @@ def centralize(
     return entities_centroid, entities_centered
 
 
-@jaxtyped
-@beartype
 def decentralize(
     batch: Union[Batch, ProteinBatch],
     key: str,
     batch_index: torch.Tensor,
     entities_centroid: torch.Tensor,
-    node_mask: Optional[Bool[torch.Tensor, "n_nodes"]] = None,
+    node_mask: Optional[torch.Tensor] = None,
 ) -> torch.Tensor:  # note: cannot make assumptions on output shape
     if node_mask is not None:
         masked_values = torch.ones_like(batch[key]) * torch.inf
@@ -230,14 +224,12 @@ def decentralize(
     return entities_centered
 
 
-@jaxtyped
-@beartype
 def localize(
-    pos: Float[torch.Tensor, "batch_num_nodes 3"],
-    edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
+    pos: torch.Tensor,
+    edge_index: torch.Tensor,
     norm_pos_diff: bool = True,
-    node_mask: Optional[Bool[torch.Tensor, "n_nodes"]] = None,
-) -> Float[torch.Tensor, "batch_num_edges 3 3"]:
+    node_mask: Optional[torch.Tensor] = None,
+) -> torch.Tensor:
     row, col = edge_index[0], edge_index[1]
 
     if node_mask is not None:
@@ -311,8 +303,6 @@ def localize(
     return f_ij
 
 
-@jaxtyped
-@beartype
 def safe_norm(
     x: torch.Tensor,
     dim: int = -1,
@@ -326,8 +316,6 @@ def safe_norm(
     return norm + eps
 
 
-@jaxtyped
-@beartype
 def is_identity(
     nonlinearity: Optional[Union[Callable, nn.Module]] = None
 ) -> bool:

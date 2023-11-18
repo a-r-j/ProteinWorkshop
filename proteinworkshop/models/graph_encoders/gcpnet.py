@@ -4,9 +4,7 @@ from typing import List, Union
 import hydra
 import torch
 import torch.nn as nn
-from beartype import beartype
 from graphein.protein.tensor.data import ProteinBatch
-from jaxtyping import jaxtyped
 from omegaconf import DictConfig
 from torch_geometric.data import Batch
 
@@ -156,8 +154,6 @@ class GCPNetModel(torch.nn.Module):
     def required_batch_attributes(self) -> List[str]:
         return ["edge_index", "pos", "x", "batch"]
 
-    @jaxtyped
-    @beartype
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
         """Implements the forward pass of the GCPNet encoder.
         

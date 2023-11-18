@@ -1,6 +1,4 @@
 import torch
-from beartype import beartype
-from jaxtyping import Bool, jaxtyped
 
 
 class ScalarVector(tuple):
@@ -80,9 +78,7 @@ class ScalarVector(tuple):
     def clone(self):
         return ScalarVector(self.scalar.clone(), self.vector.clone())
 
-    @jaxtyped
-    @beartype
-    def mask(self, node_mask: Bool[torch.Tensor, "n_nodes"]):
+    def mask(self, node_mask: torch.Tensor):
         return ScalarVector(
             self.scalar * node_mask[:, None],
             self.vector * node_mask[:, None, None],

@@ -18,9 +18,7 @@ from typing import Any, Optional, Tuple, Union
 
 import torch
 import torch_scatter
-from beartype import beartype
 from graphein.protein.tensor.data import ProteinBatch
-from jaxtyping import Bool, Float, Int64, jaxtyped
 from omegaconf import DictConfig, OmegaConf
 from torch import nn
 from torch_geometric.data import Batch
@@ -45,8 +43,6 @@ class VectorDropout(nn.Module):
         super().__init__()
         self.drop_rate = drop_rate
 
-    @jaxtyped
-    @beartype
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         :param x: `torch.Tensor` corresponding to vector channels
@@ -75,8 +71,6 @@ class GCPDropout(nn.Module):
             VectorDropout(drop_rate) if use_gcp_dropout else nn.Identity()
         )
 
-    @jaxtyped
-    @beartype
     def forward(
         self, x: Union[torch.Tensor, ScalarVector]
     ) -> Union[torch.Tensor, ScalarVector]:
@@ -110,8 +104,6 @@ class GCPLayerNorm(nn.Module):
         self.eps = eps
 
     @staticmethod
-    @jaxtyped
-    @beartype
     def norm_vector(
         v: torch.Tensor, use_gcp_norm: bool = True, eps: float = 1e-8
     ) -> torch.Tensor:
@@ -126,8 +118,6 @@ class GCPLayerNorm(nn.Module):
             v_norm = v / vector_norm
         return v_norm
 
-    @jaxtyped
-    @beartype
     def forward(
         self, x: Union[torch.Tensor, ScalarVector]
     ) -> Union[torch.Tensor, ScalarVector]:
@@ -240,14 +230,10 @@ class GCP(nn.Module):
                 else nn.Linear(self.scalar_input_dim, self.scalar_output_dim)
             )
 
-    @jaxtyped
-    @beartype
     def create_zero_vector(
         self,
-        scalar_rep: Float[
-            torch.Tensor, "batch_num_entities merged_scalar_dim"
-        ],
-    ) -> Float[torch.Tensor, "batch_num_entities o 3"]:
+        scalar_rep: torch.Tensor,
+    ) -> torch.Tensor:
         return torch.zeros(
             scalar_rep.shape[0],
             self.vector_output_dim,
@@ -256,17 +242,15 @@ class GCP(nn.Module):
         )
 
     @staticmethod
-    @jaxtyped
-    @beartype
     def scalarize(
-        vector_rep: Float[torch.Tensor, "batch_num_entities 3 3"],
-        edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
-        frames: Float[torch.Tensor, "batch_num_edges 3 3"],
+        vector_rep: torch.Tensor,
+        edge_index: torch.Tensor,
+        frames: torch.Tensor,
         node_inputs: bool,
         enable_e3_equivariance: bool,
         dim_size: int,
-        node_mask: Optional[Bool[torch.Tensor, "n_nodes"]] = None,
-    ) -> Float[torch.Tensor, "effective_batch_num_entities 9"]:
+        node_mask: Optional[torch.Tensor] = None,
+    ) -> torch.Tensor:
         row, col = edge_index[0], edge_index[1]
 
         # gather source node features for each `entity` (i.e., node or edge)
@@ -320,15 +304,11 @@ class GCP(nn.Module):
 
         return local_scalar_rep_i
 
-    @jaxtyped
-    @beartype
     def vectorize(
         self,
-        scalar_rep: Float[
-            torch.Tensor, "batch_num_entities merged_scalar_dim"
-        ],
-        vector_hidden_rep: Float[torch.Tensor, "batch_num_entities 3 n"],
-    ) -> Float[torch.Tensor, "batch_num_entities o 3"]:
+        scalar_rep: torch.Tensor,
+        vector_hidden_rep: torch.Tensor,
+    ) -> torch.Tensor:
         vector_rep = self.vector_up(vector_hidden_rep)
         vector_rep = vector_rep.transpose(-1, -2)
 
@@ -342,27 +322,25 @@ class GCP(nn.Module):
 
         return vector_rep
 
-    @jaxtyped
-    @beartype
     def forward(
         self,
         s_maybe_v: Union[
             Tuple[
-                Float[torch.Tensor, "batch_num_entities scalar_dim"],
-                Float[torch.Tensor, "batch_num_entities m vector_dim"],
+                torch.Tensor,
+                torch.Tensor,
             ],
-            Float[torch.Tensor, "batch_num_entities merged_scalar_dim"],
+            torch.Tensor,
         ],
-        edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
-        frames: Float[torch.Tensor, "batch_num_edges 3 3"],
+        edge_index: torch.Tensor,
+        frames: torch.Tensor,
         node_inputs: bool = False,
-        node_mask: Optional[Bool[torch.Tensor, "batch_num_nodes"]] = None,
+        node_mask: Optional[torch.Tensor] = None,
     ) -> Union[
         Tuple[
-            Float[torch.Tensor, "batch_num_entities new_scalar_dim"],
-            Float[torch.Tensor, "batch_num_entities n vector_dim"],
+            torch.Tensor,
+            torch.Tensor,
         ],
-        Float[torch.Tensor, "batch_num_entities new_scalar_dim"],
+        torch.Tensor,
     ]:
         if self.vector_input_dim:
             scalar_rep, vector_rep = s_maybe_v
@@ -462,24 +440,22 @@ class GCPEmbedding(nn.Module):
             enable_e3_equivariance=cfg.enable_e3_equivariance,
         )
 
-    @jaxtyped
-    @beartype
     def forward(
         self, batch: Union[Batch, ProteinBatch]
     ) -> Tuple[
         Union[
             Tuple[
-                Float[torch.Tensor, "batch_num_nodes h_hidden_dim"],
-                Float[torch.Tensor, "batch_num_nodes m chi_hidden_dim"],
+                torch.Tensor,
+                torch.Tensor,
             ],
-            Float[torch.Tensor, "batch_num_nodes h_hidden_dim"],
+            torch.Tensor,
         ],
         Union[
             Tuple[
-                Float[torch.Tensor, "batch_num_edges e_hidden_dim"],
-                Float[torch.Tensor, "batch_num_edges x xi_hidden_dim"],
+                torch.Tensor,
+                torch.Tensor,
             ],
-            Float[torch.Tensor, "batch_num_edges e_hidden_dim"],
+            torch.Tensor,
         ],
     ]:
         if self.atom_embedding is not None:
@@ -537,7 +513,6 @@ class GCPEmbedding(nn.Module):
         return node_rep, edge_rep
 
 
-@beartype
 def get_GCP_with_custom_cfg(
     input_dims: Any, output_dims: Any, cfg: DictConfig, **kwargs
 ):
@@ -621,16 +596,14 @@ class GCPMessagePassing(nn.Module):
                 nn.Linear(output_dims.scalar, 1), nn.Sigmoid()
             )
 
-    @jaxtyped
-    @beartype
     def message(
         self,
         node_rep: ScalarVector,
         edge_rep: ScalarVector,
-        edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
-        frames: Float[torch.Tensor, "batch_num_edges 3 3"],
-        node_mask: Optional[Bool[torch.Tensor, "batch_num_nodes"]] = None,
-    ) -> Float[torch.Tensor, "batch_num_edges message_dim"]:
+        edge_index: torch.Tensor,
+        frames: torch.Tensor,
+        node_mask: Optional[torch.Tensor] = None,
+    ) -> torch.Tensor:
         row, col = edge_index
         vector = node_rep.vector.reshape(
             node_rep.vector.shape[0],
@@ -674,29 +647,25 @@ class GCPMessagePassing(nn.Module):
 
         return message_residual.flatten()
 
-    @jaxtyped
-    @beartype
     def aggregate(
         self,
-        message: Float[torch.Tensor, "batch_num_edges message_dim"],
-        edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
+        message: torch.Tensor,
+        edge_index: torch.Tensor,
         dim_size: int,
-    ) -> Float[torch.Tensor, "batch_num_nodes aggregate_dim"]:
+    ) -> torch.Tensor:
         row, col = edge_index
         aggregate = torch_scatter.scatter(
             message, row, dim=0, dim_size=dim_size, reduce=self.reduce_function
         )
         return aggregate
 
-    @jaxtyped
-    @beartype
     def forward(
         self,
         node_rep: ScalarVector,
         edge_rep: ScalarVector,
-        edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
-        frames: Float[torch.Tensor, "batch_num_edges 3 3"],
-        node_mask: Optional[Bool[torch.Tensor, "batch_num_nodes"]] = None,
+        edge_index: torch.Tensor,
+        frames: torch.Tensor,
+        node_mask: Optional[torch.Tensor] = None,
     ) -> ScalarVector:
         message = self.message(
             node_rep, edge_rep, edge_index, frames, node_mask=node_mask
@@ -815,15 +784,13 @@ class GCPInteractions(nn.Module):
                 enable_e3_equivariance=cfg.enable_e3_equivariance,
             )
 
-    @jaxtyped
-    @beartype
     def derive_x_update(
         self,
         node_rep: ScalarVector,
-        edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
-        f_ij: Float[torch.Tensor, "batch_num_edges 3 3"],
-        node_mask: Optional[Bool[torch.Tensor, "batch_num_nodes"]] = None,
-    ) -> Float[torch.Tensor, "batch_num_nodes 3"]:
+        edge_index: torch.Tensor,
+        f_ij: torch.Tensor,
+        node_mask: Optional[torch.Tensor] = None,
+    ) -> torch.Tensor:
         # use vector-valued features to derive node position updates
         node_rep_update = self.node_position_update_gcp(
             node_rep, edge_index, f_ij, node_inputs=True, node_mask=node_mask
@@ -838,28 +805,26 @@ class GCPInteractions(nn.Module):
 
         return x_update
 
-    @jaxtyped
-    @beartype
     def forward(
         self,
         node_rep: Tuple[
-            Float[torch.Tensor, "batch_num_nodes node_hidden_dim"],
-            Float[torch.Tensor, "batch_num_nodes m 3"],
+            torch.Tensor,
+            torch.Tensor,
         ],
         edge_rep: Tuple[
-            Float[torch.Tensor, "batch_num_edges edge_hidden_dim"],
-            Float[torch.Tensor, "batch_num_edges x 3"],
+            torch.Tensor,
+            torch.Tensor,
         ],
-        edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
-        frames: Float[torch.Tensor, "batch_num_edges 3 3"],
-        node_mask: Optional[Bool[torch.Tensor, "batch_num_nodes"]] = None,
-        node_pos: Optional[Float[torch.Tensor, "batch_num_nodes 3"]] = None,
+        edge_index: torch.Tensor,
+        frames: torch.Tensor,
+        node_mask: Optional[torch.Tensor] = None,
+        node_pos: Optional[torch.Tensor] = None,
     ) -> Tuple[
         Tuple[
-            Float[torch.Tensor, "batch_num_nodes hidden_dim"],
-            Float[torch.Tensor, "batch_num_nodes n 3"],
+            torch.Tensor,
+            torch.Tensor,
         ],
-        Optional[Float[torch.Tensor, "batch_num_nodes 3"]],
+        Optional[torch.Tensor],
     ]:
         node_rep = ScalarVector(node_rep[0], node_rep[1])
         edge_rep = ScalarVector(edge_rep[0], edge_rep[1])

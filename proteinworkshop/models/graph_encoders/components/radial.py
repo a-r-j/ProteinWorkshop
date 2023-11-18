@@ -6,8 +6,6 @@
 
 import numpy as np
 import torch
-from beartype import beartype
-from jaxtyping import Float, jaxtyped
 
 
 class BesselBasis(torch.nn.Module):
@@ -95,14 +93,12 @@ class PolynomialCutoff(torch.nn.Module):
         return f"{self.__class__.__name__}(p={self.p}, r_max={self.r_max})"
 
 
-@jaxtyped
-@beartype
 def compute_rbf(
-    distances: Float[torch.Tensor, "num_edges"],
+    distances: torch.Tensor,
     min_distance: float = 0.0,
     max_distance: float = 10.0,
     num_rbf: int = 8,
-) -> Float[torch.Tensor, "num_edges num_rbf"]:
+) -> torch.Tensor:
     """
     Adapted from https://github.com/jingraham/neurips19-graph-protein-design.
 
