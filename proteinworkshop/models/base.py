@@ -37,9 +37,7 @@ class BaseModel(L.LightningModule, abc.ABC):
         ...
 
     @abc.abstractmethod
-    def training_step(
-        self, batch: Batch, batch_idx: torch.Tensor
-    ) -> torch.Tensor:
+    def training_step(self, batch: Batch, batch_idx: torch.Tensor) -> torch.Tensor:
         """Implement training step.
 
         :param batch: Mini-batch of data.
@@ -52,9 +50,7 @@ class BaseModel(L.LightningModule, abc.ABC):
         ...
 
     @abc.abstractmethod
-    def validation_step(
-        self, batch: Batch, batch_idx: torch.Tensor
-    ) -> torch.Tensor:
+    def validation_step(self, batch: Batch, batch_idx: torch.Tensor) -> torch.Tensor:
         """Implement validation step.
 
         :param batch: Mini-batch of data.
@@ -112,9 +108,7 @@ class BaseModel(L.LightningModule, abc.ABC):
         for output in self.config.task.supervise_on:
             if output == "node_label":
                 labels["node_label"] = batch.node_y
-                if isinstance(
-                    self.losses["node_label"], torch.nn.BCEWithLogitsLoss
-                ):
+                if isinstance(self.losses["node_label"], torch.nn.BCEWithLogitsLoss):
                     labels["node_label"] = F.one_hot(
                         labels["node_label"],
                         num_classes=self.config.dataset.num_classes,
@@ -122,9 +116,7 @@ class BaseModel(L.LightningModule, abc.ABC):
             elif output == "graph_label":
                 labels["graph_label"] = batch.graph_y
                 if (
-                    isinstance(
-                        self.losses["graph_label"], torch.nn.BCEWithLogitsLoss
-                    )
+                    isinstance(self.losses["graph_label"], torch.nn.BCEWithLogitsLoss)
                     and batch.graph_y.ndim == 1
                 ):
                     labels["graph_label"] = F.one_hot(
@@ -176,9 +168,7 @@ class BaseModel(L.LightningModule, abc.ABC):
         return Label(labels)
 
     @beartype
-    def compute_loss(
-        self, y_hat: ModelOutput, y: Label
-    ) -> Dict[str, torch.Tensor]:
+    def compute_loss(self, y_hat: ModelOutput, y: Label) -> Dict[str, torch.Tensor]:
         """
         Compute loss by iterating over all outputs.
 
@@ -215,13 +205,9 @@ class BaseModel(L.LightningModule, abc.ABC):
 
         if self.config.get("scheduler"):
             logger.info("Instantiating scheduler...")
-            scheduler = hydra.utils.instantiate(
-                self.config.scheduler, optimiser
-            )
+            scheduler = hydra.utils.instantiate(self.config.scheduler, optimiser)
             scheduler = OmegaConf.to_container(scheduler)
-            scheduler["scheduler"] = scheduler["scheduler"](
-                optimizer=optimiser
-            )
+            scheduler["scheduler"] = scheduler["scheduler"](optimizer=optimiser)
             optimiser_config = {
                 "optimizer": optimiser,
                 "lr_scheduler": scheduler,
@@ -252,9 +238,7 @@ class BaseModel(L.LightningModule, abc.ABC):
             decoders[output_head] = hydra.utils.instantiate(cfg)
         return decoders
 
-    def configure_losses(
-        self, loss_dict: Dict[str, str]
-    ) -> Dict[str, Callable]:
+    def configure_losses(self, loss_dict: Dict[str, str]) -> Dict[str, Callable]:
         """
         Configures losses from config. Returns a dictionary of losses mapping
         each output name to its respective loss function.
@@ -325,12 +309,7 @@ class BaseModel(L.LightningModule, abc.ABC):
                 for stage in {"train", "val", "test"}:
                     metric = hydra.utils.instantiate(metric_conf)
                     if output == "residue_type":
-                        if metric in {
-                            "auprc",
-                            "f1_score",
-                            "f1_max",
-                            "roc_auc",
-                        }:
+                        if metric_name not in {"accuracy", "perplexity"}:
                             continue
                         metric.num_classes = 23
                         metric.task = "multiclass"
@@ -357,9 +336,7 @@ class BaseModel(L.LightningModule, abc.ABC):
         setattr(self, "metric_names", metric_names)
 
     @beartype
-    def log_metrics(
-        self, loss, y_hat: ModelOutput, y: Label, stage: str, batch: Batch
-    ):
+    def log_metrics(self, loss, y_hat: ModelOutput, y: Label, stage: str, batch: Batch):
         """
         Logs metrics to logger.
 
@@ -439,9 +416,7 @@ class BenchMarkModel(BaseModel):
         logger.info(self.featuriser)
 
         logger.info("Instantiating task transform...")
-        self.task_transform = hydra.utils.instantiate(
-            cfg.get("task.transform")
-        )
+        self.task_transform = hydra.utils.instantiate(cfg.get("task.transform"))
         logger.info(self.task_transform)
 
         self.save_hyperparameters()
@@ -463,9 +438,7 @@ class BenchMarkModel(BaseModel):
             ]
             for p in proteins:
                 setattr(p, "x", torch.zeros(p.coords.shape[0]))
-                setattr(
-                    p, "seq_pos", torch.arange(p.coords.shape[0]).unsqueeze(-1)
-                )
+                setattr(p, "seq_pos", torch.arange(p.coords.shape[0]).unsqueeze(-1))
             batch = ProteinBatch.from_data_list(proteins)
             return self.featurise(batch)
 
@@ -504,16 +477,12 @@ class BenchMarkModel(BaseModel):
                     emb_type = self.decoder[
                         output_head
                     ].input  # node_embedding or graph_embedding
-                    output[output_head] = self.decoder[output_head](
-                        output[emb_type]
-                    )
+                    output[output_head] = self.decoder[output_head](output[emb_type])
 
         return self.compute_output(output, batch)
 
     @beartype
-    def transform_encoder_output(
-        self, output: EncoderOutput, batch
-    ) -> EncoderOutput:
+    def transform_encoder_output(self, output: EncoderOutput, batch) -> EncoderOutput:
         """
         Modifies graph encoder output.
 
