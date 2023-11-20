@@ -1,0 +1,3 @@
+hparams:
+  lr: 0.0010
+  decoder_dropout: 0.1
