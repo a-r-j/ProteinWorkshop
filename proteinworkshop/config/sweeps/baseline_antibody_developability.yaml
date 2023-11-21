@@ -1,0 +1,64 @@
+program: proteinworkshop/train.py
+method: grid
+name: baseline_antibody_developability
+metric: # Does not matter, as we are using sweep to run the experiment.
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  task:
+    values: [binary_graph_classification]
+
+  dataset:
+    value: [antibody_developability]
+
+  dataset.datamodule.batch_size:
+    value: 8
+
+  encoder:
+    values: [schnet, gear_net_edge, egnn, gcpnet, tfn, mace]
+
+  features:
+    values: [ca_base, ca_seq, ca_angles, ca_bb, ca_sc]
+
+  scheduler:
+    values: [plateau]
+
+  logger:
+    value: wandb
+
+  trainer:
+    value: gpu
+
+  extras.enforce_tags:
+    value: False
+
+  +aux_task:
+    #values: [none, nn_sequence, nn_structure_torsion, nn_structure_r3]
+    values: [none, nn_sequence, nn_structure_r3]
+
+  trainer.max_epochs:
+    value: 600
+
+  name:
+    value: "${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_${hydra:runtime.choices.aux_task}_seed_${seed}"
+
+  test:
+    value: True
+
+  optimiser.optimizer.lr:
+    value: ${hparams.hparams.lr}
+
+  decoder.graph_label.dropout:
+    value: ${hparams.hparams.decoder_dropout}
+
+  #seed:
+  #  values: [13, 42, 121]
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}
