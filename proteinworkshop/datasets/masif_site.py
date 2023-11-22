@@ -200,7 +200,7 @@ if __name__ == "__main__":
     cfg = omegaconf.OmegaConf.load(
         constants.SRC_PATH / "config" / "dataset" / "masif_site.yaml"
     )
-    cfg.datamodule.path = pathlib.Path(constants.DATA_PATH) / "MasifSite"  # type: ignore
+    cfg.datamodule.path = pathlib.Path(constants.DATA_PATH) / "masif_site"  # type: ignore
     cfg.datamodule.pdb_dir = pathlib.Path(constants.DATA_PATH) / "pdb"  # type: ignore
     cfg.datamodule.transforms = []
     ds = hydra.utils.instantiate(cfg)
