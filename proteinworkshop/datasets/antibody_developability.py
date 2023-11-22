@@ -227,3 +227,29 @@ class AntibodyDevelopabilityDataModule(ProteinDataModule):
             pin_memory=self.pin_memory,
             shuffle=False,
         )
+
+if __name__ == "__main__":
+    import pathlib
+
+    import hydra
+
+    from proteinworkshop import constants
+
+    cfg = omegaconf.OmegaConf.load(
+        constants.SRC_PATH / "config" / "dataset" / "antibody_developability.yaml"
+    )
+    cfg.datamodule.path = pathlib.Path(constants.DATA_PATH) / "AntibodyDevelopability"  # type: ignore
+    cfg.datamodule.pdb_dir = pathlib.Path(constants.DATA_PATH) / "pdb"  # type: ignore
+    cfg.datamodule.transforms = []
+    ds = hydra.utils.instantiate(cfg)
+    print(ds)
+    ds["datamodule"].parse_dataset()
+    dl = ds["datamodule"].train_dataloader()
+    for batch in dl:
+        print(batch)
+    dl = ds["datamodule"].val_dataloader()
+    for batch in dl:
+        print(batch)
+    dl = ds["datamodule"].test_dataloader()
+    for batch in dl:
+        print(batch)
