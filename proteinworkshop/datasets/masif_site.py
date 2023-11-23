@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Callable, Iterable, Literal, Optional
+from typing import Callable, Iterable, Literal, Optional, List
 
 import omegaconf
 import wget
@@ -61,8 +61,8 @@ class MaSIFPPISP(ProteinDataModule):
     def setup(self, stage: Optional[str] = None):
         self.download()
 
-    def exclude_pdbs(self):
-        pass
+    def exclude_pdbs(self) -> List[str]:
+        return ["1EXB_ABDC", "3LVK_AC"]
 
     def download(self):
         if not os.path.exists(self.path / "training.txt"):
@@ -161,6 +161,9 @@ class MaSIFPPISP(ProteinDataModule):
             test = f.readlines()
         test = [x.strip() for x in test]
 
+        train = [x for x in train if x not in self.exclude_pdbs()]
+        test = [x for x in test if x not in self.exclude_pdbs()]
+
         # Train / val split
         train, val = train_test_split(train, test_size=self.val_fraction)
 
@@ -207,12 +210,18 @@ if __name__ == "__main__":
     print(ds)
     ds["datamodule"].setup()
     ds["datamodule"].parse_dataset()
+    import torch
+
     dl = ds["datamodule"].train_dataloader()
-    for batch in dl:
+    for i, batch in enumerate(dl):
         print(batch)
-    dl = ds["datamodule"].val_dataloader()
-    for batch in dl:
-        print(batch)
-    dl = ds["datamodule"].test_dataloader()
-    for batch in dl:
-        print(batch)
+        bad_seq = torch.argwhere(batch["amino_acid_one_hot"][:, -2] == 1)
+
+        if bad_seq.sum() > 10:
+            break
+    # dl = ds["datamodule"].val_dataloader()
+    # for batch in dl:
+    #    print(batch)
+    # dl = ds["datamodule"].test_dataloader()
+    # for batch in dl:
+    #    print(batch)
