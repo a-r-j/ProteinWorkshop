@@ -37,7 +37,7 @@ class BindingSiteTransform(T.BaseTransform):
         target_chains = []
 
         chain_strs = [res.split(":")[0] for res in data.residue_id]
-        chain_strs = np.unique(chain_strs)
+        chain_strs = list(np.unique(chain_strs))
 
         for chain in data.graph_y:
             target_chains.append(chain_strs.index(chain))
@@ -96,10 +96,10 @@ class BindingSiteTransform(T.BaseTransform):
         if data.x is not None:
             data.x = data.x[mask]
 
-        if data.seq_pos is not None:
+        if hasattr(data, "seq_pos"):
             data.seq_pos = data.seq_pos[mask]
 
-        if data.amino_acid_one_hot is not None:
+        if hasattr(data, "amino_acid_one_hot"):
             data.amino_acid_one_hot = data.amino_acid_one_hot[mask]
 
         return data
