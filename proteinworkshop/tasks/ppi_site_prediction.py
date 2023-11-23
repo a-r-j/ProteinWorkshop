@@ -37,7 +37,7 @@ class BindingSiteTransform(T.BaseTransform):
         target_chains = []
 
         chain_strs = [res.split(":")[0] for res in data.residue_id]
-        chain_strs = np.unique(chain_strs)
+        chain_strs = list(np.unique(chain_strs))
 
         for chain in data.graph_y:
             target_chains.append(chain_strs.index(chain))
