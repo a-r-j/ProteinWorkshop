@@ -15,7 +15,7 @@ def test_instantiate_transforms():
         cfg = omegaconf.OmegaConf.load(config_path)
 
         if t == "multihot_label_encoding.yaml":
-            cfg.num_classes = 2
+            cfg.multihot_label_encoding.num_classes = 2
         transform = instantiate(cfg)
 
         if t == "none.yaml":
@@ -30,7 +30,7 @@ def test_transform_call(example_batch):
         cfg = omegaconf.OmegaConf.load(config_path)
 
         if t == "multihot_label_encoding.yaml":
-            cfg.num_classes = 2
+            cfg.multihot_label_encoding.num_classes = 2
 
         transform = instantiate(cfg)
 
