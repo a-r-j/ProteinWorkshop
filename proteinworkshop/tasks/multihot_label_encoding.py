@@ -1,4 +1,4 @@
-from typing import Union, Set
+from typing import Set, Union
 
 import torch
 from graphein.protein.tensor.data import Protein
