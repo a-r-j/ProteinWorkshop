@@ -25,10 +25,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.3.1
+      - name: Setup miniconda
+        uses: conda-incubator/setup-miniconda@v2
         with:
+          auto-update-conda: true
+          miniforge-variant: Mambaforge
+          channels: "conda-forge, pytorch, pyg"
           python-version: ${{ matrix.python-version }}
+          use-mamba: true
       - id: cache-dependencies
         name: Cache dependencies
         uses: actions/cache@v2.1.7
