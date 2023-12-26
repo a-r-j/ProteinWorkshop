@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Callable, Iterable, Literal, Optional, List
+from typing import Callable, Iterable, List, Literal, Optional
 
 import omegaconf
 import wget
