@@ -3,7 +3,7 @@ import os
 from typing import Dict, List, Optional, Set, Tuple, Union
 
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.resi_atoms import RESI_THREE_TO_1
 from graphein.protein.tensor.data import ProteinBatch
 from loguru import logger
@@ -18,7 +18,7 @@ from proteinworkshop.models.utils import get_aggregation
 from proteinworkshop.types import EncoderOutput
 
 
-@beartype
+@typechecker
 def _compute_md5(file_name: str, chunk_size: int = 65536) -> str:
     """
     Compute MD5 of the file.
@@ -37,7 +37,7 @@ def _compute_md5(file_name: str, chunk_size: int = 65536) -> str:
     return md5.hexdigest()
 
 
-@beartype
+@typechecker
 def _download(
     url: str,
     path: str,
@@ -176,7 +176,7 @@ class EvolutionaryScaleModeling(nn.Module):
         self.residue_map["UNK"] = "<unk>"
 
     @property
-    @beartype
+    @typechecker
     def required_batch_attributes(self) -> Set[str]:
         """
         Return the requied attributes for each batch.
@@ -185,7 +185,7 @@ class EvolutionaryScaleModeling(nn.Module):
         """
         return {"residues", "id", "coords", "batch"}
 
-    @beartype
+    @typechecker
     def load_weight(
         self, path: str, model: str
     ) -> Tuple[nn.Module, esm.data.Alphabet]:
@@ -215,7 +215,7 @@ class EvolutionaryScaleModeling(nn.Module):
             model_name, model_data, regression_data
         )
 
-    @beartype
+    @typechecker
     def esm_embed(
         self,
         batch: Union[Batch, ProteinBatch],
@@ -251,7 +251,7 @@ class EvolutionaryScaleModeling(nn.Module):
         node_embedding = node_embedding[batch_mask]
         return node_embedding
 
-    @beartype
+    @typechecker
     def forward(
         self,
         batch: Union[Batch, ProteinBatch],
