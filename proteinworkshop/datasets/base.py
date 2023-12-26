@@ -20,7 +20,7 @@ import lightning as L
 import numpy as np
 import pandas as pd
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein import verbose
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from graphein.protein.tensor.io import protein_to_pyg
@@ -99,7 +99,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
         """
         return get_obsolete_mapping()
 
-    @beartype
+    @typechecker
     def compose_transforms(self, transforms: Iterable[Callable]) -> T.Compose:
         """Compose an iterable of Transforms into a single transform.
 
