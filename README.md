@@ -37,6 +37,7 @@ Configuration files to run the experiments described in the manuscript are provi
     - [Running a sweep/experiment](#running-a-sweepexperiment)
     - [Embedding a dataset](#embedding-a-dataset)
     - [Visualising a dataset's embeddings](#visualising-pre-trained-model-embeddings-for-a-given-dataset)
+    - [Performing attribution of a pre-trained model](#performing-attribution-of-a-pre-trained-model)
     - [Verifying a config](#verifying-a-config)
     - [Using `proteinworkshop` modules functionally](#using-proteinworkshop-modules-functionally)
   - [Models](#models)
