@@ -3,7 +3,7 @@ import copy
 from typing import Literal, Set, Union
 
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.data import Protein
 from torch_geometric.data import Data
 from torch_geometric.transforms import BaseTransform
