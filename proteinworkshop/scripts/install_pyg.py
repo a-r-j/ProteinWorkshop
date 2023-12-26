@@ -26,6 +26,8 @@ def _install_pyg(force_reinstall: bool = False):
         # torch_version = "2.0.0"
         if cuda_version == "cu116":
             raise ValueError("PyTorch 2.0.0 does not support CUDA 11.6")
+        if torch_version.startswith("2.1"):
+            torch_version = "2.1.0"
 
     if torch_version.startswith("1.13"):
         if cuda_version == "cu118":
