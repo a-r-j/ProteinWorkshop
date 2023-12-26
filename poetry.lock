@@ -492,7 +492,6 @@ dev = ["annoy", "black (==22.3.0)", "flake8", "flask", "flask-compress", "ipytho
 insights = ["flask", "flask-compress", "ipython", "ipywidgets", "jupyter"]
 test = ["parameterized", "pytest", "pytest-cov"]
 tutorials = ["flask", "flask-compress", "ipython", "ipywidgets", "jupyter", "torchtext", "torchvision"]
-=======
 name = "bokeh"
 version = "3.3.0"
 description = "Interactive plots and applications in the browser from Python"
