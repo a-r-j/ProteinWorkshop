@@ -7,7 +7,7 @@ from typing import Any, Dict, Union
 import numpy as np
 import pandas as pd
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.data import Protein
 from graphein.protein.tensor.io import protein_to_pyg
 from loguru import logger as log
