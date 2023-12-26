@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch_scatter
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import Bool, Float, Int64, jaxtyped
 from omegaconf import DictConfig
@@ -173,8 +173,7 @@ def flatten_list(l: List[List]) -> List:  # noqa: E741
     return [item for sublist in l for item in sublist]
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def centralize(
     batch: Union[Batch, ProteinBatch],
     key: str,
@@ -210,8 +209,7 @@ def centralize(
     return entities_centroid, entities_centered
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def decentralize(
     batch: Union[Batch, ProteinBatch],
     key: str,
@@ -230,8 +228,7 @@ def decentralize(
     return entities_centered
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def localize(
     pos: Float[torch.Tensor, "batch_num_nodes 3"],
     edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
@@ -311,8 +308,7 @@ def localize(
     return f_ij
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def safe_norm(
     x: torch.Tensor,
     dim: int = -1,
@@ -326,8 +322,7 @@ def safe_norm(
     return norm + eps
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def is_identity(
     nonlinearity: Optional[Union[Callable, nn.Module]] = None
 ) -> bool:

@@ -41,7 +41,7 @@ class SequenceNoiseTransform(BaseTransform):
     def required_attributes(self) -> Set[str]:
         return {"residue_type"}
 
-    @beartype
+    @typechecker
     def __call__(self, x: Union[Data, Protein]) -> Union[Data, Protein]:
         x.residue_type_uncorrupted = copy.deepcopy(x.residue_type)
         # Get indices of residues to corrupt

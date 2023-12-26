@@ -28,7 +28,7 @@ _atom_types_dict: Dict[str, int] = {
 NUM_ATOM_TYPES = len(_atom_types_dict)
 
 
-@beartype
+@typechecker
 def _element_mapping(x: str) -> int:
     return _atom_types_dict.get(x, 8)
 

@@ -2,7 +2,7 @@ from typing import List, Literal, Union
 
 import torch
 import torch.nn as nn
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.data import ProteinBatch, get_random_batch
 from jaxtyping import jaxtyped
 from loguru import logger
@@ -75,8 +75,7 @@ class ProteinFeaturiser(nn.Module):
         if "sequence_positional_encoding" in self.scalar_node_features:
             self.positional_encoding = PositionalEncoding(16)
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def forward(
         self, batch: Union[Batch, ProteinBatch]
     ) -> Union[Batch, ProteinBatch]:

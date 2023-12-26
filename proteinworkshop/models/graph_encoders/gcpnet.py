@@ -4,7 +4,7 @@ from typing import List, Union
 import hydra
 import torch
 import torch.nn as nn
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import jaxtyped
 from omegaconf import DictConfig
@@ -87,24 +87,14 @@ class GCPNetModel(torch.nn.Module):
         self.predict_node_rep = module_cfg.predict_node_rep
 
         # Feature dimensionalities
-        edge_input_dims = ScalarVector(
-            model_cfg.e_input_dim, model_cfg.xi_input_dim
-        )
-        node_input_dims = ScalarVector(
-            model_cfg.h_input_dim, model_cfg.chi_input_dim
-        )
-        self.edge_dims = ScalarVector(
-            model_cfg.e_hidden_dim, model_cfg.xi_hidden_dim
-        )
-        self.node_dims = ScalarVector(
-            model_cfg.h_hidden_dim, model_cfg.chi_hidden_dim
-        )
+        edge_input_dims = ScalarVector(model_cfg.e_input_dim, model_cfg.xi_input_dim)
+        node_input_dims = ScalarVector(model_cfg.h_input_dim, model_cfg.chi_input_dim)
+        self.edge_dims = ScalarVector(model_cfg.e_hidden_dim, model_cfg.xi_hidden_dim)
+        self.node_dims = ScalarVector(model_cfg.h_hidden_dim, model_cfg.chi_hidden_dim)
 
         # Position-wise operations
         self.centralize = partial(centralize, key="pos")
-        self.localize = partial(
-            localize, norm_pos_diff=module_cfg.norm_pos_diff
-        )
+        self.localize = partial(localize, norm_pos_diff=module_cfg.norm_pos_diff)
         self.decentralize = partial(decentralize, key="pos")
 
         # Input embeddings
@@ -156,11 +146,10 @@ class GCPNetModel(torch.nn.Module):
     def required_batch_attributes(self) -> List[str]:
         return ["edge_index", "pos", "x", "batch"]
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
         """Implements the forward pass of the GCPNet encoder.
-        
+
         Returns the node embedding and graph embedding in a dictionary.
 
         :param batch: Batch of data to encode.
@@ -174,9 +163,7 @@ class GCPNetModel(torch.nn.Module):
         :rtype: EncoderOutput
         """
         # Centralize node positions to make them translation-invariant
-        pos_centroid, batch.pos = self.centralize(
-            batch, batch_index=batch.batch
-        )
+        pos_centroid, batch.pos = self.centralize(batch, batch_index=batch.batch)
 
         # Install `h`, `chi`, `e`, and `xi` using corresponding features built by the `FeatureFactory`
         batch.h, batch.chi, batch.e, batch.xi = (
@@ -218,9 +205,7 @@ class GCPNetModel(torch.nn.Module):
                 _, centralized_node_pos = self.centralize(
                     batch, batch_index=batch.batch
                 )
-                batch.f_ij = self.localize(
-                    centralized_node_pos, batch.edge_index
-                )
+                batch.f_ij = self.localize(centralized_node_pos, batch.edge_index)
             encoder_outputs["pos"] = batch.pos  # (n, 3) -> (batch_size, 3)
 
         # Summarize intermediate node representations as final predictions
