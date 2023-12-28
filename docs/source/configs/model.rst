@@ -236,7 +236,7 @@ Sequence-Based Encoders
 
 
 :py:class:`Evolutionary Scale Modeling <proteinworkshop.models.graph_encoders.esm_embeddings.EvolutionaryScaleModeling>` (``esm``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Evolutionary Scale Modeling is a series of Transformer-based protein sequence encoders (Vaswani et al., 2017) that has been successfully used in protein structure prediction (Lin et al., 2023), protein design (Verkuil et al., 2022), and beyond.
 This model class has commonly been used as a baseline for protein-related representation learning tasks, and we included it in our benchmark for this reason.
