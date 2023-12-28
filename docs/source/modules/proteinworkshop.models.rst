@@ -118,6 +118,17 @@ Multi-Atomic Cluster Expansion (``mace``)
     :show-inheritance:
 
 
+Sequence-Based Encoders
+=============================
+
+Evolutionary Scale Modeling (``esm``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. automodule:: proteinworkshop.models.graph_encoders.esm_embeddings
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
 Decoders
 =============================
 

@@ -68,14 +68,11 @@ Below, we outline how one may set up a virtual environment for `proteinworkshop`
 
 ### From PyPI
 
-`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Make sure to install [PyTorch](https://pytorch.org/) (specifically version `2.0.0`) using its official `pip` installation instructions, with CUDA support as desired.
+`proteinworkshop` is available for install [from PyPI](https://pypi.org/project/proteinworkshop/). This enables training of specific configurations via the CLI **or** using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Make sure to install [PyTorch](https://pytorch.org/) (specifically version `2.1.2` or newer) using its official `pip` installation instructions, with CUDA support as desired.
 
 ```bash
 # install `proteinworkshop` from PyPI
-pip install proteinworkshop --no-cache-dir
-
-# e.g., install PyTorch with CUDA 11.8 support on Linux
-pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118 --no-cache-dir
+pip install proteinworkshop
 
 # install PyTorch Geometric using the (now-installed) CLI
 workshop install pyg
@@ -87,7 +84,7 @@ export DATA_PATH="where/you/want/data/" # e.g., `export DATA_PATH="proteinworksh
 However, for full exploration we recommend cloning the repository and building from source.
 
 ### Building from source
-With a local virtual environment activated (e.g., one created with `conda create -n proteinworkshop python=3.9`):
+With a local virtual environment activated (e.g., one created with `conda create -n proteinworkshop python=3.10`):
 1. Clone and install the project
 
     ```bash
@@ -96,11 +93,11 @@ With a local virtual environment activated (e.g., one created with `conda create
     pip install -e .
     ```
 
-2. Install [PyTorch](https://pytorch.org/) (specifically version `2.0.0`) using its official `pip` installation instructions, with CUDA support as desired (N.B. make sure to add `--no-cache-dir` to the end of the `pip` installation command)
+2. Install [PyTorch](https://pytorch.org/) (specifically version `2.1.2` or newer) using its official `pip` installation instructions, with CUDA support as desired
 
     ```bash
     # e.g., to install PyTorch with CUDA 11.8 support on Linux:
-    pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118 --no-cache-dir
+    pip install torch==2.1.2+cu118 torchvision==0.16.2+cu118 torchaudio==2.1.2+cu118 --index-url https://download.pytorch.org/whl/cu118
     ```
 
 3. Then use the newly-installed `proteinworkshop` CLI to install [PyTorch Geometric](https://pyg.org/)
@@ -257,7 +254,7 @@ See the `visualise` section of `proteinworkshop/config/visualise.yaml` for addit
 
 We provide a utility in `proteinworkshop/explain.py` for performing attribution of a pre-trained model using integrated gradients.
 
-This will write PDB files for all the structures in a dataset for a supervised task with residue-level attributions in the b_factor column. To visualise the attributions, we recommend using the [Protein Viewer VSCode extension](https://marketplace.visualstudio.com/items?itemName=ArianJamasb.protein-viewer) and changing the 3D representation to colour by `Uncertainty/Disorder`.
+This will write PDB files for all the structures in a dataset for a supervised task with residue-level attributions in the `b_factor` column. To visualise the attributions, we recommend using the [Protein Viewer VSCode extension](https://marketplace.visualstudio.com/items?itemName=ArianJamasb.protein-viewer) and changing the 3D representation to colour by `Uncertainty/Disorder`.
 
 To run the attribution:
 

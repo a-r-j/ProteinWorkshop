@@ -2,8 +2,8 @@ Tutorials
 ---------------------
 
 .. mdinclude:: ../../README.md
-    :start-line: 119
-    :end-line: 128
+    :start-line: 118
+    :end-line: 127
 
 
 Training a New Model
