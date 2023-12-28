@@ -3,7 +3,7 @@ from typing import List, Union
 
 import numpy as np
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.types import CoordTensor, EdgeTensor
 from jaxtyping import jaxtyped
 from omegaconf import ListConfig
@@ -20,8 +20,7 @@ EDGE_FEATURES: List[str] = [
 """List of edge features that can be computed."""
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def compute_scalar_edge_features(
     x: Union[Data, Batch], features: Union[List[str], ListConfig]
 ) -> torch.Tensor:
@@ -55,8 +54,7 @@ def compute_scalar_edge_features(
     return torch.cat(feats, dim=1)
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def compute_vector_edge_features(
     x: Union[Data, Batch], features: Union[List[str], ListConfig]
 ) -> Union[Data, Batch]:
@@ -71,8 +69,7 @@ def compute_vector_edge_features(
     return x
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def compute_edge_distance(
     pos: CoordTensor, edge_index: EdgeTensor
 ) -> torch.Tensor:
@@ -91,8 +88,7 @@ def compute_edge_distance(
     )
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def pos_emb(edge_index: EdgeTensor, num_pos_emb: int = 16):
     # From https://github.com/jingraham/neurips19-graph-protein-design
     d = edge_index[0] - edge_index[1]

@@ -3,7 +3,7 @@ from typing import List, Union
 
 import torch
 import torch.nn.functional as F
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.angles import (
     alpha,
     dihedrals,
@@ -25,8 +25,7 @@ from .sequence_features import amino_acid_one_hot
 from .utils import _normalize
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def compute_scalar_node_features(
     x: Union[Batch, Data, Protein, ProteinBatch],
     node_features: Union[ListConfig, List[ScalarNodeFeature]],
@@ -86,8 +85,7 @@ def compute_scalar_node_features(
     return torch.cat(feats, dim=1) if feats else x.x
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def compute_vector_node_features(
     x: Union[Batch, Data, Protein, ProteinBatch],
     vector_features: Union[ListConfig, List[str]],
@@ -114,8 +112,7 @@ def compute_vector_node_features(
     return x
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def compute_surface_feat(
     coords: Union[CoordTensor, AtomTensor], k: int, sigma: List[float]
 ):
@@ -150,8 +147,7 @@ def compute_surface_feat(
     return torch.cat(feat, dim=1)
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def orientations(
     X: Union[CoordTensor, AtomTensor], ca_idx: int = 1
 ) -> OrientationTensor:

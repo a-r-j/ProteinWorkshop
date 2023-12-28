@@ -42,6 +42,7 @@ Welcome to Protein Workshop's documentation!
    configs/task
    configs/features
    configs/transforms
+   configs/metrics
    framework
    ml_components
 
@@ -57,9 +58,9 @@ Welcome to Protein Workshop's documentation!
    modules/proteinworkshop.tasks
    modules/proteinworkshop.features
    modules/proteinworkshop.utils
-   modules/protein_workshop.constants
+   modules/proteinworkshop.constants
    modules/proteinworkshop.types
-
+   modules/proteinworkshop.metrics
 
 Indices and tables
 ==================

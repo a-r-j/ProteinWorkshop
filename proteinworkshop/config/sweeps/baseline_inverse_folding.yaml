@@ -7,19 +7,16 @@ metric: # Does not matter, as we are using sweep to run the experiment.
 
 parameters:
   task:
-    values: [inverse_folding]
+    value: inverse_folding
 
   dataset:
-    values: [cath]
+    value: cath
 
   encoder:
-    values: [schnet, dimenet_plus_plus, egnn, gcpnet, gear_net_edge]
-
-  optimiser.optimizer.lr:
-    values: [0.0001]
+    values: [schnet, egnn, gcpnet, gear_net_edge, tfn, mace]
 
   features:
-    values: [ca_base, ca_seq, ca_angles, ca_bb]
+    values: [ca_seq, ca_angles, ca_bb]
 
   scheduler:
     value: plateau
@@ -28,13 +25,31 @@ parameters:
     value: False
 
   +aux_task:
-    values: [none, nn_sequence, nn_structure_torsion, nn_structure_r3]
+    values: [none, nn_structure_torsion, nn_structure_r3]
 
   trainer.max_epochs:
-    value: 150
+    value: 250
 
   test:
     value: True
+
+  trainer:
+    value: gpu
+
+  logger:
+    value: wandb
+
+  seed:
+    values: [13, 42, 121]
+
+  name:
+    value: "${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_${hydra:runtime.choices.aux_task}_seed_${seed}"
+
+  optimiser.optimizer.lr:
+    value: ${hparams.hparams.lr}
+
+  decoder.residue_type.dropout:
+    value: ${hparams.hparams.decoder_dropout}
 
 command:
   - ${env}

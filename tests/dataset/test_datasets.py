@@ -49,27 +49,33 @@ def test_instantiate_datasets(tmp_path):
 
 
 def test_datasets_have_overwrite_attr(tmp_path):
-        for t in os.listdir(DATASET_CONFIG_DIR):
-            config_path = DATASET_CONFIG_DIR / t
-            cfg = omegaconf.OmegaConf.load(config_path)
+    for t in os.listdir(DATASET_CONFIG_DIR):
+        config_path = DATASET_CONFIG_DIR / t
+        cfg = omegaconf.OmegaConf.load(config_path)
 
-            if "data_dir" in cfg.datamodule:
-                cfg.datamodule.data_dir = tmp_path
+        if "data_dir" in cfg.datamodule:
+            cfg.datamodule.data_dir = tmp_path
 
-            if "path" in cfg.datamodule:
-                cfg.datamodule.path = tmp_path
+        if "path" in cfg.datamodule:
+            cfg.datamodule.path = tmp_path
 
-            if "pdb_dir" in cfg.datamodule:
-                cfg.datamodule.pdb_dir = tmp_path
+        if "pdb_dir" in cfg.datamodule:
+            cfg.datamodule.pdb_dir = tmp_path
 
-            if "transforms" in cfg.datamodule:
-                cfg.datamodule.transforms = None
+        if "transforms" in cfg.datamodule:
+            cfg.datamodule.transforms = None
 
-            if "transform" in cfg.datamodule:
-                cfg.datamodule.transform = None
+        if "transform" in cfg.datamodule:
+            cfg.datamodule.transform = None
 
-            if cfg.datamodule._target_ in {"graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule", "proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule"}:
-                continue 
-            else:
-                dm = instantiate(cfg.datamodule)
-                assert hasattr(dm, "overwrite"), f"Datamodules {dm} has no overwrite attribute"
+        if cfg.datamodule._target_ in {
+            "graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule",
+            "proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule",
+            "proteinworkshop.datasets.igfold.IgFoldDataModule",
+        }:
+            continue
+        else:
+            dm = instantiate(cfg.datamodule)
+            assert hasattr(
+                dm, "overwrite"
+            ), f"Datamodules {dm} has no overwrite attribute"

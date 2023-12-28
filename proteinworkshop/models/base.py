@@ -6,7 +6,7 @@ import lightning as L
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.angles import dihedrals
 from graphein.protein.tensor.data import ProteinBatch, get_random_protein
 from loguru import logger
@@ -121,8 +121,11 @@ class BaseModel(L.LightningModule, abc.ABC):
                     ).float()
             elif output == "graph_label":
                 labels["graph_label"] = batch.graph_y
-                if isinstance(
-                    self.losses["graph_label"], torch.nn.BCEWithLogitsLoss
+                if (
+                    isinstance(
+                        self.losses["graph_label"], torch.nn.BCEWithLogitsLoss
+                    )
+                    and batch.graph_y.ndim == 1
                 ):
                     labels["graph_label"] = F.one_hot(
                         labels["graph_label"],
@@ -172,7 +175,7 @@ class BaseModel(L.LightningModule, abc.ABC):
 
         return Label(labels)
 
-    @beartype
+    @typechecker
     def compute_loss(
         self, y_hat: ModelOutput, y: Label
     ) -> Dict[str, torch.Tensor]:
@@ -304,6 +307,7 @@ class BaseModel(L.LightningModule, abc.ABC):
             "auprc",
             "accuracy",
             "f1_max",
+            "rocauc",
         }
         REGRESSION_METRICS: Set[str] = {"mse", "mae", "r2", "rmse"}
         CONTINUOUS_OUTPUTS: Set[str] = {
@@ -321,6 +325,8 @@ class BaseModel(L.LightningModule, abc.ABC):
                 for stage in {"train", "val", "test"}:
                     metric = hydra.utils.instantiate(metric_conf)
                     if output == "residue_type":
+                        if metric_name not in {"accuracy", "perplexity"}:
+                            continue
                         metric.num_classes = 23
                         metric.task = "multiclass"
 
@@ -345,7 +351,7 @@ class BaseModel(L.LightningModule, abc.ABC):
             metric_names.append(f"{metric_name}")
         setattr(self, "metric_names", metric_names)
 
-    @beartype
+    @typechecker
     def log_metrics(
         self, loss, y_hat: ModelOutput, y: Label, stage: str, batch: Batch
     ):
@@ -365,9 +371,8 @@ class BaseModel(L.LightningModule, abc.ABC):
         :param batch: Batch of data
         :type batch: Batch
         """
-        # Log loss
-        for k, v in loss.items():
-            self.log(f"{stage}/loss/{k}", v, prog_bar=True, logger=True)
+        # Log losses
+        log_dict = {f"{stage}/loss/{k}": v for k, v in loss.items()}
 
         # Log metrics
         for m in self.metric_names:
@@ -388,14 +393,11 @@ class BaseModel(L.LightningModule, abc.ABC):
                             val = metric(pred, target)
                         except RuntimeError:
                             val = metric(pred, target.unsqueeze(-1))
-                        self.log(
-                            f"{stage}/{output}/{m}",
-                            val,
-                            prog_bar=True,
-                            logger=True,
-                        )
+                        log_dict[f"{stage}/{output}/{m}"] = val
+
                     except (ValueError, RuntimeError):
                         continue
+        self.log_dict(log_dict, prog_bar=True)
 
 
 class BenchMarkModel(BaseModel):
@@ -456,10 +458,13 @@ class BenchMarkModel(BaseModel):
             ]
             for p in proteins:
                 setattr(p, "x", torch.zeros(p.coords.shape[0]))
+                setattr(
+                    p, "seq_pos", torch.arange(p.coords.shape[0]).unsqueeze(-1)
+                )
             batch = ProteinBatch.from_data_list(proteins)
             return self.featurise(batch)
 
-    @beartype
+    @typechecker
     def forward(self, batch: Union[Batch, ProteinBatch]) -> ModelOutput:
         """
         Implements the forward pass of the model.
@@ -500,7 +505,7 @@ class BenchMarkModel(BaseModel):
 
         return self.compute_output(output, batch)
 
-    @beartype
+    @typechecker
     def transform_encoder_output(
         self, output: EncoderOutput, batch
     ) -> EncoderOutput:
@@ -529,7 +534,7 @@ class BenchMarkModel(BaseModel):
 
         return output
 
-    @beartype
+    @typechecker
     def compute_output(self, output: ModelOutput, batch: Batch) -> ModelOutput:
         """
         Computes output from model output.
@@ -561,7 +566,7 @@ class BenchMarkModel(BaseModel):
 
         return output
 
-    @beartype
+    @typechecker
     def _do_step(
         self,
         batch: Batch,

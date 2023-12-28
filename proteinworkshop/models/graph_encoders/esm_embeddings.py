@@ -1,23 +1,24 @@
 """Modified from TorchDrug."""
-import esm
 import os
-import torch
+from typing import Dict, List, Optional, Set, Tuple, Union
 
-from beartype import beartype
+import torch
+from beartype import beartype as typechecker
+from graphein.protein.resi_atoms import RESI_THREE_TO_1
+from graphein.protein.tensor.data import ProteinBatch
+from loguru import logger
+from six.moves.urllib.request import urlretrieve
+from torch import nn
 from torch_geometric.data import Batch
 from torch_geometric.utils import to_dense_batch
 from tqdm import tqdm
-from typing import Dict, List, Optional, Union, Set, Tuple
-from graphein.protein.tensor.data import ProteinBatch
-from graphein.protein.resi_atoms import RESI_THREE_TO_1
-from loguru import logger
-from six.moves.urllib.request import urlretrieve
+
+import esm
 from proteinworkshop.models.utils import get_aggregation
-from torch import nn
 from proteinworkshop.types import EncoderOutput
 
 
-@beartype
+@typechecker
 def _compute_md5(file_name: str, chunk_size: int = 65536) -> str:
     """
     Compute MD5 of the file.
@@ -36,9 +37,12 @@ def _compute_md5(file_name: str, chunk_size: int = 65536) -> str:
     return md5.hexdigest()
 
 
-@beartype
+@typechecker
 def _download(
-    url: str, path: str, save_file: Optional[str] = None, md5: Optional[str] = None
+    url: str,
+    path: str,
+    save_file: Optional[str] = None,
+    md5: Optional[str] = None,
 ):
     """
     Download a file from the specified url.
@@ -55,7 +59,9 @@ def _download(
             save_file = save_file[: save_file.find("?")]
     save_file = os.path.join(path, save_file)
 
-    if not os.path.exists(save_file) or (md5 is not None and _compute_md5(save_file) != md5):
+    if not os.path.exists(save_file) or (
+        md5 is not None and _compute_md5(save_file) != md5
+    ):
         logger.info(f"Downloading {url} to {save_file}")
         urlretrieve(url, save_file)
     return save_file
@@ -129,14 +135,14 @@ class EvolutionaryScaleModeling(nn.Module):
     max_input_length = 1024 - 2
 
     def __init__(
-            self, 
-            path: Union[str, os.PathLike], 
-            model: str = "ESM-2-650M", 
-            readout: str = "mean",
-            mlp_post_embed: bool = True,
-            dropout: float = 0.1,
-            finetune: bool = False
-        ):
+        self,
+        path: Union[str, os.PathLike],
+        model: str = "ESM-2-650M",
+        readout: str = "mean",
+        mlp_post_embed: bool = True,
+        dropout: float = 0.1,
+        finetune: bool = False,
+    ):
         super(EvolutionaryScaleModeling, self).__init__()
         path = os.path.expanduser(path)
         if not os.path.exists(path):
@@ -160,24 +166,29 @@ class EvolutionaryScaleModeling(nn.Module):
                 nn.ReLU(),
                 nn.Dropout(dropout),
             )
-        
+
         if not self.finetune:
             self.model.eval()
 
         self.readout = get_aggregation(readout)
 
+        self.residue_map = RESI_THREE_TO_1
+        self.residue_map["UNK"] = "<unk>"
+
     @property
-    @beartype
+    @typechecker
     def required_batch_attributes(self) -> Set[str]:
         """
         Return the requied attributes for each batch.
-        
+
         :return: set of required attributes
         """
         return {"residues", "id", "coords", "batch"}
 
-    @beartype
-    def load_weight(self, path: str, model: str) -> Tuple[nn.Module, esm.data.Alphabet]:
+    @typechecker
+    def load_weight(
+        self, path: str, model: str
+    ) -> Tuple[nn.Module, esm.data.Alphabet]:
         """
         Load ESM model weights and their corresponding alphabet.
 
@@ -192,7 +203,9 @@ class EvolutionaryScaleModeling(nn.Module):
         if model != "ESM-1v" and not model.startswith("ESM-2"):
             regression_model = f"{model}-regression"
             regression_file = _download(
-                self.url[regression_model], path, md5=self.md5[regression_model]
+                self.url[regression_model],
+                path,
+                md5=self.md5[regression_model],
             )
             regression_data = torch.load(regression_file, map_location="cpu")
         else:
@@ -201,15 +214,22 @@ class EvolutionaryScaleModeling(nn.Module):
         return esm.pretrained.load_model_and_alphabet_core(
             model_name, model_data, regression_data
         )
-    
-    @beartype
-    def esm_embed(self, batch: Union[Batch, ProteinBatch], device: Optional[Union[torch.device, str]] = None) -> torch.Tensor:
+
+    @typechecker
+    def esm_embed(
+        self,
+        batch: Union[Batch, ProteinBatch],
+        device: Optional[Union[torch.device, str]] = None,
+    ) -> torch.Tensor:
         """
         Compute residue ESM embeddings for input proteins
         """
         device = device if device is not None else batch.coords.device
 
-        seqs = ["".join([RESI_THREE_TO_1[s] for s in seq]) for seq in batch.residues]
+        seqs = [
+            "".join([self.residue_map[s] for s in seq])
+            for seq in batch.residues
+        ]
         seqs = ["".join(seq) for seq in seqs]
         data = list(tuple(zip(batch.id, seqs)))
 
@@ -220,17 +240,23 @@ class EvolutionaryScaleModeling(nn.Module):
         node_embedding = output["representations"][self.repr_layer]
         # NOTE: tokens `0` and `N` are always beginning-of-sequence and end-of-sequence tokens,
         # so the first (real) residue is token `1` and the last is `N - 1`.
-        node_embedding = node_embedding[:, 1:node_embedding.shape[1] - 1, :]
+        node_embedding = node_embedding[:, 1 : node_embedding.shape[1] - 1, :]
 
         _, batch_mask = to_dense_batch(
-            x=torch.rand(batch.coords.shape[0], self.output_dim, device=device),
+            x=torch.rand(
+                batch.coords.shape[0], self.output_dim, device=device
+            ),
             batch=batch.batch,
         )
         node_embedding = node_embedding[batch_mask]
         return node_embedding
 
-    @beartype
-    def forward(self, batch: Union[Batch, ProteinBatch], device: Optional[Union[torch.device, str]] = None) -> EncoderOutput:
+    @typechecker
+    def forward(
+        self,
+        batch: Union[Batch, ProteinBatch],
+        device: Optional[Union[torch.device, str]] = None,
+    ) -> EncoderOutput:
         """
         Compute the residue representations and the graph representation(s).
 
@@ -250,18 +276,18 @@ class EvolutionaryScaleModeling(nn.Module):
         if self.mlp_post_embed:
             # combine ESM embeddings with node features
             node_embedding = self.mlp(
-                torch.concatenate(
-                    [node_embedding, batch.x],
-                    dim=-1
-                )
+                torch.concatenate([node_embedding, batch.x], dim=-1)
             )
 
         graph_embedding = self.readout(node_embedding, batch.batch)
 
         return EncoderOutput(
-            {"graph_embedding": graph_embedding,
-             "node_embedding": node_embedding}
+            {
+                "graph_embedding": graph_embedding,
+                "node_embedding": node_embedding,
+            }
         )
+
 
 if __name__ == "__main__":
     from proteinworkshop.datasets.utils import create_example_batch

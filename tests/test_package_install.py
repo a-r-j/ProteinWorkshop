@@ -2,10 +2,8 @@
 
 import sys
 
-import pytest
-
 # Import package, test suite, and other packages as needed
-import proteinworkshop
+import proteinworkshop  # noqa: F401
 
 
 def test_proteinworkshop_imported():

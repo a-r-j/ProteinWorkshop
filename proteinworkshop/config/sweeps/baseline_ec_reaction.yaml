@@ -1,0 +1,64 @@
+program: proteinworkshop/train.py
+method: grid
+name: baseline_ec_reaction
+metric: # Does not matter, as we are using sweep to run the experiment.
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  task:
+    values: [multiclass_graph_classification]
+
+  dataset:
+    values: [ec_reaction]
+
+  dataset.datamodule.batch_size:
+    value: 8
+
+  encoder:
+    values: [schnet, gear_net_edge, egnn, gcpnet, tfn, mace]
+
+
+  features:
+    values: [ca_base, ca_seq, ca_angles, ca_bb, ca_sc]
+
+  scheduler:
+    value: plateau
+
+  extras.enforce_tags:
+    value: False
+
+  +aux_task:
+    values: [none, nn_sequence, nn_structure_r3] #nn_structure_torsion, nn_structure_r3]
+
+  trainer.max_epochs:
+    value: 300
+
+  test:
+    value: True
+
+  trainer:
+    value: gpu
+
+  logger:
+    value: wandb
+
+  name:
+    value: "${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_${hydra:runtime.choices.aux_task}_seed_${seed}"
+
+  optimiser.optimizer.lr:
+    value: ${hparams.hparams.lr}
+
+  decoder.graph_label.dropout:
+    value: ${hparams.hparams.decoder_dropout}
+
+  #seed:
+  #  values: [13, 42, 99]
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}

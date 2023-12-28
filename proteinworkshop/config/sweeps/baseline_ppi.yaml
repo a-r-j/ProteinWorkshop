@@ -9,15 +9,14 @@ parameters:
   task:
     values: [ppi_site_prediction]
 
-
   dataset:
     values: [masif_site]
 
   encoder:
-    values: [schnet, dimenet_plus_plus, gear_net_edge, egnn, gcpnet]
+    values: [schnet, gear_net_edge, egnn, gcpnet, tfn, mace]
 
-  optimiser.optimizer.lr:
-    values: [0.0001]
+  dataset.datamodule.batch_size:
+    value: 16
 
   features:
     values: [ca_base, ca_seq, ca_angles, ca_bb, ca_sc]
@@ -29,10 +28,25 @@ parameters:
     value: False
 
   +aux_task:
-    values: [none, nn_sequence, nn_structure_torsion, nn_structure_r3]
+    values: [none, nn_sequence, nn_structure_r3]
 
   trainer.max_epochs:
-    value: 150
+    value: 300
+
+  test:
+    value: True
+
+  logger:
+    value: wandb
+
+  name:
+    value: "${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_${hydra:runtime.choices.aux_task}"
+
+  optimiser.optimizer.lr:
+    value: ${hparams.hparams.lr}
+
+  decoder.node_label.dropout:
+    value: ${hparams.hparams.decoder_dropout}
 
 command:
   - ${env}

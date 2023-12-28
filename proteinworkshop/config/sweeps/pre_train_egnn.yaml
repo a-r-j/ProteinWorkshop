@@ -1,0 +1,55 @@
+program: proteinworkshop/train.py
+method: grid
+name: pretrain_egnn
+metric: # Does not matter, as we are using sweep to run the experiment.
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  task:
+    values:
+      [
+        inverse_folding,
+        sequence_denoising,
+        #plddt_prediction,
+        structure_denoising,
+        torsional_denoising,
+      ]
+
+  dataset:
+    value: afdb_rep_v4
+
+  dataset.datamodule.num_workers:
+    value: 16
+
+  encoder:
+    values: [egnn]
+
+  optimiser.optimizer.lr:
+    values: [0.0001]
+
+  features:
+    values: [ca_angles, ca_bb]
+
+  scheduler:
+    value: linear_warmup_cosine_decay
+
+  callbacks.model_checkpoint.every_n_epochs:
+    value: 1
+
+  extras.enforce_tags:
+    value: False
+
+  trainer:
+    value: ddp
+
+  +trainer.max_epochs:
+    value: 10
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}

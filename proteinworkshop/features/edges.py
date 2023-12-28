@@ -2,16 +2,15 @@
 import functools
 from typing import List, Literal, Optional, Tuple, Union
 
-import beartype
 import graphein.protein.tensor.edges as gp
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.data import Protein, ProteinBatch
 from omegaconf import ListConfig
 from torch_geometric.data import Batch, Data
 
 
-@beartype
+@typechecker
 def compute_edges(
     x: Union[Data, Batch, Protein, ProteinBatch],
     edge_types: Union[ListConfig, List[str]],
@@ -82,7 +81,7 @@ def compute_edges(
     return edges, indxs
 
 
-@beartype
+@typechecker
 def sequence_edges(
     b: Union[Data, Batch, Protein, ProteinBatch],
     chains: Optional[torch.Tensor] = None,

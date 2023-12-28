@@ -5,7 +5,7 @@ To switch between different encoder architectures, simply change the ``encoder``
 .. code-block:: bash
 
     workshop train encoder=<encoder_name> dataset=cath task=inverse_folding trainer=cpu
-    # or 
+    # or
     python proteinworkshop/train.py encoder=<encoder_name> dataset=cath task=inverse_folding trainer=cpu # or trainer=gpu
 
 Where ``<encoder_name>`` is given by bracketed name in the listing below. For example, the encoder name for SchNet is ``schnet``.
@@ -65,6 +65,12 @@ GearNet (``gear_net``, ``gear_net_edge``)
     :undoc-members:
     :show-inheritance:
 
+CDConv (``cdconv``)
+^^^^^^^^^^^^^^^^^^^^^
+.. automodule:: proteinworkshop.models.graph_encoders.cdconv
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 Vector-Equivariant Encoders
 =============================
@@ -107,6 +113,17 @@ TFN (``tfn``)
 Multi-Atomic Cluster Expansion (``mace``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. automodule:: proteinworkshop.models.graph_encoders.mace
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Sequence-Based Encoders
+=============================
+
+Evolutionary Scale Modeling (``esm``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. automodule:: proteinworkshop.models.graph_encoders.esm_embeddings
     :members:
     :undoc-members:
     :show-inheritance:

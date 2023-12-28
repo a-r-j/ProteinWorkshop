@@ -23,6 +23,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
+    "sphinx.ext.doctest",
     "sphinx_copybutton",
     "sphinx_inline_tabs",
     "sphinxcontrib.gtagjs",
@@ -32,7 +33,7 @@ extensions = [
     "nbsphinx_link",
     "sphinx.ext.napoleon",
     "sphinx_codeautolink",
-    "sphinxcontrib.jquery"
+    "sphinxcontrib.jquery",
     # "sphinx_autorun",
 ]
 
@@ -109,7 +110,6 @@ mathjax2_config = {
             "vu": "\\mathbf{u}",
             "vv": "\\mathbf{v}",
             "vw": "\\mathbf{w}",
-            "vx": "\\mathbf{x}",
             "vy": "\\mathbf{y}",
             "vz": "\\mathbf{z}",
         }

@@ -2,8 +2,8 @@ Tutorials
 ---------------------
 
 .. mdinclude:: ../../README.md
-    :start-line: 119
-    :end-line: 128
+    :start-line: 118
+    :end-line: 127
 
 
 Training a New Model
@@ -45,7 +45,7 @@ Evaluating a pre-trained Model
     from graphein.protein.tensor.data import ProteinBatch
     from proteinworkshop.models.utils import get_aggregation
     from jaxtyping import jaxtyped
-    from beartype import beartype
+    from beartype import beartype as typechecker
 
 
     class IdentityModel(nn.Module):
@@ -58,8 +58,7 @@ Evaluating a pre-trained Model
             """This property describes the required attributes of the input batch."""
             return {"x", "batch"}
 
-        @jaxtyped
-        @beartype
+        @jaxtyped(typechecker=typechecker)
         def forward(self, batch: Union[Batch, ProteinBatch]) -> Dict[str, torch.Tensor]:
             """
             This method does the forward pass of the model.

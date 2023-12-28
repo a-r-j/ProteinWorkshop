@@ -1,20 +1,18 @@
 """Implementation of the AUPRC metric in ``torchmetrics``."""
-from typing import Any
 
 import torch
 from torchmetrics import Metric
 
 
 class AUPRC(Metric):
-    """Class for AUPRC metric."""
+    """Class for AUPRC metric.
+
+    :param compute_on_cpu: Whether to compute the metric on CPU,
+            defaults to ``True``.
+    :type compute_on_cpu: bool, optional
+    """
 
     def __init__(self, compute_on_cpu: bool = True) -> None:
-        """Initialises the AUPRC metric.
-
-        :param compute_on_cpu: Whether to compute the metric on CPU,
-            defaults to ``True``.
-        :type compute_on_cpu: bool, optional
-        """
         super().__init__()
         self.add_state("preds", default=[], dist_reduce_fx="cat")
         self.add_state("targets", default=[], dist_reduce_fx="cat")
@@ -28,8 +26,8 @@ class AUPRC(Metric):
         :param target: Tensor of targets
         :type target: torch.Tensor
         """
-        self.preds.append(preds)
-        self.targets.append(target)
+        self.preds.append(preds.detach())
+        self.targets.append(target.detach())
 
     def compute(self) -> torch.Tensor:
         """Computes the AUPRC metric.

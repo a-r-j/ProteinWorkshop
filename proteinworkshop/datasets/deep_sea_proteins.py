@@ -17,6 +17,34 @@ graphein.verbose(False)
 
 
 class DeepSeaProteinsDataModule(ProteinDataModule):
+    """Data module for Deep Sea Proteins dataset.
+
+    :param path: Path to store data.
+    :type path: os.PathLike
+    :param pdb_dir: Path to directory containing PDB files.
+    :type pdb_dir: os.PathLike
+    :param validation_fold: Name of validation fold to use.
+    :type validation_fold: int
+    :param batch_size: Batch size for dataloaders.
+    :type batch_size: int
+    :param in_memory: Whether to load the entire dataset into memory, defaults to False
+    :type in_memory: bool, optional
+    :param pin_memory: Whether to pin dataloader memory, defaults to True
+    :type pin_memory: bool, optional
+    :param num_workers: Number of dataloader workers, defaults to 16
+    :type num_workers: int, optional
+    :param obsolete_strategy: Strategy to deal with obsolete PDbs,
+        defaults to "drop"
+    :type obsolete_strategy: str, optional
+    :param format: Format of the structure files, defaults to "mmtf"
+    :type format: Literal[mmtf, pdb], optional
+    :param transforms: Transforms to apply, defaults to None
+    :type transforms: Optional[Iterable[Callable]], optional
+    :param overwrite: Whether to overwrite existing data, defaults to
+        ``False``
+    :type overwrite: bool, optional
+    """
+
     def __init__(
         self,
         path: os.PathLike,
@@ -31,33 +59,6 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
         transforms: Optional[Iterable[Callable]] = None,
         overwrite: bool = False,
     ):
-        """Data module for Deep Sea Proteins dataset.
-
-        :param path: Path to store data.
-        :type path: os.PathLike
-        :param pdb_dir: Path to directory containing PDB files.
-        :type pdb_dir: os.PathLike
-        :param validation_fold: Name of validation fold to use.
-        :type validation_fold: int
-        :param batch_size: Batch size for dataloaders.
-        :type batch_size: int
-        :param in_memory: Whether to load the entire dataset into memory, defaults to False
-        :type in_memory: bool, optional
-        :param pin_memory: Whether to pin dataloader memory, defaults to True
-        :type pin_memory: bool, optional
-        :param num_workers: Number of dataloader workers, defaults to 16
-        :type num_workers: int, optional
-        :param obsolete_strategy: Strategy to deal with obsolete PDbs,
-            defaults to "drop"
-        :type obsolete_strategy: str, optional
-        :param format: Format of the structure files, defaults to "mmtf"
-        :type format: Literal[mmtf, pdb], optional
-        :param transforms: Transforms to apply, defaults to None
-        :type transforms: Optional[Iterable[Callable]], optional
-        :param overwrite: Whether to overwrite existing data, defaults to
-            ``False``
-        :type overwrite: bool, optional
-        """
         super().__init__()
         self.data_dir = pathlib.Path(path)
         if not os.path.exists(self.data_dir):
@@ -256,7 +257,6 @@ class DeepSeaProteinsDataModule(ProteinDataModule):
 
 if __name__ == "__main__":
     import hydra
-    import omegaconf
 
     from proteinworkshop import constants
 

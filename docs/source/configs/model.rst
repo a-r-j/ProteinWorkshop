@@ -34,14 +34,14 @@ Invariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 295
-    :end-line: 302
+    :start-line: 319
+    :end-line: 326
 
 :py:class:`SchNet <proteinworkshop.models.graph_encoders.schnet.SchNetModel>` (``schnet``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 SchNet is one of the most popular and simplest instantiation of E(3) invariant message passing GNNs. SchNet constructs messages through element-wise multiplication of scalar features modulated by a radial filter conditioned on the pairwise distance :math:`\Vert \vec{\vx}_{ij} \Vert`` between two neighbours.
-Scalar features are update from iteration :math:`t`` to :math:`t+1` via:
+Scalar features are updated from iteration :math:`t`` to :math:`t+1` via:
 
 .. math::
     \begin{align}
@@ -113,12 +113,25 @@ where :math:`\mathrm{FC(\cdot)}` denotes a linear transformation upon the messag
     :caption: config/encoder/gear_net_edge.yaml
 
 
+
+:py:class:`CDConv <proteinworkshop.models.graph_encoders.cdconv.CDConvModel>` (``cdconv``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+CDConv is an SE(3) invariant architecture that uses independent learnable weights for sequential displacement, whilst directly encoding geometric displacements.
+
+As a result of the downsampling procedures, this architecture is only suitable for graph-level prediction tasks.
+
+.. literalinclude:: ../../../proteinworkshop/config/encoder/cdconv.yaml
+    :language: yaml
+    :caption: config/encoder/cdconv.yaml
+
+
 Vector-Equivariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 306
-    :end-line: 312
+    :start-line: 330
+    :end-line: 336
 
 :py:class:`EGNN <proteinworkshop.models.graph_encoders.egnn.EGNNModel>` (``egnn``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -170,8 +183,8 @@ Tensor-Equivariant Encoders
 =============================
 
 .. mdinclude:: ../../../README.md
-    :start-line: 314
-    :end-line: 319
+    :start-line: 338
+    :end-line: 343
 
 
 :py:class:`Tensor Field Networks <proteinworkshop.models.graph_encoders.tfn.TensorProductModel>` (``tfn``)
@@ -200,7 +213,7 @@ where the weights :math:`\vw` of the tensor product are computed via a learnt ra
 
 MACE (Batatia et al., 2022) is a higher order E(3) or SE(3) equivariant GNN originally developed for molecular dynamics simulations.
 MACE provides an efficient approach to computing high body order equivariant features in the Tensor Field Network framework via Atomic Cluster Expansion:
-They first aggregate neighbourhood features analogous to the node update equation for TFN above (the :math:`A` functions in Batatia et al. (2022) (eq.9)) and then take :math:`k-1` repeated self-tensor products of these neighbourhood features. 
+They first aggregate neighbourhood features analogous to the node update equation for TFN above (the :math:`A` functions in Batatia et al. (2022) (eq.9)) and then take :math:`k-1` repeated self-tensor products of these neighbourhood features.
 In our formalism, this corresponds to:
 
 .. math::
@@ -212,6 +225,25 @@ In our formalism, this corresponds to:
 .. literalinclude:: ../../../proteinworkshop/config/encoder/mace.yaml
     :language: yaml
     :caption: config/encoder/mace.yaml
+
+
+Sequence-Based Encoders
+=============================
+
+.. mdinclude:: ../../../README.md
+    :start-line: 345
+    :end-line: 349
+
+
+:py:class:`Evolutionary Scale Modeling <proteinworkshop.models.graph_encoders.esm_embeddings.EvolutionaryScaleModeling>` (``esm``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Evolutionary Scale Modeling is a series of Transformer-based protein sequence encoders (Vaswani et al., 2017) that has been successfully used in protein structure prediction (Lin et al., 2023), protein design (Verkuil et al., 2022), and beyond.
+This model class has commonly been used as a baseline for protein-related representation learning tasks, and we included it in our benchmark for this reason.
+
+.. literalinclude:: ../../../proteinworkshop/config/encoder/esm.yaml
+    :language: yaml
+    :caption: config/encoder/esm.yaml
 
 
 Decoder Models
