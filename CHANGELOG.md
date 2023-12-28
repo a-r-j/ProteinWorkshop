@@ -10,6 +10,7 @@
 ### Features
 
 * Improves positional encoding performance by adding a `seq_pos` attribute on `Data/Protein` objects in the base dataset getter. [#53](https://github.com/a-r-j/ProteinWorkshop/pull/53/)
+* Ensure correct batched computation of orientation features. [#58](https://github.com/a-r-j/ProteinWorkshop/pull/58/)
 
 ### Models
 
