@@ -3,7 +3,7 @@ import copy
 from typing import Literal, Set, Union
 
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.data import Protein
 from torch_geometric.data import Data
 from torch_geometric.transforms import BaseTransform
@@ -41,7 +41,7 @@ class SequenceNoiseTransform(BaseTransform):
     def required_attributes(self) -> Set[str]:
         return {"residue_type"}
 
-    @beartype
+    @typechecker
     def __call__(self, x: Union[Data, Protein]) -> Union[Data, Protein]:
         x.residue_type_uncorrupted = copy.deepcopy(x.residue_type)
         # Get indices of residues to corrupt

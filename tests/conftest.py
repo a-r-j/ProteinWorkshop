@@ -8,7 +8,6 @@ from graphein.protein.tensor.data import ProteinBatch
 from hydra import compose, initialize
 from hydra.core.global_hydra import GlobalHydra
 from omegaconf import DictConfig, open_dict
-from proteinworkshop import constants
 
 from proteinworkshop.datasets.utils import create_example_batch
 
@@ -20,7 +19,9 @@ def cfg_train_global() -> DictConfig:
     :return: A DictConfig object containing a default Hydra configuration for
         training.
     """
-    with initialize(version_base="1.3", config_path="../proteinworkshop/config/"):
+    with initialize(
+        version_base="1.3", config_path="../proteinworkshop/config/"
+    ):
         cfg = compose(
             config_name="train.yaml",
             return_hydra_config=True,
@@ -42,6 +43,7 @@ def cfg_train_global() -> DictConfig:
             cfg.dataset.datamodule.pin_memory = False
             cfg.extras.print_config = False
             cfg.extras.enforce_tags = False
+            cfg.hydra.job.num = 0
 
     return cfg
 
@@ -53,7 +55,9 @@ def cfg_finetune_global() -> DictConfig:
 
     :return: A DictConfig containing a default Hydra configuration for evaluation.
     """
-    with initialize(version_base="1.3", config_path="../proteinworkshop/config/"):
+    with initialize(
+        version_base="1.3", config_path="../proteinworkshop/config/"
+    ):
         cfg = compose(
             config_name="finetune.yaml",
             return_hydra_config=True,
@@ -74,6 +78,7 @@ def cfg_finetune_global() -> DictConfig:
             cfg.extras.print_config = False
             cfg.extras.enforce_tags = False
             cfg.logger = None
+            cfg.hydra.job.num = 0
 
     return cfg
 

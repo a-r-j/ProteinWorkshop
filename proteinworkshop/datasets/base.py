@@ -20,7 +20,7 @@ import lightning as L
 import numpy as np
 import pandas as pd
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein import verbose
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from graphein.protein.tensor.io import protein_to_pyg
@@ -99,7 +99,7 @@ class ProteinDataModule(L.LightningDataModule, ABC):
         """
         return get_obsolete_mapping()
 
-    @beartype
+    @typechecker
     def compose_transforms(self, transforms: Iterable[Callable]) -> T.Compose:
         """Compose an iterable of Transforms into a single transform.
 
@@ -305,6 +305,8 @@ class ProteinDataset(Dataset):
         self.store_het = store_het
         self.out_names = out_names
 
+        self._processed_files = []
+
         # Determine whether to download raw structures
         if not self.overwrite and all(
             os.path.exists(Path(self.root) / "processed" / p)
@@ -414,6 +416,8 @@ class ProteinDataset(Dataset):
         :return: List of processed file names.
         :rtype: Union[str, List[str], Tuple]
         """
+        if self._processed_files:
+            return self._processed_files
         if self.overwrite:
             return ["this_forces_a_processing_cycle"]
         if self.out_names is not None:
@@ -448,14 +452,21 @@ class ProteinDataset(Dataset):
                         Path(self.processed_dir) / f"{pdb}.pt"
                     )
                 ]
-            logger.info(f"Processing {len(index_pdb_tuples)} unprocessed structures")
+            logger.info(
+                f"Processing {len(index_pdb_tuples)} unprocessed structures"
+            )
         else:
-            index_pdb_tuples = [(i, pdb) for i, pdb in enumerate(self.pdb_codes)]
+            index_pdb_tuples = [
+                (i, pdb) for i, pdb in enumerate(self.pdb_codes)
+            ]
 
         raw_dir = Path(self.raw_dir)
         for index_pdb_tuple in tqdm(index_pdb_tuples):
             try:
-                i, pdb = index_pdb_tuple # NOTE: here, we unpack the tuple to get each PDB's original index in `self.pdb_codes`
+                (
+                    i,
+                    pdb,
+                ) = index_pdb_tuple  # NOTE: here, we unpack the tuple to get each PDB's original index in `self.pdb_codes`
                 path = raw_dir / f"{pdb}.{self.format}"
                 if path.exists():
                     path = str(path)
@@ -474,9 +485,7 @@ class ProteinDataset(Dataset):
                     store_het=self.store_het,
                 )
             except Exception as e:
-                logger.error(
-                    f"Error processing {pdb} {self.chains[i]}: {e}"
-                )  # type: ignore
+                logger.error(f"Error processing {pdb} {self.chains[i]}: {e}")  # type: ignore
                 raise e
 
             if self.out_names is not None:
@@ -497,6 +506,7 @@ class ProteinDataset(Dataset):
                 graph.node_y = self.node_labels[i]  # type: ignore
 
             torch.save(graph, Path(self.processed_dir) / fname)
+            self._processed_files.append(fname)
         logger.info("Completed processing.")
 
     def get(self, idx: int) -> Data:
@@ -523,4 +533,7 @@ class ProteinDataset(Dataset):
         # Set this to ensure proper batching behaviour
         x.x = torch.zeros(x.coords.shape[0])  # type: ignore
         x.amino_acid_one_hot = amino_acid_one_hot(x)
+        x.seq_pos = torch.arange(x.coords.shape[0]).unsqueeze(
+            -1
+        )  # Add sequence position
         return x

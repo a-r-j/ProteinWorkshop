@@ -9,7 +9,7 @@ import datetime
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 project = "Protein Workshop"
 author = "Arian R. Jamasb"
-release = "0.2.4"
+release = "0.2.5"
 copyright = f"{datetime.datetime.now().year}, {author}"
 
 # -- General configuration ---------------------------------------------------
@@ -23,6 +23,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
+    "sphinx.ext.doctest",
     "sphinx_copybutton",
     "sphinx_inline_tabs",
     "sphinxcontrib.gtagjs",
@@ -32,7 +33,7 @@ extensions = [
     "nbsphinx_link",
     "sphinx.ext.napoleon",
     "sphinx_codeautolink",
-    "sphinxcontrib.jquery"
+    "sphinxcontrib.jquery",
     # "sphinx_autorun",
 ]
 
@@ -109,7 +110,6 @@ mathjax2_config = {
             "vu": "\\mathbf{u}",
             "vv": "\\mathbf{v}",
             "vw": "\\mathbf{w}",
-            "vx": "\\mathbf{x}",
             "vy": "\\mathbf{y}",
             "vz": "\\mathbf{z}",
         }

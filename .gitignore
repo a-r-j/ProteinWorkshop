@@ -143,12 +143,12 @@ proteinworkshop/data/*
 !proteinworkshop/data/.gitkeep
 
 logs/
+ProteinWorkshop/
 wandb/
 .DS_Store
 .env
 
-# Visualisations
-visualisations/
-
 # Explanations
 explanations/
+# Visualisations
+visualisations/

@@ -1,8 +1,6 @@
 import shutil
 
-import pytest
 import requests
-
 
 
 def is_tool(name: str) -> bool:
@@ -31,13 +29,17 @@ def test_commands_found():
         "install_pyg_workshop"
     ), "Workshop PyG installation CLI tool not found"
 
+
 def test_download_urls():
     """Assert downloads are found."""
-    from proteinworkshop.scripts.download_processed_data import dataset_fname_map, _ZENODO_RECORD
+    from proteinworkshop.scripts.download_processed_data import (
+        _ZENODO_RECORD,
+        dataset_fname_map,
+    )
 
     fnames = list(set(dataset_fname_map.values()))
 
     for f in fnames:
-        url = f"https://zenodo.org/record/{_ZENODO_RECORD}/files/{f}.tar.gz?download=1"
+        url = f"https://zenodo.org/records/{_ZENODO_RECORD}/files/{f}.tar.gz?download=1"
         response = requests.head(url)
         assert response.status_code == 200, f"URL {url} not found."

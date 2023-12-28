@@ -10,4 +10,5 @@ datamodule:
   shuffle_labels: False # Whether to shuffle labels for permutation testing
   transforms: ${transforms}
   overwrite: False
+  in_memory: True
 num_classes: 384

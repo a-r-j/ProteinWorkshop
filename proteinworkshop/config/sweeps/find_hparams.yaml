@@ -1,0 +1,54 @@
+program: proteinworkshop/train.py
+method: grid
+name: baseline_hyperparameter_search
+metric: # Does not matter, as we are using sweep to run the experiment.
+  goal: minimize
+  name: val/loss/total
+
+parameters:
+  task:
+    values: [multiclass_graph_classification]
+
+  dataset:
+    values: [fold_family]
+
+  encoder:
+    values: [schnet, gear_net_edge, egnn, gcpnet] #, tfn]
+
+  optimiser.optimizer.lr:
+    values: [0.00001, 0.0001, 0.0003, 0.001]
+
+  decoder.graph_label.dropout:
+    values: [0.0, 0.1, 0.3, 0.5]
+
+  features:
+    values: [ca_base, ca_seq, ca_angles, ca_bb, ca_sc]
+
+  scheduler:
+    value: plateau
+
+  extras.enforce_tags:
+    value: False
+
+  #+aux_task:
+  #  values: [none, nn_sequence, nn_structure_torsion, nn_structure_r3]
+
+  trainer.max_epochs:
+    value: 300
+
+  test:
+    value: True
+
+  logger:
+    value: wandb
+
+  name:
+    value: "${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_lr_${optimiser.optimizer.lr}_d_${decoder.graph_label.dropout}"
+
+command:
+  - ${env}
+  - HYDRA_FULL_ERROR=1
+  - WANDB_START_METHOD=thread
+  - python
+  - ${program}
+  - ${args_no_hyphens}

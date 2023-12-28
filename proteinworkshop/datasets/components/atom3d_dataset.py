@@ -7,7 +7,7 @@ from typing import Any, Dict, Union
 import numpy as np
 import pandas as pd
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.data import Protein
 from graphein.protein.tensor.io import protein_to_pyg
 from loguru import logger as log
@@ -28,7 +28,7 @@ _atom_types_dict: Dict[str, int] = {
 NUM_ATOM_TYPES = len(_atom_types_dict)
 
 
-@beartype
+@typechecker
 def _element_mapping(x: str) -> int:
     return _atom_types_dict.get(x, 8)
 

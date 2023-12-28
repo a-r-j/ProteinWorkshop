@@ -71,6 +71,17 @@ def main():
         help="Additional arguments passed to the finetune script.",
     )
 
+    # ... explain sub-command
+    explain_parser = subparsers.add_parser(
+        "explain",
+        help="explain a model. See proteinworkshop/explain.py for more details.",
+    )
+    explain_parser.add_argument(
+        "explain_args",
+        nargs="*",
+        help="Additional arguments passed to the explain script.",
+    )
+
     # ... embed sub-command
     embed_parser = subparsers.add_parser(
         "embed",
@@ -136,6 +147,11 @@ def main():
 
         finetune_main(args.finetune_args)
 
+    elif args.command == "explain":
+        from proteinworkshop.explain import _script_main as explain_main
+
+        explain_main(args.explain_args)
+
     elif args.command == "embed":
         from proteinworkshop.embed import _script_main as embed_main
 
@@ -148,7 +164,8 @@ def main():
 
     else:
         _valid = "\n\t".join(
-            ["\n\tinstall", "\tdownload", "\ttrain", "\tfinetune", "\tembed", "\tvisualise"]
+            ["\n\tinstall", "\tdownload", "\ttrain", "\tfinetune", "\tembed", "\tvisualise", "\texplain"]
+
         )
         if args.command is None:
             raise ValueError(f"Missing command. Valid commands are: {_valid}")

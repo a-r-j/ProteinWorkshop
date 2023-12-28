@@ -17,6 +17,46 @@ CCPDB_DATASET_NAMES = Literal["metal", "ligands", "nucleotides", "nucliec"]
 
 
 class CCPDBDataModule(ProteinDataModule):
+    """Data module for CCPDB datasets.
+
+    :param path: Path to store data.
+    :type path: str
+    :param pdb_dir: Path to directory containing structure files.
+    :type pdb_dir: str
+    :param name: Name of dataset to use.
+    :type name: CCPDB_DATASET_NAMES
+    :param batch_size: Batch size for dataloaders.
+    :type batch_size: int
+    :param num_workers: Number of workers for dataloaders.
+    :type num_workers: int
+    :param pin_memory: Whether to pin memory for dataloaders.
+    :type pin_memory: bool
+    :param in_memory: Whether to load dataset into memory, defaults to
+        ``False``
+    :type in_memory: bool, optional
+    :param format: Format of the structure files, defaults to ``"mmtf"``.
+    :type format: Literal[mmtf, pdb], optional
+    :param obsolete_strategy: How to deal with obsolete PDBs,
+        defaults to "drop"
+    :type obsolete_strategy: str, optional
+    :param split_strategy: How to split the data,
+        defaults to ``"random"``
+    :type split_strategy: Literal["random", 'stratified"], optional
+    :param val_fraction: Fraction of the dataset to use for validation,
+        defaults to ``0.1``
+    :type val_fraction: float, optional
+    :param test_fraction: Fraction of the dataset to use for testing,
+        defaults to ``0.1``.
+    :type test_fraction: float, optional
+    :param transforms: List of transforms to apply to each example,
+        defaults to ``None``.
+    :type transforms: Optional[List[Callable]], optional
+    :param overwrite: Whether to overwrite existing data, defaults to
+        ``False``
+    :type overwrite: bool, optional
+    :raises ValueError: If train, val, and test fractions do not sum to 1.
+    """
+
     def __init__(
         self,
         path: str,
@@ -35,45 +75,6 @@ class CCPDBDataModule(ProteinDataModule):
         transforms: Optional[List[Callable]] = None,
         overwrite: bool = False,
     ):
-        """Data module for CCPDB datasets.
-
-        :param path: Path to store data.
-        :type path: str
-        :param pdb_dir: Path to directory containing structure files.
-        :type pdb_dir: str
-        :param name: Name of dataset to use.
-        :type name: CCPDB_DATASET_NAMES
-        :param batch_size: Batch size for dataloaders.
-        :type batch_size: int
-        :param num_workers: Number of workers for dataloaders.
-        :type num_workers: int
-        :param pin_memory: Whether to pin memory for dataloaders.
-        :type pin_memory: bool
-        :param in_memory: Whether to load dataset into memory, defaults to
-            ``False``
-        :type in_memory: bool, optional
-        :param format: Format of the structure files, defaults to ``"mmtf"``.
-        :type format: Literal[mmtf, pdb], optional
-        :param obsolete_strategy: How to deal with obsolete PDBs,
-            defaults to "drop"
-        :type obsolete_strategy: str, optional
-        :param split_strategy: How to split the data,
-            defaults to ``"random"``
-        :type split_strategy: Literal["random", 'stratified"], optional
-        :param val_fraction: Fraction of the dataset to use for validation,
-            defaults to ``0.1``
-        :type val_fraction: float, optional
-        :param test_fraction: Fraction of the dataset to use for testing,
-            defaults to ``0.1``.
-        :type test_fraction: float, optional
-        :param transforms: List of transforms to apply to each example,
-            defaults to ``None``.
-        :type transforms: Optional[List[Callable]], optional
-        :param overwrite: Whether to overwrite existing data, defaults to
-            ``False``
-        :type overwrite: bool, optional
-        :raises ValueError: If train, val, and test fractions do not sum to 1.
-        """
         super().__init__()
         self.root = pathlib.Path(path)
         if not os.path.exists(self.root):
@@ -264,7 +265,7 @@ if __name__ == "__main__":
     num_workers = 4
     pin_memory = True
 
-    dataset = CCPDBDataset(
+    dataset = CCPDBDataModule(
         path, pdb_dir, name, batch_size, num_workers, pin_memory
     )
     dataset.download()

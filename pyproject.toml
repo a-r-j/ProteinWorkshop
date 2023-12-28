@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "proteinworkshop"
-version = "0.2.4"
+version = "0.2.5"
 description = ""
 authors = ["Arian Jamasb <arian@jamasb.io>"]
 readme = "README.md"
@@ -29,7 +29,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">= 3.9, < 3.11"
-graphein = "^1.7.3"
+graphein = "^1.7.5"
 loguru = "^0.7.0"
 fair-esm = "^2.0.0"
 hydra-core = "^1.3.2"
@@ -44,18 +44,19 @@ torchmetrics = "^1.2.0"
 lovely-tensors = "^0.1.15"
 psutil = "^5.9.5"
 tqdm = "^4.66.1"
-jaxtyping = "^0.2.21"
+jaxtyping = "^0.2.24"
 omegaconf = "^2.3.0"
 pytorch-lightning = "^2.0.7"
 lightning = "^2.0.7"
 python-dotenv = "^1.0.0"
 wget = "^3.2"
 opt-einsum = "^3.3.0"
-torch = ">=2.0.0, !=2.0.1"
+torch = {version="^2.1.2", source="torch"}
 pyrootutils = "^1.0.4"
-torch-geometric = "^2.3.1"
+torch-geometric = "^2.4.0"
 hydra-colorlog = "^1.2.0"
 foldcomp = "^0.0.5"
+captum = "^0.6.0"
 umap-learn = "^0.5.4"
 matplotlib = "^3.7.2"
 datashader = "^0.16.0"
@@ -66,6 +67,9 @@ holoviews = "^1.18.0"
 black = "^23.7.0"
 isort = "^5.12.0"
 poethepoet = "^0.22.0"
+ruff = "^0.1.1"
+pydocstyle = "^6.3.0"
+pre-commit = "^3.5.0"
 
 
 [tool.poetry.group.test.dependencies]
@@ -90,6 +94,10 @@ watermark = "^2.4.3"
 sphinx-codeautolink = "^0.15.0"
 emoji = "^2.8.0"
 
+[[tool.poetry.source]]
+name = "torch"
+url = "https://download.pytorch.org/whl/cpu/"
+priority = "explicit"
 
 [tool.poe.tasks]
 install-torch-cluster = "pip install torch_cluster -f https://data.pyg.org/whl/torch-2.0.0+cpu.html"
@@ -98,6 +106,7 @@ install-torch-scatter = "pip install torch_scatter -f https://data.pyg.org/whl/t
 install-torch-spline-conv = "pip install torch_spline_conv -f https://data.pyg.org/whl/torch-2.0.0+cpu.html"
 install-openfold = "pip install git+https://github.com/NVIDIA/dllogger.git@0540a43971f4a8a16693a9de9de73c1072020769 && pip install git+https://github.com/aqlaboratory/openfold.git@4b41059694619831a7db195b7e0988fc4ff3a307"
 install-torchdrug = "pip install torchdrug"
+install-flash = "pip install lightning-flash --no-dependencies"
 
 [tool.poetry.scripts]
 train_workshop = "proteinworkshop.train:_main"
@@ -110,6 +119,14 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 # Code-formatting and code-style config
+[tool.ruff]
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
+select = ["E", "F", "I"] # <-- Note: I suggest including the "I" for additional checks!
+ignore = ["F722"] # Ignore Jaxtyping forward references: https://github.com/google/jaxtyping/blob/v0.2.12/FAQ.md
+
+# Assuming you're developing for Python 3.10
+target-version = "py310"
+
 [tool.black]
 exclude = '''
 /(

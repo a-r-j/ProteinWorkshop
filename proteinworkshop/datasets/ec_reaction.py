@@ -8,7 +8,6 @@ import torch
 import wget
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger
-from torch_geometric.data import Dataset
 
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
@@ -93,7 +92,9 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
         )
         return dict(class_map.values)
 
-    def _get_dataset(self, split: str) -> Dataset:
+    def _get_dataset(
+        self, split: Literal["training", "validation", "testing"]
+    ) -> ProteinDataset:
         df = self.parse_dataset(split)
         return ProteinDataset(
             root=str(self.data_dir),
@@ -107,20 +108,18 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
             in_memory=self.in_memory,
         )
 
-    def train_dataset(self) -> Dataset:
+    def train_dataset(self) -> ProteinDataset:
         return self._get_dataset("training")
 
-    def val_dataset(self) -> Dataset:
+    def val_dataset(self) -> ProteinDataset:
         return self._get_dataset("validation")
 
-    def test_dataset(self) -> Dataset:
+    def test_dataset(self) -> ProteinDataset:
         return self._get_dataset("testing")
 
     def train_dataloader(self) -> ProteinDataLoader:
-        if not hasattr(self, "train_ds"):
-            self.train_ds = self.train_dataset()
         return ProteinDataLoader(
-            self.train_ds,
+            self.train_dataset(),
             batch_size=self.batch_size,
             shuffle=True,
             pin_memory=self.pin_memory,
@@ -128,10 +127,8 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
         )
 
     def val_dataloader(self) -> ProteinDataLoader:
-        if not hasattr(self, "val_ds"):
-            self.val_ds = self.val_dataset()
         return ProteinDataLoader(
-            self.val_ds,
+            self.val_dataset(),
             batch_size=self.batch_size,
             shuffle=False,
             pin_memory=self.pin_memory,
@@ -139,10 +136,8 @@ class EnzymeCommissionReactionDataset(ProteinDataModule):
         )
 
     def test_dataloader(self) -> ProteinDataLoader:
-        if not hasattr(self, "test_ds"):
-            self.test_ds = self.test_dataset()
         return ProteinDataLoader(
-            self.test_ds,
+            self.test_dataset(),
             batch_size=self.batch_size,
             shuffle=False,
             pin_memory=self.pin_memory,
@@ -206,18 +201,20 @@ if __name__ == "__main__":
     import pathlib
 
     import hydra
-    import omegaconf
 
     from proteinworkshop import constants
 
     cfg = omegaconf.OmegaConf.load(
-        constants.SRC_PATH / "config" / "dataset" / "ec.yaml"
+        constants.SRC_PATH / "config" / "dataset" / "ec_reaction.yaml"
     )
-    cfg.datamodule.path = pathlib.Path(constants.DATA_PATH) / "EnzymeCommission"  # type: ignore
+    cfg.datamodule.path = pathlib.Path(constants.DATA_PATH) / "ECReaction"  # type: ignore
     cfg.datamodule.pdb_dir = pathlib.Path(constants.DATA_PATH) / "pdb"  # type: ignore
+    cfg.datamodule.transforms = []
     ds = hydra.utils.instantiate(cfg)
     print(ds)
     dl = ds["datamodule"].val_dataloader()
-    print(ds["datamodule"].val_ds[1])
+    for batch in dl:
+        print(batch)
+    dl = ds["datamodule"].test_dataloader()
     for batch in dl:
         print(batch)

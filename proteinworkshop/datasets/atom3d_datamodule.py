@@ -11,7 +11,7 @@ import atom3d
 import atom3d.datasets.datasets as da
 import lightning as L
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
 from torch.utils.data import Dataset
@@ -34,7 +34,7 @@ def set_worker_sharing_strategy(worker_id: int):
     torch.multiprocessing.set_sharing_strategy(SHARING_STRATEGY)
 
 
-@beartype
+@typechecker
 def get_data_path(
     dataset: str,
     lba_split: int = 30,
@@ -57,7 +57,7 @@ def get_data_path(
     return data_paths[dataset]
 
 
-@beartype
+@typechecker
 def get_test_data_path(
     dataset: str,
     lba_split: int = 30,
@@ -71,7 +71,7 @@ def get_test_data_path(
         # default to testing PPI methods with DB5
         "PPI": f"PPI/splits/{ppi_split}/data/{test_phase}"
         if use_dips_for_testing
-        else f"PPI/raw/DB5/data/",
+        else "PPI/raw/DB5/data/",
         "RES": f"RES/splits/split-by-cath-topology/data/{test_phase}",
         "MSP": f"MSP/splits/split-by-sequence-identity-30/data/{test_phase}",
     }
@@ -85,7 +85,7 @@ def get_test_data_path(
     return data_paths[dataset]
 
 
-@beartype
+@typechecker
 def get_task_split(
     task: str,
     lba_split: int = 30,
@@ -317,7 +317,7 @@ class ATOM3DDataModule(L.LightningDataModule):
                 self.data_test,
             ) = self.get_datasets()
 
-    @beartype
+    @typechecker
     def get_dataloader(
         self,
         dataset: Union[da.LMDBDataset, PPIDataset, RESDataset],

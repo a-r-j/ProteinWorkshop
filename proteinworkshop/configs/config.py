@@ -244,19 +244,21 @@ def validate_cuda(cfg: DictConfig) -> DictConfig:
     # Make sure cuda config is correct
     # if cfg.trainer.devices <= 1:
     # cfg.trainer.strategy = None
-
-    logger.debug(f"Requested GPUs: {cfg.get('trainer.devices')}.")
-    if isinstance(cfg.get("trainer.devices"), int):
+    logger.debug(f"CUDA available: {torch.cuda.is_available()}")
+    logger.debug(f"Requested GPUs: {cfg.trainer.get('devices')}.")
+    if isinstance(cfg.trainer.get("devices"), int):
         cfg.trainer.devices = min(
             torch.cuda.device_count(), cfg.trainer.devices
         )
         logger.debug(f"GPU count set to: {cfg.trainer.devices}")
 
     requesting_multiple_device_indices = (
-        isinstance(cfg.get("trainer.devices"), list) and len(cfg.get("trainer.devices")) > 1
+        isinstance(cfg.trainer.get("devices"), list)
+        and len(cfg.trainer.get("devices")) > 1
     )
     requesting_multiple_devices = (
-        isinstance(cfg.get("trainer.devices"), int) and cfg.get("trainer.devices") > 1
+        isinstance(cfg.trainer.get("devices"), int)
+        and cfg.trainer.get("devices") > 1
     )
     if (
         requesting_multiple_device_indices or requesting_multiple_devices

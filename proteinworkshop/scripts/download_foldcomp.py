@@ -1,7 +1,6 @@
 import argparse
 import os
 import pathlib
-import shutil
 from typing import Optional
 
 import foldcomp

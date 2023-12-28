@@ -38,12 +38,11 @@ class BindingSiteTransform(T.BaseTransform):
         # Map the chain labels to integers
         target_chains = []
 
+        chain_strs = [res.split(":")[0] for res in data.residue_id]
+        chain_strs = list(np.unique(chain_strs))
+
         for chain in data.graph_y:
-            try:
-                target_chains.append(self.chain_map[chain])
-            except KeyError:
-                # Sometimes chains are stored as integers
-                target_chains.append(int(chain) - 1)
+            target_chains.append(chain_strs.index(chain))
 
         target_chains = torch.tensor(target_chains)
         target_indices = torch.where(torch.isin(data.chains, target_chains))[0]
@@ -100,6 +99,12 @@ class BindingSiteTransform(T.BaseTransform):
 
         if data.x is not None:
             data.x = data.x[mask]
+
+        if hasattr(data, "seq_pos"):
+            data.seq_pos = data.seq_pos[mask]
+
+        if hasattr(data, "amino_acid_one_hot"):
+            data.amino_acid_one_hot = data.amino_acid_one_hot[mask]
 
         return data
 

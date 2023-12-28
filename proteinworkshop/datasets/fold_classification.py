@@ -265,7 +265,6 @@ class FoldClassificationDataModule(ProteinDataModule):
 
 if __name__ == "__main__":
     import hydra
-    import omegaconf
 
     from proteinworkshop import constants
 

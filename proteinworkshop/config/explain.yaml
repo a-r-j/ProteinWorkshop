@@ -1,0 +1,42 @@
+# @package _global_
+
+# === 1. Set config parameters ===
+name: "" # default name for the experiment, "" means logger (eg. wandb) will generate a unique name
+seed: 52 # seed for random number generators in pytorch, numpy and python.random
+num_workers: 16 # number of subprocesses to use for data loading.
+
+# === 2. Specify defaults here. Defaults will be overwritten by equivalently named options in this file ===
+defaults:
+  - env: default
+  - dataset: fold_fold
+  - features: ca
+  - encoder: egnn
+  - decoder: default
+  - transforms: none
+  - callbacks: default
+  - trainer: gpu
+  - extras: default
+  - hydra: default
+  - metrics: default
+  - task: inverse_folding
+  - logger: wandb
+  - finetune: full_model
+  # debugging config (enable through command line, e.g. `python train.py debug=default)
+  - debug: null
+  # optional hardware config for machine/user specific settings
+  # (optional since it doesn't need to exist and is excluded from version control)
+  #- optional hardware: cpu
+  - _self_ # see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.
+
+task_name: "visualise"
+
+compile: True
+
+# simply provide checkpoint path and output directory to embed dataset and write attributed PDB files
+ckpt_path: /home/jamasba/scratch/workshop_ckpts/runs/2023-09-18_23-46-54/checkpoints/epoch_038.ckpt
+output_dir: ./explanations
+
+explain:
+  n_steps: 50 # Number of steps to perform Integrated Gradients for
+  output: "graph_label" # Name of the model output to attribute
+  split: ["train", "val", "test"]  # Dataloaders to perform attribution for

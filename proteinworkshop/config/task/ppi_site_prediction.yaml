@@ -1,6 +1,7 @@
 # @package _global_
 
 defaults:
+  - _self_
   - override /metrics:
       - accuracy
       - f1_score
@@ -27,7 +28,7 @@ callbacks:
 task:
   task: "classification"
   classification_type: "binary"
-  metric_average: "macro"
+  metric_average: "micro"
 
   losses:
     node_label: bce

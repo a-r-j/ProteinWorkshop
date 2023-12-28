@@ -8,10 +8,10 @@ import omegaconf
 import pandas as pd
 import torch
 import wget
+from graphein.protein.tensor.data import Protein
+from graphein.protein.tensor.dataloader import ProteinDataLoader
 from loguru import logger as log
 from sklearn.preprocessing import LabelEncoder
-from torch_geometric.data import Dataset
-from torch_geometric.loader import DataLoader
 from tqdm import tqdm
 
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
@@ -129,7 +129,9 @@ class GeneOntologyDataset(ProteinDataModule):
         log.info(f"Encoded {len(labels)} labels for task {self.split}.")
         return labels
 
-    def _get_dataset(self, split: str) -> Dataset:
+    def _get_dataset(
+        self, split: Literal["training", "validation", "testing"]
+    ) -> ProteinDataset:
         df = self.parse_dataset(split)
         log.info("Initialising Graphein dataset...")
         return ProteinDataset(
@@ -139,47 +141,43 @@ class GeneOntologyDataset(ProteinDataModule):
             chains=list(df.chain),
             graph_labels=list(list(df.label)),
             overwrite=self.overwrite,
-            transform=self.transform,
+            transform=self.labeller
+            if self.transform is None
+            else self.compose_transforms([self.labeller] + [self.transform]),
             format=self.format,
             in_memory=self.in_memory,
         )
 
-    def train_dataset(self) -> Dataset:
+    def train_dataset(self) -> ProteinDataset:
         return self._get_dataset("training")
 
-    def val_dataset(self) -> Dataset:
+    def val_dataset(self) -> ProteinDataset:
         return self._get_dataset("validation")
 
-    def test_dataset(self) -> Dataset:
+    def test_dataset(self) -> ProteinDataset:
         return self._get_dataset("testing")
 
-    def train_dataloader(self) -> DataLoader:
-        if not hasattr(self, "train_ds"):
-            self.train_ds = self.train_dataset()
-        return DataLoader(
-            self.train_ds,
+    def train_dataloader(self) -> ProteinDataLoader:
+        return ProteinDataLoader(
+            self.train_dataset(),
             batch_size=self.batch_size,
             shuffle=True,
             pin_memory=self.pin_memory,
             num_workers=self.num_workers,
         )
 
-    def val_dataloader(self) -> DataLoader:
-        if not hasattr(self, "val_ds"):
-            self.val_ds = self.val_dataset()
-        return DataLoader(
-            self.val_ds,
+    def val_dataloader(self) -> ProteinDataLoader:
+        return ProteinDataLoader(
+            self.val_dataset(),
             batch_size=self.batch_size,
             shuffle=False,
             pin_memory=self.pin_memory,
             num_workers=self.num_workers,
         )
 
-    def test_dataloader(self) -> DataLoader:
-        if not hasattr(self, "test_ds"):
-            self.test_ds = self.test_dataset()
-        return DataLoader(
-            self.test_ds,
+    def test_dataloader(self) -> ProteinDataLoader:
+        return ProteinDataLoader(
+            self.test_dataset(),
             batch_size=self.batch_size,
             shuffle=False,
             pin_memory=self.pin_memory,
@@ -206,7 +204,9 @@ class GeneOntologyDataset(ProteinDataModule):
     def exclude_pdbs(self):
         pass
 
-    def parse_dataset(self, split: str) -> pd.DataFrame:
+    def parse_dataset(
+        self, split: Literal["training", "validation", "testing"]
+    ) -> pd.DataFrame:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches, switch
         """
         Parses the raw dataset files to Pandas DataFrames.
@@ -261,20 +261,40 @@ class GeneOntologyDataset(ProteinDataModule):
             data["label"] = data["label"].sample(frac=1).values
 
         # logger.info(f"Found {len(data)} examples in {split} after removing nonstandard proteins")
+        self.labeller = GOLabeller(data)
         return data.sample(frac=1)  # Shuffle dataset for batches
+
+
+class GOLabeller:
+    """
+    This labeller applies the graph labels to each example as a transform.
+
+    This is required as chains can be used across tasks (e.g. CC, BP or MF) with
+    different labels.
+    """
+
+    def __init__(self, label_df: pd.DataFrame):
+        self.labels = label_df
+
+    def __call__(self, data: Protein) -> Protein:
+        pdb, chain = data.id.split("_")
+        label = self.labels.loc[
+            (self.labels.pdb == pdb) & (self.labels.chain == chain)
+        ].label.item()
+        data.graph_y = label
+        return data
 
 
 if __name__ == "__main__":
     import pathlib
 
     import hydra
-    import omegaconf
 
     from proteinworkshop import constants
 
     log.info("Imported libs")
     cfg = omegaconf.OmegaConf.load(
-        constants.SRC_PATH / "config" / "dataset" / "go-cc.yaml"
+        constants.SRC_PATH / "config" / "dataset" / "go-bp.yaml"
     )
     # cfg = omegaconf.OmegaConf.load(constants.SRC_PATH / "config" / "dataset" / "go-mf.yaml")
     # cfg = omegaconf.OmegaConf.load(constants.SRC_PATH / "config" / "dataset" / "go-bp.yaml")
@@ -286,8 +306,14 @@ if __name__ == "__main__":
 
     ds = hydra.utils.instantiate(cfg)
     print(ds)
+    # labels = ds["datamodule"].parse_labels()
     ds.datamodule.setup()
+    dl = ds["datamodule"].train_dataloader()
+    for batch in dl:
+        print(batch)
     dl = ds["datamodule"].val_dataloader()
-    print(ds["datamodule"].val_ds[1])
+    for batch in dl:
+        print(batch)
+    dl = ds["datamodule"].test_dataloader()
     for batch in dl:
         print(batch)

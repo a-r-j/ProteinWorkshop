@@ -8,7 +8,7 @@ from torch.utils.data import IterableDataset
 
 from proteinworkshop.datasets.components.atom3d_dataset import BaseTransform
 
-_amino_acids = lambda x: {
+_amino_acids = lambda x: {  # noqa: E731
     "ALA": 0,
     "ARG": 1,
     "ASN": 2,

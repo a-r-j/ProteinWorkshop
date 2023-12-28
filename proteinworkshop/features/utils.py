@@ -1,10 +1,9 @@
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from jaxtyping import jaxtyped
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def _normalize(tensor: torch.Tensor, dim: int = -1) -> torch.Tensor:
     """
     Safely normalize a Tensor. Adapted from:

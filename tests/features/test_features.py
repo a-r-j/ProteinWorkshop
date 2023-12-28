@@ -1,5 +1,5 @@
 import os
-
+import torch
 import omegaconf
 from hydra.utils import instantiate
 
@@ -29,6 +29,9 @@ def test_feature_shapes(example_batch):
         cfg = omegaconf.OmegaConf.load(config_path)
         featuriser = instantiate(cfg)
 
+        example_batch.seq_pos = torch.arange(
+            example_batch.coords.shape[0], dtype=torch.long
+        )
         out = featuriser(example_batch)
         out_features = out.x
 

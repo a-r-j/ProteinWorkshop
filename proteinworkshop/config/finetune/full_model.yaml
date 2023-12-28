@@ -1,0 +1,8 @@
+# Controls the default configuration for the finetuning process.
+encoder:
+  load_weights: True # Whether or not to load the weights of the encoder from the pretrained model.
+  freeze: False # Whether or not to freeze the weights of the encoder.
+
+decoder:
+  load_weights: True # Whether or not to load the weights of the decoder(s) from the pretrained model.
+  freeze: False # Whether or not to freeze the weights of the decoder(s).

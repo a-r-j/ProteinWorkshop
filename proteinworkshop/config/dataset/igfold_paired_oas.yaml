@@ -1,0 +1,12 @@
+datamodule:
+  _target_: proteinworkshop.datasets.igfold.IgFoldDataModule
+  path: ${env.paths.data}/igfold_paired_oas/ # Directory where the dataset is stored
+  dataset_name: "paired_oas"
+  format: "pdb" # Format of the raw PDB/MMTF files
+  train_val_test: [0.8, 0.1, 0.1]
+  batch_size: 32 # Batch size for dataloader
+  dataset_fraction: 1.0 # Fraction of the dataset to use
+  pin_memory: True # Pin memory for dataloader
+  num_workers: 8 # Number of workers for dataloader
+  transforms: ${transforms}
+num_classes: 2

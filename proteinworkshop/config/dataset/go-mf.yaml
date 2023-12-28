@@ -11,4 +11,5 @@ datamodule:
   split: "MF" # Split of the dataset to use (`BP`, `MF`, `CC`)
   transforms: ${transforms} # Transforms to apply to dataset examples
   overwrite: False # Whether to overwrite existing dataset files
-num_classes: 2 # Number of classes
+  in_memory: True
+num_classes: 489 # Number of classes
