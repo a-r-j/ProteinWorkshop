@@ -14,8 +14,8 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>proteinworkshop.features.sequence_features - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>proteinworkshop.features.sequence_features - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo" src="../../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -253,13 +256,13 @@
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
+<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span> <span class="k">as</span> <span class="n">typechecker</span>
 <span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Batch</span><span class="p">,</span> <span class="n">Data</span>
 
 
 <div class="viewcode-block" id="amino_acid_one_hot">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.sequence_features.amino_acid_one_hot">[docs]</a>
-<span class="nd">@beartype</span>
+<span class="nd">@typechecker</span>
 <span class="k">def</span> <span class="nf">amino_acid_one_hot</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">Data</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">23</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
@@ -308,7 +311,7 @@
   </div>
 </div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

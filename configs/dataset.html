@@ -20,14 +20,14 @@
 <meta property="og:description" content="Summary of dataset sources To switch between different datasets, simply change the dataset argument in the launch command. For example: Where<DATASET_NAME> is given by bracketed name in the listing..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_configs_dataset_8d050e58.png" />
+<meta property="og:image" content="/None" />
 <meta property="og:image:alt" content="Summary of dataset sources To switch between different datasets, simply change the dataset argument in the launch command. For example: Where<DATASET_NAME> i..." />
 <meta name="description" content="Summary of dataset sources To switch between different datasets, simply change the dataset argument in the launch command. For example: Where<DATASET_NAME> is given by bracketed name in the listing..." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Models" href="model.html" /><link rel="prev" title="Config Templates" href="templates.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>Dataset - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>Dataset - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -147,7 +147,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -173,7 +173,7 @@
     <img class="sidebar-logo" src="../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -201,6 +201,7 @@
 <li class="toctree-l1"><a class="reference internal" href="task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="framework_components/debug.html">Debug</a></li>
@@ -225,7 +226,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -358,6 +361,20 @@ python<span class="w"> </span>proteinworkshop/train.py<span class="w"> </span><s
 <td><p>114 Gb</p></td>
 <td><p><a class="reference external" href="https://github.com/steineggerlab/foldcomp/blob/master/LICENSE.txt">GPL-3.0</a> / <a class="reference external" href="https://esmatlas.com/about">CC-BY 4.0</a></p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">igfold_paired_oas</span></code></p></td>
+<td><p>IGFold Predictions for <a class="reference external" href="https://journals.aai.org/jimmunol/article/201/8/2502/107069/Observed-Antibody-Space-A-Resource-for-Data-Mining">Paired OAS</a></p></td>
+<td><p><a class="reference external" href="https://www.nature.com/articles/s41467-023-38063-x">Ruffolo et al.</a></p></td>
+<td><p>104,994 paired Ab chains</p></td>
+<td></td>
+<td><p><a class="reference external" href="https://www.nature.com/articles/s41467-023-38063-x#rightslink">CC-BY 4.0</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">igfold_jaffe</span></code></p></td>
+<td><p>IGFold predictions for <a class="reference external" href="https://www.nature.com/articles/s41586-022-05371-z">Jaffe2022</a> data</p></td>
+<td><p><a class="reference external" href="https://www.nature.com/articles/s41467-023-38063-x">Ruffolo et al.</a></p></td>
+<td><p>1,340,180 paired Ab chains</p></td>
+<td></td>
+<td><p><a class="reference external" href="https://www.nature.com/articles/s41467-023-38063-x#rightslink">CC-BY 4.0</a></p></td>
+</tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pdb</span></code></p></td>
 <td><p>Experimental structures deposited in the <a class="reference external" href="https://www.rcsb.org/">RCSB Protein Data Bank</a></p></td>
 <td><p><a class="reference external" href="https://academic.oup.com/nar/article/47/D1/D520/5144142">wwPDB consortium</a></p></td>
@@ -396,8 +413,8 @@ python<span class="w"> </span>proteinworkshop/train.py<span class="w"> </span><s
 <p>ASTRAL provides compendia of protein domain structures, regions of proteins that
 can maintain their structure and function independently of the rest of the protein. Domains typically
 exhibit highly-specific functions and can be considered structural building blocks of proteins.</p>
-<div class="literal-block-wrapper docutils container" id="id21">
-<div class="code-block-caption"><span class="caption-text">config/dataset/astral.yaml</span><a class="headerlink" href="#id21" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id24">
+<div class="code-block-caption"><span class="caption-text">config/dataset/astral.yaml</span><a class="headerlink" href="#id24" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;proteinworkshop.datasets.astral.AstralDataModule&quot;</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/Astral/</span><span class="w"> </span><span class="c1"># Directory where the dataset is stored</span>
@@ -417,8 +434,8 @@ exhibit highly-specific functions and can be considered structural building bloc
 </section>
 <section id="cath-cath">
 <h3><a class="reference internal" href="../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.cath.CATHDataModule" title="proteinworkshop.datasets.cath.CATHDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">CATH</span></code></a> (<code class="docutils literal notranslate"><span class="pre">cath</span></code>)<a class="headerlink" href="#cath-cath" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id22">
-<div class="code-block-caption"><span class="caption-text">config/dataset/cath.yaml</span><a class="headerlink" href="#id22" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id25">
+<div class="code-block-caption"><span class="caption-text">config/dataset/cath.yaml</span><a class="headerlink" href="#id25" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;proteinworkshop.datasets.cath.CATHDataModule&quot;</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/cath/</span><span class="w"> </span><span class="c1"># Directory where the dataset is stored</span>
@@ -430,6 +447,7 @@ exhibit highly-specific functions and can be considered structural building bloc
 <span class="w">  </span><span class="nt">dataset_fraction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w"> </span><span class="c1"># Fraction of the dataset to use</span>
 <span class="w">  </span><span class="nt">transforms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${transforms}</span><span class="w"> </span><span class="c1"># Transforms to apply to dataset examples</span>
 <span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"> </span><span class="c1"># Whether to overwrite the dataset if it already exists</span>
+<span class="w">  </span><span class="nt">in_memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"> </span><span class="c1"># Whether to load the entire dataset into memory</span>
 <span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23</span><span class="w"> </span><span class="c1"># Number of classes</span>
 </pre></div>
 </div>
@@ -441,8 +459,8 @@ exhibit highly-specific functions and can be considered structural building bloc
 <p class="admonition-title">See also</p>
 <p><code class="xref py py-class docutils literal notranslate"><span class="pre">proteinworkshop.datasets.pdb_dataset.PDBData</span></code></p>
 </div>
-<div class="literal-block-wrapper docutils container" id="id23">
-<div class="code-block-caption"><span class="caption-text">config/dataset/pdb.yaml</span><a class="headerlink" href="#id23" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id26">
+<div class="code-block-caption"><span class="caption-text">config/dataset/pdb.yaml</span><a class="headerlink" href="#id26" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;proteinworkshop.datasets.pdb_dataset.PDBDataModule&quot;</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/pdb/</span><span class="w"> </span><span class="c1"># Directory where the dataset is stored</span>
@@ -475,8 +493,8 @@ exhibit highly-specific functions and can be considered structural building bloc
 <section id="afdb-rep-v4-afdb-rep-v4">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">AFdb</span> <span class="pre">Rep.</span> <span class="pre">v4</span></code> (<code class="docutils literal notranslate"><span class="pre">afdb_rep_v4</span></code>)<a class="headerlink" href="#afdb-rep-v4-afdb-rep-v4" title="Link to this heading">#</a></h3>
 <p>This is a dataset of approximately 3 million protein structures from the AlphaFold database, structurally clustered using FoldSeek.</p>
-<div class="literal-block-wrapper docutils container" id="id24">
-<div class="code-block-caption"><span class="caption-text">config/dataset/afdb_rep_v4.yaml</span><a class="headerlink" href="#id24" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id27">
+<div class="code-block-caption"><span class="caption-text">config/dataset/afdb_rep_v4.yaml</span><a class="headerlink" href="#id27" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule</span>
 <span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/afdb_rep_v4/</span>
@@ -500,8 +518,8 @@ exhibit highly-specific functions and can be considered structural building bloc
 </section>
 <section id="afdb-dark-proteome-afdb-rep-dark-v4">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">AFdb</span> <span class="pre">Dark</span> <span class="pre">Proteome</span></code> (<code class="docutils literal notranslate"><span class="pre">afdb_rep_dark_v4</span></code>)<a class="headerlink" href="#afdb-dark-proteome-afdb-rep-dark-v4" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id25">
-<div class="code-block-caption"><span class="caption-text">config/dataset/afdb_rep_dark_v4.yaml</span><a class="headerlink" href="#id25" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id28">
+<div class="code-block-caption"><span class="caption-text">config/dataset/afdb_rep_dark_v4.yaml</span><a class="headerlink" href="#id28" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule</span>
 <span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/afdb_rep_dark_v4/</span>
@@ -525,8 +543,8 @@ exhibit highly-specific functions and can be considered structural building bloc
 </section>
 <section id="esm-atlas-esmatlas-v2023-02">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">ESM</span> <span class="pre">Atlas</span></code> (<code class="docutils literal notranslate"><span class="pre">esmatlas_v2023_02</span></code>)<a class="headerlink" href="#esm-atlas-esmatlas-v2023-02" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id26">
-<div class="code-block-caption"><span class="caption-text">config/dataset/esmatlas_v2023_02.yaml</span><a class="headerlink" href="#id26" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id29">
+<div class="code-block-caption"><span class="caption-text">config/dataset/esmatlas_v2023_02.yaml</span><a class="headerlink" href="#id29" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule</span>
 <span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/esmatlas_v2023_02/</span>
@@ -550,8 +568,8 @@ exhibit highly-specific functions and can be considered structural building bloc
 </section>
 <section id="esm-atlas-high-quality-highquality-clust30">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">ESM</span> <span class="pre">Atlas</span> <span class="pre">(High</span> <span class="pre">Quality)</span></code> (<code class="docutils literal notranslate"><span class="pre">highquality_clust30</span></code>)<a class="headerlink" href="#esm-atlas-high-quality-highquality-clust30" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id27">
-<div class="code-block-caption"><span class="caption-text">config/dataset/highquality_clust30.yaml</span><a class="headerlink" href="#id27" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id30">
+<div class="code-block-caption"><span class="caption-text">config/dataset/highquality_clust30.yaml</span><a class="headerlink" href="#id30" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule</span>
 <span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/highquality_clust30/</span>
@@ -575,8 +593,8 @@ exhibit highly-specific functions and can be considered structural building bloc
 </section>
 <section id="uniprot-alphafold-afdb-uniprot-v4">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">UniProt</span> <span class="pre">(Alphafold)</span></code> (<code class="docutils literal notranslate"><span class="pre">afdb_uniprot_v4</span></code>)<a class="headerlink" href="#uniprot-alphafold-afdb-uniprot-v4" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id28">
-<div class="code-block-caption"><span class="caption-text">config/dataset/afdb_uniprot_v4.yaml</span><a class="headerlink" href="#id28" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id31">
+<div class="code-block-caption"><span class="caption-text">config/dataset/afdb_uniprot_v4.yaml</span><a class="headerlink" href="#id31" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule</span>
 <span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/afdb_uniprot_v4/</span>
@@ -600,8 +618,8 @@ exhibit highly-specific functions and can be considered structural building bloc
 </section>
 <section id="swissprot-alphafold-afdb-swissprot-v4">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">SwissProt</span> <span class="pre">(Alphafold)</span></code> (<code class="docutils literal notranslate"><span class="pre">afdb_swissprot_v4</span></code>)<a class="headerlink" href="#swissprot-alphafold-afdb-swissprot-v4" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id29">
-<div class="code-block-caption"><span class="caption-text">config/dataset/afdb_swissprot_v4.yaml</span><a class="headerlink" href="#id29" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id32">
+<div class="code-block-caption"><span class="caption-text">config/dataset/afdb_swissprot_v4.yaml</span><a class="headerlink" href="#id32" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">graphein.ml.datasets.foldcomp_dataset.FoldCompLightningDataModule</span>
 <span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/afdb_swissprot_v4/</span>
@@ -625,7 +643,7 @@ exhibit highly-specific functions and can be considered structural building bloc
 </section>
 <section id="species-specific-datasets">
 <h3>Species-Specific Datasets<a class="headerlink" href="#species-specific-datasets" title="Link to this heading">#</a></h3>
-<p>TODO</p>
+<p>Stay tuned!</p>
 </section>
 </section>
 <section id="graph-level-datasets">
@@ -640,8 +658,8 @@ developability as a binary graph classification task indicating whether a given 
 <p>Impact: From a benchmarking perspective, this task is important as it enables targeted performance
 assessment of models on a specific (immunoglobulin) fold, providing insight into whether general-
 purpose structure-based encoders can be applicable to fold-specific tasks.</p>
-<div class="literal-block-wrapper docutils container" id="id30">
-<div class="code-block-caption"><span class="caption-text">config/dataset/antibody_developability.yaml</span><a class="headerlink" href="#id30" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id33">
+<div class="code-block-caption"><span class="caption-text">config/dataset/antibody_developability.yaml</span><a class="headerlink" href="#id33" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.antibody_developability.AntibodyDevelopabilityDataModule</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/AntibodyDevelopability</span><span class="w"> </span><span class="c1"># Directory where the dataset is stored</span>
@@ -668,8 +686,8 @@ purpose structure-based encoders can be applicable to fold-specific tasks.</p>
 <p><strong>Task</strong>: We formulate this as a binary classification task where we predict whether the stability of the complex increases as a result of the mutation.</p>
 <p><strong>Splitting criteria</strong>: We split protein complexes by sequence identity at 30%.</p>
 <p><strong>Downloads</strong>: The full dataset, split data, and split indices are available for download via Zenodo (doi:10.5281/zenodo.4962515)</p>
-<div class="literal-block-wrapper docutils container" id="id31">
-<div class="code-block-caption"><span class="caption-text">config/dataset/atom3d_msp.yaml</span><a class="headerlink" href="#id31" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id34">
+<div class="code-block-caption"><span class="caption-text">config/dataset/atom3d_msp.yaml</span><a class="headerlink" href="#id34" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule</span>
 <span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MSP</span>
@@ -693,8 +711,8 @@ purpose structure-based encoders can be applicable to fold-specific tasks.</p>
 <p><strong>Task</strong>: We formulate this as a regression task, where we predict the global distance test (GDT_TS) from the true structure for each of the predicted structures submitted in the last 18 years of CASP.</p>
 <p><strong>Splitting criteria</strong>: We split structures temporally by competition year.</p>
 <p><strong>Downloads</strong>: The full dataset, split data, and split indices are available for download via Zenodo (doi:10.5281/zenodo.4915648)</p>
-<div class="literal-block-wrapper docutils container" id="id32">
-<div class="code-block-caption"><span class="caption-text">config/dataset/atom3d_psr.yaml</span><a class="headerlink" href="#id32" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id35">
+<div class="code-block-caption"><span class="caption-text">config/dataset/atom3d_psr.yaml</span><a class="headerlink" href="#id35" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule</span>
 <span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PSR</span>
@@ -711,8 +729,8 @@ purpose structure-based encoders can be applicable to fold-specific tasks.</p>
 </section>
 <section id="deep-sea-protein-classification-deep-sea-proteins">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">Deep</span> <span class="pre">Sea</span> <span class="pre">Protein</span> <span class="pre">Classification</span></code> (<code class="docutils literal notranslate"><span class="pre">deep_sea_proteins</span></code>)<a class="headerlink" href="#deep-sea-protein-classification-deep-sea-proteins" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id33">
-<div class="code-block-caption"><span class="caption-text">config/dataset/deepsea.yaml</span><a class="headerlink" href="#id33" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id36">
+<div class="code-block-caption"><span class="caption-text">config/dataset/deepsea.yaml</span><a class="headerlink" href="#id36" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.deep_sea_proteins.DeepSeaProteinsDataModule</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/deep-sea-proteins/</span><span class="w"> </span><span class="c1"># Directory where the dataset is stored</span>
@@ -732,8 +750,8 @@ purpose structure-based encoders can be applicable to fold-specific tasks.</p>
 </section>
 <section id="enzyme-commission-number-prediction-ec-reaction">
 <h3><code class="xref py py-class docutils literal notranslate"><span class="pre">Enzyme</span> <span class="pre">Commission</span> <span class="pre">Number</span> <span class="pre">Prediction</span></code> (<code class="docutils literal notranslate"><span class="pre">ec_reaction</span></code>)<a class="headerlink" href="#enzyme-commission-number-prediction-ec-reaction" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id34">
-<div class="code-block-caption"><span class="caption-text">config/dataset/ec_reaction.yaml</span><a class="headerlink" href="#id34" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id37">
+<div class="code-block-caption"><span class="caption-text">config/dataset/ec_reaction.yaml</span><a class="headerlink" href="#id37" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.ec_reaction.EnzymeCommissionReactionDataset</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/ECReaction/</span><span class="w"> </span><span class="c1"># Directory where the dataset is stored</span>
@@ -746,6 +764,7 @@ purpose structure-based encoders can be applicable to fold-specific tasks.</p>
 <span class="w">  </span><span class="nt">shuffle_labels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"> </span><span class="c1"># Whether to shuffle labels for permutation testing</span>
 <span class="w">  </span><span class="nt">transforms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${transforms}</span>
 <span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">  </span><span class="nt">in_memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 <span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">384</span>
 </pre></div>
 </div>
@@ -761,8 +780,8 @@ particular, this dataset contains three distinct test splits across which we ave
 different structural folds. It stands to reason that models that perform poorly on distinguishing fold
 classes likely learn limited or low-quality structural representations.214</p>
 <p><strong>Splitting Criteria</strong>:</p>
-<div class="literal-block-wrapper docutils container" id="id35">
-<div class="code-block-caption"><span class="caption-text">config/dataset/fold_family.yaml</span><a class="headerlink" href="#id35" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id38">
+<div class="code-block-caption"><span class="caption-text">config/dataset/fold_family.yaml</span><a class="headerlink" href="#id38" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;proteinworkshop.datasets.fold_classification.FoldClassificationDataModule&quot;</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/FoldClassification/</span><span class="w"> </span><span class="c1"># Directory where the dataset is stored</span>
@@ -774,6 +793,7 @@ classes likely learn limited or low-quality structural representations.214</p>
 <span class="w">  </span><span class="nt">shuffle_labels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"> </span><span class="c1"># Whether to shuffle labels for permutation testing</span>
 <span class="w">  </span><span class="nt">transforms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${transforms}</span><span class="w"> </span><span class="c1"># Transforms to apply to dataset examples</span>
 <span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"> </span><span class="c1"># Whether to overwrite existing dataset files</span>
+<span class="w">  </span><span class="nt">in_memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"> </span><span class="c1"># Whether to load the entire dataset into memory</span>
 <span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1195</span><span class="w"> </span><span class="c1"># Number of classes</span>
 </pre></div>
 </div>
@@ -781,8 +801,8 @@ classes likely learn limited or low-quality structural representations.214</p>
 </section>
 <section id="gene-ontology-go-bp-go-cc-go-mf">
 <h3>Gene Ontology (<code class="docutils literal notranslate"><span class="pre">go-bp</span></code>, <code class="docutils literal notranslate"><span class="pre">go-cc</span></code>, <code class="docutils literal notranslate"><span class="pre">go-mf</span></code>)<a class="headerlink" href="#gene-ontology-go-bp-go-cc-go-mf" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id36">
-<div class="code-block-caption"><span class="caption-text">config/dataset/go-bp.yaml / config/dataset/go-cc.yaml / config/dataset/go-mf.yaml</span><a class="headerlink" href="#id36" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id39">
+<div class="code-block-caption"><span class="caption-text">config/dataset/go-bp.yaml / config/dataset/go-cc.yaml / config/dataset/go-mf.yaml</span><a class="headerlink" href="#id39" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.go.GeneOntologyDataset</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/GeneOntology/</span><span class="w"> </span><span class="c1"># Directory where the dataset is stored</span>
@@ -796,7 +816,8 @@ classes likely learn limited or low-quality structural representations.214</p>
 <span class="w">  </span><span class="nt">split</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BP&quot;</span><span class="w"> </span><span class="c1"># Split of the dataset to use (`BP`, `MF`, `CC`)</span>
 <span class="w">  </span><span class="nt">transforms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${transforms}</span><span class="w"> </span><span class="c1"># Transforms to apply to dataset examples</span>
 <span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"> </span><span class="c1"># Whether to overwrite existing dataset files</span>
-<span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"> </span><span class="c1"># Number of classes</span>
+<span class="w">  </span><span class="nt">in_memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="nt">num_classes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1943</span><span class="w"> </span><span class="c1"># Number of classes</span>
 </pre></div>
 </div>
 </div>
@@ -812,8 +833,8 @@ classes likely learn limited or low-quality structural representations.214</p>
 <p><strong>Dataset description</strong>: We generate a novel dataset consisting of atomic environments extracted from nonredundant structures in the PDB.</p>
 <p><strong>Task</strong>: We formulate this as a classification task where we predict the identity of the amino acid in the center of the environment based on all other atoms.</p>
 <p><strong>Splitting criteria</strong>: We split residue environments by domain-level CATH protein topology class.</p>
-<div class="literal-block-wrapper docutils container" id="id37">
-<div class="code-block-caption"><span class="caption-text">config/dataset/atom3d_res.yaml</span><a class="headerlink" href="#id37" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id40">
+<div class="code-block-caption"><span class="caption-text">config/dataset/atom3d_res.yaml</span><a class="headerlink" href="#id40" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.atom3d_datamodule.ATOM3DDataModule</span>
 <span class="w">  </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RES</span>
@@ -831,8 +852,8 @@ classes likely learn limited or low-quality structural representations.214</p>
 </section>
 <section id="ccpdb-ligand-binding-ccpdb-ligand">
 <h3>CCPDB Ligand Binding (<code class="docutils literal notranslate"><span class="pre">ccpdb_ligand</span></code>)<a class="headerlink" href="#ccpdb-ligand-binding-ccpdb-ligand" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id38">
-<div class="code-block-caption"><span class="caption-text">config/dataset/ccpdb_ligand.yaml</span><a class="headerlink" href="#id38" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id41">
+<div class="code-block-caption"><span class="caption-text">config/dataset/ccpdb_ligand.yaml</span><a class="headerlink" href="#id41" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.cc_pdb.CCPDBDataModule</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/ccpdb/ligands/</span><span class="w"> </span><span class="c1"># Path to the dataset</span>
@@ -858,8 +879,8 @@ classes likely learn limited or low-quality structural representations.214</p>
 </section>
 <section id="ccpdb-metal-binding-ccpdb-metal">
 <h3>CCPDB Metal Binding (<code class="docutils literal notranslate"><span class="pre">ccpdb_metal</span></code>)<a class="headerlink" href="#ccpdb-metal-binding-ccpdb-metal" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id39">
-<div class="code-block-caption"><span class="caption-text">config/dataset/ccpdb_metal.yaml</span><a class="headerlink" href="#id39" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id42">
+<div class="code-block-caption"><span class="caption-text">config/dataset/ccpdb_metal.yaml</span><a class="headerlink" href="#id42" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.cc_pdb.CCPDBDataModule</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/ccpdb/metal/</span><span class="w"> </span><span class="c1"># Path to the dataset</span>
@@ -885,8 +906,8 @@ classes likely learn limited or low-quality structural representations.214</p>
 </section>
 <section id="ccpdb-nucleic-acid-binding-ccpdb-nucleic">
 <h3>CCPDB Nucleic Acid Binding (<code class="docutils literal notranslate"><span class="pre">ccpdb_nucleic</span></code>)<a class="headerlink" href="#ccpdb-nucleic-acid-binding-ccpdb-nucleic" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id40">
-<div class="code-block-caption"><span class="caption-text">config/dataset/ccpdb_nucleic.yaml</span><a class="headerlink" href="#id40" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id43">
+<div class="code-block-caption"><span class="caption-text">config/dataset/ccpdb_nucleic.yaml</span><a class="headerlink" href="#id43" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.cc_pdb.CCPDBDataModule</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/ccpdb/nucleic/</span><span class="w"> </span><span class="c1"># Path to the dataset</span>
@@ -912,8 +933,8 @@ classes likely learn limited or low-quality structural representations.214</p>
 </section>
 <section id="ccpdb-nucleotide-binding-ccpdb-nucleotides">
 <h3>CCPDB Nucleotide Binding (<code class="docutils literal notranslate"><span class="pre">ccpdb_nucleotides</span></code>)<a class="headerlink" href="#ccpdb-nucleotide-binding-ccpdb-nucleotides" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id41">
-<div class="code-block-caption"><span class="caption-text">config/dataset/ccpdb_nucleotides.yaml</span><a class="headerlink" href="#id41" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id44">
+<div class="code-block-caption"><span class="caption-text">config/dataset/ccpdb_nucleotides.yaml</span><a class="headerlink" href="#id44" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.cc_pdb.CCPDBDataModule</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/ccpdb/nucleotides/</span><span class="w"> </span><span class="c1"># Path to the dataset</span>
@@ -939,8 +960,8 @@ classes likely learn limited or low-quality structural representations.214</p>
 </section>
 <section id="post-translational-modifications-ptm">
 <h3>Post Translational Modifications (<code class="docutils literal notranslate"><span class="pre">ptm</span></code>)<a class="headerlink" href="#post-translational-modifications-ptm" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id42">
-<div class="code-block-caption"><span class="caption-text">config/dataset/ptm.yaml</span><a class="headerlink" href="#id42" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id45">
+<div class="code-block-caption"><span class="caption-text">config/dataset/ptm.yaml</span><a class="headerlink" href="#id45" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;proteinworkshop.datasets.ptm.PTMDataModule&quot;</span>
 <span class="w">  </span><span class="nt">dataset_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ptm_13&quot;</span><span class="w"> </span><span class="c1"># Options currently include (`ptm_13`, `optm`)</span>
@@ -964,8 +985,8 @@ proximity (3.5 Å), which can be user-defined, rather than solvent exclusion.</p
 <p>The dataset is composed by selecting PPI pairs from the PRISM list of nonredundant proteins,
 the ZDock benchmark, PDBBind and SabDab. Splits are performed using CD-HIT and structural splits
 are performed using TM-algin.</p>
-<div class="literal-block-wrapper docutils container" id="id43">
-<div class="code-block-caption"><span class="caption-text">config/dataset/masif_site.yaml</span><a class="headerlink" href="#id43" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id46">
+<div class="code-block-caption"><span class="caption-text">config/dataset/masif_site.yaml</span><a class="headerlink" href="#id46" title="Link to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">datamodule</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">_target_</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proteinworkshop.datasets.masif_site.MaSIFPPISP</span>
 <span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env.paths.data}/masif_site/</span><span class="w"> </span><span class="c1"># Directory where the dataset is stored</span>
@@ -1089,7 +1110,7 @@ are performed using TM-algin.</p>
   </div>
 </div><script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../_static/documentation_options.js?v=cb850272"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>

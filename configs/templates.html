@@ -20,14 +20,14 @@
 <meta property="og:description" content="For configuration management in the benchmark, we use hydra. The configuration files are stored in config folder. Configs are built through composing different individual configs for each component..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_configs_templates_f3b8ed6b.png" />
+<meta property="og:image" content="/None" />
 <meta property="og:image:alt" content="For configuration management in the benchmark, we use hydra. The configuration files are stored in config folder. Configs are built through composing differe..." />
 <meta name="description" content="For configuration management in the benchmark, we use hydra. The configuration files are stored in config folder. Configs are built through composing different individual configs for each component..." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Dataset" href="dataset.html" /><link rel="prev" title="Downloading Datasets" href="../quickstart_component/download.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>Config Templates - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>Config Templates - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -147,7 +147,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -173,7 +173,7 @@
     <img class="sidebar-logo" src="../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -201,6 +201,7 @@
 <li class="toctree-l1"><a class="reference internal" href="task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="framework_components/debug.html">Debug</a></li>
@@ -225,7 +226,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -296,11 +299,12 @@
 <span class="linenos">24</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">logger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">csv</span><span class="w"> </span><span class="c1"># Also supported: tensorboard, wandb</span>
 <span class="linenos">25</span><span class="w">  </span><span class="c1"># debugging config (enable through command line, e.g. `python train.py debug=default)</span>
 <span class="linenos">26</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="linenos">27</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_self_</span><span class="w"> </span><span class="c1"># see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.</span>
-<span class="linenos">28</span>
-<span class="linenos">29</span><span class="nt">task_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;train&quot;</span>
-<span class="linenos">30</span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
-<span class="linenos">31</span><span class="c1">#compile: True</span>
+<span class="linenos">27</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional hparams</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${encoder}_${features}</span>
+<span class="linenos">28</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_self_</span><span class="w"> </span><span class="c1"># see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="nt">task_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;train&quot;</span>
+<span class="linenos">31</span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="linenos">32</span><span class="c1">#compile: True</span>
 </pre></div>
 </div>
 </div>
@@ -321,7 +325,7 @@
 <span class="linenos"> 9</span><span class="nt">defaults</span><span class="p">:</span>
 <span class="linenos">10</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 <span class="linenos">11</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">dataset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cath</span>
-<span class="linenos">12</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">features</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ca_base</span>
+<span class="linenos">12</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">features</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ca_seq</span>
 <span class="linenos">13</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">encoder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">egnn</span>
 <span class="linenos">14</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">decoder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 <span class="linenos">15</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">transforms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span>
@@ -337,15 +341,16 @@
 <span class="linenos">25</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">finetune</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"> </span><span class="c1"># Specifies finetuning config. See: proteinworkshop/config/finetune/</span>
 <span class="linenos">26</span><span class="w">  </span><span class="c1"># debugging config (enable through command line, e.g. `python train.py debug=default)</span>
 <span class="linenos">27</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="linenos">28</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_self_</span><span class="w"> </span><span class="c1"># see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.</span>
-<span class="linenos">29</span>
-<span class="linenos">30</span><span class="nt">task_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;finetune&quot;</span>
-<span class="linenos">31</span>
-<span class="linenos">32</span><span class="c1">#compile: True</span>
-<span class="linenos">33</span><span class="nt">compile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
-<span class="linenos">34</span>
-<span class="linenos">35</span><span class="c1"># simply provide checkpoint path to resume training</span>
-<span class="linenos">36</span><span class="nt">ckpt_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="linenos">28</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">optional hparams</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${encoder}_${features}</span>
+<span class="linenos">29</span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_self_</span><span class="w"> </span><span class="c1"># see: https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/. Adding _self_ at bottom means values in this file override defaults.</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="nt">task_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;finetune&quot;</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span><span class="c1">#compile: True</span>
+<span class="linenos">34</span><span class="nt">compile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span><span class="c1"># simply provide checkpoint path to resume training</span>
+<span class="linenos">37</span><span class="nt">ckpt_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 </pre></div>
 </div>
 </div>
@@ -423,7 +428,7 @@
   </div>
 </div><script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../_static/documentation_options.js?v=cb850272"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>

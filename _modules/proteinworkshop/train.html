@@ -14,8 +14,8 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>proteinworkshop.train - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>proteinworkshop.train - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo" src="../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -262,6 +265,7 @@
 <span class="kn">import</span> <span class="nn">lovely_tensors</span> <span class="k">as</span> <span class="nn">lt</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch_geometric</span>
 <span class="kn">from</span> <span class="nn">graphein.protein.tensor.dataloader</span> <span class="kn">import</span> <span class="n">ProteinDataLoader</span>
 <span class="kn">from</span> <span class="nn">lightning.pytorch.callbacks</span> <span class="kn">import</span> <span class="n">Callback</span>
 <span class="kn">from</span> <span class="nn">lightning.pytorch.loggers</span> <span class="kn">import</span> <span class="n">Logger</span>
@@ -373,6 +377,7 @@
             <span class="o">==</span> <span class="s2">&quot;flash.core.optimizers.LinearWarmupCosineAnnealingLR&quot;</span>
             <span class="ow">and</span> <span class="n">cfg</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">interval</span> <span class="o">==</span> <span class="s2">&quot;step&quot;</span>
         <span class="p">):</span>
+            <span class="n">datamodule</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
             <span class="n">num_steps</span> <span class="o">=</span> <span class="n">_num_training_steps</span><span class="p">(</span>
                 <span class="n">datamodule</span><span class="o">.</span><span class="n">train_dataloader</span><span class="p">(),</span> <span class="n">trainer</span>
             <span class="p">)</span>
@@ -425,7 +430,7 @@
 
     <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compile&quot;</span><span class="p">):</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Compiling model!&quot;</span><span class="p">)</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">torch_geometric</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task_name&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;train&quot;</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting training!&quot;</span><span class="p">)</span>
@@ -518,7 +523,7 @@
   </div>
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>

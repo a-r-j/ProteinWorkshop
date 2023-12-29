@@ -20,14 +20,14 @@
 <meta property="og:description" content="Default: Training: Early Stopping ( early_stopping): config/callbacks/early_stopping.yaml, Checkpointing ( model_checkpoint): config/callbacks/model_checkpoint.yaml, Stop on NaN ( stop_on_nan): con..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_configs_framework_components_callbacks_e73e3ef2.png" />
+<meta property="og:image" content="/None" />
 <meta property="og:image:alt" content="Default: Training: Early Stopping ( early_stopping): config/callbacks/early_stopping.yaml, Checkpointing ( model_checkpoint): config/callbacks/model_checkpoi..." />
 <meta name="description" content="Default: Training: Early Stopping ( early_stopping): config/callbacks/early_stopping.yaml, Checkpointing ( model_checkpoint): config/callbacks/model_checkpoint.yaml, Stop on NaN ( stop_on_nan): con..." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Debug" href="debug.html" /><link rel="prev" title="Framework Components" href="../../framework.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>Callbacks - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>Callbacks - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -147,7 +147,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -173,7 +173,7 @@
     <img class="sidebar-logo" src="../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -201,6 +201,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics.html">Metrics</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../../framework.html">Framework Components</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debug.html">Debug</a></li>
@@ -225,7 +226,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -389,7 +392,7 @@
 <h3>Model Summary (<code class="docutils literal notranslate"><span class="pre">model_summary</span></code>)<a class="headerlink" href="#model-summary-model-summary" title="Link to this heading">#</a></h3>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">lightning.pytorch.callbacks.RichModelSummary</span></code></p>
+<p><a class="reference external" href="https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.callbacks.RichModelSummary.html#lightning.pytorch.callbacks.RichModelSummary" title="(in PyTorch Lightning v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">lightning.pytorch.callbacks.RichModelSummary</span></code></a></p>
 </div>
 <div class="literal-block-wrapper docutils container" id="id5">
 <div class="code-block-caption"><span class="caption-text">config/callbacks/model_summary.yaml</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
@@ -408,7 +411,7 @@
 <h3>Rich Progress Bar (<code class="docutils literal notranslate"><span class="pre">rich_progress_bar</span></code>)<a class="headerlink" href="#rich-progress-bar-rich-progress-bar" title="Link to this heading">#</a></h3>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">lightning.pytorch.callbacks.RichProgressBar</span></code></p>
+<p><a class="reference external" href="https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.callbacks.RichProgressBar.html#lightning.pytorch.callbacks.RichProgressBar" title="(in PyTorch Lightning v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">lightning.pytorch.callbacks.RichProgressBar</span></code></a></p>
 </div>
 <div class="literal-block-wrapper docutils container" id="id6">
 <div class="code-block-caption"><span class="caption-text">config/callbacks/rich_progress_bar.yaml</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
@@ -427,7 +430,7 @@
 <p>This is automatically configured when using a learning rate scheduler. See <a class="reference internal" href="../ml_components/scheduler.html"><span class="doc">Schedulers</span></a></p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">lightning.pytorch.callbacks.LearningRateMonitor</span></code></p>
+<p><a class="reference external" href="https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.callbacks.LearningRateMonitor.html#lightning.pytorch.callbacks.LearningRateMonitor" title="(in PyTorch Lightning v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">lightning.pytorch.callbacks.LearningRateMonitor</span></code></a></p>
 </div>
 <div class="literal-block-wrapper docutils container" id="id7">
 <div class="code-block-caption"><span class="caption-text">config/callbacks/learning_rate_monitor.yaml</span><a class="headerlink" href="#id7" title="Link to this code">#</a></div>
@@ -523,7 +526,7 @@
   </div>
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>

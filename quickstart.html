@@ -20,13 +20,13 @@
 <meta content="Downloading datasets: Datasets can either be built from the source structures or downloaded from Zenodo. Datasets will be built from source the first time a dataset is used in a run (or by calling ..." property="og:description"/>
 <meta content="1146" property="og:image:width"/>
 <meta content="600" property="og:image:height"/>
-<meta content="/_images/social_previews/summary_quickstart_834040f3.png" property="og:image"/>
+<meta content="/None" property="og:image"/>
 <meta content="Downloading datasets: Datasets can either be built from the source structures or downloaded from Zenodo. Datasets will be built from source the first time a..." property="og:image:alt"/>
 <meta content="Downloading datasets: Datasets can either be built from the source structures or downloaded from Zenodo. Datasets will be built from source the first time a dataset is used in a run (or by calling ..." name="description"/>
 <meta content="summary_large_image" name="twitter:card"/>
 <link href="genindex.html" rel="index" title="Index"/><link href="search.html" rel="search" title="Search"/><link href="quickstart_component/pretrain.html" rel="next" title="Pre-Training"/><link href="overview.html" rel="prev" title="Architectural Overview"/>
-<!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-<title>Quickstart - Protein Workshop 0.2.4</title>
+<!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+<title>Quickstart - Protein Workshop 0.2.5</title>
 <link href="_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
 <link href="_static/styles/furo.css?v=135e06be" rel="stylesheet" type="text/css"/>
 <link href="_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
@@ -130,7 +130,7 @@
 </label>
 </div>
 <div class="header-center">
-<a href="index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+<a href="index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
 </div>
 <div class="header-right">
 <div class="theme-toggle-container theme-toggle-header">
@@ -153,7 +153,7 @@
 <div class="sidebar-logo-container">
 <img alt="Logo" class="sidebar-logo" src="_static/workshop_icon.png"/>
 </div>
-<span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+<span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
 </a><form action="search.html" class="sidebar-search-container" method="get" role="search">
 <input aria-label="Search" class="sidebar-search" name="q" placeholder="Search"/>
 <input name="check_keywords" type="hidden" value="yes"/>
@@ -180,6 +180,7 @@
 <li class="toctree-l1"><a class="reference internal" href="configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/debug.html">Debug</a></li>
@@ -204,7 +205,9 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 </div>
 </div>
@@ -330,11 +333,33 @@ wandb<span class="w"> </span>agent<span class="w"> </span>mywandbgroup/proteinwo
 </pre></div>
 </div>
 </section>
-<section id="embedding-a-dataset-experimental">
-<h2>Embedding a dataset (Experimental)<a class="headerlink" href="#embedding-a-dataset-experimental" title="Link to this heading">#</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>proteinworkshop/embed.py<span class="w"> </span><span class="nv">dataset</span><span class="o">=</span>cath<span class="w"> </span><span class="nv">encoder</span><span class="o">=</span>egnn<span class="w"> </span><span class="nv">ckpt_path</span><span class="o">=</span>PATH/TO/CHECKPOINT
+<section id="embedding-a-dataset">
+<h2>Embedding a dataset<a class="headerlink" href="#embedding-a-dataset" title="Link to this heading">#</a></h2>
+<p>We provide a utility in <code class="docutils literal notranslate"><span class="pre">proteinworkshop/embed.py</span></code> for embedding a dataset using a pre-trained model.
+To run it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>proteinworkshop/embed.py<span class="w"> </span><span class="nv">ckpt_path</span><span class="o">=</span>PATH/TO/CHECKPOINT<span class="w"> </span><span class="nv">collection_name</span><span class="o">=</span>COLLECTION_NAME
 </pre></div>
 </div>
+<p>See the <code class="docutils literal notranslate"><span class="pre">embed</span></code> section of <code class="docutils literal notranslate"><span class="pre">proteinworkshop/config/embed.yaml</span></code> for additional parameters.</p>
+</section>
+<section id="visualising-pre-trained-model-embeddings-for-a-given-dataset">
+<h2>Visualising pre-trained model embeddings for a given dataset<a class="headerlink" href="#visualising-pre-trained-model-embeddings-for-a-given-dataset" title="Link to this heading">#</a></h2>
+<p>We provide a utility in <code class="docutils literal notranslate"><span class="pre">proteinworkshop/visualise.py</span></code> for visualising the UMAP embeddings of a pre-trained model for a given dataset.
+To run it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>proteinworkshop/visualise.py<span class="w"> </span><span class="nv">ckpt_path</span><span class="o">=</span>PATH/TO/CHECKPOINT<span class="w"> </span><span class="nv">plot_filepath</span><span class="o">=</span>VISUALISATION/FILEPATH.png
+</pre></div>
+</div>
+<p>See the <code class="docutils literal notranslate"><span class="pre">visualise</span></code> section of <code class="docutils literal notranslate"><span class="pre">proteinworkshop/config/visualise.yaml</span></code> for additional parameters.</p>
+</section>
+<section id="performing-attribution-of-a-pre-trained-model">
+<h2>Performing attribution of a pre-trained model<a class="headerlink" href="#performing-attribution-of-a-pre-trained-model" title="Link to this heading">#</a></h2>
+<p>We provide a utility in <code class="docutils literal notranslate"><span class="pre">proteinworkshop/explain.py</span></code> for performing attribution of a pre-trained model using integrated gradients.</p>
+<p>This will write PDB files for all the structures in a dataset for a supervised task with residue-level attributions in the <code class="docutils literal notranslate"><span class="pre">b_factor</span></code> column. To visualise the attributions, we recommend using the <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=ArianJamasb.protein-viewer">Protein Viewer VSCode extension</a> and changing the 3D representation to colour by <code class="docutils literal notranslate"><span class="pre">Uncertainty/Disorder</span></code>.</p>
+<p>To run the attribution:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>proteinworkshop/explain.py<span class="w"> </span><span class="nv">ckpt_path</span><span class="o">=</span>PATH/TO/CHECKPOINT<span class="w"> </span><span class="nv">output_dir</span><span class="o">=</span>ATTRIBUTION/DIRECTORY
+</pre></div>
+</div>
+<p>See the <code class="docutils literal notranslate"><span class="pre">explain</span></code> section of <code class="docutils literal notranslate"><span class="pre">proteinworkshop/config/explain.yaml</span></code> for additional parameters.</p>
 </section>
 <section id="verifying-a-config">
 <h2>Verifying a config<a class="headerlink" href="#verifying-a-config" title="Link to this heading">#</a></h2>
@@ -438,7 +463,9 @@ on top of the assets of <code class="docutils literal notranslate"><span class="
 <li><a class="reference internal" href="#training-a-model">Training a model</a></li>
 <li><a class="reference internal" href="#finetuning-a-model">Finetuning a model</a></li>
 <li><a class="reference internal" href="#running-a-sweep-experiment">Running a sweep/experiment</a></li>
-<li><a class="reference internal" href="#embedding-a-dataset-experimental">Embedding a dataset (Experimental)</a></li>
+<li><a class="reference internal" href="#embedding-a-dataset">Embedding a dataset</a></li>
+<li><a class="reference internal" href="#visualising-pre-trained-model-embeddings-for-a-given-dataset">Visualising pre-trained model embeddings for a given dataset</a></li>
+<li><a class="reference internal" href="#performing-attribution-of-a-pre-trained-model">Performing attribution of a pre-trained model</a></li>
 <li><a class="reference internal" href="#verifying-a-config">Verifying a config</a></li>
 <li><a class="reference internal" href="#using-proteinworkshop-modules-functionally">Using <code class="docutils literal notranslate"><span class="pre">proteinworkshop</span></code> modules functionally</a></li>
 </ul>
@@ -451,7 +478,7 @@ on top of the assets of <code class="docutils literal notranslate"><span class="
 </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
 <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-<script src="_static/documentation_options.js?v=6ffd866b"></script>
+<script src="_static/documentation_options.js?v=cb850272"></script>
 <script src="_static/doctools.js?v=888ff710"></script>
 <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 <script src="_static/scripts/furo.js?v=32e29ea5"></script>

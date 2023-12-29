@@ -14,8 +14,8 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>proteinworkshop.features.representation - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>proteinworkshop.features.representation - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo" src="../../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -252,7 +255,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
+<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span> <span class="k">as</span> <span class="n">typechecker</span>
 <span class="kn">from</span> <span class="nn">graphein.protein.tensor.types</span> <span class="kn">import</span> <span class="n">AtomTensor</span><span class="p">,</span> <span class="n">CoordTensor</span>
 <span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">jaxtyped</span>
 <span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Batch</span><span class="p">,</span> <span class="n">Data</span>
@@ -263,8 +266,7 @@
 
 <div class="viewcode-block" id="get_full_atom_coords">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.representation.get_full_atom_coords">[docs]</a>
-<span class="nd">@jaxtyped</span>
-<span class="nd">@beartype</span>
+<span class="nd">@jaxtyped</span><span class="p">(</span><span class="n">typechecker</span><span class="o">=</span><span class="n">typechecker</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_full_atom_coords</span><span class="p">(</span>
     <span class="n">atom_tensor</span><span class="p">:</span> <span class="n">AtomTensor</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">CoordTensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
@@ -295,8 +297,7 @@
 
 <div class="viewcode-block" id="transform_representation">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.representation.transform_representation">[docs]</a>
-<span class="nd">@jaxtyped</span>
-<span class="nd">@beartype</span>
+<span class="nd">@jaxtyped</span><span class="p">(</span><span class="n">typechecker</span><span class="o">=</span><span class="n">typechecker</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">transform_representation</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Batch</span><span class="p">,</span> <span class="n">representation_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;CA&quot;</span><span class="p">,</span> <span class="s2">&quot;BB&quot;</span><span class="p">,</span> <span class="s2">&quot;FA&quot;</span><span class="p">,</span> <span class="s2">&quot;BB_SC&quot;</span><span class="p">,</span> <span class="s2">&quot;CA_SC&quot;</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Batch</span><span class="p">:</span>
@@ -343,7 +344,7 @@
 
 
 
-<span class="nd">@beartype</span>
+<span class="nd">@typechecker</span>
 <span class="k">def</span> <span class="nf">_ca_to_fa_repr</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Data</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts CA representation to full atom representation.&quot;&quot;&quot;</span>
     <span class="n">coords</span><span class="p">,</span> <span class="n">residue_index</span><span class="p">,</span> <span class="n">atom_type</span> <span class="o">=</span> <span class="n">get_full_atom_coords</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
@@ -357,7 +358,7 @@
     <span class="k">return</span> <span class="n">x</span>
 
 
-<span class="nd">@beartype</span>
+<span class="nd">@typechecker</span>
 <span class="k">def</span> <span class="nf">_ca_to_bb_repr</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Data</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts CA representation to backbone representation.&quot;&quot;&quot;</span>
     <span class="n">x</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">coords</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -375,7 +376,7 @@
 
 <div class="viewcode-block" id="ca_to_bb_repr">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.representation.ca_to_bb_repr">[docs]</a>
-<span class="nd">@beartype</span>
+<span class="nd">@typechecker</span>
 <span class="k">def</span> <span class="nf">ca_to_bb_repr</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Batch</span><span class="p">:</span>  <span class="c1"># sourcery skip: assign-if-exp</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a batch of CA representations to backbone representations. I.e.</span>
@@ -441,7 +442,7 @@
 
 <div class="viewcode-block" id="ca_to_bb_sc_repr">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.representation.ca_to_bb_sc_repr">[docs]</a>
-<span class="nd">@beartype</span>
+<span class="nd">@typechecker</span>
 <span class="k">def</span> <span class="nf">ca_to_bb_sc_repr</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Batch</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a batch of CA representations to backbone + sidechain representations.&quot;&quot;&quot;</span>
     <span class="c1"># Get centroids</span>
@@ -454,7 +455,7 @@
 
 <div class="viewcode-block" id="ca_to_ca_sc_repr">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.representation.ca_to_ca_sc_repr">[docs]</a>
-<span class="nd">@beartype</span>
+<span class="nd">@typechecker</span>
 <span class="k">def</span> <span class="nf">ca_to_ca_sc_repr</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Batch</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a batch of CA representations to C + sidechain representations.&quot;&quot;&quot;</span>
     <span class="c1"># Get centroids</span>
@@ -467,7 +468,7 @@
 
 <div class="viewcode-block" id="coarsen_sidechain">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.representation.coarsen_sidechain">[docs]</a>
-<span class="nd">@beartype</span>
+<span class="nd">@typechecker</span>
 <span class="k">def</span> <span class="nf">coarsen_sidechain</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Data</span><span class="p">,</span> <span class="n">aggr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CoordTensor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns tensor of sidechain centroids: L x 3&quot;&quot;&quot;</span>
     <span class="c1"># sourcery skip: remove-unnecessary-else, swap-if-else-branches</span>
@@ -486,7 +487,7 @@
 
 <div class="viewcode-block" id="ca_to_fa_repr">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.representation.ca_to_fa_repr">[docs]</a>
-<span class="nd">@beartype</span>
+<span class="nd">@typechecker</span>
 <span class="k">def</span> <span class="nf">ca_to_fa_repr</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Batch</span><span class="p">:</span>  <span class="c1"># sourcery skip: assign-if-exp</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a batch of CA representations to full atom representations.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="s2">&quot;sidechain_torsion&quot;</span> <span class="ow">in</span> <span class="n">batch</span><span class="o">.</span><span class="n">keys</span><span class="p">:</span>
@@ -625,7 +626,7 @@
   </div>
 </div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

@@ -20,14 +20,14 @@
 <meta property="og:description" content="To get up and running quickly, the following widgets can be used to configure commands to run various functions of the benchmark." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_quickstart_component_downstream_2f64576b.png" />
+<meta property="og:image" content="/None" />
 <meta property="og:image:alt" content="To get up and running quickly, the following widgets can be used to configure commands to run various functions of the benchmark." />
 <meta name="description" content="To get up and running quickly, the following widgets can be used to configure commands to run various functions of the benchmark." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Downloading Datasets" href="download.html" /><link rel="prev" title="Pre-Training" href="pretrain.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>Downstream - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>Downstream - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -147,7 +147,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -173,7 +173,7 @@
     <img class="sidebar-logo" src="../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -201,6 +201,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configs/framework_components/debug.html">Debug</a></li>
@@ -225,7 +226,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -365,11 +368,13 @@ or <code class="docutils literal notranslate"><span class="pre">workshop</span> 
     var modelList = [
       ['schnet', "SchNet"],
       ['dimenetpp', 'DimeNet'],
+      ['cdconv', "CDConv"],
       ['egnn', 'EGNN'],
       ['gvp', "GVP"],
       ['gcpnet', 'GCPNet'],
       ['tfn', 'TFN'],
-      ['mace', 'MACE']
+      ['mace', 'MACE'],
+      ['esm', 'ESM']
     ];
 
     var taskList = [
@@ -515,7 +520,7 @@ or <code class="docutils literal notranslate"><span class="pre">workshop</span> 
   </div>
 </div><script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../_static/documentation_options.js?v=cb850272"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>

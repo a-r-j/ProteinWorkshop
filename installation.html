@@ -20,14 +20,14 @@
 <meta property="og:description" content="Below, we outline how one may set up a virtual environment for proteinworkshop. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Win..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="/_images/social_previews/summary_installation_8c464f8a.png" />
+<meta property="og:image" content="/None" />
 <meta property="og:image:alt" content="Below, we outline how one may set up a virtual environment for proteinworkshop. Note that these installation instructions currently target Linux-like systems..." />
 <meta name="description" content="Below, we outline how one may set up a virtual environment for proteinworkshop. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Win..." />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorials" href="tutorials.html" /><link rel="prev" title="Welcome to Protein Workshop’s documentation!" href="index.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>Installation - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>Installation - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -147,7 +147,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -173,7 +173,7 @@
     <img class="sidebar-logo" src="_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -201,6 +201,7 @@
 <li class="toctree-l1"><a class="reference internal" href="configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configs/framework_components/debug.html">Debug</a></li>
@@ -225,7 +226,9 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -269,12 +272,9 @@
 <p>Below, we outline how one may set up a virtual environment for <code class="docutils literal notranslate"><span class="pre">proteinworkshop</span></code>. Note that these installation instructions currently target Linux-like systems with NVIDIA CUDA support. Note that Windows and macOS are currently not officially supported.</p>
 <section id="from-pypi">
 <h2>From PyPI<a class="headerlink" href="#from-pypi" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">proteinworkshop</span></code> is available for install <a class="reference external" href="https://pypi.org/project/proteinworkshop/">from PyPI</a>. This enables training of specific configurations via the CLI <strong>or</strong> using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Make sure to install <a class="reference external" href="https://pytorch.org/">PyTorch</a> (specifically version <code class="docutils literal notranslate"><span class="pre">2.0.0</span></code>) using its official <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation instructions, with CUDA support as desired.</p>
+<p><code class="docutils literal notranslate"><span class="pre">proteinworkshop</span></code> is available for install <a class="reference external" href="https://pypi.org/project/proteinworkshop/">from PyPI</a>. This enables training of specific configurations via the CLI <strong>or</strong> using individual components from the benchmark, such as datasets, featurisers, or transforms, as drop-ins to other projects. Make sure to install <a class="reference external" href="https://pytorch.org/">PyTorch</a> (specifically version <code class="docutils literal notranslate"><span class="pre">2.1.2</span></code> or newer) using its official <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation instructions, with CUDA support as desired.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install `proteinworkshop` from PyPI</span>
-pip<span class="w"> </span>install<span class="w"> </span>proteinworkshop<span class="w"> </span>--no-cache-dir
-
-<span class="c1"># e.g., install PyTorch with CUDA 11.8 support on Linux</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="m">2</span>.0.0+cu118<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.15.1+cu118<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">2</span>.0.1<span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cu118<span class="w"> </span>--no-cache-dir
+pip<span class="w"> </span>install<span class="w"> </span>proteinworkshop
 
 <span class="c1"># install PyTorch Geometric using the (now-installed) CLI</span>
 workshop<span class="w"> </span>install<span class="w"> </span>pyg
@@ -287,7 +287,7 @@ workshop<span class="w"> </span>install<span class="w"> </span>pyg
 </section>
 <section id="building-from-source">
 <h2>Building from source<a class="headerlink" href="#building-from-source" title="Link to this heading">#</a></h2>
-<p>With a local virtual environment activated (e.g., one created with <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">-n</span> <span class="pre">proteinworkshop</span> <span class="pre">python=3.9</span></code>):</p>
+<p>With a local virtual environment activated (e.g., one created with <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">-n</span> <span class="pre">proteinworkshop</span> <span class="pre">python=3.10</span></code>):</p>
 <ol class="arabic">
 <li><p>Clone and install the project</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/a-r-j/ProteinWorkshop
@@ -296,9 +296,9 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </pre></div>
 </div>
 </li>
-<li><p>Install <a class="reference external" href="https://pytorch.org/">PyTorch</a> (specifically version <code class="docutils literal notranslate"><span class="pre">2.0.0</span></code>) using its official <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation instructions, with CUDA support as desired (N.B. make sure to add <code class="docutils literal notranslate"><span class="pre">--no-cache-dir</span></code> to the end of the <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation command)</p>
+<li><p>Install <a class="reference external" href="https://pytorch.org/">PyTorch</a> (specifically version <code class="docutils literal notranslate"><span class="pre">2.1.2</span></code> or newer) using its official <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation instructions, with CUDA support as desired</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># e.g., to install PyTorch with CUDA 11.8 support on Linux:</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="m">2</span>.0.0+cu118<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.15.1+cu118<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">2</span>.0.1<span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cu118<span class="w"> </span>--no-cache-dir
+pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="m">2</span>.1.2+cu118<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.16.2+cu118<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">2</span>.1.2+cu118<span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cu118
 </pre></div>
 </div>
 </li>
@@ -382,7 +382,7 @@ pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="_static/documentation_options.js?v=cb850272"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>

@@ -14,8 +14,8 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>proteinworkshop.features.factory - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>proteinworkshop.features.factory - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo" src="../../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -248,17 +251,16 @@
         </div>
         <article role="main">
           <h1>Source code for proteinworkshop.features.factory</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
+<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span> <span class="k">as</span> <span class="n">typechecker</span>
 <span class="kn">from</span> <span class="nn">graphein.protein.tensor.data</span> <span class="kn">import</span> <span class="n">ProteinBatch</span><span class="p">,</span> <span class="n">get_random_batch</span>
 <span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">jaxtyped</span>
 <span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">torch_geometric.nn.encoding</span> <span class="kn">import</span> <span class="n">PositionalEncoding</span>
-<span class="kn">from</span> <span class="nn">torch_geometric.utils</span> <span class="kn">import</span> <span class="n">unbatch</span>
 
 <span class="kn">from</span> <span class="nn">proteinworkshop.features.edge_features</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">compute_scalar_edge_features</span><span class="p">,</span>
@@ -277,46 +279,46 @@
     <span class="n">VectorNodeFeature</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="n">StructureRepresentation</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;ca&quot;</span><span class="p">,</span> <span class="s2">&quot;ca_bb&quot;</span><span class="p">,</span> <span class="s2">&quot;full_atom&quot;</span><span class="p">]</span>
+
 
 <div class="viewcode-block" id="ProteinFeaturiser">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.factory.ProteinFeaturiser">[docs]</a>
 <span class="k">class</span> <span class="nc">ProteinFeaturiser</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Configurable protein featuriser.</span>
+<span class="sd">    Initialise a protein featuriser.</span>
+
+<span class="sd">    :param representation: Representation to use for the protein.</span>
+<span class="sd">        One of ``&quot;ca&quot;, &quot;ca_bb&quot;, &quot;full_atom&quot;``.</span>
+<span class="sd">    :type representation: StructureRepresentation</span>
+<span class="sd">    :param scalar_node_features: List of scalar-values node features to</span>
+<span class="sd">        compute. Options: ``&quot;amino_acid_one_hot&quot;,</span>
+<span class="sd">        &quot;sequence_positional_encoding&quot;, &quot;alpha&quot;, &quot;kappa&quot;, &quot;dihedrals&quot;</span>
+<span class="sd">        &quot;sidechain_torsions&quot;``.</span>
+<span class="sd">    :type scalar_node_features: List[ScalarNodeFeature]</span>
+<span class="sd">    :param vector_node_features: List of vector-valued node features to</span>
+<span class="sd">        compute. # TODO types</span>
+<span class="sd">    :type vector_node_features: List[VectorNodeFeature]</span>
+<span class="sd">    :param edge_types: List of edge types to compute.</span>
+<span class="sd">        Options: # TODO types</span>
+<span class="sd">    :type edge_types: List[str]</span>
+<span class="sd">    :param scalar_edge_features: List of scalar-valued edge features to</span>
+<span class="sd">        compute. # TODO types</span>
+<span class="sd">    :type scalar_edge_features: List[ScalarEdgeFeature]</span>
+<span class="sd">    :param vector_edge_features: List of vector-valued edge features to</span>
+<span class="sd">        compute. # TODO types</span>
+<span class="sd">    :type vector_edge_features: List[VectorEdgeFeature]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">representation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">representation</span><span class="p">:</span> <span class="n">StructureRepresentation</span><span class="p">,</span>
         <span class="n">scalar_node_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ScalarNodeFeature</span><span class="p">],</span>
         <span class="n">vector_node_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">VectorNodeFeature</span><span class="p">],</span>
         <span class="n">edge_types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">scalar_edge_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ScalarEdgeFeature</span><span class="p">],</span>
         <span class="n">vector_edge_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">VectorEdgeFeature</span><span class="p">],</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a protein featuriser.</span>
-
-<span class="sd">        :param representation: Representation to use for the protein.</span>
-<span class="sd">            One of ``&quot;ca&quot;, &quot;ca_bb&quot;, &quot;full_atom&quot;``. # TODO types</span>
-<span class="sd">        :type representation: str</span>
-<span class="sd">        :param scalar_node_features: List of scalar-values node features to</span>
-<span class="sd">            compute. Options: ``&quot;amino_acid_one_hot&quot;,</span>
-<span class="sd">            &quot;sequence_positional_encoding&quot;, &quot;alpha&quot;, &quot;kappa&quot;, &quot;dihedrals&quot;</span>
-<span class="sd">            &quot;sidechain_torsions&quot;``. # TODO types</span>
-<span class="sd">        :type scalar_node_features: List[ScalarNodeFeature]</span>
-<span class="sd">        :param vector_node_features: List of vector-valued node features to</span>
-<span class="sd">            compute. # TODO types</span>
-<span class="sd">        :type vector_node_features: List[VectorNodeFeature]</span>
-<span class="sd">        :param edge_types: List of edge types to compute.</span>
-<span class="sd">            Options: # TODO types</span>
-<span class="sd">        :type edge_types: List[str]</span>
-<span class="sd">        :param scalar_edge_features: List of scalar-valued edge features to</span>
-<span class="sd">            compute. # TODO types</span>
-<span class="sd">        :type scalar_edge_features: List[ScalarEdgeFeature]</span>
-<span class="sd">        :param vector_edge_features: List of vector-valued edge features to</span>
-<span class="sd">            compute. # TODO types</span>
-<span class="sd">        :type vector_edge_features: List[VectorEdgeFeature]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ProteinFeaturiser</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">representation</span> <span class="o">=</span> <span class="n">representation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scalar_node_features</span> <span class="o">=</span> <span class="n">scalar_node_features</span>
@@ -330,8 +332,7 @@
 
 <div class="viewcode-block" id="ProteinFeaturiser.forward">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.factory.ProteinFeaturiser.forward">[docs]</a>
-    <span class="nd">@jaxtyped</span>
-    <span class="nd">@beartype</span>
+    <span class="nd">@jaxtyped</span><span class="p">(</span><span class="n">typechecker</span><span class="o">=</span><span class="n">typechecker</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">]:</span>
@@ -339,24 +340,17 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalar_node_features</span><span class="p">:</span>
             <span class="n">concat_nf</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;positional_encoding&quot;</span><span class="p">):</span>
-                <span class="n">lin_range</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-                    <span class="mi">0</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">batch</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">device</span>
-                <span class="p">)</span>
-                <span class="n">idx</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">_slice_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]</span>
-                <span class="n">slices</span> <span class="o">=</span> <span class="n">unbatch</span><span class="p">(</span><span class="n">lin_range</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">batch</span><span class="p">)</span>
-                <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">-</span> <span class="n">idx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">slices</span><span class="p">)]</span>
-                <span class="n">slices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">slices</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-                <span class="n">batch</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positional_encoding</span><span class="p">(</span><span class="n">slices</span><span class="p">)</span>
+                <span class="n">batch</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positional_encoding</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">seq_pos</span><span class="p">)</span>
                 <span class="c1"># This is necessary to concat node features with the positional encoding</span>
                 <span class="n">concat_nf</span> <span class="o">=</span> <span class="kc">True</span>
-
-            <span class="n">scalar_features</span> <span class="o">=</span> <span class="n">compute_scalar_node_features</span><span class="p">(</span>
-                <span class="n">batch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalar_node_features</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">concat_nf</span><span class="p">:</span>
-                <span class="n">batch</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">batch</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">scalar_features</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">batch</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">scalar_features</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalar_node_features</span> <span class="o">!=</span> <span class="p">[</span><span class="s2">&quot;sequence_positional_encoding&quot;</span><span class="p">]:</span>
+                <span class="n">scalar_features</span> <span class="o">=</span> <span class="n">compute_scalar_node_features</span><span class="p">(</span>
+                    <span class="n">batch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalar_node_features</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">concat_nf</span><span class="p">:</span>
+                    <span class="n">batch</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">batch</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">scalar_features</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">batch</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">scalar_features</span>
             <span class="n">batch</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span>
                 <span class="n">batch</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">posinf</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">neginf</span><span class="o">=</span><span class="mf">0.0</span>
             <span class="p">)</span>
@@ -404,7 +398,6 @@
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">hydra</span>
     <span class="kn">import</span> <span class="nn">omegaconf</span>
-    <span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
 
     <span class="kn">from</span> <span class="nn">proteinworkshop</span> <span class="kn">import</span> <span class="n">constants</span>
 
@@ -451,7 +444,7 @@
   </div>
 </div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

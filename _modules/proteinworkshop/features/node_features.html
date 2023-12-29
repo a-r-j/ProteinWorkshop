@@ -14,8 +14,8 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>proteinworkshop.features.node_features - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>proteinworkshop.features.node_features - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo" src="../../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -253,7 +256,7 @@
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
+<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span> <span class="k">as</span> <span class="n">typechecker</span>
 <span class="kn">from</span> <span class="nn">graphein.protein.tensor.angles</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">alpha</span><span class="p">,</span>
     <span class="n">dihedrals</span><span class="p">,</span>
@@ -277,8 +280,7 @@
 
 <div class="viewcode-block" id="compute_scalar_node_features">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.node_features.compute_scalar_node_features">[docs]</a>
-<span class="nd">@jaxtyped</span>
-<span class="nd">@beartype</span>
+<span class="nd">@jaxtyped</span><span class="p">(</span><span class="n">typechecker</span><span class="o">=</span><span class="n">typechecker</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">compute_scalar_node_features</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">Data</span><span class="p">,</span> <span class="n">Protein</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">],</span>
     <span class="n">node_features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ListConfig</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">ScalarNodeFeature</span><span class="p">]],</span>
@@ -341,8 +343,7 @@
 
 <div class="viewcode-block" id="compute_vector_node_features">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.node_features.compute_vector_node_features">[docs]</a>
-<span class="nd">@jaxtyped</span>
-<span class="nd">@beartype</span>
+<span class="nd">@jaxtyped</span><span class="p">(</span><span class="n">typechecker</span><span class="o">=</span><span class="n">typechecker</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">compute_vector_node_features</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">Data</span><span class="p">,</span> <span class="n">Protein</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">],</span>
     <span class="n">vector_features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ListConfig</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
@@ -360,7 +361,7 @@
     <span class="n">vector_node_features</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">vector_features</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">feature</span> <span class="o">==</span> <span class="s2">&quot;orientation&quot;</span><span class="p">:</span>
-            <span class="n">vector_node_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">orientations</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">coords</span><span class="p">))</span>
+            <span class="n">vector_node_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">orientations</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">_slice_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]))</span>
         <span class="k">elif</span> <span class="n">feature</span> <span class="o">==</span> <span class="s2">&quot;virtual_cb_vector&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Virtual CB vector not implemented yet.&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -372,8 +373,7 @@
 
 <div class="viewcode-block" id="compute_surface_feat">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.features.html#proteinworkshop.features.node_features.compute_surface_feat">[docs]</a>
-<span class="nd">@jaxtyped</span>
-<span class="nd">@beartype</span>
+<span class="nd">@jaxtyped</span><span class="p">(</span><span class="n">typechecker</span><span class="o">=</span><span class="n">typechecker</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">compute_surface_feat</span><span class="p">(</span>
     <span class="n">coords</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CoordTensor</span><span class="p">,</span> <span class="n">AtomTensor</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
 <span class="p">):</span>
@@ -409,18 +409,51 @@
 
 
 
-<span class="nd">@jaxtyped</span>
-<span class="nd">@beartype</span>
+<span class="nd">@jaxtyped</span><span class="p">(</span><span class="n">typechecker</span><span class="o">=</span><span class="n">typechecker</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">orientations</span><span class="p">(</span>
-    <span class="n">X</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CoordTensor</span><span class="p">,</span> <span class="n">AtomTensor</span><span class="p">],</span> <span class="n">ca_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">X</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CoordTensor</span><span class="p">,</span> <span class="n">AtomTensor</span><span class="p">],</span> <span class="n">coords_slice_index</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ca_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrientationTensor</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">ca_idx</span><span class="p">,</span> <span class="p">:]</span>
-    <span class="n">forward</span> <span class="o">=</span> <span class="n">_normalize</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">backward</span> <span class="o">=</span> <span class="n">_normalize</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+    <span class="c1"># NOTE: the first item in the coordinates slice index is always 0,</span>
+    <span class="c1"># and the last item is always the node count of the batch</span>
+    <span class="n">batch_num_nodes</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">slice_index</span> <span class="o">=</span> <span class="n">coords_slice_index</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">last_node_index</span> <span class="o">=</span> <span class="n">slice_index</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">first_node_index</span> <span class="o">=</span> <span class="n">slice_index</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">slice_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">batch_num_nodes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+    <span class="n">last_node_forward_slice_mask</span> <span class="o">=</span> <span class="n">slice_mask</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="n">first_node_backward_slice_mask</span> <span class="o">=</span> <span class="n">slice_mask</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+    <span class="c1"># NOTE: all of the last (first) nodes in a subgraph have their</span>
+    <span class="c1"># forward (backward) vectors set to a padding value (i.e., 0.0)</span>
+    <span class="c1"># to mimic feature construction behavior with single input graphs</span>
+    <span class="n">forward_slice</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">backward_slice</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">last_node_forward_slice_mask</span><span class="p">[</span><span class="n">last_node_index</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">first_node_backward_slice_mask</span><span class="p">[</span><span class="n">first_node_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># NOTE: for the backward slices, our indexing defaults to node index `1`</span>
+    <span class="n">forward_slice</span><span class="p">[</span><span class="n">last_node_forward_slice_mask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># NOTE: this handles all but the last node in the last subgraph</span>
+    <span class="n">backward_slice</span><span class="p">[</span><span class="n">first_node_backward_slice_mask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># NOTE: this handles all but the first node in the first subgraph</span>
+
+    <span class="c1"># NOTE: padding first and last nodes with zero vectors does not impact feature normalization</span>
+    <span class="n">forward</span> <span class="o">=</span> <span class="n">_normalize</span><span class="p">(</span><span class="n">forward_slice</span><span class="p">)</span>
+    <span class="n">backward</span> <span class="o">=</span> <span class="n">_normalize</span><span class="p">(</span><span class="n">backward_slice</span><span class="p">)</span>
     <span class="n">forward</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">forward</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
     <span class="n">backward</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">backward</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">forward</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="n">backward</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">orientations</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">forward</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="n">backward</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># optionally debug/verify the orientations</span>
+    <span class="c1"># last_node_indices = torch.cat((last_node_index, torch.tensor([batch_num_nodes - 1])), dim=0)</span>
+    <span class="c1"># first_node_indices = torch.cat((torch.tensor([0]), first_node_index), dim=0)</span>
+    <span class="c1"># intermediate_node_indices_mask = torch.ones(batch_num_nodes, device=X.device, dtype=torch.bool)</span>
+    <span class="c1"># intermediate_node_indices_mask[last_node_indices] = False</span>
+    <span class="c1"># intermediate_node_indices_mask[first_node_indices] = False</span>
+    <span class="c1"># assert not orientations[last_node_indices][:, 0].any() and orientations[last_node_indices][:, 1].any()</span>
+    <span class="c1"># assert orientations[first_node_indices][:, 0].any() and not orientations[first_node_indices][:, 1].any()</span>
+    <span class="c1"># assert orientations[intermediate_node_indices_mask][:, 0].any() and orientations[intermediate_node_indices_mask][:, 1].any()</span>
+
+    <span class="k">return</span> <span class="n">orientations</span>
 </pre></div>
         </article>
       </div>
@@ -455,7 +488,7 @@
   </div>
 </div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

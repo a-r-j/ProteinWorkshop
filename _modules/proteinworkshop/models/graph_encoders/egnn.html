@@ -14,7 +14,7 @@
         </script>
     <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>proteinworkshop.models.graph_encoders.egnn - Protein Workshop 0.2.4</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -269,9 +272,10 @@
         <span class="n">emb_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
         <span class="n">activation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;relu&quot;</span><span class="p">,</span>
         <span class="n">norm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;layer&quot;</span><span class="p">,</span>
-        <span class="n">aggr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span>
-        <span class="n">pool</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+        <span class="n">aggr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+        <span class="n">pool</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
         <span class="n">residual</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;E(n) Equivariant GNN model</span>
 
@@ -286,13 +290,15 @@
 <span class="sd">        :type activation: str, optional</span>
 <span class="sd">        :param norm: Normalisation layer to use, defaults to ``&quot;layer&quot;``</span>
 <span class="sd">        :type norm: str, optional</span>
-<span class="sd">        :param aggr: Aggregation function to use, defaults to ``&quot;sum&quot;``</span>
+<span class="sd">        :param aggr: Aggregation function to use, defaults to ``&quot;mean&quot;``</span>
 <span class="sd">        :type aggr: str, optional</span>
-<span class="sd">        :param pool: Pooling operation to use, defaults to ``&quot;sum&quot;``</span>
+<span class="sd">        :param pool: Pooling operation to use, defaults to ``&quot;mean&quot;``</span>
 <span class="sd">        :type pool: str, optional</span>
 <span class="sd">        :param residual: Whether to use residual connections, defaults to</span>
 <span class="sd">            ``True``</span>
 <span class="sd">        :type residual: bool, optional</span>
+<span class="sd">        :param dropout: Dropout rate, defaults to ``0.1``</span>
+<span class="sd">        :type dropout: float, optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -302,7 +308,7 @@
         <span class="c1"># Stack of GNN layers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">convs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EGNNLayer</span><span class="p">(</span><span class="n">emb_dim</span><span class="p">,</span> <span class="n">activation</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">aggr</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EGNNLayer</span><span class="p">(</span><span class="n">emb_dim</span><span class="p">,</span> <span class="n">activation</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">aggr</span><span class="p">,</span> <span class="n">dropout</span><span class="p">))</span>
 
         <span class="c1"># Global pooling/readout function</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">get_aggregation</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
@@ -350,8 +356,8 @@
             <span class="c1"># Update node features (n, d) -&gt; (n, d)</span>
             <span class="n">h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">+</span> <span class="n">h_update</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual</span> <span class="k">else</span> <span class="n">h_update</span>
 
-            <span class="c1"># Update node coordinates (no residual) (n, 3) -&gt; (n, 3)</span>
-            <span class="n">pos</span> <span class="o">=</span> <span class="n">pos_update</span>
+            <span class="c1"># Update node coordinates (n, 3) -&gt; (n, 3)</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">pos_update</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual</span> <span class="k">else</span> <span class="n">pos_update</span>
 
         <span class="k">return</span> <span class="n">EncoderOutput</span><span class="p">(</span>
             <span class="p">{</span>

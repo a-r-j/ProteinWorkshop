@@ -14,8 +14,8 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>proteinworkshop.datasets.go - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>proteinworkshop.datasets.go - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo" src="../../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -258,10 +261,10 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">wget</span>
+<span class="kn">from</span> <span class="nn">graphein.protein.tensor.data</span> <span class="kn">import</span> <span class="n">Protein</span>
+<span class="kn">from</span> <span class="nn">graphein.protein.tensor.dataloader</span> <span class="kn">import</span> <span class="n">ProteinDataLoader</span>
 <span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span> <span class="k">as</span> <span class="n">log</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
-<span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
-<span class="kn">from</span> <span class="nn">torch_geometric.loader</span> <span class="kn">import</span> <span class="n">DataLoader</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="kn">from</span> <span class="nn">proteinworkshop.datasets.base</span> <span class="kn">import</span> <span class="n">ProteinDataModule</span><span class="p">,</span> <span class="n">ProteinDataset</span>
@@ -384,7 +387,9 @@
         <span class="k">return</span> <span class="n">labels</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_get_dataset</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;training&quot;</span><span class="p">,</span> <span class="s2">&quot;validation&quot;</span><span class="p">,</span> <span class="s2">&quot;testing&quot;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinDataset</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_dataset</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initialising Graphein dataset...&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ProteinDataset</span><span class="p">(</span>
@@ -394,36 +399,36 @@
             <span class="n">chains</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">chain</span><span class="p">),</span>
             <span class="n">graph_labels</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">label</span><span class="p">)),</span>
             <span class="n">overwrite</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span><span class="p">,</span>
-            <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">labeller</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">compose_transforms</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">labeller</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">]),</span>
             <span class="nb">format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">,</span>
             <span class="n">in_memory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">in_memory</span><span class="p">,</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="GeneOntologyDataset.train_dataset">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.go.GeneOntologyDataset.train_dataset">[docs]</a>
-    <span class="k">def</span> <span class="nf">train_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">train_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinDataset</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_dataset</span><span class="p">(</span><span class="s2">&quot;training&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GeneOntologyDataset.val_dataset">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.go.GeneOntologyDataset.val_dataset">[docs]</a>
-    <span class="k">def</span> <span class="nf">val_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">val_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinDataset</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_dataset</span><span class="p">(</span><span class="s2">&quot;validation&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GeneOntologyDataset.test_dataset">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.go.GeneOntologyDataset.test_dataset">[docs]</a>
-    <span class="k">def</span> <span class="nf">test_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">test_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinDataset</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_dataset</span><span class="p">(</span><span class="s2">&quot;testing&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GeneOntologyDataset.train_dataloader">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.go.GeneOntologyDataset.train_dataloader">[docs]</a>
-    <span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;train_ds&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">train_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_dataset</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">train_ds</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinDataLoader</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ProteinDataLoader</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_dataset</span><span class="p">(),</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
             <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">pin_memory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pin_memory</span><span class="p">,</span>
@@ -433,11 +438,9 @@
 
 <div class="viewcode-block" id="GeneOntologyDataset.val_dataloader">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.go.GeneOntologyDataset.val_dataloader">[docs]</a>
-    <span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;val_ds&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">val_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_dataset</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">val_ds</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinDataLoader</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ProteinDataLoader</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">val_dataset</span><span class="p">(),</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
             <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">pin_memory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pin_memory</span><span class="p">,</span>
@@ -447,11 +450,9 @@
 
 <div class="viewcode-block" id="GeneOntologyDataset.test_dataloader">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.go.GeneOntologyDataset.test_dataloader">[docs]</a>
-    <span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;test_ds&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">test_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_dataset</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">test_ds</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinDataLoader</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ProteinDataLoader</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test_dataset</span><span class="p">(),</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
             <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">pin_memory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pin_memory</span><span class="p">,</span>
@@ -479,12 +480,17 @@
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found dataset at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="GeneOntologyDataset.exclude_pdbs">
+<a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.go.GeneOntologyDataset.exclude_pdbs">[docs]</a>
     <span class="k">def</span> <span class="nf">exclude_pdbs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
+
 
 <div class="viewcode-block" id="GeneOntologyDataset.parse_dataset">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.go.GeneOntologyDataset.parse_dataset">[docs]</a>
-    <span class="k">def</span> <span class="nf">parse_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">parse_dataset</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;training&quot;</span><span class="p">,</span> <span class="s2">&quot;validation&quot;</span><span class="p">,</span> <span class="s2">&quot;testing&quot;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="c1"># sourcery skip: remove-unnecessary-else, swap-if-else-branches, switch</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parses the raw dataset files to Pandas DataFrames.</span>
@@ -539,8 +545,32 @@
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
 
         <span class="c1"># logger.info(f&quot;Found {len(data)} examples in {split} after removing nonstandard proteins&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labeller</span> <span class="o">=</span> <span class="n">GOLabeller</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Shuffle dataset for batches</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="GOLabeller">
+<a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.go.GOLabeller">[docs]</a>
+<span class="k">class</span> <span class="nc">GOLabeller</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This labeller applies the graph labels to each example as a transform.</span>
+
+<span class="sd">    This is required as chains can be used across tasks (e.g. CC, BP or MF) with</span>
+<span class="sd">    different labels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">label_df</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Protein</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Protein</span><span class="p">:</span>
+        <span class="n">pdb</span><span class="p">,</span> <span class="n">chain</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">pdb</span> <span class="o">==</span> <span class="n">pdb</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">chain</span> <span class="o">==</span> <span class="n">chain</span><span class="p">)</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">graph_y</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="k">return</span> <span class="n">data</span></div>
 
 
 
@@ -548,13 +578,12 @@
     <span class="kn">import</span> <span class="nn">pathlib</span>
 
     <span class="kn">import</span> <span class="nn">hydra</span>
-    <span class="kn">import</span> <span class="nn">omegaconf</span>
 
     <span class="kn">from</span> <span class="nn">proteinworkshop</span> <span class="kn">import</span> <span class="n">constants</span>
 
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Imported libs&quot;</span><span class="p">)</span>
     <span class="n">cfg</span> <span class="o">=</span> <span class="n">omegaconf</span><span class="o">.</span><span class="n">OmegaConf</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-        <span class="n">constants</span><span class="o">.</span><span class="n">SRC_PATH</span> <span class="o">/</span> <span class="s2">&quot;config&quot;</span> <span class="o">/</span> <span class="s2">&quot;dataset&quot;</span> <span class="o">/</span> <span class="s2">&quot;go-cc.yaml&quot;</span>
+        <span class="n">constants</span><span class="o">.</span><span class="n">SRC_PATH</span> <span class="o">/</span> <span class="s2">&quot;config&quot;</span> <span class="o">/</span> <span class="s2">&quot;dataset&quot;</span> <span class="o">/</span> <span class="s2">&quot;go-bp.yaml&quot;</span>
     <span class="p">)</span>
     <span class="c1"># cfg = omegaconf.OmegaConf.load(constants.SRC_PATH / &quot;config&quot; / &quot;dataset&quot; / &quot;go-mf.yaml&quot;)</span>
     <span class="c1"># cfg = omegaconf.OmegaConf.load(constants.SRC_PATH / &quot;config&quot; / &quot;dataset&quot; / &quot;go-bp.yaml&quot;)</span>
@@ -566,9 +595,15 @@
 
     <span class="n">ds</span> <span class="o">=</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+    <span class="c1"># labels = ds[&quot;datamodule&quot;].parse_labels()</span>
     <span class="n">ds</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+    <span class="n">dl</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;datamodule&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">train_dataloader</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dl</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
     <span class="n">dl</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;datamodule&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">val_dataloader</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;datamodule&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">val_ds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dl</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+    <span class="n">dl</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;datamodule&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">test_dataloader</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dl</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 </pre></div>
@@ -605,7 +640,7 @@
   </div>
 </div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

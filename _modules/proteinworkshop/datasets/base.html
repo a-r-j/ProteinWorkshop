@@ -14,8 +14,8 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>proteinworkshop.datasets.base - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>proteinworkshop.datasets.base - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo" src="../../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -248,7 +251,8 @@
         </div>
         <article role="main">
           <h1>Source code for proteinworkshop.datasets.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="sd">&quot;&quot;&quot;Base classes for protein structure datamodules and datasets.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
@@ -269,7 +273,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
+<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span> <span class="k">as</span> <span class="n">typechecker</span>
 <span class="kn">from</span> <span class="nn">graphein</span> <span class="kn">import</span> <span class="n">verbose</span>
 <span class="kn">from</span> <span class="nn">graphein.protein.tensor.dataloader</span> <span class="kn">import</span> <span class="n">ProteinDataLoader</span>
 <span class="kn">from</span> <span class="nn">graphein.protein.tensor.io</span> <span class="kn">import</span> <span class="n">protein_to_pyg</span>
@@ -312,6 +316,12 @@
 <div class="viewcode-block" id="ProteinDataModule">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataModule">[docs]</a>
 <span class="k">class</span> <span class="nc">ProteinDataModule</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">LightningDataModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for Protein datamodules.</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        L.LightningDataModule</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">prepare_data_per_node</span> <span class="o">=</span> <span class="p">(</span>
         <span class="kc">True</span>  <span class="c1"># class default for lighting 2.0 compatability</span>
     <span class="p">)</span>
@@ -321,7 +331,7 @@
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Implements downloading of raw data.</span>
+<span class="sd">        Implement downloading of raw data.</span>
 
 <span class="sd">        Typically this will be an index file of structure</span>
 <span class="sd">        identifiers (for datasets derived from the PDB) but</span>
@@ -346,8 +356,7 @@
     <span class="nd">@property</span>
     <span class="nd">@lru_cache</span>
     <span class="k">def</span> <span class="nf">obsolete_pdbs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method returns a mapping of obsolete PDB codes</span>
-<span class="sd">        to their updated replacements.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a mapping of obsolete PDB codes to their updated replacement.</span>
 
 <span class="sd">        :return: Mapping of obsolete PDB codes to their updated replacements.</span>
 <span class="sd">        :rtype: Dict[str, str]</span>
@@ -356,9 +365,9 @@
 
 <div class="viewcode-block" id="ProteinDataModule.compose_transforms">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataModule.compose_transforms">[docs]</a>
-    <span class="nd">@beartype</span>
+    <span class="nd">@typechecker</span>
     <span class="k">def</span> <span class="nf">compose_transforms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transforms</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Callable</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="o">.</span><span class="n">Compose</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Composes an iterable of Transforms into a single transform.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compose an iterable of Transforms into a single transform.</span>
 
 <span class="sd">        :param transforms: An iterable of transforms.</span>
 <span class="sd">        :type transforms: Iterable[Callable]</span>
@@ -379,7 +388,7 @@
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">parse_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This methods implements the parsing of the raw dataset to a dataframe.</span>
+<span class="sd">        Implement the parsing of the raw dataset to a dataframe.</span>
 
 <span class="sd">        Override this method to implement custom parsing of raw data.</span>
 
@@ -407,16 +416,20 @@
         <span class="o">...</span></div>
 
 
+<div class="viewcode-block" id="ProteinDataModule.exclude_pdbs">
+<a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataModule.exclude_pdbs">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">exclude_pdbs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="o">...</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of PDBs/IDs to exclude from the dataset.&quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
 
 <div class="viewcode-block" id="ProteinDataModule.train_dataset">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataModule.train_dataset">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">train_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Implements the construction of the training dataset.</span>
+<span class="sd">        Implement the construction of the training dataset.</span>
 
 <span class="sd">        :return: The training dataset.</span>
 <span class="sd">        :rtype: Dataset</span>
@@ -429,7 +442,7 @@
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">val_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Implements the construction of the validation dataset.</span>
+<span class="sd">        Implement the construction of the validation dataset.</span>
 
 <span class="sd">        :return: The validation dataset.</span>
 <span class="sd">        :rtype: Dataset</span>
@@ -442,7 +455,7 @@
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">test_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Implements the construction of the test dataset.</span>
+<span class="sd">        Implement the construction of the test dataset.</span>
 
 <span class="sd">        :return: The test dataset.</span>
 <span class="sd">        :rtype: Dataset</span>
@@ -455,7 +468,7 @@
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinDataLoader</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Implements the construction of the training dataloader.</span>
+<span class="sd">        Implement the construction of the training dataloader.</span>
 
 <span class="sd">        :return: The training dataloader.</span>
 <span class="sd">        :rtype: ProteinDataLoader</span>
@@ -467,7 +480,7 @@
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataModule.val_dataloader">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinDataLoader</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implements the construction of the validation dataloader.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement the construction of the validation dataloader.</span>
 
 <span class="sd">        :return: The validation dataloader.</span>
 <span class="sd">        :rtype: ProteinDataLoader</span>
@@ -479,7 +492,7 @@
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataModule.test_dataloader">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProteinDataLoader</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implements the construction of the test dataloader.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement the construction of the test dataloader.</span>
 
 <span class="sd">        :return: The test dataloader.</span>
 <span class="sd">        :rtype: ProteinDataLoader</span>
@@ -487,7 +500,10 @@
         <span class="o">...</span></div>
 
 
+<div class="viewcode-block" id="ProteinDataModule.get_class_weights">
+<a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataModule.get_class_weights">[docs]</a>
     <span class="k">def</span> <span class="nf">get_class_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return tensor of class weights.&quot;&quot;&quot;</span>
         <span class="n">labels</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_labels</span><span class="p">()</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
@@ -495,12 +511,67 @@
             <span class="n">class_weight</span><span class="o">=</span><span class="s2">&quot;balanced&quot;</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="n">labels</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span></div>
+</div>
 
 
 
 <div class="viewcode-block" id="ProteinDataset">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataset">[docs]</a>
 <span class="k">class</span> <span class="nc">ProteinDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataset for loading protein structures.</span>
+
+<span class="sd">    :param pdb_codes: List of PDB codes to load. This can also be a list</span>
+<span class="sd">        of identifiers to specific to your filenames if you have</span>
+<span class="sd">        pre-downloaded structures.</span>
+<span class="sd">    :type pdb_codes: List[str]</span>
+<span class="sd">    :param root: Path to root directory, defaults to ``None``.</span>
+<span class="sd">    :type root: Optional[str], optional</span>
+<span class="sd">    :param pdb_dir: Path to directory containing raw PDB files,</span>
+<span class="sd">        defaults to ``None``.</span>
+<span class="sd">    :type pdb_dir: Optional[str], optional</span>
+<span class="sd">    :param processed_dir: Directory to store processed data, defaults to</span>
+<span class="sd">        ``None``.</span>
+<span class="sd">    :type processed_dir: Optional[str], optional</span>
+<span class="sd">    :param pdb_paths: If specified, the dataset will load structures from</span>
+<span class="sd">        these paths instead of downloading them from the RCSB PDB or using</span>
+<span class="sd">        the identifies in ``pdb_codes``. This is useful if you have already</span>
+<span class="sd">        downloaded structures and want to use them. defaults to ``None``</span>
+<span class="sd">    :type pdb_paths: Optional[List[str]], optional</span>
+<span class="sd">    :param chains: List of chains to load for each PDB code,</span>
+<span class="sd">        defaults to ``None``.</span>
+<span class="sd">    :type chains: Optional[List[str]], optional</span>
+<span class="sd">    :param graph_labels: List of tensors to set as graph labels for each</span>
+<span class="sd">        examples. If not specified, no graph labels will be set.</span>
+<span class="sd">        defaults to ``None``.</span>
+<span class="sd">    :type graph_labels: Optional[List[torch.Tensor]], optional</span>
+<span class="sd">    :param node_labels: List of tensors to set as node labels for each</span>
+<span class="sd">        examples. If not specified, no node labels will be set.</span>
+<span class="sd">        defaults to ``None``.</span>
+<span class="sd">    :type node_labels: Optional[List[torch.Tensor]], optional</span>
+<span class="sd">    :param transform: List of transforms to apply to each example,</span>
+<span class="sd">        defaults to ``None``.</span>
+<span class="sd">    :type transform: Optional[List[Callable]], optional</span>
+<span class="sd">    :param pre_transform: Transform to apply to each example before</span>
+<span class="sd">        processing, defaults to ``None``.</span>
+<span class="sd">    :type pre_transform: Optional[Callable], optional</span>
+<span class="sd">    :param pre_filter: Filter to apply to each example before processing,</span>
+<span class="sd">        defaults to ``None``.</span>
+<span class="sd">    :type pre_filter: Optional[Callable], optional</span>
+<span class="sd">    :param log: Whether to log. If ``True``, logs will be printed to</span>
+<span class="sd">        stdout, defaults to ``True``.</span>
+<span class="sd">    :type log: bool, optional</span>
+<span class="sd">    :param overwrite: Whether to overwrite existing files, defaults to</span>
+<span class="sd">        ``False``.</span>
+<span class="sd">    :type overwrite: bool, optional</span>
+<span class="sd">    :param format: Format to save structures in, defaults to &quot;pdb&quot;.</span>
+<span class="sd">    :type format: Literal[mmtf, pdb, ent], optional</span>
+<span class="sd">    :param in_memory: Whether to load data into memory, defaults to False.</span>
+<span class="sd">    :type in_memory: bool, optional</span>
+<span class="sd">    :param store_het: Whether to store heteroatoms in the graph,</span>
+<span class="sd">        defaults to ``False``.</span>
+<span class="sd">    :type store_het: bool, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">pdb_codes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -516,64 +587,11 @@
         <span class="n">pre_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="nb">format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;mmtf&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pdb&quot;</span><span class="p">,</span>
+        <span class="nb">format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;mmtf&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb&quot;</span><span class="p">,</span> <span class="s2">&quot;ent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pdb&quot;</span><span class="p">,</span>
         <span class="n">in_memory</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">store_het</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">out_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dataset for loading protein structures.</span>
-
-<span class="sd">        :param pdb_codes: List of PDB codes to load. This can also be a list</span>
-<span class="sd">            of identifiers to specific to your filenames if you have</span>
-<span class="sd">            pre-downloaded structures.</span>
-<span class="sd">        :type pdb_codes: List[str]</span>
-<span class="sd">        :param root: Path to root directory, defaults to ``None``.</span>
-<span class="sd">        :type root: Optional[str], optional</span>
-<span class="sd">        :param pdb_dir: Path to directory containing raw PDB files,</span>
-<span class="sd">            defaults to ``None``.</span>
-<span class="sd">        :type pdb_dir: Optional[str], optional</span>
-<span class="sd">        :param processed_dir: Directory to store processed data, defaults to</span>
-<span class="sd">            ``None``.</span>
-<span class="sd">        :type processed_dir: Optional[str], optional</span>
-<span class="sd">        :param pdb_paths: If specified, the dataset will load structures from</span>
-<span class="sd">            these paths instead of downloading them from the RCSB PDB or using</span>
-<span class="sd">            the identifies in ``pdb_codes``. This is useful if you have already</span>
-<span class="sd">            downloaded structures and want to use them. defaults to ``None``</span>
-<span class="sd">        :type pdb_paths: Optional[List[str]], optional</span>
-<span class="sd">        :param chains: List of chains to load for each PDB code,</span>
-<span class="sd">            defaults to ``None``.</span>
-<span class="sd">        :type chains: Optional[List[str]], optional</span>
-<span class="sd">        :param graph_labels: List of tensors to set as graph labels for each</span>
-<span class="sd">            examples. If not specified, no graph labels will be set.</span>
-<span class="sd">            defaults to ``None``.</span>
-<span class="sd">        :type graph_labels: Optional[List[torch.Tensor]], optional</span>
-<span class="sd">        :param node_labels: List of tensors to set as node labels for each</span>
-<span class="sd">            examples. If not specified, no node labels will be set.</span>
-<span class="sd">            defaults to ``None``.</span>
-<span class="sd">        :type node_labels: Optional[List[torch.Tensor]], optional</span>
-<span class="sd">        :param transform: List of transforms to apply to each example,</span>
-<span class="sd">            defaults to ``None``.</span>
-<span class="sd">        :type transform: Optional[List[Callable]], optional</span>
-<span class="sd">        :param pre_transform: Transform to apply to each example before</span>
-<span class="sd">            processing, defaults to ``None``.</span>
-<span class="sd">        :type pre_transform: Optional[Callable], optional</span>
-<span class="sd">        :param pre_filter: Filter to apply to each example before processing,</span>
-<span class="sd">            defaults to ``None``.</span>
-<span class="sd">        :type pre_filter: Optional[Callable], optional</span>
-<span class="sd">        :param log: Whether to log. If ``True``, logs will be printed to</span>
-<span class="sd">            stdout, defaults to ``True``.</span>
-<span class="sd">        :type log: bool, optional</span>
-<span class="sd">        :param overwrite: Whether to overwrite existing files, defaults to</span>
-<span class="sd">            ``False``.</span>
-<span class="sd">        :type overwrite: bool, optional</span>
-<span class="sd">        :param format: Format to save structures in, defaults to &quot;pdb&quot;.</span>
-<span class="sd">        :type format: Literal[mmtf, pdb, optional</span>
-<span class="sd">        :param in_memory: Whether to load data into memory, defaults to False.</span>
-<span class="sd">        :type in_memory: bool, optional</span>
-<span class="sd">        :param store_het: Whether to store heteroatoms in the graph,</span>
-<span class="sd">            defaults to ``False``.</span>
-<span class="sd">        :type store_het: bool, optional</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pdb_codes</span> <span class="o">=</span> <span class="p">[</span><span class="n">pdb</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">pdb</span> <span class="ow">in</span> <span class="n">pdb_codes</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pdb_dir</span> <span class="o">=</span> <span class="n">pdb_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pdb_paths</span> <span class="o">=</span> <span class="n">pdb_paths</span>
@@ -587,13 +605,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">store_het</span> <span class="o">=</span> <span class="n">store_het</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">out_names</span> <span class="o">=</span> <span class="n">out_names</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_processed_files</span> <span class="o">=</span> <span class="p">[]</span>
+
         <span class="c1"># Determine whether to download raw structures</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;processed&quot;</span> <span class="o">/</span> <span class="n">p</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">processed_file_names</span>
         <span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;All structures already processed and overwrite=False. Skipping download.&quot;</span>
+                <span class="s2">&quot;All structures already processed and overwrite=False. Skipping download.&quot;</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_skip_download</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
@@ -612,8 +632,7 @@
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataset.download">[docs]</a>
     <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Downloads structure files not already present in the raw directory</span>
-<span class="sd">        (``raw_dir``).</span>
+<span class="sd">        Download structure files not present in the raw directory (``raw_dir``).</span>
 
 <span class="sd">        Structures are downloaded from the RCSB PDB using the Graphein</span>
 <span class="sd">        multiprocessed downloader.</span>
@@ -624,6 +643,11 @@
 
 <span class="sd">        Downloaded files are stored in ``self.raw_dir``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;ent&quot;</span><span class="p">:</span>  <span class="c1"># Skip downloads from ASTRAL</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Downloads in .ent format are assumed to be from ASTRAL. These data should have already been downloaded&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_skip_download</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                 <span class="s2">&quot;All structures already processed and overwrite=False. Skipping download.&quot;</span>
@@ -661,6 +685,7 @@
 <div class="viewcode-block" id="ProteinDataset.len">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataset.len">[docs]</a>
     <span class="k">def</span> <span class="nf">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return length of the dataset.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdb_codes</span><span class="p">)</span></div>
 
 
@@ -697,6 +722,10 @@
 <span class="sd">        :return: List of processed file names.</span>
 <span class="sd">        :rtype: Union[str, List[str], Tuple]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_processed_files</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_processed_files</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;this_forces_a_processing_cycle&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.pt&quot;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_names</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chains</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -710,14 +739,13 @@
 <div class="viewcode-block" id="ProteinDataset.process">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataset.process">[docs]</a>
     <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processes the raw data into PyTorch Geometric Data objects using</span>
-<span class="sd">        Graphein.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process raw data into PyTorch Geometric Data objects with Graphein.</span>
 
 <span class="sd">        Processed data are stored in ``self.processed_dir`` as ``.pt`` files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chains</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">pdb_codes</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">index_pdb_tuples</span> <span class="o">=</span> <span class="p">[</span>
                     <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pdb</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pdb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdb_codes</span><span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
@@ -725,20 +753,28 @@
                     <span class="p">)</span>
                 <span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">pdb_codes</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">index_pdb_tuples</span> <span class="o">=</span> <span class="p">[</span>
                     <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pdb</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pdb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdb_codes</span><span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
                         <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">processed_dir</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pdb</span><span class="si">}</span><span class="s2">.pt&quot;</span>
                     <span class="p">)</span>
                 <span class="p">]</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pdb_codes</span><span class="p">)</span><span class="si">}</span><span class="s2"> unprocessed structures&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Processing </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">index_pdb_tuples</span><span class="p">)</span><span class="si">}</span><span class="s2"> unprocessed structures&quot;</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">pdb_codes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdb_codes</span>
+            <span class="n">index_pdb_tuples</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pdb</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pdb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdb_codes</span><span class="p">)</span>
+            <span class="p">]</span>
 
         <span class="n">raw_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_dir</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pdb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tqdm</span><span class="p">(</span><span class="n">pdb_codes</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">index_pdb_tuple</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">index_pdb_tuples</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="p">(</span>
+                    <span class="n">i</span><span class="p">,</span>
+                    <span class="n">pdb</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">=</span> <span class="n">index_pdb_tuple</span>  <span class="c1"># NOTE: here, we unpack the tuple to get each PDB&#39;s original index in `self.pdb_codes`</span>
                 <span class="n">path</span> <span class="o">=</span> <span class="n">raw_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pdb</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
                     <span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -757,9 +793,7 @@
                     <span class="n">store_het</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">store_het</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Error processing </span><span class="si">{</span><span class="n">pdb</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chains</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>  <span class="c1"># type: ignore</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error processing </span><span class="si">{</span><span class="n">pdb</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chains</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
                 <span class="k">raise</span> <span class="n">e</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -780,6 +814,7 @@
                 <span class="n">graph</span><span class="o">.</span><span class="n">node_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
 
             <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">processed_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">fname</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_processed_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Completed processing.&quot;</span><span class="p">)</span></div>
 
 
@@ -787,7 +822,7 @@
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.base.ProteinDataset.get">[docs]</a>
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Data</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns PyTorch Geometric Data object for a given index.</span>
+<span class="sd">        Return PyTorch Geometric Data object for a given index.</span>
 
 <span class="sd">        :param idx: Index to retrieve.</span>
 <span class="sd">        :type idx: int</span>
@@ -810,6 +845,9 @@
         <span class="c1"># Set this to ensure proper batching behaviour</span>
         <span class="n">x</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
         <span class="n">x</span><span class="o">.</span><span class="n">amino_acid_one_hot</span> <span class="o">=</span> <span class="n">amino_acid_one_hot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">seq_pos</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span>
+            <span class="o">-</span><span class="mi">1</span>
+        <span class="p">)</span>  <span class="c1"># Add sequence position</span>
         <span class="k">return</span> <span class="n">x</span></div>
 
 </pre></div>
@@ -846,7 +884,7 @@
   </div>
 </div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

@@ -14,8 +14,8 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>proteinworkshop.datasets.cath - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>proteinworkshop.datasets.cath - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo" src="../../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -266,6 +269,31 @@
 <div class="viewcode-block" id="CATHDataModule">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.datasets.html#proteinworkshop.datasets.cath.CATHDataModule">[docs]</a>
 <span class="k">class</span> <span class="nc">CATHDataModule</span><span class="p">(</span><span class="n">ProteinDataModule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data module for CATH dataset.</span>
+
+<span class="sd">    :param path: Path to store data.</span>
+<span class="sd">    :type path: str</span>
+<span class="sd">    :param batch_size: Batch size for dataloaders.</span>
+<span class="sd">    :type batch_size: int</span>
+<span class="sd">    :param format: Format to load PDB files in.</span>
+<span class="sd">    :type format: Literal[&quot;mmtf&quot;, &quot;pdb&quot;]</span>
+<span class="sd">    :param pdb_dir: Path to directory containing PDB files.</span>
+<span class="sd">    :type pdb_dir: str</span>
+<span class="sd">    :param pin_memory: Whether to pin memory for dataloaders.</span>
+<span class="sd">    :type pin_memory: bool</span>
+<span class="sd">    :param in_memory: Whether to load the entire dataset into memory.</span>
+<span class="sd">    :type in_memory: bool</span>
+<span class="sd">    :param num_workers: Number of workers for dataloaders.</span>
+<span class="sd">    :type num_workers: int</span>
+<span class="sd">    :param dataset_fraction: Fraction of dataset to use.</span>
+<span class="sd">    :type dataset_fraction: float</span>
+<span class="sd">    :param transforms: List of transforms to apply to dataset.</span>
+<span class="sd">    :type transforms: Optional[List[Callable]]</span>
+<span class="sd">    :param overwrite: Whether to overwrite existing data.</span>
+<span class="sd">        Defaults to ``False``.</span>
+<span class="sd">    :type overwrite: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -279,30 +307,6 @@
         <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Data module for CATH dataset.</span>
-
-<span class="sd">        :param path: Path to store data.</span>
-<span class="sd">        :type path: str</span>
-<span class="sd">        :param batch_size: Batch size for dataloaders.</span>
-<span class="sd">        :type batch_size: int</span>
-<span class="sd">        :param format: Format to load PDB files in.</span>
-<span class="sd">        :type format: Literal[&quot;mmtf&quot;, &quot;pdb&quot;]</span>
-<span class="sd">        :param pdb_dir: Path to directory containing PDB files.</span>
-<span class="sd">        :type pdb_dir: str</span>
-<span class="sd">        :param pin_memory: Whether to pin memory for dataloaders.</span>
-<span class="sd">        :type pin_memory: bool</span>
-<span class="sd">        :param in_memory: Whether to load the entire dataset into memory.</span>
-<span class="sd">        :type in_memory: bool</span>
-<span class="sd">        :param num_workers: Number of workers for dataloaders.</span>
-<span class="sd">        :type num_workers: int</span>
-<span class="sd">        :param dataset_fraction: Fraction of dataset to use.</span>
-<span class="sd">        :type dataset_fraction: float</span>
-<span class="sd">        :param transforms: List of transforms to apply to dataset.</span>
-<span class="sd">        :type transforms: Optional[List[Callable]]</span>
-<span class="sd">        :param overwrite: Whether to overwrite existing data.</span>
-<span class="sd">            Defaults to ``False``.</span>
-<span class="sd">        :type overwrite: bool</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -553,7 +557,6 @@
     <span class="kn">import</span> <span class="nn">pathlib</span>
 
     <span class="kn">import</span> <span class="nn">hydra</span>
-    <span class="kn">import</span> <span class="nn">omegaconf</span>
 
     <span class="kn">from</span> <span class="nn">proteinworkshop</span> <span class="kn">import</span> <span class="n">constants</span>
 
@@ -600,7 +603,7 @@
   </div>
 </div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

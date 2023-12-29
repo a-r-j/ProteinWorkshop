@@ -14,8 +14,8 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>proteinworkshop.models.base - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>proteinworkshop.models.base - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo" src="../../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -256,7 +259,7 @@
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
+<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span> <span class="k">as</span> <span class="n">typechecker</span>
 <span class="kn">from</span> <span class="nn">graphein.protein.tensor.angles</span> <span class="kn">import</span> <span class="n">dihedrals</span>
 <span class="kn">from</span> <span class="nn">graphein.protein.tensor.data</span> <span class="kn">import</span> <span class="n">ProteinBatch</span><span class="p">,</span> <span class="n">get_random_protein</span>
 <span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
@@ -390,8 +393,11 @@
                     <span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
             <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;graph_label&quot;</span><span class="p">:</span>
                 <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;graph_label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">graph_y</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">losses</span><span class="p">[</span><span class="s2">&quot;graph_label&quot;</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BCEWithLogitsLoss</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="nb">isinstance</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">losses</span><span class="p">[</span><span class="s2">&quot;graph_label&quot;</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BCEWithLogitsLoss</span>
+                    <span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">batch</span><span class="o">.</span><span class="n">graph_y</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
                 <span class="p">):</span>
                     <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;graph_label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">one_hot</span><span class="p">(</span>
                         <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;graph_label&quot;</span><span class="p">],</span>
@@ -444,7 +450,7 @@
 
 <div class="viewcode-block" id="BaseModel.compute_loss">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.models.html#proteinworkshop.models.base.BaseModel.compute_loss">[docs]</a>
-    <span class="nd">@beartype</span>
+    <span class="nd">@typechecker</span>
     <span class="k">def</span> <span class="nf">compute_loss</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">:</span> <span class="n">ModelOutput</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Label</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
@@ -588,6 +594,7 @@
             <span class="s2">&quot;auprc&quot;</span><span class="p">,</span>
             <span class="s2">&quot;accuracy&quot;</span><span class="p">,</span>
             <span class="s2">&quot;f1_max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rocauc&quot;</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">REGRESSION_METRICS</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mse&quot;</span><span class="p">,</span> <span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="s2">&quot;r2&quot;</span><span class="p">,</span> <span class="s2">&quot;rmse&quot;</span><span class="p">}</span>
         <span class="n">CONTINUOUS_OUTPUTS</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
@@ -605,6 +612,8 @@
                 <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">}:</span>
                     <span class="n">metric</span> <span class="o">=</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">metric_conf</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;residue_type&quot;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">metric_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="s2">&quot;perplexity&quot;</span><span class="p">}:</span>
+                            <span class="k">continue</span>
                         <span class="n">metric</span><span class="o">.</span><span class="n">num_classes</span> <span class="o">=</span> <span class="mi">23</span>
                         <span class="n">metric</span><span class="o">.</span><span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;multiclass&quot;</span>
 
@@ -632,7 +641,7 @@
 
 <div class="viewcode-block" id="BaseModel.log_metrics">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.models.html#proteinworkshop.models.base.BaseModel.log_metrics">[docs]</a>
-    <span class="nd">@beartype</span>
+    <span class="nd">@typechecker</span>
     <span class="k">def</span> <span class="nf">log_metrics</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">:</span> <span class="n">ModelOutput</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Label</span><span class="p">,</span> <span class="n">stage</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span>
     <span class="p">):</span>
@@ -652,9 +661,8 @@
 <span class="sd">        :param batch: Batch of data</span>
 <span class="sd">        :type batch: Batch</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Log loss</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">loss</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">/loss/</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">prog_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Log losses</span>
+        <span class="n">log_dict</span> <span class="o">=</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">/loss/</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">loss</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
         <span class="c1"># Log metrics</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_names</span><span class="p">:</span>
@@ -675,14 +683,11 @@
                             <span class="n">val</span> <span class="o">=</span> <span class="n">metric</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
                         <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                             <span class="n">val</span> <span class="o">=</span> <span class="n">metric</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="n">val</span><span class="p">,</span>
-                            <span class="n">prog_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                            <span class="n">logger</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                        <span class="p">)</span>
+                        <span class="n">log_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
                     <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">):</span>
-                        <span class="k">continue</span></div>
+                        <span class="k">continue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_dict</span><span class="p">(</span><span class="n">log_dict</span><span class="p">,</span> <span class="n">prog_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 </div>
 
 
@@ -747,12 +752,15 @@
             <span class="p">]</span>
             <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">proteins</span><span class="p">:</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="nb">setattr</span><span class="p">(</span>
+                    <span class="n">p</span><span class="p">,</span> <span class="s2">&quot;seq_pos&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="p">)</span>
             <span class="n">batch</span> <span class="o">=</span> <span class="n">ProteinBatch</span><span class="o">.</span><span class="n">from_data_list</span><span class="p">(</span><span class="n">proteins</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">featurise</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BenchMarkModel.forward">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.models.html#proteinworkshop.models.base.BenchMarkModel.forward">[docs]</a>
-    <span class="nd">@beartype</span>
+    <span class="nd">@typechecker</span>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ModelOutput</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Implements the forward pass of the model.</span>
@@ -796,7 +804,7 @@
 
 <div class="viewcode-block" id="BenchMarkModel.transform_encoder_output">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.models.html#proteinworkshop.models.base.BenchMarkModel.transform_encoder_output">[docs]</a>
-    <span class="nd">@beartype</span>
+    <span class="nd">@typechecker</span>
     <span class="k">def</span> <span class="nf">transform_encoder_output</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">EncoderOutput</span><span class="p">,</span> <span class="n">batch</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EncoderOutput</span><span class="p">:</span>
@@ -828,7 +836,7 @@
 
 <div class="viewcode-block" id="BenchMarkModel.compute_output">
 <a class="viewcode-back" href="../../../modules/proteinworkshop.models.html#proteinworkshop.models.base.BenchMarkModel.compute_output">[docs]</a>
-    <span class="nd">@beartype</span>
+    <span class="nd">@typechecker</span>
     <span class="k">def</span> <span class="nf">compute_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">ModelOutput</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelOutput</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes output from model output.</span>
@@ -861,7 +869,7 @@
         <span class="k">return</span> <span class="n">output</span></div>
 
 
-    <span class="nd">@beartype</span>
+    <span class="nd">@typechecker</span>
     <span class="k">def</span> <span class="nf">_do_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">batch</span><span class="p">:</span> <span class="n">Batch</span><span class="p">,</span>
@@ -1001,7 +1009,7 @@
   </div>
 </div><script src="../../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

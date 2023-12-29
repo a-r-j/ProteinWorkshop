@@ -14,8 +14,8 @@
         </script>
     <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.4 and Furo 2023.08.19 -->
-        <title>proteinworkshop.models.graph_encoders.tfn - Protein Workshop 0.2.4</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>proteinworkshop.models.graph_encoders.tfn - Protein Workshop 0.2.5</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -135,7 +135,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Protein Workshop 0.2.4</div></a>
+      <a href="../../../../index.html"><div class="brand">Protein Workshop 0.2.5</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -161,7 +161,7 @@
     <img class="sidebar-logo" src="../../../../_static/workshop_icon.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">Protein Workshop 0.2.4</span>
+  <span class="sidebar-brand-text">Protein Workshop 0.2.5</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../configs/task.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../configs/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../configs/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configs/metrics.html">Metrics</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../framework.html">Framework Components</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Framework Components</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../configs/framework_components/callbacks.html">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../configs/framework_components/debug.html">Debug</a></li>
@@ -213,7 +214,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.tasks.html">protein_workshop.tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.features.html">protein_workshop.features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.utils.html">protein_workshop.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.constants.html">protein_workshop.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.types.html">protein_workshop.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules/proteinworkshop.metrics.html">protein_workshop.metrics</a></li>
 </ul>
 
 </div>
@@ -248,18 +251,20 @@
         </div>
         <article role="main">
           <h1>Source code for proteinworkshop.models.graph_encoders.tfn</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">e3nn</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span>
+<span class="kn">from</span> <span class="nn">beartype</span> <span class="kn">import</span> <span class="n">beartype</span> <span class="k">as</span> <span class="n">typechecker</span>
 <span class="kn">from</span> <span class="nn">graphein.protein.tensor.data</span> <span class="kn">import</span> <span class="n">ProteinBatch</span>
 <span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">jaxtyped</span>
 <span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.utils</span> <span class="kn">import</span> <span class="n">to_undirected</span>
 
 <span class="kn">import</span> <span class="nn">proteinworkshop.models.graph_encoders.layers.tfn</span> <span class="k">as</span> <span class="nn">tfn</span>
-<span class="kn">from</span> <span class="nn">proteinworkshop.models.graph_encoders.components</span> <span class="kn">import</span> <span class="n">blocks</span>
+<span class="kn">from</span> <span class="nn">proteinworkshop.models.graph_encoders.components</span> <span class="kn">import</span> <span class="n">radial</span>
 <span class="kn">from</span> <span class="nn">proteinworkshop.models.utils</span> <span class="kn">import</span> <span class="n">get_aggregation</span>
 <span class="kn">from</span> <span class="nn">proteinworkshop.types</span> <span class="kn">import</span> <span class="n">EncoderOutput</span>
 
@@ -270,46 +275,44 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">r_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span>
-        <span class="n">num_bessel</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-        <span class="n">num_polynomial_cutoff</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">num_basis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
         <span class="n">max_ell</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
         <span class="n">num_layers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
-        <span class="n">emb_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="n">hidden_irreps</span> <span class="o">=</span> <span class="s2">&quot;32x0e + 32x0o + 8x1e + 8x1o + 4x2e + 4x2o&quot;</span><span class="p">,</span>
         <span class="n">mlp_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
-        <span class="n">aggr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+        <span class="n">aggr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
         <span class="n">pool</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span>
         <span class="n">residual</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">batch_norm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">gate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">hidden_irreps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;e3nn-based Tensor Product Convolution Network (Tensor Field Network)</span>
 
 <span class="sd">        Initialise an instance of the TensorProductModel class with the provided</span>
 <span class="sd">        parameters.</span>
 
-<span class="sd">        :param r_max: Maximum distance for Bessel basis functions</span>
+<span class="sd">        :param r_max: Maximum distance for radial basis functions</span>
 <span class="sd">            (default: ``10.0``)</span>
 <span class="sd">        :type r_max: float, optional</span>
-<span class="sd">        :param num_bessel: Number of Bessel basis functions (default: ``8``)</span>
-<span class="sd">        :type num_bessel: int, optional</span>
-<span class="sd">        :param num_polynomial_cutoff: Number of polynomial cutoff basis</span>
-<span class="sd">            functions (default: ``5``)</span>
-<span class="sd">        :type num_polynomial_cutoff: int, optional</span>
+<span class="sd">        :param num_basis: Number of radial basis functions (default: ``16``)</span>
+<span class="sd">        :type num_basis: int, optional</span>
 <span class="sd">        :param max_ell: Maximum degree/order of spherical harmonics basis</span>
 <span class="sd">            functions and node feature tensors (default: ``2``)</span>
 <span class="sd">        :type max_ell: int, optional</span>
-<span class="sd">        :param num_layers: Number of layers in the model (default: ``5``)</span>
+<span class="sd">        :param num_layers: Number of layers in the model (default: ``4``)</span>
 <span class="sd">        :type num_layers: int, optional</span>
-<span class="sd">        :param emb_dim: Number of hidden channels/embedding dimension for each</span>
-<span class="sd">            node feature tensor order (default: ``64``)</span>
-<span class="sd">        :type emb_dim: int, optional</span>
+<span class="sd">        :param hidden_irreps: Irreps string for intermediate layer node </span>
+<span class="sd">            feature tensors; converted to e3nn.o3.Irreps format </span>
+<span class="sd">            (default: SO(3) equivariance: ``32x0e + 32x0o + 8x1e + 8x1o + 4x2e + 4x2o``</span>
+<span class="sd">            alternative: O(3) equivariance: ``64x0e + 16x1o + 8x2e``)</span>
+<span class="sd">        :type hidden_irreps: str, optional</span>
 <span class="sd">        :param mlp_dim: Dimension of MLP for computing tensor product</span>
 <span class="sd">            weights (default: ``256``)</span>
 <span class="sd">        :type: int, optional</span>
-<span class="sd">        :param aggr: Aggregation function to use, defaults to ``&quot;sum&quot;``</span>
+<span class="sd">        :param aggr: Aggregation function to use, defaults to ``&quot;mean&quot;``</span>
 <span class="sd">        :type aggr: str, optional</span>
-<span class="sd">        :param pool: Pooling operation to use, defaults to ``&quot;sum&quot;``</span>
+<span class="sd">        :param pool: Pooling operation to use, defaults to ``&quot;mean&quot;``</span>
 <span class="sd">        :type pool: str, optional</span>
 <span class="sd">        :param residual: Whether to use residual connections, defaults to</span>
 <span class="sd">            ``True``</span>
@@ -319,84 +322,74 @@
 <span class="sd">        :type batch_norm: bool, optional</span>
 <span class="sd">        :param gate: Whether to use gated non-linearity, defaults to ``False``</span>
 <span class="sd">        :type gate: bool, optional</span>
-<span class="sd">        :param hidden_irreps: Irreps for intermediate layer node feature tensors</span>
-<span class="sd">            (default: ``None``)</span>
-<span class="sd">        :type hidden_irreps: e3nn.o3.Irreps, optional</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">            If ``hidden_irreps`` is None, irreps for node feature tensors are</span>
-<span class="sd">            computed using ``max_ell`` order of spherical harmonics and ``emb_dim``.</span>
+<span class="sd">        :param dropout: Dropout rate, defaults to ``0.1``</span>
+<span class="sd">        :type dropout: float, optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">r_max</span> <span class="o">=</span> <span class="n">r_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_ell</span> <span class="o">=</span> <span class="n">max_ell</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span> <span class="o">=</span> <span class="n">num_layers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span> <span class="o">=</span> <span class="n">emb_dim</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mlp_dim</span> <span class="o">=</span> <span class="n">mlp_dim</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">residual</span> <span class="o">=</span> <span class="n">residual</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm</span> <span class="o">=</span> <span class="n">batch_norm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gate</span> <span class="o">=</span> <span class="n">gate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_irreps</span> <span class="o">=</span> <span class="n">hidden_irreps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_irreps</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">o3</span><span class="o">.</span><span class="n">Irreps</span><span class="p">(</span><span class="n">hidden_irreps</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_irreps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dim</span>  <span class="c1"># scalar embedding dimension</span>
 
         <span class="c1"># Edge embedding</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">radial_embedding</span> <span class="o">=</span> <span class="n">blocks</span><span class="o">.</span><span class="n">RadialEmbeddingBlock</span><span class="p">(</span>
-            <span class="n">r_max</span><span class="o">=</span><span class="n">r_max</span><span class="p">,</span>
-            <span class="n">num_bessel</span><span class="o">=</span><span class="n">num_bessel</span><span class="p">,</span>
-            <span class="n">num_polynomial_cutoff</span><span class="o">=</span><span class="n">num_polynomial_cutoff</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radial_embedding</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+            <span class="n">radial</span><span class="o">.</span><span class="n">compute_rbf</span><span class="p">,</span> <span class="n">max_distance</span><span class="o">=</span><span class="n">r_max</span><span class="p">,</span> <span class="n">num_rbf</span><span class="o">=</span><span class="n">num_basis</span>
         <span class="p">)</span>
-        <span class="n">sh_irreps</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">o3</span><span class="o">.</span><span class="n">Irreps</span><span class="o">.</span><span class="n">spherical_harmonics</span><span class="p">(</span><span class="n">max_ell</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sh_irreps</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">o3</span><span class="o">.</span><span class="n">Irreps</span><span class="o">.</span><span class="n">spherical_harmonics</span><span class="p">(</span><span class="n">max_ell</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spherical_harmonics</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">o3</span><span class="o">.</span><span class="n">SphericalHarmonics</span><span class="p">(</span>
-            <span class="n">sh_irreps</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">normalization</span><span class="o">=</span><span class="s2">&quot;component&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sh_irreps</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">normalization</span><span class="o">=</span><span class="s2">&quot;component&quot;</span>
         <span class="p">)</span>
 
         <span class="c1"># Embedding lookup for initial node features</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">emb_in</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">LazyLinear</span><span class="p">(</span><span class="n">emb_dim</span><span class="p">)</span>
-
-        <span class="c1"># Set hidden irreps if none are provided</span>
-        <span class="k">if</span> <span class="n">hidden_irreps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">hidden_irreps</span> <span class="o">=</span> <span class="p">(</span><span class="n">sh_irreps</span> <span class="o">*</span> <span class="n">emb_dim</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
-            <span class="c1"># Note: This defaults to O(3) equivariant layers. It is</span>
-            <span class="c1">#       possible to use SO(3) equivariance by passing</span>
-            <span class="c1">#       the appropriate irreps to `hidden_irreps`.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emb_in</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">LazyLinear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">convs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
         <span class="c1"># First conv layer: scalar only -&gt; tensor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">tfn</span><span class="o">.</span><span class="n">TensorProductConvLayer</span><span class="p">(</span>
-                <span class="n">in_irreps</span><span class="o">=</span><span class="n">e3nn</span><span class="o">.</span><span class="n">o3</span><span class="o">.</span><span class="n">Irreps</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">emb_dim</span><span class="si">}</span><span class="s2">x0e&quot;</span><span class="p">),</span>
-                <span class="n">out_irreps</span><span class="o">=</span><span class="n">hidden_irreps</span><span class="p">,</span>
-                <span class="n">sh_irreps</span><span class="o">=</span><span class="n">sh_irreps</span><span class="p">,</span>
-                <span class="n">edge_feats_dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radial_embedding</span><span class="o">.</span><span class="n">out_dim</span><span class="p">,</span>
-                <span class="n">mlp_dim</span><span class="o">=</span><span class="n">mlp_dim</span><span class="p">,</span>
+                <span class="n">in_irreps</span><span class="o">=</span><span class="n">e3nn</span><span class="o">.</span><span class="n">o3</span><span class="o">.</span><span class="n">Irreps</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span><span class="si">}</span><span class="s2">x0e&quot;</span><span class="p">),</span>
+                <span class="n">out_irreps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_irreps</span><span class="p">,</span>
+                <span class="n">sh_irreps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sh_irreps</span><span class="p">,</span>
+                <span class="n">edge_feats_dim</span><span class="o">=</span><span class="n">num_basis</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">,</span>
+                <span class="n">mlp_dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mlp_dim</span><span class="p">,</span>
                 <span class="n">aggr</span><span class="o">=</span><span class="n">aggr</span><span class="p">,</span>
                 <span class="n">batch_norm</span><span class="o">=</span><span class="n">batch_norm</span><span class="p">,</span>
                 <span class="n">gate</span><span class="o">=</span><span class="n">gate</span><span class="p">,</span>
+                <span class="n">dropout</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="c1"># Intermediate conv layers: tensor -&gt; tensor</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
             <span class="n">conv</span> <span class="o">=</span> <span class="n">tfn</span><span class="o">.</span><span class="n">TensorProductConvLayer</span><span class="p">(</span>
-                <span class="n">in_irreps</span><span class="o">=</span><span class="n">hidden_irreps</span><span class="p">,</span>
-                <span class="n">out_irreps</span><span class="o">=</span><span class="n">hidden_irreps</span><span class="p">,</span>
-                <span class="n">sh_irreps</span><span class="o">=</span><span class="n">sh_irreps</span><span class="p">,</span>
-                <span class="n">edge_feats_dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radial_embedding</span><span class="o">.</span><span class="n">out_dim</span><span class="p">,</span>
-                <span class="n">mlp_dim</span><span class="o">=</span><span class="n">mlp_dim</span><span class="p">,</span>
+                <span class="n">in_irreps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_irreps</span><span class="p">,</span>
+                <span class="n">out_irreps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_irreps</span><span class="p">,</span>
+                <span class="n">sh_irreps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sh_irreps</span><span class="p">,</span>
+                <span class="n">edge_feats_dim</span><span class="o">=</span><span class="n">num_basis</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">,</span>
+                <span class="n">mlp_dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mlp_dim</span><span class="p">,</span>
                 <span class="n">aggr</span><span class="o">=</span><span class="n">aggr</span><span class="p">,</span>
                 <span class="n">batch_norm</span><span class="o">=</span><span class="n">batch_norm</span><span class="p">,</span>
                 <span class="n">gate</span><span class="o">=</span><span class="n">gate</span><span class="p">,</span>
+                <span class="n">dropout</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conv</span><span class="p">)</span>
         <span class="c1"># Last conv layer: tensor -&gt; scalar only</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">tfn</span><span class="o">.</span><span class="n">TensorProductConvLayer</span><span class="p">(</span>
-                <span class="n">in_irreps</span><span class="o">=</span><span class="n">hidden_irreps</span><span class="p">,</span>
-                <span class="n">out_irreps</span><span class="o">=</span><span class="n">e3nn</span><span class="o">.</span><span class="n">o3</span><span class="o">.</span><span class="n">Irreps</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">emb_dim</span><span class="si">}</span><span class="s2">x0e&quot;</span><span class="p">),</span>
-                <span class="n">sh_irreps</span><span class="o">=</span><span class="n">sh_irreps</span><span class="p">,</span>
-                <span class="n">edge_feats_dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radial_embedding</span><span class="o">.</span><span class="n">out_dim</span><span class="p">,</span>
-                <span class="n">mlp_dim</span><span class="o">=</span><span class="n">mlp_dim</span><span class="p">,</span>
+                <span class="n">in_irreps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_irreps</span><span class="p">,</span>
+                <span class="n">out_irreps</span><span class="o">=</span><span class="n">e3nn</span><span class="o">.</span><span class="n">o3</span><span class="o">.</span><span class="n">Irreps</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span><span class="si">}</span><span class="s2">x0e&quot;</span><span class="p">),</span>
+                <span class="n">sh_irreps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sh_irreps</span><span class="p">,</span>
+                <span class="n">edge_feats_dim</span><span class="o">=</span><span class="n">num_basis</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">,</span>
+                <span class="n">mlp_dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mlp_dim</span><span class="p">,</span>
                 <span class="n">aggr</span><span class="o">=</span><span class="n">aggr</span><span class="p">,</span>
                 <span class="n">batch_norm</span><span class="o">=</span><span class="n">batch_norm</span><span class="p">,</span>
                 <span class="n">gate</span><span class="o">=</span><span class="n">gate</span><span class="p">,</span>
+                <span class="n">dropout</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
@@ -405,8 +398,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">required_batch_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Required batch attributes for this encoder.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Required batch attributes for this encoder.</span>
 
 <span class="sd">        - ``x``: Node features (shape: :math:`(n, d)`)</span>
 <span class="sd">        - ``pos``: Node positions (shape: :math:`(n, 3)`)</span>
@@ -420,11 +412,10 @@
 
 <div class="viewcode-block" id="TensorProductModel.forward">
 <a class="viewcode-back" href="../../../../modules/proteinworkshop.models.html#proteinworkshop.models.graph_encoders.tfn.TensorProductModel.forward">[docs]</a>
-    <span class="nd">@jaxtyped</span>
-    <span class="nd">@beartype</span>
+    <span class="nd">@jaxtyped</span><span class="p">(</span><span class="n">typechecker</span><span class="o">=</span><span class="n">typechecker</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Batch</span><span class="p">,</span> <span class="n">ProteinBatch</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">EncoderOutput</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Implements the forward pass of the TFN encoder.</span>
-
+<span class="sd">        </span>
 <span class="sd">        Returns the node embedding and graph embedding in a dictionary.</span>
 
 <span class="sd">        :param batch: Batch of data to encode.</span>
@@ -437,26 +428,36 @@
 <span class="sd">            the dimension of the embeddings.</span>
 <span class="sd">        :rtype: EncoderOutput</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Convert to undirected edges</span>
+        <span class="n">edge_index</span> <span class="o">=</span> <span class="n">to_undirected</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">edge_index</span><span class="p">)</span>
+
         <span class="c1"># Node embedding</span>
         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">emb_in</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># (n,) -&gt; (n, d)</span>
 
         <span class="c1"># Edge features</span>
         <span class="n">vectors</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="n">batch</span><span class="o">.</span><span class="n">edge_index</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="n">batch</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="n">batch</span><span class="o">.</span><span class="n">edge_index</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">batch</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="n">edge_index</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="n">batch</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="n">edge_index</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
         <span class="p">)</span>  <span class="c1"># [n_edges, 3]</span>
         <span class="n">lengths</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
-            <span class="n">vectors</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">vectors</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>  <span class="c1"># [n_edges, 1]</span>
         <span class="n">edge_attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spherical_harmonics</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="n">edge_feats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radial_embedding</span><span class="p">(</span><span class="n">lengths</span><span class="p">)</span>
-    
-        <span class="k">for</span> <span class="n">conv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">:</span>
-            <span class="c1"># Message passing layer</span>
-            <span class="n">h_update</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">edge_index</span><span class="p">,</span> <span class="n">edge_attrs</span><span class="p">,</span> <span class="n">edge_feats</span><span class="p">)</span>
-            <span class="c1"># TODO it may be useful to concatenate node scalar type l=0 features</span>
-            <span class="c1"># from both src and dst nodes into edge_feats (RBF of displacement), as in</span>
-            <span class="c1"># https://github.com/gcorso/DiffDock/blob/main/models/score_model.py#L263</span>
 
+        <span class="k">for</span> <span class="n">conv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">:</span>
+            <span class="c1"># concatenate RBF with scalar features from src and dst nodes</span>
+            <span class="n">edge_feats_expanded</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">edge_feats</span><span class="p">,</span> 
+                    <span class="n">h</span><span class="p">[</span><span class="n">edge_index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">],</span> 
+                    <span class="n">h</span><span class="p">[</span><span class="n">edge_index</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">]</span>
+                <span class="p">],</span> 
+                <span class="n">dim</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Message passing layer</span>
+            <span class="n">h_update</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">edge_attrs</span><span class="p">,</span> <span class="n">edge_feats_expanded</span><span class="p">)</span>
+            
             <span class="c1"># Update node features</span>
             <span class="n">h</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">h_update</span> <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">h_update</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
@@ -521,7 +522,7 @@
   </div>
 </div><script src="../../../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../../../../_static/documentation_options.js?v=cb850272"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
