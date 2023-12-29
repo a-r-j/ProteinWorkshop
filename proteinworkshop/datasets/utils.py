@@ -137,9 +137,9 @@ def create_example_batch(n: int = 4) -> ProteinBatch:
     batch.pos = batch.coords[:, 1, :]
     batch.x = F.one_hot(batch.residue_type, num_classes=23).float()
 
+    batch.x_vector_attr = orientations(batch.pos, batch._slice_dict["coords"])
     batch.graph_y = torch.randint(0, 2, (n, 1))
 
-    batch.x_vector_attr = orientations(batch.pos)
     batch.edge_attr = pos_emb(batch.edge_index, 9)
     batch.edge_vector_attr = _normalize(
         batch.pos[batch.edge_index[0]] - batch.pos[batch.edge_index[1]]
