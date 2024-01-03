@@ -421,11 +421,11 @@ Pre-training corpuses (with the exception of `pdb`, `cath`, and `astral`) are pr
 | `go-bp` | Gene Ontology prediction (Biological Process)      |    [Gligorijevic et al](https://www.nature.com/articles/s41467-021-23303-9)    | [CC-BY 4.0](https://www.nature.com/articles/s41467-021-23303-9)|
 | `go-cc` | Gene Ontology (Cellular Component)       | [Gligorijevic et al](https://www.nature.com/articles/s41467-021-23303-9)       | [CC-BY 4.0](https://www.nature.com/articles/s41467-021-23303-9) |
 | `go-mf` | Gene Ontology (Molecular Function)       | [Gligorijevic et al](https://www.nature.com/articles/s41467-021-23303-9)       | [CC-BY 4.0](https://www.nature.com/articles/s41467-021-23303-9) |
-| `ec-reaction` | Enzyme Commission (EC) Number Prediction       |  [Hermosilla et al.](https://arxiv.org/abs/2007.06252)      | [MIT](https://github.com/phermosilla/IEConv_proteins/blob/master/LICENSE)
-| `fold-fold` |   Fold prediction, split at the fold level      |  [Hou et al.](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)       | [CC-BY 4.0](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)
-| `fold-family` |  Fold prediction, split at the family level       |  [Hou et al.](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)      | [CC-BY 4.0](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)
-| `fold-superfamily` |   Fold prediction, split at the superfamily level      | [Hou et al.](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)       | [CC-BY 4.0](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)
-| `masif-site` | Protein-protein interaction site prediction | [Gainza et al.](https://www.nature.com/articles/s41592-019-0666-6)       | [Apache 2.0](https://github.com/LPDI-EPFL/masif/blob/master/LICENSE)
+| `ec_reaction` | Enzyme Commission (EC) Number Prediction       |  [Hermosilla et al.](https://arxiv.org/abs/2007.06252)      | [MIT](https://github.com/phermosilla/IEConv_proteins/blob/master/LICENSE)
+| `fold_fold` |   Fold prediction, split at the fold level      |  [Hou et al.](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)       | [CC-BY 4.0](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)
+| `fold_family` |  Fold prediction, split at the family level       |  [Hou et al.](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)      | [CC-BY 4.0](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)
+| `fold_superfamily` |   Fold prediction, split at the superfamily level      | [Hou et al.](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)       | [CC-BY 4.0](https://academic.oup.com/bioinformatics/article/34/8/1295/4708302)
+| `masif_site` | Protein-protein interaction site prediction | [Gainza et al.](https://www.nature.com/articles/s41592-019-0666-6)       | [Apache 2.0](https://github.com/LPDI-EPFL/masif/blob/master/LICENSE)
 | `metal_3d` | Zinc Binding Site Prediction | [Duerr et al.](https://www.nature.com/articles/s41467-023-37870-6) | [MIT](https://zenodo.org/record/7594085)
 | `ptm` | Post Translational Modification Side Prediction | [Yan et al.](https://www.sciencedirect.com/science/article/pii/S2667237523000450?via%3Dihub) | [CC-BY 4.0](https://zenodo.org/record/7655709) |
 
