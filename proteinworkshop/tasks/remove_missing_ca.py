@@ -47,6 +47,9 @@ class RemoveMissingCa(T.BaseTransform):
 
         if hasattr(data, "amino_acid_one_hot"):
             data.amino_acid_one_hot = data.amino_acid_one_hot[mask]
+
+        if hasattr(data, "seq_pos"):
+            data.seq_pos = data.seq_pos[mask]
         return data
 
 

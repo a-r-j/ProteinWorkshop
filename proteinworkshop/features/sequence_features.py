@@ -3,11 +3,11 @@ from typing import Union
 
 import torch
 import torch.nn.functional as F
-from beartype import beartype
+from beartype import beartype as typechecker
 from torch_geometric.data import Batch, Data
 
 
-@beartype
+@typechecker
 def amino_acid_one_hot(
     x: Union[Batch, Data], num_classes: int = 23
 ) -> torch.Tensor:

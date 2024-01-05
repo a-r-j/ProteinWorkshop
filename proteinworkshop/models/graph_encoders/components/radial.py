@@ -6,7 +6,7 @@
 
 import numpy as np
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from jaxtyping import Float, jaxtyped
 
 
@@ -95,10 +95,9 @@ class PolynomialCutoff(torch.nn.Module):
         return f"{self.__class__.__name__}(p={self.p}, r_max={self.r_max})"
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def compute_rbf(
-    distances: Float[torch.Tensor, "num_edges"],
+    distances: Float[torch.Tensor, " num_edges"],
     min_distance: float = 0.0,
     max_distance: float = 10.0,
     num_rbf: int = 8,

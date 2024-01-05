@@ -1,6 +1,6 @@
 program: proteinworkshop/finetune.py
 method: grid
-name: pre_trained_inverse_folding
+name: pre_trained_inverse_folding_scaling
 metric: # Does not matter, as we are using sweep to run the experiment.
   goal: minimize
   name: val/loss/total
@@ -13,10 +13,10 @@ parameters:
     values: [cath]
 
   encoder:
-    values: [schnet, dimenet_plus_plus, egnn, gcpnet, gear_net_edge]
+    values: [schnet, gcpnet, gear_net_edge, tfn, mace, egnn]
 
   optimiser.optimizer.lr:
-    values: [0.0001]
+    values: [0.0001, 0.0003, 0.00001, 0.001]
 
   features:
     values: [ca_angles, ca_bb]
@@ -28,7 +28,7 @@ parameters:
     value: False
 
   trainer.max_epochs:
-    value: 150
+    value: 250
 
   # We don't want to freeze the encoder
   finetune.encoder.freeze:
@@ -40,17 +40,31 @@ parameters:
         inverse_folding,
       ]
 
+  +_pt_epoch:
+    values: ["epoch_0", "epoch_1", "epoch_2", epoch_3", "epoch_4", "epoch_5", "epoch_6", "epoch_7", "epoch_8", "epoch_9"]
+
+  decoder.residue_type.dropout:
+    value: ${hparams.hparams.decoder_dropout}
+
   # Uses checkpoint_root/pretrain_task/encoder/features/last.ckpt
   ckpt_path:
     values:
       [
         # Note: One needed to manually update this path to point to the one's corresponding `last.ckpt` pre-trained checkpoint
-        #"$USER/ProteinWorkshop/checkpoints/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/last.ckpt",
-        ???
+        "/home/jamasba/scratch/pworkshop/ckpts/${_pre_train_task}/${hydra:runtime.choices.encoder}/${hydra:runtime.choices.features}/${_pt_epoch}.ckpt",
       ]
 
   +test:
     value: True
+
+  trainer:
+    value: gpu
+
+  logger:
+    value: wandb
+
+  name:
+    value: "${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_${hydra:runtime.choices.aux_task}_epoch_${_pt_epoch}"
 
 command:
   - ${env}

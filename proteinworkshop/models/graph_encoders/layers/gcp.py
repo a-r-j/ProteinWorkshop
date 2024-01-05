@@ -18,7 +18,7 @@ from typing import Any, Optional, Tuple, Union
 
 import torch
 import torch_scatter
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import Bool, Float, Int64, jaxtyped
 from omegaconf import DictConfig, OmegaConf
@@ -45,8 +45,7 @@ class VectorDropout(nn.Module):
         super().__init__()
         self.drop_rate = drop_rate
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         :param x: `torch.Tensor` corresponding to vector channels
@@ -75,8 +74,7 @@ class GCPDropout(nn.Module):
             VectorDropout(drop_rate) if use_gcp_dropout else nn.Identity()
         )
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def forward(
         self, x: Union[torch.Tensor, ScalarVector]
     ) -> Union[torch.Tensor, ScalarVector]:
@@ -88,9 +86,7 @@ class GCPDropout(nn.Module):
             return x
         elif isinstance(x, torch.Tensor):
             return self.scalar_dropout(x)
-        return ScalarVector(
-            self.scalar_dropout(x[0]), self.vector_dropout(x[1])
-        )
+        return ScalarVector(self.scalar_dropout(x[0]), self.vector_dropout(x[1]))
 
 
 class GCPLayerNorm(nn.Module):
@@ -110,8 +106,7 @@ class GCPLayerNorm(nn.Module):
         self.eps = eps
 
     @staticmethod
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def norm_vector(
         v: torch.Tensor, use_gcp_norm: bool = True, eps: float = 1e-8
     ) -> torch.Tensor:
@@ -120,14 +115,11 @@ class GCPLayerNorm(nn.Module):
             vector_norm = torch.clamp(
                 torch.sum(torch.square(v), dim=-1, keepdim=True), min=eps
             )
-            vector_norm = torch.sqrt(
-                torch.mean(vector_norm, dim=-2, keepdim=True)
-            )
+            vector_norm = torch.sqrt(torch.mean(vector_norm, dim=-2, keepdim=True))
             v_norm = v / vector_norm
         return v_norm
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def forward(
         self, x: Union[torch.Tensor, ScalarVector]
     ) -> Union[torch.Tensor, ScalarVector]:
@@ -189,9 +181,7 @@ class GCP(nn.Module):
                 else max(self.vector_input_dim, self.vector_output_dim)
             )
 
-            scalar_vector_frame_dim = (
-                scalarization_vectorization_output_dim * 3
-            )
+            scalar_vector_frame_dim = scalarization_vectorization_output_dim * 3
             self.vector_down = nn.Linear(
                 self.vector_input_dim, self.hidden_dim, bias=False
             )
@@ -208,9 +198,7 @@ class GCP(nn.Module):
                 )
                 if feedforward_out
                 else nn.Linear(
-                    self.hidden_dim
-                    + self.scalar_input_dim
-                    + scalar_vector_frame_dim,
+                    self.hidden_dim + self.scalar_input_dim + scalar_vector_frame_dim,
                     self.scalar_output_dim,
                 )
             )
@@ -240,13 +228,10 @@ class GCP(nn.Module):
                 else nn.Linear(self.scalar_input_dim, self.scalar_output_dim)
             )
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def create_zero_vector(
         self,
-        scalar_rep: Float[
-            torch.Tensor, "batch_num_entities merged_scalar_dim"
-        ],
+        scalar_rep: Float[torch.Tensor, "batch_num_entities merged_scalar_dim"],
     ) -> Float[torch.Tensor, "batch_num_entities o 3"]:
         return torch.zeros(
             scalar_rep.shape[0],
@@ -256,8 +241,7 @@ class GCP(nn.Module):
         )
 
     @staticmethod
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def scalarize(
         vector_rep: Float[torch.Tensor, "batch_num_entities 3 3"],
         edge_index: Int64[torch.Tensor, "2 batch_num_edges"],
@@ -289,23 +273,17 @@ class GCP(nn.Module):
             )
             local_scalar_rep_i = local_scalar_rep_i.transpose(-1, -2)
         else:
-            local_scalar_rep_i = torch.matmul(frames, vector_rep_i).transpose(
-                -1, -2
-            )
+            local_scalar_rep_i = torch.matmul(frames, vector_rep_i).transpose(-1, -2)
 
         # potentially enable E(3)-equivariance and, thereby, chirality-invariance
         if enable_e3_equivariance:
             # avoid corrupting gradients with an in-place operation
             local_scalar_rep_i_copy = local_scalar_rep_i.clone()
-            local_scalar_rep_i_copy[:, :, 1] = torch.abs(
-                local_scalar_rep_i[:, :, 1]
-            )
+            local_scalar_rep_i_copy[:, :, 1] = torch.abs(local_scalar_rep_i[:, :, 1])
             local_scalar_rep_i = local_scalar_rep_i_copy
 
         # reshape frame-derived geometric scalars
-        local_scalar_rep_i = local_scalar_rep_i.reshape(
-            vector_rep_i.shape[0], 9
-        )
+        local_scalar_rep_i = local_scalar_rep_i.reshape(vector_rep_i.shape[0], 9)
 
         if node_inputs:
             # for node inputs, summarize all edge-wise geometric scalars using an average
@@ -320,13 +298,10 @@ class GCP(nn.Module):
 
         return local_scalar_rep_i
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def vectorize(
         self,
-        scalar_rep: Float[
-            torch.Tensor, "batch_num_entities merged_scalar_dim"
-        ],
+        scalar_rep: Float[torch.Tensor, "batch_num_entities merged_scalar_dim"],
         vector_hidden_rep: Float[torch.Tensor, "batch_num_entities 3 n"],
     ) -> Float[torch.Tensor, "batch_num_entities o 3"]:
         vector_rep = self.vector_up(vector_hidden_rep)
@@ -342,8 +317,7 @@ class GCP(nn.Module):
 
         return vector_rep
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def forward(
         self,
         s_maybe_v: Union[
@@ -462,8 +436,7 @@ class GCPEmbedding(nn.Module):
             enable_e3_equivariance=cfg.enable_e3_equivariance,
         )
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def forward(
         self, batch: Union[Batch, ProteinBatch]
     ) -> Tuple[
@@ -494,21 +467,15 @@ class GCPEmbedding(nn.Module):
         )  # [n_edges, 3]
         edge_lengths = torch.linalg.norm(edge_vectors, dim=-1)  # [n_edges, 1]
         edge_rep = ScalarVector(
-            torch.cat(
-                (edge_rep.scalar, self.radial_embedding(edge_lengths)), dim=-1
-            ),
+            torch.cat((edge_rep.scalar, self.radial_embedding(edge_lengths)), dim=-1),
             edge_rep.vector,
         )
 
         edge_rep = (
-            edge_rep.scalar
-            if not self.edge_embedding.vector_input_dim
-            else edge_rep
+            edge_rep.scalar if not self.edge_embedding.vector_input_dim else edge_rep
         )
         node_rep = (
-            node_rep.scalar
-            if not self.node_embedding.vector_input_dim
-            else node_rep
+            node_rep.scalar if not self.node_embedding.vector_input_dim else node_rep
         )
 
         if self.pre_norm:
@@ -537,7 +504,7 @@ class GCPEmbedding(nn.Module):
         return node_rep, edge_rep
 
 
-@beartype
+@typechecker
 def get_GCP_with_custom_cfg(
     input_dims: Any, output_dims: Any, cfg: DictConfig, **kwargs
 ):
@@ -621,8 +588,7 @@ class GCPMessagePassing(nn.Module):
                 nn.Linear(output_dims.scalar, 1), nn.Sigmoid()
             )
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def message(
         self,
         node_rep: ScalarVector,
@@ -674,8 +640,7 @@ class GCPMessagePassing(nn.Module):
 
         return message_residual.flatten()
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def aggregate(
         self,
         message: Float[torch.Tensor, "batch_num_edges message_dim"],
@@ -688,8 +653,7 @@ class GCPMessagePassing(nn.Module):
         )
         return aggregate
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def forward(
         self,
         node_rep: ScalarVector,
@@ -723,9 +687,7 @@ class GCPInteractions(nn.Module):
         if nonlinearities is None:
             nonlinearities = cfg.nonlinearities
         self.pre_norm = layer_cfg.pre_norm
-        self.predict_node_positions = getattr(
-            cfg, "predict_node_positions", False
-        )
+        self.predict_node_positions = getattr(cfg, "predict_node_positions", False)
         self.node_positions_weight = getattr(cfg, "node_positions_weight", 1.0)
         self.update_positions_with_vector_sum = getattr(
             cfg, "update_positions_with_vector_sum", False
@@ -815,8 +777,7 @@ class GCPInteractions(nn.Module):
                 enable_e3_equivariance=cfg.enable_e3_equivariance,
             )
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def derive_x_update(
         self,
         node_rep: ScalarVector,
@@ -838,8 +799,7 @@ class GCPInteractions(nn.Module):
 
         return x_update
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def forward(
         self,
         node_rep: Tuple[

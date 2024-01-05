@@ -7,7 +7,7 @@ import pandas as pd
 import scipy
 import torch
 from atom3d.datasets import LMDBDataset
-from beartype import beartype
+from beartype import beartype as typechecker
 from torch.utils.data import IterableDataset
 from torch_geometric.data import Data
 
@@ -23,14 +23,14 @@ PPI_DF_INDEX_COLUMNS = [
 ]
 
 
-@beartype
+@typechecker
 def get_res(df: pd.DataFrame) -> pd.DataFrame:
     """Get all residues."""
     # Adapted from: https://github.com/drorlab/atom3d/blob/master/examples/ppi/dataset/neighbors.py
     return df[PPI_DF_INDEX_COLUMNS].drop_duplicates()
 
 
-@beartype
+@typechecker
 def _get_idx_to_res_mapping(
     df: pd.DataFrame,
 ) -> Tuple[pd.DataFrame, pd.Series]:
@@ -43,7 +43,7 @@ def _get_idx_to_res_mapping(
     return idx_to_res, res_to_idx
 
 
-@beartype
+@typechecker
 def get_subunits(
     ensemble: pd.DataFrame,
 ) -> Tuple[
@@ -79,7 +79,7 @@ def get_subunits(
     return names, (bdf0, bdf1, udf0, udf1)
 
 
-@beartype
+@typechecker
 def get_negatives(
     neighbors, df0: pd.DataFrame, df1: pd.DataFrame
 ) -> pd.DataFrame:
@@ -170,7 +170,7 @@ class PPIDataset(IterableDataset):
             )
         return gen
 
-    @beartype
+    @typechecker
     def _df_to_graph(
         self, struct_df: pd.DataFrame, chain_res: Iterable, label: float
     ) -> Optional[Data]:
@@ -208,7 +208,7 @@ class PPIDataset(IterableDataset):
 
         return data
 
-    @beartype
+    @typechecker
     def _dataset_generator(
         self, indices: List[int], shuffle: bool = True
     ) -> Generator[Tuple[Data, Data], None, None]:
@@ -247,7 +247,7 @@ class PPIDataset(IterableDataset):
                             continue
                         yield graph1, graph2
 
-    @beartype
+    @typechecker
     def _create_labels(
         self,
         positives: pd.DataFrame,

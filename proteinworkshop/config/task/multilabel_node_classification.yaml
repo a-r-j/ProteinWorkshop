@@ -1,0 +1,42 @@
+# @package _global_
+
+defaults:
+  - override /metrics:
+      - accuracy
+      - f1_score
+      - f1_max
+      - auprc
+      - rocauc
+  - override /decoder:
+      - node_label
+
+callbacks:
+  early_stopping:
+    monitor: val/node_label/accuracy
+    mode: "max"
+  model_checkpoint:
+    monitor: val/node_label/accuracy
+    mode: "max"
+
+metrics:
+  accuracy:
+    num_labels: ${dataset.num_classes}
+  f1_score:
+    num_labels: ${dataset.num_classes}
+  rocauc:
+    num_labels: ${dataset.num_classes}
+
+
+task:
+  task: "classification"
+  classification_type: "multilabel"
+  metric_average: "micro"
+
+  losses:
+    node_label: bce
+  label_smoothing: 0.0
+
+  output:
+    - "node_label"
+  supervise_on:
+    - "node_label"

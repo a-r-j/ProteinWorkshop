@@ -102,7 +102,7 @@ def download_processed_data(dataset_name: str, data_dir: Optional[str] = None):
         logger.info(
             f"Downloading {dataset_name} dataset from Zenodo Record {_ZENODO_RECORD}"
         )
-        zenodo_url = f"https://zenodo.org/record/{_ZENODO_RECORD}/files/{fname}.tar.gz?download=1"
+        zenodo_url = f"https://zenodo.org/records/{_ZENODO_RECORD}/files/{fname}.tar.gz?download=1"
         wget.download(zenodo_url, out=str(data_dir))
     else:
         logger.info(

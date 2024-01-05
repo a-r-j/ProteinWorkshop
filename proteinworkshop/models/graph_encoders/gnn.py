@@ -1,7 +1,7 @@
 from typing import List, Set, Union
 
 import torch.nn as nn
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.data import ProteinBatch
 from jaxtyping import jaxtyped
 from torch_geometric.data import Batch
@@ -166,8 +166,7 @@ class GNNModel(nn.Module):
         else:
             return {"x", "edge_index", "batch"}
 
-    @jaxtyped
-    @beartype
+    @jaxtyped(typechecker=typechecker)
     def forward(self, batch: Union[Batch, ProteinBatch]) -> EncoderOutput:
         """Implements the forward pass of the GNN encoder.
         

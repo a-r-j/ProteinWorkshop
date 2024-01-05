@@ -12,8 +12,8 @@ import lightning as L
 import lovely_tensors as lt
 import torch
 import torch.nn as nn
+import torch_geometric
 from graphein.protein.tensor.dataloader import ProteinDataLoader
-from graphein.ml.datasets.foldcomp_dataset import FoldCompLightningDataModule
 from lightning.pytorch.callbacks import Callback
 from lightning.pytorch.loggers import Logger
 from loguru import logger as log
@@ -122,8 +122,7 @@ def train_model(
             == "flash.core.optimizers.LinearWarmupCosineAnnealingLR"
             and cfg.scheduler.interval == "step"
         ):
-            if isinstance(datamodule, FoldCompLightningDataModule):
-                datamodule.setup()
+            datamodule.setup()  # type: ignore
             num_steps = _num_training_steps(
                 datamodule.train_dataloader(), trainer
             )
@@ -176,7 +175,7 @@ def train_model(
 
     if cfg.get("compile"):
         log.info("Compiling model!")
-        model = torch.compile(model)  # type: ignore
+        model = torch_geometric.compile(model, dynamic=True)
 
     if cfg.get("task_name") == "train":
         log.info("Starting training!")

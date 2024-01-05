@@ -2,7 +2,7 @@ from itertools import chain
 from typing import Literal, Tuple
 
 import torch
-from beartype import beartype
+from beartype import beartype as typechecker
 from graphein.protein.tensor.types import AtomTensor, CoordTensor
 from jaxtyping import jaxtyped
 from torch_geometric.data import Batch, Data
@@ -11,8 +11,7 @@ from torch_geometric.utils import unbatch
 from proteinworkshop.configs.config import ExperimentConfigurationError
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def get_full_atom_coords(
     atom_tensor: AtomTensor, fill_value: float = 1e-5
 ) -> Tuple[CoordTensor, torch.Tensor, torch.Tensor]:
@@ -40,8 +39,7 @@ def get_full_atom_coords(
     return coords, residue_index, atom_type
 
 
-@jaxtyped
-@beartype
+@jaxtyped(typechecker=typechecker)
 def transform_representation(
     x: Batch, representation_type: Literal["CA", "BB", "FA", "BB_SC", "CA_SC"]
 ) -> Batch:
@@ -87,7 +85,7 @@ def transform_representation(
         )
 
 
-@beartype
+@typechecker
 def _ca_to_fa_repr(x: Data) -> Data:
     """Converts CA representation to full atom representation."""
     coords, residue_index, atom_type = get_full_atom_coords(x.coords)
@@ -101,7 +99,7 @@ def _ca_to_fa_repr(x: Data) -> Data:
     return x
 
 
-@beartype
+@typechecker
 def _ca_to_bb_repr(x: Data) -> Data:
     """Converts CA representation to backbone representation."""
     x.pos = x.coords[:, :4, :].reshape(-1, 3)
@@ -117,7 +115,7 @@ def _ca_to_bb_repr(x: Data) -> Data:
     return x
 
 
-@beartype
+@typechecker
 def ca_to_bb_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
     """
     Converts a batch of CA representations to backbone representations. I.e.
@@ -180,7 +178,7 @@ def ca_to_bb_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
     return batch
 
 
-@beartype
+@typechecker
 def ca_to_bb_sc_repr(batch: Batch) -> Batch:
     """Converts a batch of CA representations to backbone + sidechain representations."""
     # Get centroids
@@ -190,7 +188,7 @@ def ca_to_bb_sc_repr(batch: Batch) -> Batch:
     return ca_to_fa_repr(batch)
 
 
-@beartype
+@typechecker
 def ca_to_ca_sc_repr(batch: Batch) -> Batch:
     """Converts a batch of CA representations to C + sidechain representations."""
     # Get centroids
@@ -200,7 +198,7 @@ def ca_to_ca_sc_repr(batch: Batch) -> Batch:
     return batch
 
 
-@beartype
+@typechecker
 def coarsen_sidechain(x: Data, aggr: str = "mean") -> CoordTensor:
     """Returns tensor of sidechain centroids: L x 3"""
     # sourcery skip: remove-unnecessary-else, swap-if-else-branches
@@ -216,7 +214,7 @@ def coarsen_sidechain(x: Data, aggr: str = "mean") -> CoordTensor:
     return sc_points
 
 
-@beartype
+@typechecker
 def ca_to_fa_repr(batch: Batch) -> Batch:  # sourcery skip: assign-if-exp
     """Converts a batch of CA representations to full atom representations."""
     if "sidechain_torsion" in batch.keys:

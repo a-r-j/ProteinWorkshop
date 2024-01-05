@@ -14,6 +14,31 @@ from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 
 
 class CATHDataModule(ProteinDataModule):
+    """Data module for CATH dataset.
+
+    :param path: Path to store data.
+    :type path: str
+    :param batch_size: Batch size for dataloaders.
+    :type batch_size: int
+    :param format: Format to load PDB files in.
+    :type format: Literal["mmtf", "pdb"]
+    :param pdb_dir: Path to directory containing PDB files.
+    :type pdb_dir: str
+    :param pin_memory: Whether to pin memory for dataloaders.
+    :type pin_memory: bool
+    :param in_memory: Whether to load the entire dataset into memory.
+    :type in_memory: bool
+    :param num_workers: Number of workers for dataloaders.
+    :type num_workers: int
+    :param dataset_fraction: Fraction of dataset to use.
+    :type dataset_fraction: float
+    :param transforms: List of transforms to apply to dataset.
+    :type transforms: Optional[List[Callable]]
+    :param overwrite: Whether to overwrite existing data.
+        Defaults to ``False``.
+    :type overwrite: bool
+    """
+
     def __init__(
         self,
         path: str,
@@ -27,30 +52,6 @@ class CATHDataModule(ProteinDataModule):
         transforms: Optional[Iterable[Callable]] = None,
         overwrite: bool = False,
     ) -> None:
-        """Data module for CATH dataset.
-
-        :param path: Path to store data.
-        :type path: str
-        :param batch_size: Batch size for dataloaders.
-        :type batch_size: int
-        :param format: Format to load PDB files in.
-        :type format: Literal["mmtf", "pdb"]
-        :param pdb_dir: Path to directory containing PDB files.
-        :type pdb_dir: str
-        :param pin_memory: Whether to pin memory for dataloaders.
-        :type pin_memory: bool
-        :param in_memory: Whether to load the entire dataset into memory.
-        :type in_memory: bool
-        :param num_workers: Number of workers for dataloaders.
-        :type num_workers: int
-        :param dataset_fraction: Fraction of dataset to use.
-        :type dataset_fraction: float
-        :param transforms: List of transforms to apply to dataset.
-        :type transforms: Optional[List[Callable]]
-        :param overwrite: Whether to overwrite existing data.
-            Defaults to ``False``.
-        :type overwrite: bool
-        """
         super().__init__()
 
         self.data_dir = Path(path)
@@ -270,7 +271,6 @@ if __name__ == "__main__":
     import pathlib
 
     import hydra
-    import omegaconf
 
     from proteinworkshop import constants
 
