@@ -1,5 +1,6 @@
 program: proteinworkshop/train.py
 method: grid
+name: ec_reaction_baseline
 metric: # Does not matter, as we are using sweep to run the experiment.
   goal: minimize
   name: val/loss/total
@@ -9,10 +10,10 @@ parameters:
     values: [multiclass_graph_classification]
 
   dataset:
-    values: [ec_reaction, fold_fold]
+    values: [ec_reaction]
 
   encoder:
-    values: [schnet, dimenet_plus_plus, egnn, gcpnet, tfn, mace]
+    values: [schnet, gear_net_edge, egnn, gcpnet, tfn, mace, esm]
 
   optimiser.optimizer.lr:
     values: [0.0001, 0.001]
@@ -21,16 +22,37 @@ parameters:
     values: [ca_base, ca_seq, ca_angles, ca_bb, ca_sc]
 
   scheduler:
-    values: [plateau]
+    value: plateau
 
   extras.enforce_tags:
-    values: [False]
+    value: False
 
   +aux_task:
-    values: [none, nn_sequence, nn_structure_torsion]
+    values: [none, nn_sequence, nn_structure_torsion, nn_structure_r3]
+
+  trainer:
+    value: gpu
 
   trainer.max_epochs:
-    value: 150
+    value: 300
+
+  seed:
+    values: [13, 42, 121]
+
+  optimiser.optimizer.lr:
+    value: ${hparams.hparams.lr}
+
+  decoder.node_label.dropout:
+    value: ${hparams.hparams.decoder_dropout}
+
+  name:
+    value: "${hydra:runtime.choices.encoder}_${hydra:runtime.choices.features}_${hydra:runtime.choices.aux_task}"
+
+  logger:
+    value: wandb
+
+  test:
+    value: True
 
 command:
   - ${env}
