@@ -39,7 +39,7 @@ parameters:
   optimiser.optimizer.lr:
     value: ${hparams.hparams.lr}
 
-  decoder.node_label.dropout:
+  decoder.graph_label.dropout:
     value: ${hparams.hparams.decoder_dropout}
 
   name:
