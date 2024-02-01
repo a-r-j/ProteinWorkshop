@@ -1,5 +1,5 @@
 scheduler:
-  _target_: proteinworkshop.utils.schedulers.InverseSquareRootScheduler
+  _target_: proteinworkshop.utils.schedulers.InverseSquareRootLR
   _partial_: true
   warmup_steps: 1
   last_epoch: -1
