@@ -218,17 +218,6 @@ class FoldClassificationDataModule(ProteinDataModule):
             num_workers=self.num_workers,
         )
 
-    # def get_test_loader(self, split: str) -> ProteinDataLoader:
-    #    log.info(f"Getting test loader: {split}")
-    #    test_ds = self._get_dataset(f"test_{split}")
-    #    return ProteinDataLoader(
-    #        test_ds,
-    #        batch_size=self.batch_size,
-    #        shuffle=False,
-    #        pin_memory=self.pin_memory,
-    #        num_workers=self.num_workers,
-    #    )
-
     def parse_dataset(self, split: str) -> pd.DataFrame:
         """
         Parses the raw dataset files to Pandas DataFrames.
