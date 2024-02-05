@@ -1,7 +1,7 @@
 import os
 import pathlib
 import tarfile
-from typing import Callable, Dict, Iterable, Optional
+from typing import Callable, Dict, Iterable, List, Literal, Optional
 
 import omegaconf
 import pandas as pd
@@ -71,6 +71,11 @@ class FoldClassificationDataModule(ProteinDataModule):
             )
         else:
             self.transform = None
+
+    @property
+    def test_dataset_names(self) -> List[str]:
+        """Provides a list of test set split names."""
+        return ["fold", "family", "superfamily"]
 
     def download(self):
         self.download_data_files()
@@ -152,16 +157,12 @@ class FoldClassificationDataModule(ProteinDataModule):
         )
         return dict(class_map.values)
 
-    def setup(self, stage: Optional[str] = None):
-        self.download_data_files()
-        self.download_structures()
-        self.train_ds = self.train_dataset()
-        self.val_ds = self.val_dataset()
-        self.test_ds = self.test_dataset()
-
     def _get_dataset(self, split: str) -> ProteinDataset:
+        if hasattr(self, f"{split}_ds"):
+            return getattr(self, f"{split}_ds")
+
         df = self.parse_dataset(split)
-        return ProteinDataset(
+        ds = ProteinDataset(
             root=str(self.data_dir),
             pdb_dir=str(self.structure_dir),
             pdb_codes=list(df.id),
@@ -171,6 +172,8 @@ class FoldClassificationDataModule(ProteinDataModule):
             transform=self.transform,
             in_memory=self.in_memory,
         )
+        setattr(self, f"{split}_ds", ds)
+        return ds
 
     def train_dataset(self) -> ProteinDataset:
         return self._get_dataset("training")
@@ -178,8 +181,10 @@ class FoldClassificationDataModule(ProteinDataModule):
     def val_dataset(self) -> ProteinDataset:
         return self._get_dataset("validation")
 
-    def test_dataset(self) -> ProteinDataset:
-        return self._get_dataset(f"test_{self.split}")
+    def test_dataset(
+        self, split: Literal["fold", "family", "superfamily"]
+    ) -> ProteinDataset:
+        return self._get_dataset(f"test_{split}")
 
     def train_dataloader(self) -> ProteinDataLoader:
         self.train_ds = self.train_dataset()
@@ -201,8 +206,10 @@ class FoldClassificationDataModule(ProteinDataModule):
             num_workers=self.num_workers,
         )
 
-    def test_dataloader(self) -> ProteinDataLoader:
-        self.test_ds = self.test_dataset()
+    def test_dataloader(
+        self, split: Literal["fold", "family", "superfamily"]
+    ) -> ProteinDataLoader:
+        self.test_ds = self.test_dataset(split)
         return ProteinDataLoader(
             self.test_ds,
             batch_size=self.batch_size,
@@ -211,16 +218,16 @@ class FoldClassificationDataModule(ProteinDataModule):
             num_workers=self.num_workers,
         )
 
-    def get_test_loader(self, split: str) -> ProteinDataLoader:
-        log.info(f"Getting test loader: {split}")
-        test_ds = self._get_dataset(f"test_{split}")
-        return ProteinDataLoader(
-            test_ds,
-            batch_size=self.batch_size,
-            shuffle=False,
-            pin_memory=self.pin_memory,
-            num_workers=self.num_workers,
-        )
+    # def get_test_loader(self, split: str) -> ProteinDataLoader:
+    #    log.info(f"Getting test loader: {split}")
+    #    test_ds = self._get_dataset(f"test_{split}")
+    #    return ProteinDataLoader(
+    #        test_ds,
+    #        batch_size=self.batch_size,
+    #        shuffle=False,
+    #        pin_memory=self.pin_memory,
+    #        num_workers=self.num_workers,
+    #    )
 
     def parse_dataset(self, split: str) -> pd.DataFrame:
         """

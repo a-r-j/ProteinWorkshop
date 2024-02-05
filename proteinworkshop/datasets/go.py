@@ -2,7 +2,7 @@ import os
 import zipfile
 from functools import lru_cache
 from pathlib import Path
-from typing import Callable, Dict, Iterable, Literal, Optional
+from typing import Callable, Dict, Iterable, List, Literal, Optional
 
 import omegaconf
 import pandas as pd
@@ -70,6 +70,14 @@ class GeneOntologyDataset(ProteinDataModule):
 
         self.shuffle_labels = shuffle_labels
 
+        self.test_seq_similarity_cutoffs: List[float] = [
+            0.3,
+            0.4,
+            0.5,
+            0.7,
+            0.95,
+        ]
+
         if transforms is not None:
             self.transform = self.compose_transforms(
                 omegaconf.OmegaConf.to_container(transforms, resolve=True)
@@ -79,13 +87,18 @@ class GeneOntologyDataset(ProteinDataModule):
 
         self.train_fname = self.data_dir / "nrPDB-GO_train.txt"
         self.val_fname = self.data_dir / "nrPDB-GO_valid.txt"
-        self.test_fname = self.data_dir / "nrPDB-GO_test.txt"
+        self.test_fname = self.data_dir / "nrPDB-GO_test.csv"
         self.label_fname = self.data_dir / "nrPDB-GO_annot.tsv"
         self.url = "https://zenodo.org/record/6622158/files/GeneOntology.zip"
 
         log.info(
             f"Setting up Gene Ontology dataset. Fraction {self.dataset_fraction}"
         )
+
+    @property
+    def test_dataset_names(self) -> List[str]:
+        """Provides a list of test set split names."""
+        return ["test_0.3", "test_0.4", "test_0.5", "test_0.7", "test_0.95"]
 
     @lru_cache
     def parse_labels(self) -> Dict[str, torch.Tensor]:
@@ -129,12 +142,38 @@ class GeneOntologyDataset(ProteinDataModule):
         log.info(f"Encoded {len(labels)} labels for task {self.split}.")
         return labels
 
+    # def get_test_loader(
+    #    self,
+    #    split: Literal["test_0.3", "test_0.4", "test_0.5", "test_0.7", "test_0.95"],
+    # ) -> ProteinDataLoader:
+    #    log.info(f"Getting test loader: {split}")
+    #    test_ds = self._get_dataset(split)
+    #    return ProteinDataLoader(
+    #        test_ds,
+    #        batch_size=self.batch_size,
+    #        shuffle=False,
+    #        pin_memory=self.pin_memory,
+    #        num_workers=self.num_workers,
+    #    )
+
     def _get_dataset(
-        self, split: Literal["training", "validation", "testing"]
+        self,
+        split: Literal[
+            "training",
+            "validation",
+            "test_0.3",
+            "test_0.4",
+            "test_0.5",
+            "test_0.7",
+            "test_0.95",
+        ],
     ) -> ProteinDataset:
+        if hasattr(self, f"{split}_ds"):
+            return getattr(self, f"{split}_ds")
+
         df = self.parse_dataset(split)
         log.info("Initialising Graphein dataset...")
-        return ProteinDataset(
+        ds = ProteinDataset(
             root=str(self.data_dir),
             pdb_dir=str(self.pdb_dir),
             pdb_codes=list(df.pdb),
@@ -147,6 +186,8 @@ class GeneOntologyDataset(ProteinDataModule):
             format=self.format,
             in_memory=self.in_memory,
         )
+        setattr(self, f"{split}_ds", ds)
+        return ds
 
     def train_dataset(self) -> ProteinDataset:
         return self._get_dataset("training")
@@ -154,8 +195,13 @@ class GeneOntologyDataset(ProteinDataModule):
     def val_dataset(self) -> ProteinDataset:
         return self._get_dataset("validation")
 
-    def test_dataset(self) -> ProteinDataset:
-        return self._get_dataset("testing")
+    def test_dataset(
+        self,
+        split: Literal[
+            "test_0.3", "test_0.4", "test_0.5", "test_0.7", "test_0.95"
+        ],
+    ) -> ProteinDataset:
+        return self._get_dataset(split)
 
     def train_dataloader(self) -> ProteinDataLoader:
         return ProteinDataLoader(
@@ -175,9 +221,14 @@ class GeneOntologyDataset(ProteinDataModule):
             num_workers=self.num_workers,
         )
 
-    def test_dataloader(self) -> ProteinDataLoader:
+    def test_dataloader(
+        self,
+        split: Literal[
+            "test_0.3", "test_0.4", "test_0.5", "test_0.7", "test_0.95"
+        ],
+    ) -> ProteinDataLoader:
         return ProteinDataLoader(
-            self.test_dataset(),
+            self.test_dataset(split),
             batch_size=self.batch_size,
             shuffle=False,
             pin_memory=self.pin_memory,
@@ -205,7 +256,16 @@ class GeneOntologyDataset(ProteinDataModule):
         pass
 
     def parse_dataset(
-        self, split: Literal["training", "validation", "testing"]
+        self,
+        split: Literal[
+            "training",
+            "validation",
+            "test_0.3",
+            "test_0.4",
+            "test_0.5",
+            "test_0.7",
+            "test_0.95",
+        ],
     ) -> pd.DataFrame:
         # sourcery skip: remove-unnecessary-else, swap-if-else-branches, switch
         """
@@ -221,8 +281,11 @@ class GeneOntologyDataset(ProteinDataModule):
             data = data.sample(frac=self.dataset_fraction)
         elif split == "validation":
             data = pd.read_csv(self.val_fname, sep="\t", header=None)
-        elif split == "testing":
-            data = pd.read_csv(self.test_fname, sep="\t", header=None)
+        elif split.startswith("test_"):
+            cutoff = int(float(split.split("_")[1]) * 100)
+            data = pd.read_csv(self.test_fname, sep=",")
+            data = data.loc[data[f"<{cutoff}%"] == 1]
+            data = pd.DataFrame(data["PDB-chain"].values)
         else:
             raise ValueError(f"Unknown split: {split}")
 
@@ -304,16 +367,18 @@ if __name__ == "__main__":
     cfg.datamodule.transforms = []
     log.info("Loaded config")
 
-    ds = hydra.utils.instantiate(cfg)
-    print(ds)
-    # labels = ds["datamodule"].parse_labels()
-    ds.datamodule.setup()
-    dl = ds["datamodule"].train_dataloader()
-    for batch in dl:
-        print(batch)
-    dl = ds["datamodule"].val_dataloader()
-    for batch in dl:
-        print(batch)
-    dl = ds["datamodule"].test_dataloader()
-    for batch in dl:
-        print(batch)
+    ds = hydra.utils.instantiate(cfg)["datamodule"]
+    ds.parse_dataset("test_0.3")
+    ds.parse_dataset("test_0.95")
+    # print(ds)
+    ## labels = ds["datamodule"].parse_labels()
+    # ds.datamodule.setup()
+    # dl = ds["datamodule"].train_dataloader()
+    # for batch in dl:
+    #    print(batch)
+    # dl = ds["datamodule"].val_dataloader()
+    # for batch in dl:
+    #    print(batch)
+    # dl = ds["datamodule"].test_dataloader()
+    # for batch in dl:
+    #    print(batch)
