@@ -557,3 +557,18 @@ To build a local version of the project's Sphinx documentation web pages:
 pip install -r docs/.docs.requirements # one-time only
 rm -rf docs/build/ && sphinx-build docs/source/ docs/build/ # NOTE: errors can safely be ignored
 ```
+
+## Citing `ProteinWorkshop`
+
+Please consider citing `proteinworkshop` if it proves useful in your work.
+
+```bibtex
+@inproceedings{
+  jamasb2024evaluating,
+  title={Evaluating Representation Learning on the Protein Structure Universe},
+  author={Arian R. Jamasb, Alex Morehead, Zuobai Zhang, Chaitanya K. Joshi,Kieran Didi, Simon V. Mathis, Charles Harris, Jian Tang, Jianlin Cheng,Pietro Lio, Tom L. Blundell},
+  booktitle={The Twelfth International Conference on Learning Representations},
+  year={2024},
+}
+
+```
