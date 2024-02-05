@@ -142,20 +142,6 @@ class GeneOntologyDataset(ProteinDataModule):
         log.info(f"Encoded {len(labels)} labels for task {self.split}.")
         return labels
 
-    # def get_test_loader(
-    #    self,
-    #    split: Literal["test_0.3", "test_0.4", "test_0.5", "test_0.7", "test_0.95"],
-    # ) -> ProteinDataLoader:
-    #    log.info(f"Getting test loader: {split}")
-    #    test_ds = self._get_dataset(split)
-    #    return ProteinDataLoader(
-    #        test_ds,
-    #        batch_size=self.batch_size,
-    #        shuffle=False,
-    #        pin_memory=self.pin_memory,
-    #        num_workers=self.num_workers,
-    #    )
-
     def _get_dataset(
         self,
         split: Literal[
