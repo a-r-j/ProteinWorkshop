@@ -566,7 +566,7 @@ Please consider citing `proteinworkshop` if it proves useful in your work.
 @inproceedings{
   jamasb2024evaluating,
   title={Evaluating Representation Learning on the Protein Structure Universe},
-  author={Arian R. Jamasb, Alex Morehead, Zuobai Zhang, Chaitanya K. Joshi,Kieran Didi, Simon V. Mathis, Charles Harris, Jian Tang, Jianlin Cheng,Pietro Lio, Tom L. Blundell},
+  author={Arian R. Jamasb, Alex Morehead, Zuobai Zhang, Chaitanya K. Joshi, Kieran Didi, Simon V. Mathis, Charles Harris, Jian Tang, Jianlin Cheng, Pietro Lio, Tom L. Blundell},
   booktitle={The Twelfth International Conference on Learning Representations},
   year={2024},
 }
