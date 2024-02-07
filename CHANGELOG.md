@@ -1,3 +1,8 @@
+### 0.2.6 (UNRELEASED)
+
+### Models
+* Adds missing `pos` attribute to GearNet `required_batch_attributes` (fixes [#73](https://github.com/a-r-j/ProteinWorkshop/issues/73)) [#74](https://github.com/a-r-j/ProteinWorkshop/pull/74)
+
 ### 0.2.5 (28/12/2023)
 
 #### Datasets
