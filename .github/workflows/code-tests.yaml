@@ -20,6 +20,7 @@ jobs:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
         python-version: [3.9, "3.10"]
+        pytorch-version: ["1.13", "2.1.0", "2.2.0"]
     runs-on: ubuntu-latest
 
     steps:
@@ -40,6 +41,10 @@ jobs:
           path: ${{ github.workspace }}/.venv
           key: ${{ matrix.os }}-${{ hashFiles('**/poetry.lock') }}
           restore-keys: ${{ matrix.os }}-
+      - name: Install PyTorch
+        if: steps.cache-dependencies.cache-hit != 'true'
+        run: |
+          conda install pytorch==${{torch-version}} torchvision torchaudio cpuonly -c pytorch
       - name: Install Workshop
         if: steps.cache-dependencies.cache-hit != 'true'
         run: |
