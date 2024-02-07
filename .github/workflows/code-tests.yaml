@@ -44,7 +44,7 @@ jobs:
       - name: Install PyTorch
         if: steps.cache-dependencies.cache-hit != 'true'
         run: |
-          conda install pytorch==${{torch-version}} torchvision torchaudio cpuonly -c pytorch
+          conda install pytorch==${{matrix.torch-version}} torchvision torchaudio cpuonly -c pytorch
       - name: Install Workshop
         if: steps.cache-dependencies.cache-hit != 'true'
         run: |
