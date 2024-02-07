@@ -20,7 +20,7 @@ jobs:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
         python-version: [3.9, "3.10"]
-        pytorch-version: ["1.13", "2.1.0", "2.2.0"]
+        torch-version: ["1.13", "2.1.0", "2.2.0"]
     runs-on: ubuntu-latest
 
     steps:
