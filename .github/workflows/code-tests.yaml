@@ -55,7 +55,6 @@ jobs:
           poetry config virtualenvs.in-project true
           poetry install --no-interaction --without docs
           poetry run install_pyg_workshop
-          poe install-torchdrug
 
       - name: Run tests
         run: |
