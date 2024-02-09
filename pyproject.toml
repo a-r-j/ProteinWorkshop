@@ -61,6 +61,7 @@ umap-learn = "^0.5.4"
 matplotlib = "^3.7.2"
 datashader = "^0.16.0"
 holoviews = "^1.18.0"
+torchdrug = "^0.2.1"
 
 
 [tool.poetry.group.dev.dependencies]
