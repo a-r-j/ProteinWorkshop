@@ -1,3 +1,9 @@
+### 0.2.6 (UNRELEASED)
+
+* Add stage-based conditions to `setup` in `ProteinDataModule` [#72](https://github.com/a-r-j/ProteinWorkshop/pull/72)
+* Improves support for datamodules with multiple test sets. Generalises this to support GO and FOLD. Also adds multiple seq ID.-based splits for GO. [#72](https://github.com/a-r-j/ProteinWorkshop/pull/72)
+
+
 ### 0.2.5 (28/12/2023)
 
 #### Datasets
