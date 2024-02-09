@@ -1,4 +1,5 @@
 """Base classes for protein structure datamodules and datasets."""
+import copy
 import os
 import pathlib
 from abc import ABC, abstractmethod
@@ -81,12 +82,23 @@ class ProteinDataModule(L.LightningDataModule, ABC):
 
     def setup(self, stage: Optional[str] = None):
         self.download()
-        logger.info("Preprocessing training data")
-        self.train_ds = self.train_dataset()
-        logger.info("Preprocessing validation data")
-        self.val_ds = self.val_dataset()
-        logger.info("Preprocessing test data")
-        self.test_ds = self.test_dataset()
+
+        if stage == "fit" or stage is None:
+            logger.info("Preprocessing training data")
+            self.train_ds = self.train_dataset()
+            logger.info("Preprocessing validation data")
+            self.val_ds = self.val_dataset()
+        elif stage == "test":
+            logger.info("Preprocessing test data")
+            if hasattr(self, "test_dataset_names"):
+                for split in self.test_dataset_names:
+                    setattr(self, f"{split}_ds", self.test_dataset(split))
+            else:
+                self.test_ds = self.test_dataset()
+        elif stage == "lazy_init":
+            logger.info("Preprocessing validation data")
+            self.val_ds = self.val_dataset()
+
         # self.class_weights = self.get_class_weights()
 
     @property
@@ -518,7 +530,7 @@ class ProteinDataset(Dataset):
         :return: PyTorch Geometric Data object.
         """
         if self.in_memory:
-            return self._batch_format(self.data[idx])
+            return self._batch_format(copy.deepcopy(self.data[idx]))
 
         if self.out_names is not None:
             fname = f"{self.out_names[idx]}.pt"

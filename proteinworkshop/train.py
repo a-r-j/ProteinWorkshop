@@ -144,7 +144,7 @@ def train_model(
 
     log.info("Initializing lazy layers...")
     with torch.no_grad():
-        datamodule.setup()  # type: ignore
+        datamodule.setup(stage="lazy_init")  # type: ignore
         batch = next(iter(datamodule.val_dataloader()))
         log.info(f"Unfeaturized batch: {batch}")
         batch = model.featurise(batch)
@@ -185,16 +185,13 @@ def train_model(
 
     if cfg.get("test"):
         log.info("Starting testing!")
-        # Run test on all splits if using fold_classification dataset
-        if (
-            cfg.dataset.datamodule._target_
-            == "proteinworkshop.datasets.fold_classification.FoldClassificationDataModule"
-        ):
-            splits = ["fold", "family", "superfamily"]
+        if hasattr(datamodule, "test_dataset_names"):
+            splits = datamodule.test_dataset_names
             wandb_logger = copy.deepcopy(trainer.logger)
-            for split in splits:
-                dataloader = datamodule.get_test_loader(split)
+            for i, split in enumerate(splits):
+                dataloader = datamodule.test_dataloader(split)
                 trainer.logger = False
+                log.info(f"Testing on {split} ({i+1} / {len(splits)})...")
                 results = trainer.test(
                     model=model, dataloaders=dataloader, ckpt_path="best"
                 )[0]
