@@ -91,7 +91,7 @@ def download_processed_data(dataset_name: str, data_dir: Optional[str] = None):
 
     if not os.path.exists(data_dir):
         logger.info(f"Creating data directory at {data_dir}")
-        os.makedirs(parents=True, exist_ok=True)
+        data_dir.mkdir(parents=True, exist_ok=True)
 
     fname = dataset_fname_map[dataset_name]
     save_file = data_dir / f"{fname}.tar.gz"
