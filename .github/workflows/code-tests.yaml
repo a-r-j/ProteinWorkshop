@@ -54,7 +54,6 @@ jobs:
           poetry check --no-interaction
           poetry config virtualenvs.in-project true
           poetry install --no-interaction --without docs
-          poetry run install_pyg_workshop
 
       - name: Run tests
         run: |
