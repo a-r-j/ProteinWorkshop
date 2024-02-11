@@ -232,6 +232,11 @@ class FoldClassificationDataModule(ProteinDataModule):
         )
 
         logger.info(f"Found {len(data)} original examples in {split}")
+
+        data = data.sample(frac=self.dataset_fraction)
+        logger.info(
+            f"Using {len(data)} examples in {split} (fraction: {self.dataset_fraction})"
+        )
         # Assign columns to DataFrame
         if len(data.columns) == 4:
             data.columns = ["id", "length", "label", "label_dup"]
