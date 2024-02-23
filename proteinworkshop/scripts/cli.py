@@ -24,6 +24,15 @@ def main():
         default=False,
         required=False,
     )
+
+    install_parser.add_argument(
+        "--force-cuda-version",
+        type=int,
+        help="set cuda version manually, ignore automatic detection. e.g. 121 for CUDA 12.1",
+        default=None,
+        required=False,
+    )
+
     install_parser.add_argument(
         "dependency", choices=["pyg"], help="dependency help"
     )
@@ -112,7 +121,7 @@ def main():
         # lazy import
         from .install_pyg import _install_pyg
 
-        _install_pyg(args.force_reinstall)
+        _install_pyg(args.force_reinstall, args.force_cuda_version)
 
     elif args.command == "download":
         if args.dataset == "pdb":
