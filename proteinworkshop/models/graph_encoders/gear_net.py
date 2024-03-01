@@ -125,6 +125,7 @@ class GearNet(nn.Module):
         """
         return {
             "x",
+            "pos",
             "edge_index",
             "edge_type",
             "edge_attr",

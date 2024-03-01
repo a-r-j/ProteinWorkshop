@@ -4,7 +4,8 @@ import torch
 from loguru import logger
 
 
-def _install_pyg(force_reinstall: bool = False):
+def _install_pyg(force_reinstall: bool = False,
+                 force_cuda_version: int = None):
     torch_version = torch.__version__
     cuda_version = (
         torch.version.cuda.replace(".", "")
@@ -13,6 +14,10 @@ def _install_pyg(force_reinstall: bool = False):
     )
     logger.info(f"Detected PyTorch version: {torch_version}")
     logger.info(f"Detected CUDA version: {cuda_version}")
+    if force_cuda_version is not None:
+        logger.info(f"Forcing CUDA version to {force_cuda_version}")
+        cuda_version = force_cuda_version
+    
     logger.info(
         f"Installing PyTorch Geometric for PyTorch {torch_version} and CUDA {cuda_version}"
     )

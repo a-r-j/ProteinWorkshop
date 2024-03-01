@@ -42,7 +42,7 @@ def embed(cfg: omegaconf.DictConfig):
     # https://pytorch.org/docs/stable/generated/torch.nn.modules.lazy.LazyModuleMixin.html#torch.nn.modules.lazy.LazyModuleMixin
     log.info("Initializing lazy layers...")
     with torch.no_grad():
-        datamodule.setup()  # type: ignore
+        datamodule.setup(stage="lazy_init")  # type: ignore
         batch = next(iter(datamodule.val_dataloader()))
         log.info(f"Unfeaturized batch: {batch}")
         batch = model.featurise(batch)
