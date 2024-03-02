@@ -104,7 +104,7 @@ def sequence_edges(
         idx_b = torch.arange(1, b.ptr[-1], device=b.ptr.device)
     elif isinstance(b, Data):
         idx_a = torch.arange(0, b.coords.shape[0] - 1, device=b.coords.device)
-        idx_a = torch.arange(1, b.coords.shape[0] - 1, device=b.coords.device)
+        idx_b = torch.arange(1, b.coords.shape[0], device=b.coords.device)
     # Concatenate indices to create edge list
     if direction == "forward":
         e_index = torch.stack([idx_a, idx_b], dim=0)
