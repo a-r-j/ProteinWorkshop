@@ -16,6 +16,8 @@
 ### Command
 * Adds `--force-cuda-version` to `workshop install` [#78](https://github.com/a-r-j/ProteinWorkshop/pull/78)
 
+### Features
+* Fix `sequence_edges` behaviour when argument `b` is a `Data` object [#80](https://github.com/a-r-j/ProteinWorkshop/pull/80)
 
 ### 0.2.5 (28/12/2023)
 
