@@ -8,6 +8,7 @@
 
 * Adds missing `pos` attribute to GearNet `required_batch_attributes` (fixes [#73](https://github.com/a-r-j/ProteinWorkshop/issues/73)) [#74](https://github.com/a-r-j/ProteinWorkshop/pull/74)
 * Fixes PDB download failure due to missing protein data [#77](https://github.com/a-r-j/ProteinWorkshop/pull/77)
+* Add support for handling training/validation OOMs gracefully [#81](https://github.com/a-r-j/ProteinWorkshop/pull/81)
 
 ### Framework
 
@@ -16,6 +17,8 @@
 ### Command
 * Adds `--force-cuda-version` to `workshop install` [#78](https://github.com/a-r-j/ProteinWorkshop/pull/78)
 
+### Features
+* Fix `sequence_edges` behaviour when argument `b` is a `Data` object [#80](https://github.com/a-r-j/ProteinWorkshop/pull/80)
 
 ### 0.2.5 (28/12/2023)
 
