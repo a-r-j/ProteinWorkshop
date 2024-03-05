@@ -12,7 +12,7 @@
 
 [Documentation](https://www.proteins.sh)
 
-This [repository](https://github.com/a-r-j/ProteinWorkshop) provides the code for the protein structure representation learning benchmark detailed in the paper *Evaluating Representation Learning on the Protein Structure Universe*.
+This [repository](https://github.com/a-r-j/ProteinWorkshop) provides the code for the protein structure representation learning benchmark detailed in the paper [*Evaluating Representation Learning on the Protein Structure Universe*](https://openreview.net/forum?id=sTYuRVrdK3).
 
 In the benchmark, we implement numerous [featurisation](https://www.proteins.sh/configs/features) schemes, [datasets](https://www.proteins.sh/configs/dataset) for [self-supervised pre-training](https://proteins.sh/quickstart_component/pretrain.html) and [downstream evaluation](https://proteins.sh/quickstart_component/downstream.html), [pre-training](https://proteins.sh/configs/task) tasks, and [auxiliary tasks](https://proteins.sh/configs/task.html#auxiliary-tasks).
 
@@ -566,7 +566,7 @@ Please consider citing `proteinworkshop` if it proves useful in your work.
 @inproceedings{
   jamasb2024evaluating,
   title={Evaluating Representation Learning on the Protein Structure Universe},
-  author={Arian R. Jamasb, Alex Morehead, Zuobai Zhang, Chaitanya K. Joshi, Kieran Didi, Simon V. Mathis, Charles Harris, Jian Tang, Jianlin Cheng, Pietro Lio, Tom L. Blundell},
+  author={Arian R. Jamasb, Alex Morehead, Chaitanya K. Joshi, Zuobai Zhang, Kieran Didi, Simon V. Mathis, Charles Harris, Jian Tang, Jianlin Cheng, Pietro Lio, Tom L. Blundell},
   booktitle={The Twelfth International Conference on Learning Representations},
   year={2024},
 }
