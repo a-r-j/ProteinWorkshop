@@ -1,5 +1,5 @@
 import abc
-from typing import Callable, Dict, List, Literal, Optional, Set, Union
+from typing import Any, Callable, Dict, List, Literal, Optional, Set, Union
 
 import hydra
 import lightning as L
