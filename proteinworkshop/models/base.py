@@ -1,5 +1,5 @@
 import abc
-from typing import Callable, Dict, List, Literal, Optional, Set, Union
+from typing import Any, Callable, Dict, List, Literal, Optional, Set, Union
 
 import hydra
 import lightning as L
@@ -17,6 +17,7 @@ from torch_geometric.utils import to_dense_batch
 
 from proteinworkshop.models.utils import get_loss
 from proteinworkshop.types import EncoderOutput, Label, ModelOutput
+from proteinworkshop.utils.memory_utils import clean_up_torch_gpu_memory
 
 
 class BaseModel(L.LightningModule, abc.ABC):
@@ -743,3 +744,56 @@ class BenchMarkModel(BaseModel):
         :rtype: torch.Tensor
         """
         return self._do_step(batch, batch_idx, "test")
+
+    def backward(self, loss: torch.Tensor, *args: Any, **kwargs: Dict[str, Any]):
+        """Overrides Lightning's `backward` hook to add an out-of-memory (OOM) check.
+
+        :param loss: The loss value to backpropagate.
+        :param args: Additional positional arguments to pass to `torch.Tensor.backward`.
+        :param kwargs: Additional keyword arguments to pass to `torch.Tensor.backward`.
+        """
+        # by default, do not skip the current batch
+        skip_flag = torch.zeros(
+            (), device=self.device, dtype=torch.bool
+        )  # NOTE: for skipping batches in a multi-device setting
+
+        try:
+            loss.backward(*args, **kwargs)
+        except Exception as e:
+            skip_flag = torch.ones((), device=self.device, dtype=torch.bool)
+            logger.warning(f"Failed the backward pass. Skipping it for the current rank due to: {e}")
+            for p in self.trainer.model.parameters():
+                if p.grad is not None:
+                    del p.grad
+            logger.warning("Finished cleaning up all gradients following the failed backward pass.")
+            if "out of memory" not in str(e) and not torch_dist.is_initialized():
+                raise e
+
+        # NOTE: for skipping batches in a multi-device setting
+        # credit: https://github.com/Lightning-AI/lightning/issues/5243#issuecomment-1553404417
+        if torch_dist.is_initialized():
+            # if any rank skips a batch, then all other ranks need to skip
+            # their batches as well so DDP can properly keep all ranks synced
+            world_size = torch_dist.get_world_size()
+            torch_dist.barrier()
+            result = [torch.zeros_like(skip_flag) for _ in range(world_size)]
+            torch_dist.all_gather(result, skip_flag)
+            any_skipped = torch.sum(torch.stack(result)).bool().item()
+            if any_skipped:
+                logger.warning(
+                    "Skipping backward for all ranks after detecting a failed backward pass."
+                )
+                del loss  # delete the computation graph
+                logger.warning(
+                    "Finished cleaning up the computation graph following one of the rank's failed backward pass."
+                )
+                for p in self.trainer.model.parameters():
+                    if p.grad is not None:
+                        del p.grad
+                logger.warning(
+                    "Finished cleaning up all gradients following one of the rank's failed backward pass."
+                )
+                clean_up_torch_gpu_memory()
+                logger.warning(
+                    "Finished manually freeing up memory following one of the rank's failed backward pass."
+                )
