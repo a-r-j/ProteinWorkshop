@@ -21,6 +21,9 @@
 ### Features
 * Fix `sequence_edges` behaviour when argument `b` is a `Data` object [#80](https://github.com/a-r-j/ProteinWorkshop/pull/80)
 
+### Misc
+* Update ICLR paper link and citation [#82](https://github.com/a-r-j/ProteinWorkshop/pull/82)
+
 ### 0.2.5 (28/12/2023)
 
 #### Datasets
