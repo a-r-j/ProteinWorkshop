@@ -21,6 +21,9 @@
 ### Features
 * Fix `sequence_edges` behaviour when argument `b` is a `Data` object [#80](https://github.com/a-r-j/ProteinWorkshop/pull/80)
 
+### Tasks
+* Deprecate the `torsional_denoising` task until further runtime testing can be performed [#84](https://github.com/a-r-j/ProteinWorkshop/pull/84)
+
 ### Misc
 * Update ICLR paper link and citation [#82](https://github.com/a-r-j/ProteinWorkshop/pull/82)
 
