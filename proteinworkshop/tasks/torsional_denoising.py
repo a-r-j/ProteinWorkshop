@@ -42,6 +42,9 @@ class TorsionalNoiseTransform(T.BaseTransform):
         :param corruption_rate: Amount to scale noise by, defaults to 0.1
         :type corruption_rate: float, optional
         """
+        raise NotImplementedError(
+            "This transform is not fully implemented yet. Please refer to other transforms for the time being."
+        )
         self.corruption_strategy = corruption_strategy
         self.corruption_rate = corruption_rate
 
