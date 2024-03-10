@@ -10,7 +10,7 @@
 * Fixes PDB download failure due to missing protein data [#77](https://github.com/a-r-j/ProteinWorkshop/pull/77)
 * Add support for handling training/validation OOMs gracefully [#81](https://github.com/a-r-j/ProteinWorkshop/pull/81)
 * Add support for handling backward OOMs gracefully [#83](https://github.com/a-r-j/ProteinWorkshop/pull/83)
-* Update GCPNet paper link [#85](https://github.com/a-r-j/ProteinWorkshop/pull/83)
+* Update GCPNet paper link [#85](https://github.com/a-r-j/ProteinWorkshop/pull/85)
 
 ### Framework
 
