@@ -331,7 +331,7 @@ Read [the docs](https://www.proteins.sh) for a full list of modules available in
 
 | Name      |  Source | Protein Specific |
 | ----------- |  ----------- | --------- |
-| `GCPNet`   | [Morehead et al.](https://arxiv.org/abs/2211.02504) | ✓
+| `GCPNet`   | [Morehead et al.](https://academic.oup.com/bioinformatics/article/40/2/btae087/7610880) | ✓
 | `GVP-GNN` | [Jing et al.](https://arxiv.org/abs/2009.01411) | ✓
 | `EGNN`  | [Satorras et al.](https://arxiv.org/abs/2102.09844) | ✗
 
