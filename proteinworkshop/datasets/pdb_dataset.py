@@ -66,10 +66,6 @@ class PDBData:
         pdb_manager.molecule_type(self.molecule_type, update=True)
         log.info(f"{len(pdb_manager.df)} chains remaining")
 
-        # log.info(f"Removing chains experiment types not in selection: {self.experiment_types}...")
-        # pdb_manager.experiment_type(self.experiment_types, update=True)
-        # log.info(f"{len(pdb_manager.df)} chains remaining")
-
         log.info(
             f"Removing chains oligomeric state not in selection: {self.oligomeric_min} - {self.oligomeric_max}..."
         )
@@ -120,9 +116,6 @@ class PDBData:
             splits=split_names,
             split_ratios=self.split_sizes,
         )
-        # log.info(splits["train"])
-        # log.info(pdb_manager.df)
-        # return pdb_manager.df
         log.info(splits["train"])
         return splits
 
@@ -186,8 +179,6 @@ class PDBDataModule(ProteinDataModule):
         self.splits = splits
         breakpoint()
         return splits
-    # def parse_dataset(self) -> pd.DataFrame:
-    #     return self.dataset.create_dataset()
 
     def exclude_pdbs(self):
         pass
