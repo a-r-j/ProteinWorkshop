@@ -14,7 +14,7 @@ from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 from proteinworkshop.datasets.utils import download_pdb_mmtf
 
 class PDBData:
-    def _init_(
+    def __init__(
         self,
         fraction: float,
         min_length: int,
@@ -128,7 +128,7 @@ class PDBData:
 
 
 class PDBDataModule(ProteinDataModule):
-    def _init_(
+    def __init__(
         self,
         path: Optional[str] = None,
         structure_dir: Optional[str] = None,
@@ -141,7 +141,7 @@ class PDBDataModule(ProteinDataModule):
         structure_format: str = "mmtf.gz",
         overwrite: bool = False,
     ):
-        super()._init_()
+        super().__init__()
         self.root = path
         self.dataset = pdb_dataset
         self.dataset.path = path
