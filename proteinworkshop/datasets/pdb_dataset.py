@@ -1,8 +1,10 @@
-from typing import Callable, Iterable, List, Optional
+from typing import Callable, Iterable, List, Optional, Dict
 
 import hydra
 import omegaconf
+import os
 import pandas as pd
+import pathlib
 from graphein.ml.datasets import PDBManager
 from loguru import logger as log
 from torch_geometric.data import Dataset
@@ -10,7 +12,6 @@ from torch_geometric.loader import DataLoader
 
 from proteinworkshop.datasets.base import ProteinDataModule, ProteinDataset
 from proteinworkshop.datasets.utils import download_pdb_mmtf
-
 
 class PDBData:
     def __init__(
@@ -65,10 +66,6 @@ class PDBData:
         pdb_manager.molecule_type(self.molecule_type, update=True)
         log.info(f"{len(pdb_manager.df)} chains remaining")
 
-        # log.info(f"Removing chains experiment types not in selection: {self.experiment_types}...")
-        # pdb_manager.experiment_type(self.experiment_types, update=True)
-        # log.info(f"{len(pdb_manager.df)} chains remaining")
-
         log.info(
             f"Removing chains oligomeric state not in selection: {self.oligomeric_min} - {self.oligomeric_max}..."
         )
@@ -119,9 +116,6 @@ class PDBData:
             splits=split_names,
             split_ratios=self.split_sizes,
         )
-        # log.info(splits["train"])
-        # log.info(pdb_manager.df)
-        # return pdb_manager.df
         log.info(splits["train"])
         return splits
 
@@ -130,20 +124,30 @@ class PDBDataModule(ProteinDataModule):
     def __init__(
         self,
         path: Optional[str] = None,
+        structure_dir: Optional[str] = None,
         pdb_dataset: Optional[PDBData] = None,
         transforms: Optional[Iterable[Callable]] = None,
         in_memory: bool = False,
         batch_size: int = 32,
         num_workers: int = 0,
         pin_memory: bool = False,
+        structure_format: str = "mmtf.gz",
         overwrite: bool = False,
     ):
         super().__init__()
         self.root = path
         self.dataset = pdb_dataset
         self.dataset.path = path
-        self.format = "mmtf.gz"
+        self.format = structure_format
         self.overwrite = overwrite
+
+        if structure_dir is not None:
+            self.structure_dir = pathlib.Path(structure_dir)
+        else:
+            self.structure_dir = pathlib.Path(self.root) / "raw"
+
+        # Create struture directory if it does not exist already
+        self.structure_dir.mkdir(parents=True, exist_ok=True)
 
         self.in_memory = in_memory
 
@@ -157,9 +161,27 @@ class PDBDataModule(ProteinDataModule):
         self.num_workers = num_workers
         self.pin_memory = pin_memory
         self.batch_size = batch_size
+        
 
-    def parse_dataset(self) -> pd.DataFrame:
-        return self.dataset.create_dataset()
+    def parse_dataset(self) -> Dict[str, pd.DataFrame]:
+        if hasattr(self, "splits"):
+            return getattr(self, "splits")
+
+        splits = self.dataset.create_dataset()
+        ids_to_exclude = self.exclude_pdbs()
+
+        if ids_to_exclude is not None:
+            for k, v in splits.items():
+                log.info(f"Split {k} has {len(v)} chains before excluding failing PDB")
+                v["id"] = v["pdb"] + "_" + v["chain"].str.join("")
+                log.info(v)
+                splits[k] = v.loc[v.id.isin(ids_to_exclude) == False]
+                log.info(
+                    f"Split {k} has {len(splits[k])} chains after excluding failing PDB"
+                )
+        self.splits = splits
+        breakpoint()
+        return splits
 
     def exclude_pdbs(self):
         pass
@@ -167,9 +189,15 @@ class PDBDataModule(ProteinDataModule):
     def download(self):
         pdbs = self.parse_dataset()
 
-        for k, v in pdbs:
-            log.info(f"Downloading {k} PDBs")
-            download_pdb_mmtf(pathlib.Path(self.root) / "raw", v.pdb.tolist())
+        for k, v in pdbs.items():
+            log.info(f"Downloading {k} PDBs to {self.structure_dir}")
+            pdblist = v.pdb.tolist()
+            pdblist = [
+                pdb
+                for pdb in pdblist
+                if not os.path.exists(self.structure_dir / f"{pdb}.{self.format}")
+            ]
+            download_pdb_mmtf(self.structure_dir, pdblist)
 
     def parse_labels(self):
         raise NotImplementedError
@@ -223,7 +251,6 @@ class PDBDataModule(ProteinDataModule):
 
 
 if __name__ == "__main__":
-    import pathlib
 
     from proteinworkshop import constants
 
