@@ -4,6 +4,7 @@ datamodule:
   batch_size: 32 # Batch size for dataloader
   num_workers: 4 # Number of workers for dataloader
   pin_memory: True # Pin memory for dataloader
+  structure_format: "mmtf.gz" # Structure format for files to be downloaded
   transforms: ${transforms} # Transforms to apply to dataset examples
   overwrite: False # Whether to overwrite existing dataset files
 

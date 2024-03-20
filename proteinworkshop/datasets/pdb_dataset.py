@@ -146,6 +146,9 @@ class PDBDataModule(ProteinDataModule):
         else:
             self.structure_dir = pathlib.Path(self.root) / "raw"
 
+        # Create struture directory if it does not exist already
+        self.structure_dir.mkdir(parents=True, exist_ok=True)
+
         self.in_memory = in_memory
 
         if transforms is not None:
