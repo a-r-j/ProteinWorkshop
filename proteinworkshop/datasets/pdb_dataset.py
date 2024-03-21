@@ -180,7 +180,6 @@ class PDBDataModule(ProteinDataModule):
                     f"Split {k} has {len(splits[k])} chains after excluding failing PDB"
                 )
         self.splits = splits
-        breakpoint()
         return splits
 
     def exclude_pdbs(self):
