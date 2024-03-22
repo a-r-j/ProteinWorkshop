@@ -26,3 +26,4 @@ datamodule:
     train_val_test: [0.8, 0.1, 0.1] # Cross-validation ratios to use for train, val, and test splits
     split_type: "sequence_similarity" # Split sequences by sequence similarity clustering, other option is "random"
     split_sequence_similiarity: 0.3 # Clustering at 30% sequence similarity (argument is ignored if split_type="random")
+    overwrite_sequence_clusters: False # Previous clusterings at same sequence similarity are reused and not overwritten

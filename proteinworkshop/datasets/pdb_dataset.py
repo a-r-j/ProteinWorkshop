@@ -31,7 +31,8 @@ class PDBData:
         remove_pdb_unavailable: bool,
         train_val_test: List[float],
         split_type: Literal["sequence_similarity", "random"],
-        split_sequence_similiarity: int
+        split_sequence_similiarity: int,
+        overwrite_sequence_clusters: bool
     ):
         self.fraction = fraction
         self.molecule_type = molecule_type
@@ -50,6 +51,7 @@ class PDBData:
         self.train_val_test = train_val_test
         self.split_type = split_type
         self.split_sequence_similarity = split_sequence_similiarity
+        self.overwrite_sequence_clusters = overwrite_sequence_clusters
         self.splits = ["train", "val", "test"]
 
     def create_dataset(self):
@@ -127,7 +129,8 @@ class PDBData:
             log.info(f"Splitting dataset via sequence-similarity split into {self.train_val_test}...")
             log.info(f"Using {self.split_sequence_similarity} sequence similarity for split")
             pdb_manager.cluster(min_seq_id=self.split_sequence_similarity, update=True)
-            splits = pdb_manager.split_clusters(pdb_manager.df, update=True)
+            splits = pdb_manager.split_clusters(
+                pdb_manager.df, update=True, overwrite = self.overwrite_sequence_clusters)
 
         log.info(splits["train"])
         return splits
