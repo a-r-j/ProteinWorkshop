@@ -1,4 +1,4 @@
-from typing import Callable, Iterable, List, Optional, Dict
+from typing import Callable, Iterable, List, Optional, Dict, Literal
 
 import hydra
 import omegaconf
@@ -30,7 +30,7 @@ class PDBData:
         remove_non_standard_residues: bool,
         remove_pdb_unavailable: bool,
         split_ratios: List[float],
-        split_type: str,
+        split_type: Literal["sequence_similarity", "random"],
         split_sequence_similiarity: int
     ):
         self.fraction = fraction
@@ -46,6 +46,7 @@ class PDBData:
         self.remove_pdb_unavailable = remove_pdb_unavailable
         self.min_length = min_length
         self.max_length = max_length
+        assert sum(split_ratios) == 1, f"split_ratios need to sum to 1, but sum to {sum(split_ratios)}"
         self.split_ratios = split_ratios
         self.split_type = split_type
         self.split_sequence_similarity = split_sequence_similiarity
@@ -125,7 +126,7 @@ class PDBData:
         elif self.split_type == "sequence_similarity":
             log.info(f"Splitting dataset via sequence-similarity split into {self.split_ratios}...")
             log.info(f"Using {self.split_sequence_similarity} sequence similarity for split")
-            pdb_manager.cluster(min_seq_id=self.split_sequence_similarity, update=True, overwrite=True)
+            pdb_manager.cluster(min_seq_id=self.split_sequence_similarity, update=True)
             splits = pdb_manager.split_clusters(pdb_manager.df, update=True)
 
         log.info(splits["train"])
