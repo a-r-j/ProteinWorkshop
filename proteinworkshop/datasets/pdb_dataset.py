@@ -29,7 +29,7 @@ class PDBData:
         remove_ligands: List[str],
         remove_non_standard_residues: bool,
         remove_pdb_unavailable: bool,
-        split_ratios: List[float],
+        train_val_test: List[float],
         split_type: Literal["sequence_similarity", "random"],
         split_sequence_similiarity: int
     ):
@@ -46,15 +46,15 @@ class PDBData:
         self.remove_pdb_unavailable = remove_pdb_unavailable
         self.min_length = min_length
         self.max_length = max_length
-        assert sum(split_ratios) == 1, f"split_ratios need to sum to 1, but sum to {sum(split_ratios)}"
-        self.split_ratios = split_ratios
+        assert sum(train_val_test) == 1, f"train_val_test need to sum to 1, but sum to {sum(train_val_test)}"
+        self.train_val_test = train_val_test
         self.split_type = split_type
         self.split_sequence_similarity = split_sequence_similiarity
         self.splits = ["train", "val", "test"]
 
     def create_dataset(self):
         log.info(f"Initializing PDBManager in {self.path}...")
-        pdb_manager = PDBManager(root_dir=self.path, splits=self.splits, split_ratios=self.split_ratios)
+        pdb_manager = PDBManager(root_dir=self.path, splits=self.splits, train_val_test=self.train_val_test)
         num_chains = len(pdb_manager.df)
         log.info(f"Starting with: {num_chains} chains")
 
@@ -116,15 +116,15 @@ class PDBData:
             log.info(f"{len(pdb_manager.df)} chains remaining")
 
         if self.split_type == "random":
-            log.info(f"Splitting dataset via random split into {self.split_ratios}...")
+            log.info(f"Splitting dataset via random split into {self.train_val_test}...")
             splits = pdb_manager.split_df_proportionally(
                 df=pdb_manager.df,
                 splits=self.splits,
-                split_ratios=self.split_ratios,
+                train_val_test=self.train_val_test,
             )
         
         elif self.split_type == "sequence_similarity":
-            log.info(f"Splitting dataset via sequence-similarity split into {self.split_ratios}...")
+            log.info(f"Splitting dataset via sequence-similarity split into {self.train_val_test}...")
             log.info(f"Using {self.split_sequence_similarity} sequence similarity for split")
             pdb_manager.cluster(min_seq_id=self.split_sequence_similarity, update=True)
             splits = pdb_manager.split_clusters(pdb_manager.df, update=True)
