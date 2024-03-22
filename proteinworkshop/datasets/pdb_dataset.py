@@ -29,7 +29,9 @@ class PDBData:
         remove_ligands: List[str],
         remove_non_standard_residues: bool,
         remove_pdb_unavailable: bool,
-        split_sizes: List[float],
+        split_ratios: List[float],
+        split_type: str,
+        split_sequence_similiarity: int
     ):
         self.fraction = fraction
         self.molecule_type = molecule_type
@@ -44,11 +46,14 @@ class PDBData:
         self.remove_pdb_unavailable = remove_pdb_unavailable
         self.min_length = min_length
         self.max_length = max_length
-        self.split_sizes = split_sizes
+        self.split_ratios = split_ratios
+        self.split_type = split_type
+        self.split_sequence_similarity = split_sequence_similiarity
+        self.splits = ["train", "val", "test"]
 
     def create_dataset(self):
         log.info(f"Initializing PDBManager in {self.path}...")
-        pdb_manager = PDBManager(root_dir=self.path)
+        pdb_manager = PDBManager(root_dir=self.path, splits=self.splits, split_ratios=self.split_ratios)
         num_chains = len(pdb_manager.df)
         log.info(f"Starting with: {num_chains} chains")
 
@@ -109,13 +114,20 @@ class PDBData:
             pdb_manager.remove_unavailable_pdbs(update=True)
             log.info(f"{len(pdb_manager.df)} chains remaining")
 
-        log.info(f"Splitting dataset into {self.split_sizes}...")
-        split_names = ["train", "val", "test"]
-        splits = pdb_manager.split_df_proportionally(
-            df=pdb_manager.df,
-            splits=split_names,
-            split_ratios=self.split_sizes,
-        )
+        if self.split_type == "random":
+            log.info(f"Splitting dataset via random split into {self.split_ratios}...")
+            splits = pdb_manager.split_df_proportionally(
+                df=pdb_manager.df,
+                splits=self.splits,
+                split_ratios=self.split_ratios,
+            )
+        
+        elif self.split_type == "sequence_similarity":
+            log.info(f"Splitting dataset via sequence-similarity split into {self.split_ratios}...")
+            log.info(f"Using {self.split_sequence_similarity} sequence similarity for split")
+            pdb_manager.cluster(min_seq_id=self.split_sequence_similarity, update=True, overwrite=True)
+            splits = pdb_manager.split_clusters(pdb_manager.df, update=True)
+
         log.info(splits["train"])
         return splits
 
