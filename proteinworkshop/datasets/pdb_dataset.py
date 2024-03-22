@@ -56,7 +56,7 @@ class PDBData:
 
     def create_dataset(self):
         log.info(f"Initializing PDBManager in {self.path}...")
-        pdb_manager = PDBManager(root_dir=self.path, splits=self.splits, train_val_test=self.train_val_test)
+        pdb_manager = PDBManager(root_dir=self.path, splits=self.splits, split_ratios=self.train_val_test)
         num_chains = len(pdb_manager.df)
         log.info(f"Starting with: {num_chains} chains")
 
