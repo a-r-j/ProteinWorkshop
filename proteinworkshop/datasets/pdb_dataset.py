@@ -2,6 +2,7 @@ from typing import Callable, Iterable, List, Optional, Dict, Literal
 
 import hydra
 import omegaconf
+import numpy as np
 import os
 import pandas as pd
 import pathlib
@@ -30,9 +31,10 @@ class PDBData:
         remove_non_standard_residues: bool,
         remove_pdb_unavailable: bool,
         train_val_test: List[float],
-        split_type: Literal["sequence_similarity", "random"],
+        split_type: Literal["sequence_similarity", "time_cutoff", "random"],
         split_sequence_similiarity: int,
-        overwrite_sequence_clusters: bool
+        overwrite_sequence_clusters: bool,
+        split_time_frames: List[str]
     ):
         self.fraction = fraction
         self.molecule_type = molecule_type
@@ -52,6 +54,7 @@ class PDBData:
         self.split_type = split_type
         self.split_sequence_similarity = split_sequence_similiarity
         self.overwrite_sequence_clusters = overwrite_sequence_clusters
+        self.split_time_frames = [np.datetime64(date) for date in split_time_frames]
         self.splits = ["train", "val", "test"]
 
     def create_dataset(self):
@@ -128,9 +131,15 @@ class PDBData:
         elif self.split_type == "sequence_similarity":
             log.info(f"Splitting dataset via sequence-similarity split into {self.train_val_test}...")
             log.info(f"Using {self.split_sequence_similarity} sequence similarity for split")
-            pdb_manager.cluster(min_seq_id=self.split_sequence_similarity, update=True)
-            splits = pdb_manager.split_clusters(
-                pdb_manager.df, update=True, overwrite = self.overwrite_sequence_clusters)
+            pdb_manager.cluster(min_seq_id=self.split_sequence_similarity, update=True,
+                                 overwrite = self.overwrite_sequence_clusters)
+            splits = pdb_manager.split_clusters(pdb_manager.df, update=True)
+        
+        elif self.split_type == "time_cutoff":
+            log.info(f"Splitting dataset via time_cutoff split into {self.train_val_test}...")
+            log.info(f"Using {self.split_time_frames} dates for split")
+            pdb_manager.split_time_frames = self.split_time_frames
+            splits = pdb_manager.split_by_deposition_date(df=pdb_manager.df, update=True)
 
         log.info(splits["train"])
         return splits
