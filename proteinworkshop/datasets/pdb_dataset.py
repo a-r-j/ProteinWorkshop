@@ -131,9 +131,9 @@ class PDBData:
         elif self.split_type == "sequence_similarity":
             log.info(f"Splitting dataset via sequence-similarity split into {self.train_val_test}...")
             log.info(f"Using {self.split_sequence_similarity} sequence similarity for split")
-            pdb_manager.cluster(min_seq_id=self.split_sequence_similarity, update=True)
-            splits = pdb_manager.split_clusters(
-                pdb_manager.df, update=True, overwrite = self.overwrite_sequence_clusters)
+            pdb_manager.cluster(min_seq_id=self.split_sequence_similarity, update=True,
+                                 overwrite = self.overwrite_sequence_clusters)
+            splits = pdb_manager.split_clusters(pdb_manager.df, update=True)
         
         elif self.split_type == "time_cutoff":
             log.info(f"Splitting dataset via time_cutoff split into {self.train_val_test}...")
