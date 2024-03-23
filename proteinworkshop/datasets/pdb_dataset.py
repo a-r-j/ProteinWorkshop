@@ -34,7 +34,7 @@ class PDBData:
         split_type: Literal["sequence_similarity", "time_cutoff", "random"],
         split_sequence_similiarity: int,
         overwrite_sequence_clusters: bool,
-        time_cutoffs_splits: List[str]
+        split_time_frames: List[str]
     ):
         self.fraction = fraction
         self.molecule_type = molecule_type
@@ -54,7 +54,7 @@ class PDBData:
         self.split_type = split_type
         self.split_sequence_similarity = split_sequence_similiarity
         self.overwrite_sequence_clusters = overwrite_sequence_clusters
-        self.time_cutoffs_splits = [np.datetime(date) for date in time_cutoffs_splits]
+        self.split_time_frames = [np.datetime64(date) for date in split_time_frames]
         self.splits = ["train", "val", "test"]
 
     def create_dataset(self):
@@ -137,7 +137,8 @@ class PDBData:
         
         elif self.split_type == "time_cutoff":
             log.info(f"Splitting dataset via time_cutoff split into {self.train_val_test}...")
-            log.info(f"Using {self.time_cutoffs_splits} dates for split")
+            log.info(f"Using {self.split_time_frames} dates for split")
+            pdb_manager.split_time_frames = self.split_time_frames
             splits = pdb_manager.split_by_deposition_date(df=pdb_manager.df, update=True)
 
         log.info(splits["train"])

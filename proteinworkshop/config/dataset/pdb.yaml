@@ -24,7 +24,8 @@ datamodule:
     remove_non_standard_residues: True # Include only proteins containing standard amino acid residues
     remove_pdb_unavailable: True # Include only proteins that are available to download
     train_val_test: [0.8, 0.1, 0.1] # Cross-validation ratios to use for train, val, and test splits
-    split_type: "sequence_similarity" # Split sequences by sequence similarity clustering, other option is "random"
+    split_type: "sequence_similarity" # Split sequences by sequence similarity clustering, other options are "random" and "time_cutoff"
     split_sequence_similiarity: 0.3 # Clustering at 30% sequence similarity (argument is ignored if split_type!="sequence_similarity")
-    time_cutoffs_splits: ["2020-01-01", "2021-01-01", "2023-03-01"] # Time-cutoffs for train, val and test set (argument is ignored if split_type!="time_cutoff")
-    overwrite_sequence_clusters: False # Previous clusterings at same sequence similarity are reused and not overwritten
+    overwrite_sequence_clusters: False # Previous clusterings at same sequence similarity are reused and not overwritten (argument is ignored if split_type!="sequence_similarity")
+    split_time_frames: ["2020-01-01", "2021-01-01", "2023-03-01"] # Time-cutoffs for train, val and test set (argument is ignored if split_type!="time_cutoff")
+
