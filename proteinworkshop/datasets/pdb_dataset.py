@@ -17,11 +17,6 @@ from proteinworkshop.datasets.utils import download_pdb_mmtf
 class PDBData:
     def __init__(
         self,
-        split_type: Literal["sequence_similarity", "time_cutoff", "random"] = "random",
-        split_sequence_similiarity: Optional[int] = None,
-        overwrite_sequence_clusters: Optional[bool] = False,
-        split_time_frames: Optional[List[str]] = None,
-        train_val_test: List[float],
         fraction: float,
         min_length: int,
         max_length: int,
@@ -35,6 +30,12 @@ class PDBData:
         remove_ligands: List[str],
         remove_non_standard_residues: bool,
         remove_pdb_unavailable: bool,
+        train_val_test: List[float],
+        split_type: Literal["sequence_similarity", "time_cutoff", "random"] = "random",
+        split_sequence_similiarity: Optional[int] = None,
+        overwrite_sequence_clusters: Optional[bool] = False,
+        split_time_frames: Optional[List[str]] = None,
+
     ):
         self.fraction = fraction
         self.molecule_type = molecule_type
