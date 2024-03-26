@@ -55,7 +55,13 @@ class PDBData:
         self.split_type = split_type
         self.split_sequence_similarity = split_sequence_similiarity
         self.overwrite_sequence_clusters = overwrite_sequence_clusters
-        self.split_time_frames = [np.datetime64(date) for date in split_time_frames]
+        if split_time_frames is None:
+            self.split_time_frames = split_time_frames
+        else:
+            try:
+                self.split_time_frames = [np.datetime64(date) for date in split_time_frames]
+            except:
+                raise TypeError(f"{split_time_frames} does not contain valid dates for np.datetime64 format")
         self.splits = ["train", "val", "test"]
 
     def create_dataset(self):
