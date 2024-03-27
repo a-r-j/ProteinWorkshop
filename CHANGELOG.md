@@ -27,6 +27,7 @@
 
 ### Misc
 * Update ICLR paper link and citation [#82](https://github.com/a-r-j/ProteinWorkshop/pull/82)
+* Add an optional group for installing plotting and analysis specific libraries to lighten the install of the core framework [#90](https://github.com/a-r-j/ProteinWorkshop/pull/90)
 
 ### 0.2.5 (28/12/2023)
 
