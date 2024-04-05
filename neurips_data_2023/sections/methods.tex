@@ -1,24 +1,47 @@
 \section{Methods and Experimental Setup}
-\begin{itemize}
-    \item Paragraph justifying our choices of a subset of tasks and models
-\end{itemize}
 
+\textbf{Overview. }
+To demonstrate the utility of our benchmark, we investigate how combinations of protein structure representation, architecture choice and pretraining/auxiliary tasks affect predictive performance across a range of tasks. The tasks are selected to focus on important real-world structural annotation tasks and such that we can evaluate these combinations in terms of both the local and global representational power. To this end, we select state-of-the-art protein structure encoders and generic geometric GNN architectures that span the design space of geometric GNN models with regard to both message passing body order and tensor order \citep{joshi2023expressive}. 
+We evaluate several structural representations that, to varying degrees, capture the full detail of the protein structure.
 
-\paragraph{Architectures}
-We evaluate X geometric GNN architectures, spanning the range of message passing body order and tensor order. 
+\textbf{Architectures. }
+% To investigate the effectiveness of geometric graph neural networks, we provide a unified implementation of several rotationally invariant and equivariant architectures spanning the range of message passing body order and tensor order \citep{joshi2023expressive}, including general-purpose as well as protein-specific models. Implementation details and hyperparameters are provided in the Appendix. Note, for our ESM sequence baseline, * denotes results taken from \citet{zhang2023protein}.
+We provide a unified implementation of several rotation invariant and equivariant architectures. 
+We benchmark 4 general purpose models: SchNet \citep{schutt2018schnet}, EGNN \citep{satorras2021n}, TFN \citep{thomas2018tensor}, MACE \citep{batatia2022mace}; and 2 protein-specific architectures: GCPNet \citep{morehead2024geometry}, GearNet \citep{zhang2023protein}.
+% See Appendix \ref{app:gnns} for detailed equations and hyperparameters.
+We also compare geometric GNNs to the pretrained sequence-based language model ESM \citep{lin2022language} augmented with structural featurisation.
+We chose the 650M pretrained ESM2 because this is the scale at which significant structure-related abilities were observed for ESM.
+% Our results further reinforce their observation – we find that combining ESM2 650M with our structural featurisation yields extremely strong results on Fold classification tasks.
 
+\textbf{Featurisation Schemes. } We consider five featurisation schemes, progressively increasing the amount of structural information provided to the model by incorporating sequence positional information, virtual dihedral and bond angles over the
+\caa 
+trace, backbone torsion angles, and sidechain torsion angles. Featurisation schemes are detailed in Table \ref{tab:features} in the Appendix.
 
-\paragraph{Pre-training Dataset} For all pre-training tasks we use the \texttt{afdb\_rep\_v4} dataset compiled by \citet{BarrioHernandez2023}. This dataset contains 2.27 million representative structures, identified through large-scale structural-similarity based clustering of the 214 million structures contained in the AlphaFold Database \cite{Varadi2021} using FoldSeek \cite{vanKempen2023}. This dataset therefore provides a rich diversity of protein structures and is substantially larger than any other previously used structure-based pre-training corpus that we are aware of, whilst remaining of a size that is amenable to experimentation.
+\textbf{Pretraining Dataset. } For all pretraining experiments we use AlphaFoldDB \citep{BarrioHernandez2023}. 
+This dataset provides a rich diversity of 2.27 million non-redundant protein structures and, to our knowledge, is substantially more diverse than any other previously used structure-based pretraining corpus, whilst remaining of a size that is amenable to experimentation.
+Models pretrained on AlphaFoldDB should, in principle, exhibit strong generalisation to the currently known (and predicted) natural protein structure universe as it would have `seen'
+ the same protein fold during pretraining.
+To facilitate working with large-scale AlphaFoldDB and ESMAtlas, we developed storage-efficient dataloaders based on FoldComp \citet{Kim2023}, described in Appendix \ref{app:pretrain-data}.
 
-\paragraph{Featurisation Schemes}
-The benchmark includes comprehensive featurisation schemes for both scalar and vector-valued feature computation. 
+\textbf{Pretraining and Auxiliary Tasks. } In our evaluation, we focus predominantly on denoising-based pretraining and auxiliary tasks as these are comparatively less explored than contrastive or masked-attribute prediction tasks \citep{zhang2023protein}. We consider five pretraining tasks: (1) structure-based denoising, (2) sequence denoising, (3) torsional denoising, (4) inverse folding and (5) pLDDT prediction. Structure and sequence denoising are also used as auxiliary tasks in our experiments.
+We also investigate an inverse folding pre-training task which we subsequently finetune on the CATH dataset for benchmarking inverse folding as a downstream task (see below).
+% The benchmark supports several additional pretraining tasks detailed in Appendix \ref{app:pretraining-tasks}.
 
+\textbf{Noising Schemes. } For structure-based denoising we draw i.i.d. noise samples from a Gaussian distribution and scale by $\sigma=0.1$ to corrupt the input coordinates or dihedral angles. Geometric scalar and vector-valued features are computed from the noised structure, \textit{i.e.}
+$\tilde{\mathcal{G}} = (\mathcal{V}, \tilde{\mathcal{E}}, \tilde{\mathbf{X}}, \tilde{\mathbf{S}}, \tilde{\mathbf{V}}), \mathrm{ where }\ \tilde{\vx_{i}} = \vx_{i} + \sigma \bm{\epsilon}_{i}\ \mathrm{ and }\ \bm{\epsilon}_{i} \sim \mathcal{N}(0, I_3).
+$
+For sequence-based denoising, we use the mutation strategy and corrupt 25\% of the residues in each protein. When sequence denoising is used as an auxiliary task, we weight the loss with a coefficient $\lambda = 0.1$, similar to NoisyNodes \citep{godwin2021simple}. 
 
-\paragraph{Noising Schemes} For structure-based denoising we draw noise samples from a guassian distribution and scale by 0.1. For structure-based denoising, we use the mutation strategy and corrupt 25\% of the residues in each protein. When denoising is used as an auxillary task, we weight the loss with a coefficient $\lambda = 0.1$, similar to NoisyNodes \cite{godwin2021simple}.
+% \hl{
+% \textbf{Downstream Tasks. } Due to the large hardware requirements of our initial benchmark, we currently evaluate on two representative structure-based tasks, \textbf{fold classification} (to evaluate methods' global protein representations) and \textbf{inverse folding} (to evaluate methods' local protein representations), whereas six other tasks are available in our proposed benchmark. 
+% }
+% Appendix \ref{app:datasheets} contains detailed documentation for all 8 downstream tasks available in our benchmark. 
+% To address this limitation, in the near future, we plan to add supplementary experiments covering more of such tasks in our benchmark results.
 
-\paragraph{Training}
-We use a ReduceLRonPlateau learning rate scheduler for the downstream tasks with a patience of 5 epochs and a reduction factor of 0.6. For the pre-training tasks, we use a linear warmup with cosine decay schedule.
-
-
-
-\subsection{Baselines}
+\textbf{Training. }
+As we are interested in benchmarking large-scale datasets and models, we try to consistently use six layers for all models, each with 512 hidden channels. For equivariant GNNs, we reduced the number of layers and hidden channels to fit 80GB of GPU memory on one NVIDIA A100 GPU.
+For downstream tasks, we set the maximum number of epochs to 150 and use the Adam optimizer with a batch size of 32 and ReduceLROnPlateau learning rate scheduler, monitoring the validation metric with patience of 5 epochs and reduction of 0.6. 
+See Appendix \ref{app:hyperparameters} for details on hyperparameter tuning for optimal learning rates and dropouts for each architecture.
+We train models to convergence, monitoring the validation metric and performing early stopping with a patience of 10 epochs.
+Pretraining is performed for 10 epochs using a linear warm-up with cosine schedule. 
+We report standard deviations over three runs across three random seeds.

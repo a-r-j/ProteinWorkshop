@@ -1,10 +1,220 @@
 \section{Results}
+%\subsection{Baseline Results without Pre-training}
+\subsection{Auxiliary Tasks Consistently Improve Performance Over Baselines}
+
+We first set out to determine (1) whether invariant or equivariant models perform better on our set of tasks, (2) which input representation is the best for each respective task and (3) whether auxiliary denoising tasks improve model performance. Table \ref{tab:baseline_graph_classification_results} shows that (1) models that perform message passing on line graphs of protein structures (e.g., GearNet-Edge) produce the best representations for fold classification, whereas equivariant models produce the best representations for protein-protein interaction site prediction. (2) Notably, featurising models with C$\alpha$ atoms and virtual angles provide the best performance overall. The same set of results also suggests that (3) both structure denoising and particularly sequence denoising are useful auxiliary tasks for training protein structure encoders, with the exception of inverse folding.
+
+\begin{table}[!ht]
+
+\caption{Baseline tasks without pre-training. Results are given as: \colorbox{orange!20}{no auxiliary task} / \colorbox{blue!20}{+sequence denoising} / \colorbox{green!20}{+structure denoising}. Coloured boxes mark the best auxiliary tasks per method and featurisation, underline the best featurisation per method and bold the best method, all on a per-task basis. Greyed cells denote invalid task-setup combinations (e.g. inverse folding and sequence denoising as auxiliary task). Denoising auxiliary tasks consistently improve performance across architectures. Lines denote configurations that failed to converge after 6 hours.} 
+\label{tab:baseline_graph_classification_results}
+
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{cllcccccc|cccllll}
+\toprule
+
+\multirow{2}{*}{\textbf{Method}} & \multicolumn{1}{c}{\multirow{2}{*}{\textbf{Features}}} & \multicolumn{1}{c}{} & %\multicolumn{1}{c}{\multirow{2}{*}{\textbf{EC} ($\uparrow$)}}
+& & \multicolumn{3}{c}{\textbf{Fold} ($\uparrow$)} & &
+%\multirow{2}{*}{\textbf{PTM} ($\uparrow$)} 
+& \multirow{2}{*}{\textbf{PPI Site} ($\uparrow$)} & \multirow{2}{*}{\textbf{Inverse Folding} ($\downarrow$)} \\
+\cmidrule{6-8}
+ & \multicolumn{1}{c}{} &  & \multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \textbf{Fold} & \textbf{Family} & \textbf{Superfamily} &  &  &  &  &  &  &  \\
+\midrule 
+\multirow{5}{*}{SchNet} & \caa &  & 
+%49.70 / \colorbox{blue!20}{57.45} / 44.50 
+&  & 12.23 / \colorbox{blue!20}{14.89} / 12.98 & \colorbox{orange!20}{68.75} / 65.50 / 65.15 & 16.57 / \colorbox{blue!20}{17.28} / 15.80  &  &  & \colorbox{orange!20}{95.52} /  94.82 & \cellcolor{gray!20} &  &  &  \\
+
+ & \caa + Seq. &  & 
+ %46.44 / \colorbox{blue!20}{53.83} / 45.25 
+ &  & \colorbox{orange!20}{16.01} / 14.41 / 14.50 & \colorbox{orange!20}{62.45} / 60.58 / 61.95 &  18.11 / \colorbox{blue!20}{18.51} / 14.64 &  &  & 95.51 / \colorbox{green!20}{\underline{95.57}} & \colorbox{orange!20}{12.07} / 12.32 &  &  &  \\
+ 
+ & \caa + \virt &  & 
+ %\colorbox{orange!20}{55.56} / -------- / 50.90 
+ &  & 14.90 / \colorbox{blue!20}{16.98} / 15.98 & 71.58 / \colorbox{blue!20}{74.17} / 71.46 & 21.56 / \colorbox{blue!20}{23.39} / 20.44 &  &  &  95.43 / \colorbox{green!20}{95.59} & \colorbox{orange!20}{\underline{11.15}} / 11.46 &  &  &  \\
+ 
+ & \caa + \virt + \bb &  &
+ %54.81 / \colorbox{blue!20}{\underline{61.23}} / 54.81
+ &  & 15.99 / \colorbox{blue!20}{\underline{19.50}} / 16.86 & 72.75 / \colorbox{blue!20}{\underline{75.17}} / 72.55 & \colorbox{orange!20}{\underline{24.44}} / 22.89 / 23.50 &  &  & 95.42 / \colorbox{green!20}{95.56} & \colorbox{orange!20}{11.20} / 11.41 &  &  &  \\
+ 
+ & \caa + \virt + \bb + \schi &  & 
+ %55.21 / \colorbox{blue!20}{57.89} / -------- 
+ &  & 13.01 / \colorbox{blue!20}{15.43} / 14.36 & 71.54 / 71.39 / \colorbox{green!20}{71.55} & 22.31 / 21.92 / \colorbox{green!20}{23.18} &  &  & \colorbox{orange!20}{95.47} / 95.46 & \cellcolor{gray!20} &  &  &  \\
+ 
+\midrule
+\multicolumn{1}{l}{\multirow{5}{*}{DimeNet}} & \caa &  &
+%-------- / -------- / 27.99 
+& & 16.34 / \colorbox{blue!20}{18.37} / 15.06 & 71.87 / \colorbox{blue!20}{74.08} / 55.37 & 21.92 / \colorbox{blue!20}{23.36} /15.47 &  &  & 95.54 / \colorbox{green!20}{\underline{95.66}} &  \cellcolor{gray!20}&  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + Seq &  & 
+%-------- / -------- / 17.72 
+&  & 16.30 / \colorbox{blue!20}{20.31} / 15.18 & 66.64 / \colorbox{blue!20}{72.99} / 48.42 & 20.36 / \colorbox{blue!20}{25.32} / 13.54 &  &  & 95.49 / \colorbox{green!20}{95.61}  & 10.64 / -------- &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt &  & 
+%-------- / -------- / 30.99
+&  & \colorbox{orange!20}{18.14} / 16.36 / 16.14 & \colorbox{orange!20}{70.45} / 62.38 / 62.06 & \colorbox{orange!20}{21.04} / 19.51 / 17.79 & &  & \colorbox{orange!20}{95.53} / 95.45 & \colorbox{orange!20}{10.18} /  11.23 &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb &  & 
+%-------- / -------- / 31.00
+&  & 
+18.39 / \colorbox{blue!20}{\underline{21.65}} / -------- & 72.94 / \colorbox{blue!20}{\underline{77.14}} / -------- & 23.23 / \colorbox{blue!20}{\underline{25.36}} / -------- &  &  &  95.52 / \colorbox{green!20}{95.60}  & \underline{\textbf{9.91}} / -------- &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb + \schi &  & 
+%-------- / -------- / -------- 
+&  &  16.83 / \colorbox{blue!20}{19.73} / -------- & 69.67 / \colorbox{blue!20}{75.59} / -------- & 22.03 / \colorbox{blue!20}{23.88} / -------- &  &  & 95.42 / \colorbox{green!20}{95.52} &  \cellcolor{gray!20} &  &  &  \\
+\midrule
+
+\multicolumn{1}{l}{\multirow{5}{*}{GearNet-Edge}} & \caa &  &  &  & 32.45 / 33.01 / \colorbox{green!20}{33.59} & 95.03 / \colorbox{blue!20}{95.45} / 94.74 & 45.59 /\colorbox{blue!20}{48.44} / 48.28  & & & 94.62 / \colorbox{green!20}{95.27}  &  \cellcolor{gray!20} &  & \\
+
+\multicolumn{1}{l}{} & \caa + Seq &  &  &  & 30.02 / 30.85 / \colorbox{green!20}{32.14} & \colorbox{orange!20}{94.84} / 93.88 / 94.74  & 45.65 / \colorbox{blue!20}{46.86} / 46.69  &  &  &  94.71 /  \colorbox{green!20}{95.47} & -------- / --------   &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt &  &  &  &27.86 / \colorbox{blue!20}{\textbf{\underline{34.86}}} / 33.48 & 91.16 / \colorbox{blue!20}{\textbf{\underline{96.21}}} / 95.51  & 43.10 / \colorbox{blue!20}{\textbf{\underline{49.81}}} / 48.51  &  &  & 94.70 / \colorbox{green!20}{95.59}  & 12.23 / --------  \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb &  &  &  &  29.68 / 29.98 / \colorbox{green!20}{31.90} & 93.56 / 92.79 / \colorbox{green!20}{95.46} & 44.78 / 45.71 / \colorbox{green!20}{47.27}  & & & 94.94 / \colorbox{green!20}{95.59} & 12.28 / -------- &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb + \schi &  &  &  & -------- / -------- / -------- & -------- / -------- / -------- & -------- / -------- / -------- &  &  &  -------- / --------  & \cellcolor{gray!20}  &  &  &   \\
+\midrule
 
 
-\subsection{Baseline Results on Graph Classification Tasks}
+
+\multicolumn{1}{l}{\multirow{5}{*}{EGNN}} & \caa &  &  &  & 13.55 / \colorbox{blue!20}{14.08} / -------- & \colorbox{orange!20}{71.80} / 65.82 / --------& \colorbox{orange!20}{18.68} / 14.08 / --------&  &  & 95.89 /\colorbox{green!20}{95.98} & \cellcolor{gray!20} &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + Seq &  &  &  & 12.64 / \colorbox{blue!20}{12.77} / -------- & \colorbox{orange!20}{68.70} / 59.31 / -------- & \colorbox{orange!20}{15.86} / 11.66  / --------&  &  & 96.27 / \colorbox{green!20}{\underline{96.30}}  & \colorbox{orange!20}{11.93} / 12.05 &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt &  &  &  & 23.07 / \colorbox{blue!20}{24.73} / -------- & \colorbox{orange!20}{\underline{90.06}} / 89.35 / -------- & 33.19 / \colorbox{blue!20}{35.39} / -------- &  &  & \colorbox{orange!20}{96.13} /  95.94 &  \colorbox{orange!20}{\underline{11.44}} / 11.46 &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb &  &  &  & 22.84 / \colorbox{blue!20}{\underline{25.63}} / -------- & 88.11 / \colorbox{blue!20}{89.62} / -------- & 33.83 / \colorbox{blue!20}{\underline{36.95}} / -------- &  &  & 95.89 / \colorbox{green!20}{96.25} & \colorbox{orange!20}{11.52} / 11.75 &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb + \schi &  &  &  & \colorbox{orange!20}{26.51} / 23.00 / --------& \colorbox{orange!20}{89.60} / 84.47 / -------- & 31.92 / \colorbox{blue!20}{35.27} / -------- &  &  &  95.79 / \colorbox{green!20}{96.16} & \cellcolor{gray!20} &  &  &   \\
+\midrule
 
 
-\subsection{Graph Classification tasks with denoising auxiliary tasks}
+\multicolumn{1}{l}{\multirow{5}{*}{GCPNet}} & \caa &  & 
+%/ -------- / 49.72 
+&  & 19.65 / \colorbox{blue!20}{28.79} / -------- & 76.73 / \colorbox{blue!20}{88.47} / -------- & 21.93 / \colorbox{blue!20}{33.31} / -------- &  & & 96.39 /\colorbox{green!20}{96.49} & \cellcolor{gray!20} &  &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + Seq &  & 
+%/ -------- / 51.77
+&  & 23.54 / \colorbox{blue!20}{\underline{29.84}} / -------- & 81.23 / \colorbox{blue!20}{89.84} / -------- & 25.43 / \colorbox{blue!20}{36.82} / -------- &  &  & \colorbox{orange!20}{96.55} / 96.53 &  -------- / --------   &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt &  &  &  & 24.96 / \colorbox{blue!20}{29.64} / --------  & 87.67 / \colorbox{blue!20}{91.63} / -------- & 33.71 / \colorbox{blue!20}{\underline{40.62}} / -------- &  &  & 96.46 / 96.46 &  -------- /  --------   &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb &  &  &  & 27.62 / \colorbox{blue!20}{29.19} / -------- & 88.13 / \colorbox{blue!20}{\underline{91.72}} / -------- & 35.68 / \colorbox{blue!20}{39.18} / -------- &  &  &  96.45 / \colorbox{green!20}{\underline{\textbf{96.61}}} &  -------- / --------   &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb + \schi &  &  &  & -------- & -------- & -------- &  &  & -------- / -------- & \cellcolor{gray!20} & &  &    \\
+
+\midrule
+\multicolumn{1}{l}{\multirow{5}{*}{TFN}} & \caa &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+\multicolumn{1}{l}{} & \caa + Seq &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+\multicolumn{1}{l}{} & \caa + Virt. Angles &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+\multicolumn{1}{l}{} & Backbone &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+\multicolumn{1}{l}{} & All atom &  &  &  &  &  &  &  &  &  &  &  &  &   \\
+\midrule
+\multicolumn{1}{l}{\multirow{5}{*}{MACE}} & \caa &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+\multicolumn{1}{l}{} & \caa + Seq &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+\multicolumn{1}{l}{} & \caa + Virt. Angles &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+\multicolumn{1}{l}{} & Backbone &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+\multicolumn{1}{l}{} & All atom &  &  &  &  &  &  &  &  &  &  &  &  &   \\
+
+\bottomrule
+\end{tabular}
 
 
-\subsection{Pre-training via denoising}
+\end{adjustbox}
+\end{table}
+
+
+
+%\subsection{Graph Classification tasks with denoising auxiliary tasks}
+
+%\subsection{Pre-training via denoising}
+\subsection{Incorporating More Structural Detail Improves Pre-Training Performance}
+
+\begin{table}[!ht]
+    \centering
+    \caption{Validation performance for pre-training tasks on \texttt{afdb\_rep\_v4}. Incorporating backbone geometry consistently improves pre-training performance. \textbf{Inverse Folding}: perplexity, \textbf{pLDDT, Structure Denoising, Torsional Denoising}: RMSE, \textbf{Seq. Denoising}: Accuracy.}. 
+    \label{tab:pre-training}
+    \begin{adjustbox}{max width=\linewidth}
+    \begin{tabular}{ccccccccccccccccccc}
+         \toprule
+         & \multirow{2}{*}{\bf{Method}} & &
+            \multicolumn{5}{c}{\bf{Task}}& &
+            \\
+            \cmidrule{4-8}
+             & & & \bf{Inverse Folding} ($\downarrow$) & \bf{pLDDT Pred.} ($\downarrow$) & \bf{Structure Denoising} ($\downarrow$)& \bf{Seq. Denoising} ($\uparrow$) & \bf{Torsional Denoising} ($\downarrow$) \\
+         \midrule
+         \multirow{5}{*}{\rotatebox{90}{\small {$C_\alpha$ + \virt }}} 
+         & SchNet & & 7.791 & 0.2397 & 0.0704 & 36.81 & \underline{0.0586}\\
+         & DimeNet & & \textbf{6.016} &  \textbf{0.2100} & \textbf{0.0655} & \textbf{47.07} & -------- \\
+         & GearNet-Edge & & 6.596 & 0.2326 & \underline{0.0672} & 43.76 & 0.0615 \\
+         & EGNN & & \textbf{6.016} & 0.2406 & 0.0700 & 40.51 & \underline{0.0586}\\
+         & GCPNet & & 6.243 & 0.2395 & 0.0679 & \underline{44.81} & \textbf{0.0562}\\
+         \midrule
+         \multirow{5}{*}{\rotatebox{90}{\small {$C_\alpha + \phi, \psi, \omega$ }}} 
+         & SchNet & & 5.562 & \underline{0.2388} & 0.0603 & 45.61 & 0.0489\\
+         & DimeNet & & 5.962 & \textbf{0.2094} & \textbf{0.0543} & 46.70 & -------- \\
+         & GearNet-Edge & & \underline{5.324} & 0.2402 & 0.0562 & 50.15 & 0.0538 \\
+         & EGNN & & 5.962 & 0.2403  & 0.0593 & \underline{53.80} & \underline{0.0487}\\
+         & GCPNet & & \textbf{3.839} & 0.2399 & \underline{0.0561} & \textbf{59.54} & \textbf{0.0443} \\
+        \bottomrule
+         
+    \end{tabular}
+    \end{adjustbox}   
+\end{table}
+
+Since auxiliary tasks improved performance, we then investigated protein structure pre-training to find out (1) which input representation is best for pre-training and (2) which models benefit from which pre-training task. Table \ref{tab:pre-training} shows that (1) incorporating dihedral angles consistently improves validation metrics on pre-training tasks, more so than architecture. These results also suggest that (2) inverse folding, sequence denoising, and torsional denoising benefit equivariant models the most in the context of pre-training, whereas pLDDT prediction and structure denoising benefit invariant models the most, suggesting that certain pre-training tasks benefit certain classes of models more than other tasks.
+
+%\subsection{Results with Pre-trained Models}
+\subsection{Pre-training Helps but Incorporating More Structural Detail Negatively Affects Downstream Performance}
+
+\begin{table}[!ht]
+\caption{Pre-trained model results on graph classification (left) and node classification (right) tasks. Results are given as: \colorbox{blue!20}{sequence denoising} / \colorbox{green!20}{structure denoising} / \colorbox{purple!20}{torsion denoising} (except for inverse folding, which is pre-trained with an inverse folding task). Coloured boxes mark the best
+pre-training tasks per method and featurisation, underline the best featurisation per method and bold
+the best method, all on a per-task basis. Equivariant models benefit the most from pre-training and interestingly perform best using virtual torsion and bond angles as input features. Lines denote configurations that failed to converge after 6 hours.}
+\label{tab:pre_trained_graph_classification_results}
+
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{cllccccc|ccclllll}
+
+\toprule
+
+\multirow{2}{*}{\textbf{Method}} & \multicolumn{1}{c}{\multirow{2}{*}{\textbf{Features}}} & \multicolumn{1}{c}{} & 
+%\multicolumn{1}{c}{\multirow{2}{*}{\textbf{EC} ($\uparrow$)}} 
+& & \multicolumn{3}{c}{\textbf{Fold} ($\uparrow$)} & 
+%\multirow{2}{*}{\textbf{PTM} ($\uparrow$)} 
+& \multirow{2}{*}{\textbf{PPI Site} ($\uparrow$)} & \multirow{2}{*}{\textbf{Inverse Folding} ($\downarrow$)}  \\
+\cmidrule{6-8}
+ & \multicolumn{1}{c}{} &  & \multicolumn{1}{c}{} & \multicolumn{1}{c}{} & Fold & Family & Superf. &  &  &  &  &  &  &  \\
+\midrule 
+\multirow{2}{*}{SchNet} & \caa + \virt &  &
+%58.68 / -------- / 57.83  
+&  & 18.01 / 18.16 / \colorbox{purple!20}{\underline{25.94}}  & 73.65 / 74.43 / \colorbox{purple!20}{\underline{88.76}} & 23.17 / 21.09 / \colorbox{purple!20}{\underline{38.41}} &  & -------- / \colorbox{green!20}{95.34} / 95.24 & 9.67  \\
+
+ & \caa + \virt + \bb &  & 
+ %56.54 / -------- / --------  
+ &  &  16.63 / \colorbox{green!20}{18.25} / 17.75  & 69.5 / 70.40 /  \colorbox{purple!20}{73.22}  & 21.17 / \colorbox{green!20}{23.50} / 23.39 & & -------- / -------- / -------- & 10.72  \\
+ \midrule
+%\multicolumn{1}{l}{\multirow{2}{*}{DimeNet}} & \caa + \virt &  &  &  & -------- / -------- / -------- & -------- / -------- / --------& -------- / -------- /--------  & & -------- / -------- / --------&  --------  &  &  &  \\
+
+%\multicolumn{1}{l}{} & \caa + \virt + \bb &  &  & & -------- / -------- / -------- & -------- / -------- / --------& -------- / -------- /-------- &  & -------- / -------- / -------- & -------- &  &  &  &  \\
+
+\midrule
+\multicolumn{1}{l}{\multirow{2}{*}{GearNet-Edge}} & \caa + \virt &  &  &  & \colorbox{blue!20}{\underline{32.25}} / 31.06 / 31.06 & \colorbox{blue!20}{\underline{94.10}} / 92.00 / 90.80 &  \colorbox{blue!20}{\underline{44.95}} / 44.93 / 42.55 &  & \colorbox{blue!20}{\underline{95.49}} / 94.47 / 94.99 & 7.73 \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb &  &  &  & 28.65 / \colorbox{green!20}{29.79} / 28.77  & 81.82 / \colorbox{green!20}{91.39} / 89.26 & 36.79 / \colorbox{green!20}{41.62} / 39.26 & & \colorbox{blue!20}{95.10} / 94.58 / 94.54  &  8.56 \\
+
+\midrule
+\multicolumn{1}{l}{\multirow{2}{*}{EGNN}} & \caa + \virt &  &  &  &  \underline{26.53} / -------- / -------- & \underline{93.19} / -------- / --------  & \underline{33.76} / -------- / --------&  & \colorbox{blue!20}{\underline{96.65}} / 96.29 / 96.29 & 8.71  \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb &  &  & & 21.75 / -------- / -------- & 86.76 / -------- / --------& 30.04 / -------- / -------- &  & 96.02 / \colorbox{green!20}{96.08} / 95.71 & 9.59 & &  &  &  \\
+
+\midrule
+\multicolumn{1}{l}{\multirow{2}{*}{GCPNet}} & \caa + \virt &  &  &  & 33.81 / \colorbox{green!20}{\textbf{\underline{37.54}}} / -------- & 95.24 / \colorbox{green!20}{\textbf{\underline{96.23}}}  / --------& 46.86 / \colorbox{green!20}{\textbf{\underline{50.14}}} / -------- &  & \colorbox{blue!20}{\textbf{\underline{96.89}}} / 96.33 / -------- & \textbf{7.39} &  &  &  \\
+
+\multicolumn{1}{l}{} & \caa + \virt + \bb  &  &  &  &  30.12 / \colorbox{green!20}{34.81} / -------- & 90.67 / \colorbox{green!20}{93.20} / -------- & 41.61 / \colorbox{green!20}{46.15} / -------- & & \colorbox{blue!20}{96.40} / 96.18 / --------  & --------&  &  \\
+
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+After pre-training and observing that more fine-grained input representations improve pre-training performance, we explore (1) whether these lessons from pre-training translate to downstream tasks and (2) which combination of parameters performs best on downstream tasks. The results in Table \ref{tab:pre_trained_graph_classification_results} suggest that (1) equivariant models benefit the most from pre-training on structure-based tasks. Surprisingly, these results also suggest that virtual torsion and bond angles are the most informative input representation, as including backbone dihedral angles consistently degrades performance despite providing a richer description of structure. This suggests that, compared to backbone dihedral angles, virtual angles may provide useful information that is more easily transferable between AlphaFold-predicted structures and experimental protein structures in the context of pre-training. However, we note that pre-trained results with backbone dihedral angles still yield improved results over non-pretrained baselines. Also interestingly, from the results in Table \ref{tab:pre_trained_graph_classification_results} it appears that (2) structure denoising serves equivariant models such as GCPNet best for performance in downstream tasks.

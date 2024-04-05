@@ -5,14 +5,14 @@
 % before loading neurips_data_2023
 
 % ready for submission
-\usepackage{neurips_data_2023}
+% \usepackage{neurips_data_2023}
 
 % to compile a preprint version, add the [preprint] option, e.g.:
 %     \usepackage[preprint]{neurips_data_2023}
 % This will indicate that the work is currently under review.
 
 % to compile a camera-ready version, add the [final] option, e.g.:
-%     \usepackage[final]{neurips_data_2023}
+\usepackage[final]{neurips_data_2023}
 
 % to avoid loading the natbib package, add option nonatbib:
 %    \usepackage[nonatbib]{neurips_data_2023}
@@ -32,13 +32,39 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
-\usepackage{xcolor}         % colors
+\usepackage{xcolor,colortbl}         % colors
 \usepackage{adjustbox}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{soul}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{bm}
+
+\usepackage{siunitx} % symbols such as Angstrom notation
+\DeclareSIUnit\angstrom{\text {Å}}  % enable latest support for Angstrom notation
+
+\input{math_commands.tex}
+\newcommand*{\ldblbrace}{\{\mskip-5mu\{}
+\newcommand*{\rdblbrace}{\}\mskip-5mu\}}
+
+\newcommand{\caa}{$C\alpha$ }
+\newcommand{\virt}{$\kappa, \alpha$ }
+\newcommand{\bb}{$\phi, \psi, \omega$ }
+\newcommand{\schi}{$\chi_{1-4}$ }
+
+\newcommand{\aj}[1]{\textcolor{red}{[\textbf{Arian}: #1]}}
+
 \bibliographystyle{unsrtnat}
 \setcitestyle{numbers,open={[},close={]},citesep={,}}
 
 %\title{Evaluating Representation Learning on Protein Structures}
-\title{Evaluating Representation Learning on the Protein Universe}
+\title{Evaluating Representation Learning on \\ the Protein Structure Universe}
 
 % The \author macro works with any number of authors. There are two commands
 % used to separate the names and addresses of multiple authors: \And and \AND.
@@ -48,36 +74,67 @@
 % authors names on the first line, and the last on the second line, try using
 % \AND instead of \And before the third author name.
 
+% \author{%
+%   Arian R. Jamasb$^*$ \\%\thanks{Use footnote for providing further information
+%     %about author (webpage, alternative address)---\emph{not} for acknowledging
+%     %funding agencies.} \\
+%     %Department of Computer Science\\
+%     University of Cambridge\\
+%   \texttt{arj39@cam.ac.uk} \\
+%   % examples of more authors
+%   \And
+%    Alex Morehead$^*$ \\
+%    University of Missouri \\
+%   % Address \\
+%   \texttt{acmwhb@missouri.edu} \\
+%     \AND
+%     Zuobai Zhang$^*$ \\
+%     Mila - Qu\'ebec AI Institute \\
+%     \texttt{zuobai.zhang@mila.quebec} \\
+%     \And
+%     Chaitanya K. Joshi$^*$ \\
+%     University of Cambridge \\
+%     \texttt{ckj24@cam.ac.uk} \\
+%     % Address \\
+%     % \texttt{email} \\
+%     \And
+%     Kieran Didi \\
+%     University of Cambridge \\
+%     \texttt{ked48@cam.ac.uk} \\
+%     \And
+%     Simon Mathis \\
+%     University of Cambridge \\
+%     \texttt{svm34@cam.ac.uk} \\
+%     \And
+%     Charles Harris \\
+%     University of Cambridge \\
+%     \texttt{cch57@cam.ac.uk} \\
+%     \And
+%     Jian Tang \\
+%     Mila - Qu\'ebec AI Institute \\
+%     \texttt{jian.tang@hec.ca} \\
+%     \And
+%     Jianlin Cheng \\
+%     University of Missouri \\
+%     \texttt{chengji@missouri.edu} \\
+%     \And
+%     Pietro Lio \\
+%     University of Cambridge \\
+%     \texttt{pl219@cam.ac.uk}
+%     \And
+%     Tom L. Blundell \\
+%     University of Cambridge \\
+%    \texttt{tlb20@cam.ac.uk} \\
+% }
+
 \author{%
-  David S.~Hippocampus%\thanks{Use footnote for providing further information
-    %about author (webpage, alternative address)---\emph{not} for acknowledging
-    %funding agencies.} \\
-  Department of Computer Science\\
-  Cranberry-Lemon University\\
-  Pittsburgh, PA 15213 \\
-  \texttt{hippo@cs.cranberry-lemon.edu} \\
-  % examples of more authors
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \AND
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
+  Arian R. Jamasb$^{*,1}$, Alex Morehead$^{*,2}$, Zuobai Zhang$^{*,3}$, Chaitanya K. Joshi$^{*,1}$, \\ 
+  \textbf{Kieran Didi$^{1}$, Simon Mathis$^{1}$, Charles Harris$^{1}$, Jian Tang$^{3}$, Jianlin Cheng$^{2}$,} \\ 
+  \textbf{Pietro Liò$^{1}$, Tom L. Blundell$^{1}$} \\
+  $^{1}$University of Cambridge \quad $^{2}$University of Missouri \quad $^{3}$Mila - Qu\'ebec AI Institute \\
+  % \texttt{arj39@cam.ac.uk} % Emails can be added later!
 }
+
 
 \begin{document}
 
@@ -91,16 +148,51 @@
 \input{sections/related_work}
 \input{sections/core}
 \input{sections/methods}
-\input{sections/results}
+\input{sections/results_new}
 
 
 
-\section{Future Work}
+\section{Discussion}
+% \begin{enumerate}
+%     \item Continuous re-evaluation on new structure-predictions.
+%     \item Investigation of edge schemes / edge-free models.
+%     \item Identifying preprocessing best practices.
+%     \item Do better denoisers correspond to better finetuning?
+%     \item Modelling quaternary protein structure.
+%     \item Modelling protein dynamics and conformational flexibility.
+% \end{enumerate}
+
+% Insert here the paragraph(s) on the first few general takeaway points...
+
+\textbf{Conclusions.} This work focuses on building a comprehensive and multi-task benchmark for protein structure representation learning. Our benchmark provides a unified implementation of several large pre-training corpora, featurisation schemes, models and benchmarking tasks to evaluate the effectiveness of protein structure encoding methods.
+Key findings include that structural pre-training, as well as auxiliary sequence tasks, improve performance on a wide range of tasks and that incorporating more structural detail in the featurisation improves downstream performance.
+
+%extensions include identifying pre-processing best practices, untangling the relationship between denoising and finetuning, and increasing coverage of various geometric GNN architectures. 
+
+\textbf{Future work.} Importantly, we would like to advocate for rigorous and continuous re-evaluation of protein representation learning to stay up to date with new advances in protein structure prediction, such as modelling quaternary structures and molecular machines.
+Our benchmark is flexible for including new tasks and datasets and is open to the wider research community.
+
+% \textbf{Limitations.} For geometric representation learning baselines, we currently only include invariant and vector-equivariant graph representation models due to their computational efficiency, even though tensor-equivariant methods such as Tensor Field Networks \citep{thomas2018tensor} and MACE \citep{batatia2022mace} have proven to be effective for protein structure prediction \citep{lee2023equifold} and protein-ligand docking \citep{corso2023diffdock}. With improvements to their runtime efficiency and memory requirements, we will include such methods in the benchmarks we propose in this work.
+
+\textbf{Limitations.} Due to the large hardware requirements of our initial benchmarking experiments, currently we only evaluate methods using two representative structure-based tasks, fold classification (to evaluate methods' global protein representations) and inverse folding (to evaluate methods' local protein representations), whereas six other tasks are available in our proposed benchmark. To address this limitation, in the near future, we plan to add supplementary experiments covering more of such tasks in our benchmark results.
+
+\section{Availability}
+
+The benchmark code is available under a permissive MIT License at \url{https://www.github.com/a-r-j/ProteinWorkshop} and accompanying documentation is hosted at \url{https://www.proteins.sh/}. Preprocessed datasets and pre-trained model weights are deposited on Zenodo at the following URLs, respectively: \url{https://zenodo.org/record/8282470} and \url{https://zenodo.org/record/8287754}.
+
+
+%Looking beyond learning from static structures, ideal computational representations of biomolecules should account for both geometric structure as well as temporal dynamics.
+%Dynamics and conformational flexibility are key to understanding the functionality of several classes of proteins important for drug discovery, such as antibodies and membrane proteins.
+%Learning from biomolecular conformational ensembles may be the next frontier for representation learning \citep{axelrod2020molecular, janson2023direct, joshi2023multi}, and our benchmark is future-proof for evaluating dynamics-informed architectures.
+
+
 %Protein representation learning is an exciting field with incredible room for expansion, innovation, and impact. The exponentially growing gap between labeled and unlabeled protein data means that self-supervised learning will continue to play a large role in the future of computational protein modeling. Our results show that no single self-supervised model performs best across all protein tasks. We believe this is a clear challenge for further research in self-supervised learning, as there is a huge space of model architecture, training procedures, and unsupervised task choices left to explore. It may be that language modelling as a task is not enough, and that protein-specific tasks are necessary to push performance past state of the art. Further exploring the relationship between alignment-based and learned representations will be necessary to capitalize on the advantages of each. We hope that the datasets and benchmarks in TAPE will provide a systematic model-evaluation framework that allows more machine learning researchers to contribute to this field.
 
 
-\section{Societal Impact}
-This work focuses on building a comprehensive and multi-task benchmark for protein structure representation learning. In this benchmark, we provide several large pre-training corpuses, featurisation schemes, model implementations and benchmarking tasks to evaluate the effectiveness of protein sequence encoding methods. The variety of tasks can enable us to develop insight into effective pre-training strategies, and whether pre-trained protein structural representations can have material impact in real-world computational biology and drug discovery research activities. It is not lost on us that these models can play a role in developing, for example, harmful chemical matter in the hands of a bad actor. Additionally, the training and pre-training of very large models can contribute to climate change. However, we believe the developing highly effective structural representations will have broad, positive implications across biology and medicine that significantly outweigh the potential for misuse.
+% \section{Acknowledgements}
+% We acknowledge that this work was supported by a variety of institutions. ARJ is funded by a Biotechnology and Biological Sciences Research Council (BBSRC) DTP studentship (BB/M011194/1). AM and JC are supported by a U.S. NSF grant (DBI2308699) and two U.S. NIH grants (R01GM093123 and R01GM146340). This work was performed using resources provided by the Cambridge Service for Data Driven Discovery (CSD3) operated by the University of Cambridge Research Computing Service (www.csd3.cam.ac.uk), provided by Dell EMC and Intel using Tier-2 funding from the Engineering and Physical Sciences Research Council (capital grant EP/T022159/1), and DiRAC funding from the Science and Technology Facilities Council (www.dirac.ac.uk). Additionally, this work was performed using high performance computing infrastructure provided by Research Support Services at the University of Missouri-Columbia (DOI: 10.32469/10355/97710).
+
+
 
 %\bibliography
 \bibliography{bibliography}
@@ -108,6 +200,11 @@ This work focuses on building a comprehensive and multi-task benchmark for prote
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\input{sections/checklist}
+\input{sections/checklist}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\appendix
+\input{sections/appendix}
+
 \end{document}

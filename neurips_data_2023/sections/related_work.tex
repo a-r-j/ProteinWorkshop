@@ -1,20 +1,11 @@
 \section{Related Work}
 
-\paragraph{Protein Structure Representation Learning}
+\textbf{Protein Structure Representation Learning. } Several structure-based encoders for proteins have been designed to extract information from different levels of granularity, such as residue-level, atom-level and surfaces. Previous works have aimed to encode protein structural priors directly within architectures to model proteins hierarchically \citep{somnath2021multi, hermosilla2020intrinsic}, as computationally efficient point clouds \citep{gainza2020deciphering, sverrisson2021fast}, or as geometric graphs \citep{jing2020learning, jin2021iterative, morehead2024geometry, wang2023learning, zhang2023protein, mahmud2023accurate} for tasks such as protein function prediction \citep{Gligorijevi2021}, protein model quality assessment \citep{eismann2020protein, chen20233d, morehead2024gcpnetema}, and protein interaction region prediction \citep{dai2021protein, morehead2023dips}.
 
+\textbf{Protein Benchmarks. } Several benchmarks have been proposed for evaluating the efficacy of learnt protein \emph{sequence} representations. However, \emph{structure-based} benchmarks are comparatively unaddressed. \citet{tape} developed TAPE (Tasks Assessing Protein Embeddings), providing a large pretraining corpus of protein sequences curated from Pfam \citep{ElGebali2018}, as well as a collection of five supervised benchmark tasks assessing the ability of protein language models to predict structural qualities (contact prediction and secondary structure prediction), and functional properties (fluorescence and stability prediction). \citet{peer} proposed PEER (Protein Sequence Understanding), focussing on multitask evaluation of protein sequence models. Therapeutic Data Commons \citep{NEURIPSDATASETSANDBENCHMARKS2021_4c56ff4c} provide several datasets relevant to therapeutic development, however the few protein structure-derived datasets it contains are cast as sequence-based tasks. \citet{NEURIPSDATASETSANDBENCHMARKS2021_2b44928a} developed FLIP, a sequence-based benchmark of protein fitness landscapes. ProteinGLUE \citep{Capel2022} is another sequenced-based benchmark focussing on per-residue tasks.
 
+To our best knowledge, the only protein structure-benchmark to date is ATOM3D \citep{NEURIPSDATASETSANDBENCHMARKS2021_c45147de}, which proposes a collection of tasks largely assessing geometric methods at predicting graph-level properties of protein structures. TorchProtein \citep{zhu2022torchdrug} also provides a small collection of global-structural datasets. Most existing benchmarks do not exhaustively evaluate both the local and global representation learning power of proposed methods. As the field develops, we identify a need for a consistent benchmarking framework of diverse tasks to ensure improving results reported in the literature map on to progress in the downstream problems we hope to address.
+Similar benchmarking efforts for general purpose GNNs have provided experimental rigour to architectural research \citep{dwivedi2020benchmarking}.
 
-
-\paragraph{Protein Benchmarks} Several benchmarks have been proposed for evaluating the efficacy of learnt protein \emph{sequence} representations. However, \emph{structure-based} benchmarks are comparatively unaddressed. \citet{tape} developed the TAPE (Tasks assessing protein embeddings) benchmark, providing a large pre-training corpus of protein sequences curated from Pfam \cite{ElGebali2018}, as well as a collection of five supervised benchmark tasks assessing the ability of protein language models to predict structural qualities (contact prediction and secondary structure prediction), and functional properties (fluorescence and stability prediction). \citet{peer} developed the PEER (Protein Sequence Understanding) benchmark, focussing on multitask evaluation of protein sequence models. 
-
-\begin{enumerate}
-    \item X et al. developed FLIP
-    \item X et al developed Atom3D, the first benchmark designed around structure-based tasks.
-    \item TDC provides several datasets..
-    \item TorchProtein
-\end{enumerate}
-
-
-
-\paragraph{Denoising-based pre-training and Regularisation} 
-Several methods have been developed for pre-training GNNs, predominantly focussing on cases where 3D coordinate information is only implicitly encoded in the graph structures. In this work, we build on work by \citet{godwin2021simple} and \citet{zaidi2023pretraining} to investigate whether denoising-based auxillary and pre-training tasks are effective methods for pre-training geometric GNNs operating on protein structures.
+\textbf{Denoising-Based Pre-training and Regularisation. } 
+Several methods have been developed for pre-training GNNs, predominantly focussing on cases where 3D coordinate information is only implicitly encoded in the graph structures. In this work, we build on work by \citet{godwin2021simple} and \citet{zaidi2023pretraining} to investigate whether denoising-based auxillary and pre-training tasks are effective methods for pre-training geometric GNNs operating on protein structures, similar to concurrent works bridging the gap between denoising objectives for geometric neural networks and diffusion generative modeling for biomolecules \citep{huang2023data, corso2023modeling}.

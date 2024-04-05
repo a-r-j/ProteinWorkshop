@@ -1,0 +1,522 @@
+\appendix
+\appendixtoc
+
+\newpage
+
+\section{Broader Impacts}
+% This work focuses on building a comprehensive and multi-task benchmark for protein structure representation learning. Our benchmark provides a unified implementation of several large pre-training corpora, featurisation schemes, models and benchmarking tasks to evaluate the effectiveness of protein structure encoding methods. 
+Our benchmark unifies protein representation learning tasks, large-scale pre-training datasets, featurisation schemes, and models.
+The wide range of tasks studied in our benchmark can enable us to develop insight into effective pre-training strategies, and whether pre-trained protein structural representations can have material impact in real-world computational biology and drug discovery. It is not lost on us that these models can play a role in developing harmful chemical matter in the hands of a bad actor. Additionally, training very large models can contribute to climate change. However, we hope that developing highly effective structural representations will have broad, positive implications across biology and medicine that significantly outweigh the potential for misuse.
+
+%%%
+
+\input{neurips_data_2023/sections/related_work}
+
+%%%
+
+\section{Discussion and Future Work}
+
+\textbf{On input featurisation schemes and completeness. }
+The extent to which providing complete information about all atoms and side chain orientations of each residue in a protein is debatable, as the exact coordinates from PDB files are known to contain artifacts from structure determination via crystallography. 
+This was most recently noted by \citet{Dauparas2022} in the context of developing and experimentally validating an inverse folding model.
+Our benchmarking results provides similar insights -- at present, letting models implicitly learn about side chain orientation by using backbone-only featurisation performs better or equally well as explicitly providing complete side chain atomic information.
+
+\textbf{On the choice of pre-training tasks. }
+We currenly focussed on pre-training tasks that roughly fall under the category of denoising, i.e. corrupting information in the input (sequence identity, coordinates) and tasking the model with producing the uncorrupted input. 
+We were particularly interested in self-supervised objectives that were (1) extremely scalable, so as to pre-train on the large-scale AlphaFoldDB of 2.4M structures; and (2) train protein representations at the fine-grained node level, so as to be general-purpose across the downstream tasks considered.
+We did not benchmark other tasks from the literature, such as contrastive learning and generative modelling-inspired objectives \citep{liu2023molecular, liu2023symmetry, zhang2023enhancing}. 
+Such tasks are generally (1) computationally heavier and more cumbersome to set up than corruption-type objectives, making them harder to scale up, and (2) only train protein representations for the global/graph level and do not operate at the node level.
+Naturally, we would like to continue exploring more pre-training strategies as we continue to expand \emph{ProteinWorkshop}.
+
+% Missing a discussion about how geometric models may be improved to surpass sequence-based models.
+% We ultimately believe that future protein representation learning models may blur the boundaries of sequence-based vs geometric/structure-based modelling. Concurrent works submitted to ICLR have already been to explore combining geometric graph neural networks with pre-trained protein language models for improved performance on specific downstream tasks, and we believe this trend will continue for the foreseeable future. Moreover, another avenue worth considering for future research on geometric models, one particularly suited to such models, is generative modeling-based pre-training objectives. Some early works have begun to demonstrate the usefulness for downstream tasks of incorporating diffusion-based objectives as a pre-training regime for geometric graph neural networks. As more flexible generative modeling frameworks emerge, we anticipate this trend will also continue, as we will likely see methods such as geometric flow matching begin to supersede diffusion pre-training by instead pre-training models to learnably interpolate between one relevant biomolecular data domain to another. Since our benchmark is built with modularity in mind, our work is poised to quickly take advantage of new generative modeling advances for enhanced geometric pre-training.
+
+\textbf{Beyond protein-only representation learning. }
+Recently, \citet{krishna2023generalized} and \citet{deepmind2023alphafold} generalised protein structure prediction models to full biological assemblies including proteins, small molecules, nucleic acids, and other ligands.
+Advances in geometric GNN modelling and methodology should, in principle, be adaptable to modelling biomolecular complexes among proteins, small molecules, nucleic acids, and other entities \citep{morehead2023towards}.
+Most architectures modelling biomolecular complexes also represent these systems as geometric graphs with atoms/residues embedded as nodes in 3D Euclidean space \citep{corso2023diffdock, schneuing2022structure}. 
+As such, geometric GNNs appear to be a natural choice of architecture for representation learning across biomolecular systems.
+
+We currently focus on protein representation learning because (1) large scale datasets for self-supervised learning, as well as well-defined downstream tasks, are readily available and accepted by the community; and (2) we see protein representation learning as a fundamental task, improving upon which should also advance the modelling of proteins in complex with other biomolecules. 
+% For instance, pre-trained node embeddings from ProteinWorkshop models can readily be ported as initial features for protein + X models.
+Comparatively, the scale of data available for biomolecular complexes is smaller and there is less consensus among the community on evaluation \citep{harris2023posecheck, buttenschoen2023posebusters}.
+
+%%%
+
+% \section{Benchmark Implementation Details}
+\section{\emph{ProteinWorkshop} User Manual}
+\label{app:benchmark}
+
+\subsection{Dependencies}
+The benchmark is developed using \texttt{PyTorch} \citep{NEURIPS2019_9015}, \texttt{PyTorch Geometric} \citep{fey2019fast}, \texttt{PyTorch Lightning} \citep{falcon2019pytorch}, and \texttt{Graphein} \citep{jamasb2022graphein}. Experiment configuration is performed using \texttt{Hydra} \citep{Yadan2019Hydra}. Certain architectures introduce additional dependencies, such as \texttt{TorchDrug} \citep{zhu2022torchdrug} and \texttt{e3nn} \citep{geiger2022e3nn}.
+
+\subsection{Usage}
+The modular design of our benchmark means it can be readily adapted into different workflows easily. Firstly, the benchmark is \texttt{pip}-installable from PyPI and contains several importable modules, such as dataloaders, featurisers and models, that can be imported into new projects. This will aid in standardising the datasets and workflows used in protein representation learning. Secondly, the benchmark serves as an easily extendable template, which users can fork and work directly in, thereby reducing implementation burden. Lastly, we provide a CLI that can be used to quickly run single experiments and hyperparameter sweeps with minimal development time overhead.
+
+\subsection{Computational Resources}
+All models are trained on 80Gb NVIDIA A100 GPUs. All baseline and finetuning results are performed using a single GPU while pre-training is performed using four GPUs.
+
+%%%
+
+\subsection{Featurisation Schemes}
+\label{app:featurisation}
+
+Protein structures are typically represented as graphs, with researchers typically opting to use a coarse-grained C$\alpha$ atoms graph as full atom representations can quickly become computationally intractable due to a large number of nodes. 
+% However, this is a lossy representation, with much of the structural detail, such as backbone and sidechain structure, being only implicitly encoded. 
+The extent to which coarse-graining schemes are `complete' representation of the geometry and structure of the protein residue is variable. For instance, backbone-only features ignore the orientations of the side chain atoms in the residue, so models must account for this information implicitly.
+However, providing complete information about all atoms and side chain orientations is debatable as exact coordinates from PDB files are known to contain crystallography artefacts \citep{Dauparas2022}. 
+Due to the computational burden incurred by operating on full-atom node representations, we focus primarily on C$\alpha$-based graph representations, investigating featurisation strategies to incorporate higher-level structural information. Note that we do provide utilities to enable users to work with backbone and full-atom graphs in the benchmark.
+
+We represent protein structures as geometric graphs, $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \vec{\mathbf{X}}, \mathbf{S}, \vec{\mathbf{V}})$, where $\mathcal{V}$ is a set of nodes, $\mathcal{E}$ is a set of edges, $\vec{\mathbf{X}} \in \mathbb{R}^{|\mathcal{V}| \times 3}$ is a matrix of Cartesian node coordinates, $\mathbf{S} \in \mathbb{R}^{|\mathcal{V}| \times d}$ is a matrix of $d$-dimension scalar node features, and $\vec{\mathbf{V}} \in \mathbb{R}^{|\mathcal{V}| \times d \times 3}$ is a tensor of vector-valued features. 
+% Details about different featurisation schemes are provided in Table \ref{tab:features}.
+
+The five scalar featurisation schemes considered in the baselines are provided in Table \ref{tab:features}. Pretraining experiments are performed on the featurisation schemes in rows three and four.
+
+\begin{table}[ht]
+    \centering
+    \caption{\textbf{Structural featurisation schemes.}
+    Residue type is a one-hot encoding of the amino acid type for each node; positional encoding is a 16-dimensional transformer-like positional encoding \citep{NIPS2017_3f5ee243}; and $\phi, \psi, \omega \in \mathbb{R}^{6}$ and $\chi_{1-4} \in \mathbb{R}^8$ are backbone dihedral angles and sidechain torsion angles, respectively, embedded on the unit circle. Similarly, $\kappa, \alpha \in \mathbb{R}^4$ are \emph{virtual} torsion and bond angles defined over C$\alpha$ atoms. In our experimental evaluation, we consistently use $k$-NN edge construction with $k=16$. For each pretraining task and model combination we train two models with different featurisation schemes providing (1) $C_\alpha$ geometry with virtual angles and (2) backbone information.
+    }
+    \begin{tabular}{clcc}
+        \toprule
+        \textbf{Granularity} & \textbf{\caa Features} & \textbf{Backbone} & \textbf{Sidechain} \\
+        \midrule
+        \caa & Residue Type \\
+        \caa & Residue Type, Positional Encoding \\
+        \caa & Residue Type, Positional Encoding, $\kappa$, $\alpha$ \\
+        \caa & Residue Type, Positional Encoding, $\kappa$, $\alpha$ & $\phi, \psi, \omega$ \\
+        \caa & Residue Type, Positional Encoding, $\kappa$, $\alpha$ & $\phi, \psi, \omega$ & $\chi_1, \chi_2, \chi_3, \chi_4$ \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:features}
+\end{table}
+
+Additionally, vector message passing methods such as GCPNet receive node orientation vectors (i.e., $\vv_{o^{i - 1}}$ and $\vv_{o^{i + 1}}$) and edge directional vectors (i.e., $\vv_{d^{ij}}$) as vector input features for nodes and edges, respectively. These vector features, prior to being normalised as unit vectors, are defined as:
+\begin{equation}
+    \vec{\vv}_{o^{i - 1}} = \vec{\vx}_{i - 1} - \vec{\vx}_{i}, \ \vec{\vv}_{o^{i + 1}} = \vec{\vx}_{i + 1} - \vec{\vx}_{i}, \mbox{ and } \vec{\vv}_{d^{ij}} = \vec{\vx}_{i} - \vec{\vx}_{j}.
+\end{equation}
+
+%%%
+
+\subsection{Protein Structure Encoder Architectures}
+\label{app:gnns}
+
+We provide a unified implementation of several rotation invariant and equivariant geometric GNNs, spanning the range of message passing body order and tensor order \citep{joshi2023expressive}, including general-purpose as well as protein-specific models.
+See \citet{duval2023hitchhiker} for a self-contained introduction to geometric GNNs.
+
+\subsubsection{Invariant GNNs}
+
+\paragraph{SchNet \citep{schutt2018schnet}} SchNet is one of the most popular and simplest instantiation of E(3) invariant message passing GNNs. SchNet constructs messages through element-wise multiplication of scalar features modulated by a radial filter conditioned on the pairwise distance $\Vert \vec{\vx}_{ij} \Vert$ between two neighbours.
+Scalar features are update from iteration $t$ to $t+1$ via:
+\begin{align}
+    \vs_i^{(t+1)} & \defeq \vs_i^{(t)} + \sum_{j \in \mathcal{N}_i} f_1 \left( \vs_j^{(t)} , \ \Vert \vec{\vx}_{ij} \Vert \right) \label{eq:schnet}
+\end{align}
+
+Hyperparameters: number of layers = 6, hidden channels = 512.
+
+\paragraph{DimeNet++ \citep{Gasteiger2020directional}}
+DimeNet is an E(3) invariant GNN which uses both distances $\Vert \vec{\vx}_{ij} \Vert$ and angles $\vec{\vx}_{ij} \cdot \vec{\vx}_{ik} $ to perform message passing among triplets, as follows:
+\begin{align}
+    \vs_i^{(t+1)} & \defeq \sum_{j \in \mathcal{N}_i} f_1 \Big( \vs_i^{(t)} , \ \vs_j^{(t)} , \sum_{k \in \mathcal{N}_i \backslash \{j\}} f_2 \left( \vs_j^{(t)} , \ \vs_k^{(t)} , \ \Vert \vec{\vx}_{ij} \Vert , \ \vec{\vx}_{ij} \cdot \vec{\vx}_{ik} \right) \Big) \label{eq:dimenet}
+\end{align}
+
+Hyperparameters: number of layers = 6, hidden channels = 512.
+
+\paragraph{GearNet-Edge \citep{zhang2023protein}} GearNet-Edge is an SE(3) invariant architecture leveraging relational graph convolutional layers and edge message passing. The original GearNet-Edge formulation presented in \citet{zhang2023protein} operates on multirelational protein structure graphs making use of several edge construction schemes ($k$-NN, euclidean distance and sequence distance based). Our benchmark contains full capabilities for working with multirelational graphs but use a single edge type (i.e. $|\mathcal{R}| = 1$) in our experiments to enable more direct architectural comparisons.
+
+The relational graph convolutional layer is defined for relation type $r$ as: 
+\begin{equation}
+    \vs_{i}^{(t+1)} \defeq \vs_i^{(t)} + \sigma \left(\mathrm{BN}\left( \sum_{r \in \mathcal{R}} \mathbf{W_r} \sum_{j \in \mathcal{N}_{r}(i)} \vs_j^{(t)}) \right) \right) \\
+\end{equation}
+
+The edge message passing layer is defined for relation type $r$ as:
+\begin{equation}
+    \vm_{(i,j,r_{1})}^{(t+1)} \defeq \sigma \left( \mathrm{BN} \left( \sum_{r \in {|R|\prime}} \mathbf{W}^{\prime}_r \sum_{(w, k, r_2) \in \mathcal{N}_{r}^{\prime}((i,j,r_{1}))}\vm_{(w,k,r_{2})}^{(t)}\right)\right)
+\end{equation}
+\begin{equation}
+    \vs_{i}^{(t+1)} \defeq \sigma \left( \mathrm{BN} \left( \sum_{r \in {|R|}} \mathbf{W}_r \sum_{j \in \mathcal{N}_{r}(i)}\left(s_{j}^{(t)} + \mathrm{FC}(\vm_{(i,j,r)}^{(t + 1)})\right)\right)\right),
+\end{equation}
+where $\mathrm{FC(\cdot)}$ denotes a linear transformation upon the message function.
+
+Hyperparameters: number of layers = 6, hidden channels = 512.
+
+\subsubsection{Equivariant GNNs in Cartesian coordinates}
+
+\paragraph{EGNN \citep{satorras2021n}}
+We consider E(3) equivariant GNN layers proposed by \citet{satorras2021n} which updates both scalar features $\vs_i$ as well as node coordinates $\vec{\vx}_{i}$, as follows:
+\begin{align}
+    \vs_i^{(t+1)} & \defeq f_2 \left( \vs_i^{(t)} \ , \ \sum_{j \in \mathcal{N}_i} f_1 \left( \vs_i^{(t)} , \vs_j^{(t)} , \ \Vert \vec{\vx}_{ij}^{(t)} \Vert \right) \right)      \\
+    \vec{\vx}_i^{(t+1)} & \defeq \vec{\vx}_i^{(t)} + \sum_{j \in \mathcal{N}_i} \vec{\vx}_{ij}^{(t)} \odot f_3 \left( \vs_i^{(t)} , \vs_j^{(t)} , \ \Vert \vec{\vx}_{ij}^{(t)} \Vert \right)
+\end{align}
+
+Hyperparameters: number of layers = 6, hidden channels = 512.
+
+\paragraph{GCPNet \citep{morehead2024geometry}}
+GCPNet is an SE(3) equivariant architecture that jointly learns scalar and vector-valued features from geometric protein structure inputs and, through the use of geometry-complete frame embeddings, sensitises its predictions to account for potential changes induced by the effects of molecular chirality on protein structure. In contrast to the original GCPNet formulation presented in \citet{morehead2024geometry}, the implementation we provide in the benchmark incorporates the architectural enhancements proposed in \citet{morehead2023geometry} which include the addition of a scalar message attention gate (i.e., $f_{a}(\cdot)$) and a simplified structure for the model's geometric graph convolution layers (i.e., $f_{n}(\cdot)$). With geometry-complete graph convolution in mind, for node $i$ and layer $t$, scalar edge features $\vs_{e^{ij}}^{(t)}$ and vector edge features $\vv_{e^{ij}}^{(t)}$ are used along with scalar node features $\vs_{n^{i}}^{(t)}$ and vector node features $\vv_{n^{i}}^{(t)}$ to update each node feature type as:
+
+\begin{equation}
+    (\vs_{m^{ij}}^{(t+1)}, \vv_{m^{ij}}^{(t+1)}) \defeq f_{e}^{(t+1)}\left((\vs_{n^{i}}^{(t)}, \vv_{n^{i}}^{(t)}),(\vs_{n^{j}}^{(t)}, \vv_{n^{j}}^{(t)}),(f_{a}^{(t + 1)}(\vs_{e^{ij}}^{(t)}), \vv_{e^{ij}}^{(t)}),\bm{\mathcal{F}}_{ij}\right)
+\end{equation}
+\begin{equation}
+    (\vs_{n^{i}}^{(t+1)}, \vv_{n^{i}}^{(t+1)}) \defeq f_{n}^{(t+1)}\left((\vs_{n^{i}}^{(t)}, \vv_{n^{i}}^{(t)}), \sum_{j \in \mathcal{N}(i)} (\vs_{m^{ij}}^{(t+1)}, \vv_{m^{ij}}^{(t+1)}) \right),
+\end{equation}
+where the geometry-complete and chirality-sensitive local frames for node $i$ (i.e., its edges) are defined as $\bm{\mathcal{F}}_{ij} = (\va_{ij}, \vb_{ij}, \vc_{ij})$, with $\va_{ij} = \frac{\vx_{i} - \vx_{j}}{ \lVert \vx_{i} - \vx_{j} \rVert }, \vb_{ij} = \frac{\vx_{i} \times \vx_{j}}{ \lVert \vx_{i} \times \vx_{j} \rVert },$ and $\vc_{ij} = \va_{ij} \times \vb_{ij}$, respectively.
+
+Hyperparameters: number of layers = 6, hidden scalar channels = 128, hidden vector channels = 16.
+
+\subsubsection{Equivariant GNNs in Spherical coordinates}
+
+\paragraph{Tensor Field Network \citep{thomas2018tensor}}
+Tensor Field Networks are E(3) or SE(3) equivariant GNNs that have been successfully used in protein structure prediction \citep{baek2021accurate} and protein-ligand docking \citep{corso2023diffdock}.
+These models use higher order spherical tensors $\tilde \vh_{i,l} \in \mathbb{R}^{2l+1 \times f}$ as node features, starting from order $l = 0$ up to arbitrary $l = L$.
+The first two orders correspond to scalar features $\vs_i$ and vector features $\vec{\vv}_i$, respectively.
+The higher order tensors $\tilde \vh_{i}$ are updated via tensor products $\otimes$ of neighbourhood features $\tilde \vh_{j}$ for all $j \in \mathcal{N}_i$ with the higher order spherical harmonic representations $Y$ of the relative displacement $\frac{\vec{\vx}_{ij}}{\Vert \vec{\vx}_{ij} \Vert} = \hat{\vx}_{ij}$:
+\begin{align}
+\label{eq:e3nn-1}
+     \tilde \vh_{i}^{(t+1)} & \defeq \tilde \vh_{i}^{(t)} + \sum_{j \in \mathcal{N}_i} Y \left( \hat{\vx}_{ij} \right) \otimes_{\vw} \tilde \vh_{j}^{(t)} ,
+\end{align}
+where the weights $\vw$ of the tensor product are computed via a learnt radial basis function of the relative distance, \textit{i.e.} $\vw = f \left( \Vert \vec{\vx}_{ij} \Vert \right)$.
+
+Hyperparameters: choice of symmetry = SO(3), number of layers = 4, spherical harmonic tensor order = 2, hidden irreps per tensor type = \texttt{64x0e + 64x0o + 8x1e + 8x1o + 4x2e + 4x2o}.
+We were particularly interested in benchmarking the impact of higher order tensors and SO(3) equivariance.
+
+\paragraph{MACE}
+MACE \citep{batatia2022mace} is a higher order E(3) or SE(3) equivariant GNN originally developed for molecular dynamics simulations.
+MACE provides an efficient approach to computing high body order equivariant features in the Tensor Field Network framework via Atomic Cluster Expansion:
+They first aggregate neighbourhood features analogous to \eqref{eq:e3nn-1} (the $A$ functions in \citet{batatia2022mace} (eq. 9)) and then take $k-1$ repeated self-tensor products of these neighbourhood features. 
+In our formalism, this corresponds to:
+\begin{align}
+\label{eq:e3nn-3}
+    \tilde \vh_{i}^{(t+1)} & \defeq \underbrace {\tilde \vh_{i}^{(t+1)} \otimes_{\vw} \dots \otimes_{\vw} \tilde \vh_{i}^{(t+1)} }_\text{$k-1$ times} \ ,
+\end{align}
+
+Hyperparameters: choice of symmetry = O(3), number of layers = 2, spherical harmonic tensor order = 2, hidden irreps per tensor type = \texttt{32x0e + 32x1o + 32x2e}, body order = 4.
+Note that the number of channels for all tensor types must be the same for MACE, which is restrictive for scaling the depth and number of parameters.
+
+%%%
+
+\subsection{Pretraining Datasets}
+\label{app:pretrain-data}
+
+The benchmark contains several large corpora of both experimental and predicted structural data that can be used for pretraining or inference. We provide utilities for configuring supervised tasks and splits directly from the PDB \citep{Berman2000}.
+Additionally, we build storage-efficient dataloaders for large pretraining corpora of predicted structures including the AlphaFoldDB and ESM Atlas.
+We believe our codebase will considerably reduce the barrier to entry for pretraining and working with large structure-based datasets. 
+
+\subsubsection{Experimental Structures}
+\textbf{PDB. } We provide utilities for curating datasets directly from the Protein Data Bank \citep{Berman2000}. In addition to using the collection in its entirety, users can define filters to subset and split the data using a combination of structural similarity, sequence similarity or temporal strategies. Structures can be filtered by length, number of chains, resolution, deposition date, presence/absence of particular ligands and structure determination method. The benchmark supports working with PDB structures in both \texttt{.pdb} and \texttt{.mmtf} format \citep{Bradley2017}, which significantly reduces the requirements for data storage.
+
+\textbf{CATH. } We provide the dataset derived from CATH 4.2 40\% \citep{Knudsen2010} non-redundant chains developed by \citet{NEURIPS2019_f3a4ff48} as an additional, smaller, pretraining dataset. These data are split based on random assignment of the CATH topology classifications based on an 80/10/10 split.
+
+\textbf{ASTRAL. } ASTRAL \citep{Brenner2000} provides compendia of protein \emph{domain} structures, regions of proteins that can maintain their structure and function independently of the rest of the protein. Domains typically exhibit highly-specific functions and can be considered structural building blocks of proteins.%Thus, we provide these domain structures as additional pretraining data
+
+\subsubsection{Predicted Structures}
+We provide ready-to-go dataloaders for several large-scale collections of predicted structures derived from both AlphaFold2 \citep{jumper2021highly} and ESMFold \citep{lin2022language}. 
+This is facilitated by FoldComp \citep{Kim2023}, a (minimally) lossy compression scheme for predicted protein structures. FoldComp stores protein structures as a collection of discretised dihedral and bond angles which can be used to reconstruct the whole structure using fixed bond lengths and canonical amino acid geometry. FoldComp achieves a disk-space reduction of almost an order of magnitude, describing a residue with only 13 bytes -- down from 97 bytes per-residue in a traditional uncompressed format. Whilst lossy, this procedure results in 0.08 \AA\ and 0.14 \AA\ RMSD for backbone and all-atom reconstruction, making it highly suitable for pretraining tasks which use input representations complete up to the backbone. Furthermore, this lightweight format enables the dataloaders in the benchmark to read structures \emph{directly from disk} with no pre-processing or caching required.
+
+\textbf{AlphaFoldDB Representative Structures.} This dataset contains 2.27 million representative structures, identified through large-scale structural-similarity-based clustering of the 214 million structures contained in the AlphaFold Database \citep{Varadi2021} using FoldSeek \citep{vanKempen2023}. We additionally provide a subset of this collection --- the so-called dark proteome --- corresponding to the 31\% of the representative structures that lack annotations.
+
+
+\textbf{ESM Atlas, ESM High Quality.} These datasets are compressed collections of predicted structures produced by ESMFold. ESM Atlas is the full collection of all 772m predicted structures for the MGnify 2023 release \citep{Richardson2022}. ESM High Quality is a curated subset of high confidence (mean pLDDT) structures from the collection.
+
+%%%
+
+%%%
+
+\subsection{Pretraining Tasks}
+\label{app:pretraining-tasks}
+
+The benchmark contains a comprehensive suite of pretraining tasks. Broadly, these tasks can be categorised into: masked-attribute prediction, denoising-based and contrastive learning-based tasks. In most cases, these tasks can be used as both a pretraining objective or as auxiliary tasks in a downstream supervised task.
+
+\textbf{Sequence Denoising. } The benchmark contains two variations based on two sequence corruption processes $C(\tilde{\mathcal{S}} | \mathcal{S}, \nu)$ that receive an amino acid sequence $\mathcal{S} \in [0, 1]^{|\mathcal{V}| \times 23 }$ and return a sequence $\mathcal{S} \in [0, 1]^{|\mathcal{V}| \times 23 }$ with fraction $\nu$ of its positions corrupted. The first scheme is based on mutating a fraction of the residues to a random amino acid and tasking the model with recovering the uncorrupted sequence. The second is a masked residue prediction task, where a fraction of the residues are altered to a mask value and the model is tasked to recover the uncorrupted sequence.
+
+\textbf{Structure Denoising. } We provide two structure-based denoising tasks: coordinate denoising and torsional denoising. In the coordinate denoising task, noise is sampled from a normal or uniform distribution and scaled by noise factor, $\nu \in \mathbb{R}$, and applied to each of the atom coordinates in the structure to ensure structural features, such as backbone or sidechain torsion angles, are also corrupted. The model is then tasked with predicting either the per-node noise or the original uncorrupted coordinates. For the torsional denoising variant, the noise is applied to the backbone torsion angles and Cartesian coordinates are recomputed using pNeRF \citep{AlQuraishi2019} and the uncorrupted bond lengths and angles prior to feature computation. Similarly to the coordinate denoising task, the model is then tasked with predicting either the per-residue angular noise or the original dihedral angles.
+
+\textbf{Sequence-Structure Co-Denoising. } This is a multitask formulation of the previously described structure and sequence denoising tasks, with separate output heads for denoising each modality.
+
+\textbf{Masked Attribute Prediction Tasks} 
+We use inverse folding (Section \ref{sec:inverse-folding}) as a pretraining task.
+The benchmark additionally incorporates the distance, angle and dihedral angle masked-attribute prediction tasks proposed in \citet{zhang2023protein} as well as a backbone dihedral angle prediction task.
+
+\textbf{pLDDT Prediction. } Protein structure prediction models typically provide per-residue pLDDT (predicted Local Distance Difference Test) scores as local confidence measures in the quality of the prediction shown to correlate well with disordered regions \citep{wilson2022alphafold2}. We formulate a self-supervised node-level regression task on predicted structures, somewhat analogous to structure quality assessment (QA), where the model is tasked with predicting the scaled per-residue pLDDT $y \in [0, 1]$ values.
+
+%%%
+
+\subsection{Downstream Tasks}
+We curate several structure-based and sequence-based datasets from the literature and existing benchmarks\footnote{To retain focus on \emph{protein} representation learning, we deliberately exclude commonly-used tasks based on protein-small molecule interactions as it is hard to disentangle the effect of the small molecule representation and the potential for bias \citep{Boyles2019}}. The tasks are selected to evaluate not only the \emph{global} structure representational power of each method, but also to evaluate the ability of each method to learn informative \emph{local} representations for residue-level prediction and annotation tasks.
+
+The raw structures are, where possible and accounting for obsolescence, retrieved directly from the PDB (or another structural source) as several processed datasets used by the community discard full atomic coordinates in favour of retaining only $C_\alpha$ positions making them unsuitable for in-depth experimentation. This provides an entry point for users to apply a custom sequence of pre-processing steps, such as deprotonation or fixing missing regions which are common in experimental data.
+
+%%%
+
+The following downstream tasks are available in our benchmark.
+Detailed documentation including composition, splitting details, metrics, and data sheets \citep{gebru2021datasheets} are available in Appendix \ref{app:datasheets}
+
+\textbf{Node-level Tasks}
+\begin{itemize}
+\item CATH Inverse folding.
+\item PPI Site Prediction. 
+\item Metal Binding Site Prediction. 
+\item Post-Translational Modification Site Prediction. 
+\end{itemize}
+
+\textbf{Graph-level Tasks}
+\begin{itemize}
+\item Fold Prediction. 
+\item Gene Ontology Prediction. 
+\item Reaction Class Prediction. 
+\item Antibody Developability Prediction. 
+\end{itemize}
+%%%
+
+\subsection{SE(3) Equivariant Noise Predictor}\label{sec:eq-noise-predictor}
+Similar to \citet{zhang2023physicsinspired}, for structure-based denoising tasks we use an SE(3) equivariant noise predictor network to predict per-residue perturbations from SE(3) invariant scalar embeddings and corrupted atomic coordinates $\tilde{\bm{\vec{X}}}$. Each edge $\ve_{ij}$ is featurised by concatenating the two adjoining scalar node representations $\tilde{\vs_{i}}, \tilde{\vs_{j}}$ and the euclidean distance between them $\| \tilde{\vx_{i}} - \tilde{\vx_{j}} \|_2$. We use a two-layer MLP to produce a score $\vm_{ij}$:
+\begin{equation}
+    \label{eq:se3_equivariant_noise_score}
+    \vm_{ij} = \mathrm{MLP}(\tilde{\vs_{i}}, \tilde{\vs_{j}}, \mathrm{MLP}(\| \tilde{\vx_{i}} - \tilde{\vx_{j}} \|_2)).
+\end{equation}
+
+Subsequently, Equation \ref{eq:se3_equivariant_noise_score} is used to aggregate normalised directional edge vectors over the neighbourhood $\mathcal{N}_i$ of each node:
+\begin{equation}
+    \bm{\epsilon}_\theta(\tilde{\mathcal{G}}) = \sum_{j \in \mathcal{N}_i} \vm_{ij} \cdot \frac{\tilde{\vx_{i}} - \tilde{\vx_{j}}}{\| \tilde{\vx_{i}} - \tilde{\vx_{j}} \|_2}
+\end{equation}
+
+%%%
+
+\subsection{Hyperparameter Selection}
+\label{app:hyperparameters}
+
+Given the large number of models and featurisation schemes, we try our best to do a consistent and fair hyperparameter search.
+We fix a consistently high number of layers and large hidden dimension across models, as we wanted to focus on scaling model size and dataset size via pre-training.
+We use the Fold Classification task to select the best learning rate and dropout per model and featurisation scheme for downstream tasks. 
+While our best performing models sometimes do not outperform the best reported results in the literature, we have obtained these results in a consistent experimental setup. 
+Our goal was to demonstrate the utility of our benchmarking framework and uncover the impact of architectural considerations such as featurisation schemes, geometric GNN models, and pre-training/auxiliary tasks under fair and rigorous experimental settings.
+
+\paragraph{Protein Structure Encoders}
+\begin{enumerate}
+    \item We use a consistent batch size of 32.
+    \item For all models, we try to consistently use six layers, each with 512 hidden channels. For tensor-based equivariant GNNs (TFN, MACE), we reduced the number of layers and hidden channels to fit 80GB of GPU memory on one NVIDIA A100 GPU.
+    \item For each encoder and featurisation, we search over learning rates: $0.00001, 0.0001, 0.0003, 0.001$ and select the best based on the validation performance on the fold classification task.
+\end{enumerate}
+
+\paragraph{Output Heads}
+\begin{enumerate}
+    \item All primary output heads use a three-layer MLP with 512 as the hidden dimension.
+    \item For all auxiliary tasks we use a two-layer MLP with 128 as the hidden dimension.
+    \item For all structure denoising tasks we use a two-layer SE(3) equivariant noise predictor network (Section \ref{sec:eq-noise-predictor}). The message and distance MLPs each consist of two layers of 128 hidden units.
+    \item For each encoder and featurisation, we search over decoder dropout: $0.0, 0.1, 0.3, 0.5$, and select the best based on the validation performance on the Fold Classification task.
+    
+\end{enumerate}
+
+%%%
+
+\section{Documentation for Datasets}
+\label{app:datasheets}
+
+\begin{table*}[!t]
+    \centering
+    \caption{\textbf{Overview of supervised tasks and datasets.}}
+    \begin{adjustbox}{max width=\linewidth}
+        \begin{tabular}{llccccc}
+        \toprule
+        & \textbf{Task} & \textbf{Dataset Origin} & \textbf{Structures} &  \textbf{\# Train} & \textbf{\# Validation} & \textbf{\# Test} \\
+        \midrule
+        \multirow{4}{*}{\rotatebox[origin=c]{90}{Node-level}} &
+        Inverse Folding & Ingraham et al. \citep{NEURIPS2019_f3a4ff48} & Experimental
+        &
+        3.9 M
+        &
+        105 K
+        & 
+        180 K
+        \\
+        & PPI Site Prediction & \citet{gainza2020deciphering} & Experimental 
+        &
+        478 K
+        & 
+        53 K
+        &
+        117 K
+        \\
+        & Metal Binding Site Prediction & & Experimental
+        &
+        1.1 M
+        &
+        13.7 K
+        &
+        29.8 K
+        \\
+        & Post-Trans. Modification Site Prediction &
+        \citet{Yan2023} & Predicted 
+        
+        &
+        44 K
+        &
+        2.4 K
+        &
+        2.5 K\\
+        \midrule
+        \multirow{4}{*}{\rotatebox[origin=c]{90}{Graph-level}}
+        & Fold Prediction & Hou et al. \citep{hou2017} & Experimental 
+        &
+        12.3 K
+        &
+        0.7 K
+        &
+        1.3/0.7/1.3 K
+        \\
+        & Gene Ontology Prediction & \citet{Gligorijevi2021} & Experimental 
+        &
+        27.5 K
+        &
+        3.1 K
+        &
+        3.0 K
+        \\
+        & Reaction Class Prediction & \citet{hermosilla2020intrinsic} &  Experimental 
+        &
+        29.2 K
+        &
+        2.6 K
+        &
+        5.6 K
+        \\
+        & Antibody Developability Prediction & Huang et al. \citep{NEURIPSDATASETSANDBENCHMARKS2021_4c56ff4c} & Experimental 
+        &
+        1.7 K
+        &
+        0.24 K
+        &
+        0.48 K
+        \\
+        \bottomrule
+        \end{tabular}
+    \end{adjustbox}
+    \label{tab:appendix_datasets}
+\end{table*}
+
+%%%
+
+Below, we provide detailed documentation for each dataset included in our benchmark, summarised in Table \ref{tab:appendix_datasets}. 
+% Each dataset is freely available for download from the benchmark's accompanying Zenodo data record \citep{jamasb_arian_2023_8282470}. 
+Each dataset will be made available for download in processed and raw forms from Zenodo upon publication. 
+Note that, for all datasets, we authors bear all responsibility in case of any violation of rights regarding the usage of such datasets, whether they were compiled from existing sources or curated from scratch.
+
+\subsection{CATH - Inverse Folding}
+
+This is a common protein engineering task where the goal is to recover an amino acid sequence given a structure up to backbone completeness. Formally, this is a node-level classification task where the model learns a mapping for each residue $r_i$ to an amino acid type $y \in \{1, \dots, n \}$, where $n$ is the vocabulary size ($n=20$ for the canonical set of amino acids).
+
+Note that inverse folding is a generic task that can be applied to any dataset. In the literature, it is commonly evaluated on the CATH dataset compiled by \citet{NEURIPS2019_f3a4ff48}.
+We additionally use inverse folding on AlphaFoldDB as a pretraining task.
+
+\begin{itemize}
+    \item \textbf{Motivation} Several generative methods for protein design produce backbone structures that require the design of an associated sequence. As a result, inverse folding is an important part of \emph{de novo} design pipelines for proteins.
+    \item \textbf{Collection} For this dataset, we adopt the commonly-used CATH dataset originally compiled by \citet{NEURIPS2019_f3a4ff48}.
+    \item \textbf{Composition} The dataset consists of protein structures randomly split into training, validation and test sets such that proteins in different sets do not share the same CATH topology classification (i.e., CAT code).
+    \item \textbf{Hosting} A preprocessed version of the dataset can be downloaded from the benchmark's Zenodo data record.%at \url{https://zenodo.org/record/8282470/files/cath.tar.gz}.
+    \item \textbf{Licensing} We have released a preprocessed version of the dataset under a Creative Commons Attribution 4.0 International license. The original dataset is available under a Creative Commons Attribution 4.0 International license at \url{http://cathdb.info}.
+    \item \textbf{Maintenance} We will announce any errata discovered in or changes made to the dataset using the benchmark's GitHub repository.%at \url{https://github.com/a-r-j/ProteinWorkshop}.
+    \item \textbf{Uses} This dataset can be used for multilabel node classification tasks where a model learns a mapping for each residue $r_i$ to an amino acid type $y \in \{1, \dots, n \}$, where $n$ is the vocabulary size (e.g., $n=20$ for the canonical set of amino acids).
+    \item \textbf{Metric} Perplexity.
+\end{itemize}
+
+
+
+\subsection{MaSIF-Site - PPI Site Prediction}
+
+This task is a node-level binary classification task where the goal is to predict whether or not a residue is involved in a protein-protein interaction interface.
+
+\begin{itemize}
+    \item \textbf{Motivation} Identifying protein-protein interaction (PPI) sites has important applications in developing improved protein-protein interaction networks and docking tools, providing biological context to guide protein engineering and target identification in drug discovery campaigns \citep{Jamasb2021}.
+    \item \textbf{Collection} We adopt the dataset of experimental structures curated from the PDB by \citet{gainza2020deciphering} and retain the original splits, though we modify the labelling scheme to be based on inter-atomic proximity (3.5 \AA), which can be user-defined, rather than solvent exclusion.
+    \item \textbf{Composition} The dataset is curated from the PDB by preprocessing such as the presence of one of the seven specified ligands (e.g., ADP or FAD), clustering based on 30\% sequence identity and random subsampling. It contains 1,459 structures, which are randomly assigned to training (72\%), validation (8\%) and test set (20\%). 12 (\AA) radius patches were extracted from the generated structures and a patch labelled as part of a binding pocket if its centre point was < 3 (\AA) away from an atom of the corresponding ligand.
+    \item \textbf{Hosting} %A preprocessed version of the dataset can be downloaded from the benchmark's Zenodo data record at \url{https://zenodo.org/record/8282470/files/masif_site.tar.gz}. 
+    The original dataset is made available by the authors on Zenodo.%at \url{https://zenodo.org/record/2625420}.
+    \item \textbf{Licensing} We have released a preprocessed version of the dataset under a Creative Commons Attribution 4.0 International license. The original dataset is available under an Apache 2.0 license at \url{https://github.com/LPDI-EPFL/masif/blob/master/LICENSE}.
+    \item \textbf{Maintenance} We will announce any errata discovered in or changes made to the dataset using the benchmark's GitHub repository.% at \url{https://github.com/a-r-j/ProteinWorkshop}.
+    \item \textbf{Uses} This dataset can be used for binary node classification tasks where the goal is to predict whether or not a residue is involved in a protein-protein interaction interface.
+    \item \textbf{Metric} AUPRC.
+\end{itemize}
+
+\subsection{ccPDB - Metal Binding Site Prediction}
+This is a binary node classification task where each residue is mapped to a label $y \in \{0, 1\}$ indicating whether the residue (or its constituent atoms) is within 3.5 (\AA) of a user-defined metal ion or ligand heteroatom, respectively.
+
+\begin{itemize}
+    \item \textbf{Motivation} Several proteins coordinate transition metal ions to carry out their functions. As such, predicting the binding sites of metal ions can elucidate the role of metal binding on protein function.
+    \item \textbf{Collection} The dataset is constructed from experimental structures curated from the PDB, where binding site assignments for each residue are computed on-the-fly. While the benchmark supports this task on arbitrary subsets of the PDB and ligands, we provide the Zinc-binding dataset from \citet{Drr2023} specifically for this task.
+    \item \textbf{Composition} The dataset is constructed by sequence-based clustering of the PDB at 30\% sequence identity to remove sequence and structural redundancy. Clusters with a member shorter than 3000 residues, containing at least one zinc atom with resolution better than 2.5 (\AA) determined by x-ray crystallography and not containing nucleic acids are used to compose the dataset. If multiple structures fulfill these criteria, the highest resolution structure is used. The train (2,085) / validation (26) / test (59) splits are constructed such that proteins in the validation and test sets have no partial overlap with any protein in the training data.
+    \item \textbf{Hosting} A preprocessed version of the dataset can be downloaded from the benchmark's Zenodo data record.%at \url{https://zenodo.org/record/8282470/files/Metal3D.tar.gz}.
+    \item \textbf{Licensing} We have released a preprocessed version of the dataset under a Creative Commons Attribution 4.0 International license. The original dataset is freely available without a license at \url{https://academic.oup.com/database/article/doi/10.1093/database/bay142/5298333#130010908}.
+    \item \textbf{Maintenance} We will announce any errata discovered in or changes made to the dataset using the benchmark's GitHub repository.%at \url{https://github.com/a-r-j/ProteinWorkshop}.
+    \item \textbf{Uses} This dataset can be used for binary node classification tasks where each residue is mapped to a label $y \in \{0, 1\}$ indicating whether the residue (or its constituent atoms) is within 3.5 (\AA) of a user-defined metal ion or ligand heteroatom, respectively.
+    \item \textbf{Metric} Accuracy.
+\end{itemize}
+
+\subsection{PTM - Post-Translational Modification Site Prediction}
+We frame prediction of post-translational modification (PTM) sites as a multilabel classification task where each residue is mapped to a label $y \in \{1, \dots, 13\}$ distinguishing between modifications on different amino acids (e.g. phosphorylation on S/T/Y and N-linked glycosylation on N).
+
+\begin{itemize}
+    \item \textbf{Motivation} Identifying the exact sites where post-translational modifications (PTMs) occur is essential for understanding protein behaviour and designing targeted therapeutic interventions.
+    \item \textbf{Collection} We adopt a dataset of 48,811 AlphaFold2-predicted structures curated by \citet{Yan2023}, where each structure contains the PTM metadata necessary to construct residue-wise site prediction labels.
+    \item \textbf{Composition} The dataset is split into training (43,907), validation (2,393) and test (2,511) sets based on 50\% sequence identity and 80\% coverage.
+    In total, there are 240,090 PTMs present in the dataset compared to 3,391,208 residues where PTMs could be possible but are not present. The most common PTMs are phosphorylations on serine (93,734) and N-linked glycosylation at asparagine (59,143) which together account for around 70\% of the PTMs. 
+    \item \textbf{Hosting} A preprocessed version of the dataset can be downloaded from the benchmark's Zenodo data record.%at \url{https://zenodo.org/record/8282470/files/PostTranslationalModification.tar.gz}.
+    \item \textbf{Licensing} We have released a preprocessed version of the dataset under a Creative Commons Attribution 4.0 International license. The original dataset is available under a Creative Commons Attribution 4.0 International license at \url{https://zenodo.org/record/7655709}.
+    \item \textbf{Maintenance} We will announce any errata discovered in or changes made to the dataset using the benchmark's GitHub repository.%at \url{https://github.com/a-r-j/ProteinWorkshop}.
+    \item \textbf{Uses} This dataset can be used for multilabel node classification tasks where each residue is mapped to a label $y \in \{1, \dots, 13\}$ distinguishing between modifications on different amino acids (e.g., phosphorylation on S/T/Y and N-linked glycosylation on N).
+    \item \textbf{Metric} ROC-AUC.
+\end{itemize}
+
+\subsection{FOLD - Fold Prediction}
+This is a multiclass graph classification task where each protein, $\mathcal{G}$, is mapped to a label $y \in \{1, \dots, 1195\}$ denoting the fold class.
+
+\begin{itemize}
+    \item \textbf{Motivation} The utility of fold prediction is that it serves as a litmus test for the ability of a model to distinguish different structural folds. It stands to reason that models that perform poorly on distinguishing fold classes likely learn limited or low-quality structural representations.
+    \item \textbf{Collection} We adopt the fold classification dataset originally curated from SCOP 1.75 by \citep{hou2017}.
+    \item \textbf{Composition} This dataset provides three different test sets stratified based on topological similarity: Fold, in which proteins originating from the same superfamily are absent during training; Superfamily, in which proteins originating from the same family are absent during training; and Family, in which proteins from the same family are present during training.
+    \item \textbf{Hosting} A preprocessed version of the dataset can be downloaded from the benchmark's Zenodo data record.%at \url{https://zenodo.org/record/8282470/files/FoldClassification.tar.gz}.
+    \item \textbf{Licensing} We have released a preprocessed version of the dataset under a Creative Commons Attribution 4.0 International license. The original dataset is available under a Creative Commons Attribution 4.0 International license at \url{https://academic.oup.com/bioinformatics/article/34/8/1295/4708302}.
+    \item \textbf{Maintenance} We will announce any errata discovered in or changes made to the dataset using the benchmark's GitHub repository.%at \url{https://github.com/a-r-j/ProteinWorkshop}.
+    \item \textbf{Uses} This dataset can be used for multilabel graph classification tasks where each protein, $\mathcal{G}$, is mapped to a label $y \in \{1, \dots, 1195\}$ denoting the fold class.
+    \item \textbf{Metric} Micro-averaged accuracy.
+\end{itemize}
+
+\subsection{GO - Gene Ontology Prediction}
+This is a multilabel classification task, assigning functional Gene Ontology (GO) annotation to structures. GO annotations are assigned within three ontologies: biological process (BP), cellular component (CC) and molecular function (MF).
+
+\begin{itemize}
+    \item \textbf{Motivation} Predicting protein function in the form of functional annotations such as gene ontology (GO) terms has important applications in protein analysis and engineering, providing researchers with the ability to cluster functionally-related structures or to guide protein generation methods to design new proteins with desired functional properties.
+    \item \textbf{Collection} We adopt the dataset of experimental structures originally curated from the PDB by \citet{Gligorijevi2021}.
+    \item \textbf{Composition} We retain the original multi-cutoff based dataset splits proposed by \citep{Gligorijevi2021}, with cutoff at 95\% sequence similarity.
+    \item \textbf{Hosting} A preprocessed version of the dataset can be downloaded from the benchmark's Zenodo data record.%at \url{https://zenodo.org/record/8282470/files/GeneOntology.tar.gz}.
+    \item \textbf{Licensing} We have released a preprocessed version of the dataset under a Creative Commons Attribution 4.0 International license. The original dataset is available under a Creative Commons Attribution 4.0 International license at \url{https://www.nature.com/articles/s41467-021-23303-9}.
+    \item \textbf{Maintenance} We will announce any errata discovered in or changes made to the dataset using the benchmark's GitHub repository.%at \url{https://github.com/a-r-j/ProteinWorkshop}.
+    \item \textbf{Uses} This dataset can be used for multilabel graph classification tasks, assigning a functional Gene Ontology (GO) annotation to protein structures.
+    \item \textbf{Metric} $\mathrm{F}_{\mathrm{max}}$ score.
+\end{itemize}
+\subsection{EC Reaction - Reaction Class Prediction}
+This is a multiclass graph classification task where each protein, $\mathcal{G}$, is mapped to a label $y \in {\{1, ..., 384\}}$ denoting which class of reactions a given protein catalyzes; all four levels of the EC assignment are employed to define the reaction class label. 
+\begin{itemize}
+    \item \textbf{Motivation} As proteins' reaction classifications are based on their enzyme-catalyzed reaction according to all four levels of the standard Enzyme Commission (EC) number, methods that predict such classifications can help elucidate the function of newly-designed proteins as they are developed.
+    \item \textbf{Collection} We adopt the reaction class prediction dataset originally curated from the PDB by \citet{hermosilla2020intrinsic}.
+    \item \textbf{Composition} The dataset is split on the basis of sequence similarity using a 50\% threshold.
+    \item \textbf{Hosting} A preprocessed version of the dataset can be downloaded from the benchmark's Zenodo data record.%at \url{https://zenodo.org/record/8282470/files/ECReaction.tar.gz}.
+    \item \textbf{Licensing} We have released a preprocessed version of the dataset under a Creative Commons Attribution 4.0 International license. The original dataset is available under an MIT license at \url{https://github.com/phermosilla/IEConv_proteins/blob/master/LICENSE}.
+    \item \textbf{Maintenance} We will announce any errata discovered in or changes made to the dataset using the benchmark's GitHub repository.%at \url{https://github.com/a-r-j/ProteinWorkshop}.
+    \item \textbf{Uses} This dataset can be used for multilabel graph classification tasks where each protein, $\mathcal{G}$, is mapped to a label $y \in {\{1, ..., 384\}}$ denoting which class of reactions a given protein catalyzes.
+    \item \textbf{Metric} Accuracy.
+\end{itemize}
+\subsection{TDC - Antibody Developability Prediction}
+Therapeutic antibodies must be optimised for favourable physicochemical properties in addition to target binding affinity and specificity to be viable development candidates. Consequently, we frame prediction of antibody developability as a binary graph classification task indicating whether a given antibody is developable.
+
+\begin{itemize}
+    \item \textbf{Motivation} From a benchmarking perspective, predicting the developability of a given antibody is important as it enables targeted performance assessment of models on a specific (immunoglobulin) fold, providing insight into whether general-purpose structure-based encoders can be applicable to fold-specific tasks.
+    \item \textbf{Collection} We adopt the antibody developability dataset originally curated from SabDab \citep{dunbar2014sabdab} by \citet{Chen2020}.
+    \item \textbf{Composition} This dataset contains 2,426 antibodies that have both sequences and PDB structures available, where each example contains both a heavy chain and a light chain with resolution < 3 (\AA). Labels are based on thresholding the developability index (DI) (\citep{Lauer2012}) as computed by BIOVIA's platform (\citep{Accelrys2018BioviaDiscoveryStudio}), which relies on an antibody's hydrophobic and electrostatic interactions.
+    \item \textbf{Hosting} A preprocessed version of the dataset can be downloaded from the benchmark's Zenodo data record.%at \url{https://zenodo.org/record/8282470/files/AntibodyDevelopability.tar.gz}.
+    \item \textbf{Licensing} We have released a preprocessed version of the dataset under a Creative Commons Attribution 4.0 International license. The original dataset is available under a Creative Commons Attribution 3.0 Unported license at \url{https://tdcommons.ai/single_pred_tasks/develop/#sabdab-chen-et-al}.
+    \item \textbf{Maintenance} We will announce any errata discovered in or changes made to the dataset using the benchmark's GitHub repository.%at \url{https://github.com/a-r-j/ProteinWorkshop}.
+    \item \textbf{Uses} This dataset can be used for binary graph classification tasks indicating whether a given antibody is developable.
+    \item \textbf{Metric} AUPRC.
+\end{itemize}
+
+%%%

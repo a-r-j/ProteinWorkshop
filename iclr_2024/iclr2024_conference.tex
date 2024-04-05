@@ -1,0 +1,141 @@
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2024_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xurl}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+% For theorems and such
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{nicefrac}
+\usepackage{bm}
+
+% % For references
+% \usepackage{hyperref}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[
+    pagebackref = true,
+    colorlinks = true,
+    linkcolor = MidnightBlue,
+    urlcolor  = MidnightBlue,
+    citecolor = MidnightBlue,
+    anchorcolor = MidnightBlue
+]{hyperref} 
+\usepackage[nameinlink]{cleveref}
+\renewcommand*\backref[1]{\ifx#1\relax \else (Cited on page #1) \fi}
+
+% ============ Our packages =================
+\usepackage{colortbl}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{adjustbox}
+\usepackage{makecell}
+\usepackage{soul}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{pdflscape}
+
+%
+
+\usepackage{titletoc} % ToC only in appendix
+\newcommand{\appendixtoc}{
+  \clearpage
+  \startcontents[appendix]
+  \section*{Appendices}
+  \printcontents[appendix]{}{1}{\setcounter{tocdepth}{2}}
+}
+
+% Custom commands
+\newcommand{\caa}{$C\alpha$ }
+\newcommand{\virt}{$\kappa, \alpha$ }
+\newcommand{\bb}{$\phi, \psi, \omega$ }
+\newcommand{\schi}{$\chi_{1-4}$ }
+
+\newcommand{\aj}[1]{\textcolor{red}{[\textbf{Arian}: #1]}}
+
+% Variant of the TODO box for addressing reviewer comments
+% \usepackage{todonotes}
+% \newcommand{\bluebox}[1]{\todo[color=blue!20!white]{#1}}
+\newcommand{\reviewer}[1]{\marginpar[]{\textcolor{blue}{\textbf{#1}}}}
+
+\newcommand*{\ldblbrace}{\{\mskip-5mu\{}
+\newcommand*{\rdblbrace}{\}\mskip-5mu\}}
+
+% Define a new list environment with reduced left indentation
+\setlist[itemize]{leftmargin=2em} % Reduce left indentation for itemize
+\setlist[enumerate]{leftmargin=2em} % Reduce left indentation for enumerate
+
+%%%
+
+\title{Evaluating Representation Learning on \\ the Protein Structure Universe}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\author{%
+  Arian R. Jamasb$^{*,1}$, \quad Alex Morehead$^{*,2}$, \quad Chaitanya K. Joshi$^{*,1}$, \quad Zuobai Zhang$^{*,3}$,\\ 
+  \textbf{Kieran Didi$^{1}$, \quad Simon Mathis$^{1}$, \quad Charles Harris$^{1}$, \quad Jian Tang$^{3}$, \quad Jianlin Cheng$^{2}$,} \\ 
+  \textbf{Pietro Liò$^{1}$, \quad Tom L. Blundell$^{1}$} \vspace{5pt} \\
+  $^{1}$University of Cambridge, \quad $^{2}$University of Missouri, \quad $^{3}$Mila - Qu\'ebec AI Institute \vspace{5pt} \\
+  % Correspondence to: \texttt{arj39@cam.ac.uk} % Emails can be added later!
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+\def\thefootnote{*}\footnotetext{Equal contribution}
+
+\begin{abstract}
+\input{neurips_data_2023/sections/abstract}
+\end{abstract}
+
+\input{neurips_data_2023/sections/introduction}
+% \input{neurips_data_2023/sections/related_work}
+\input{neurips_data_2023/sections/core}
+\input{neurips_data_2023/sections/methods}
+\input{neurips_data_2023/sections/results_new}
+\input{neurips_data_2023/sections/conclusions_new}
+
+%\subsubsection*{Acknowledgements}
+%Use unnumbered third level headings for the acknowledgements. All
+%acknowledgements, including those to funding agencies, go at the end of the paper.
+
+
+\bibliography{iclr_2024/bibliography}
+\bibliographystyle{iclr2024_conference}
+
+\newpage
+\appendix
+\input{neurips_data_2023/sections/appendix}
+
+\end{document}
