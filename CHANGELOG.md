@@ -1,6 +1,7 @@
 ### 0.2.6 (UNRELEASED)
 
 ### Datasets
+* Correct stage-based conditions mentioned in notebook tutorials [#92](https://github.com/a-r-j/ProteinWorkshop/pull/92)
 * Add stage-based conditions to `setup` in `ProteinDataModule` [#72](https://github.com/a-r-j/ProteinWorkshop/pull/72)
 * Improves support for datamodules with multiple test sets. Generalises this to support GO and FOLD. Also adds multiple seq ID.-based splits for GO. [#72](https://github.com/a-r-j/ProteinWorkshop/pull/72)
 * Add redownload checks for already downloaded datasets and harmonise pdb download interface [#86](https://github.com/a-r-j/ProteinWorkshop/pull/86)
