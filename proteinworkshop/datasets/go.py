@@ -87,7 +87,7 @@ class GeneOntologyDataset(ProteinDataModule):
 
         self.train_fname = self.data_dir / "nrPDB-GO_train.txt"
         self.val_fname = self.data_dir / "nrPDB-GO_valid.txt"
-        self.test_fname = self.data_dir / "nrPDB-GO_test.csv"
+        self.test_fname = self.data_dir / "nrPDB-GO_test.txt"
         self.label_fname = self.data_dir / "nrPDB-GO_annot.tsv"
         self.url = "https://zenodo.org/record/6622158/files/GeneOntology.zip"
 
