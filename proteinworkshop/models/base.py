@@ -412,9 +412,13 @@ class BenchMarkModel(BaseModel):
         self.encoder: nn.Module = hydra.utils.instantiate(cfg.encoder)
         logger.info(self.encoder)
 
-        logger.info("Instantiating decoders...")
-        self.decoder: nn.ModuleDict = self._build_output_decoders()
-        logger.info(self.decoder)
+        if hasattr(cfg.decoder, "disable") and cfg.decoder.disable:
+            logger.info("Disabling decoder as requested")
+            self.decoder = None
+        else:
+            logger.info("Instantiating decoders...")
+            self.decoder: nn.ModuleDict = self._build_output_decoders()
+            logger.info(self.decoder)
 
         logger.info("Instantiating losses...")
         self.losses = self.configure_losses(cfg.task.losses)
