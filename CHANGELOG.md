@@ -15,6 +15,7 @@
 * Add support for handling training/validation OOMs gracefully [#81](https://github.com/a-r-j/ProteinWorkshop/pull/81)
 * Add support for handling backward OOMs gracefully [#83](https://github.com/a-r-j/ProteinWorkshop/pull/83)
 * Update GCPNet paper link [#85](https://github.com/a-r-j/ProteinWorkshop/pull/85)
+* Add ability for `BenchmarkModel` to have its decoder disabled [#101](https://github.com/a-r-j/ProteinWorkshop/pull/101)
 
 ### Framework
 
