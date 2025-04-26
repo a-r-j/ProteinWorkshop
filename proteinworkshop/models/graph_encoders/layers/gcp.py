@@ -265,14 +265,20 @@ class GCP(nn.Module):
 
         if node_mask is not None:
             edge_mask = node_mask[row] & node_mask[col]
+            # Initialize destination tensor
             local_scalar_rep_i = torch.zeros(
                 (edge_index.shape[1], 3, 3), device=edge_index.device
             )
-            local_scalar_rep_i[edge_mask] = torch.matmul(
+            # Calculate the source value (result of matmul, likely Half under AMP)
+            matmul_result = torch.matmul(
                 frames[edge_mask], vector_rep_i[edge_mask]
             )
+            # Explicitly cast the source value to the destination's dtype before assignment
+            local_scalar_rep_i[edge_mask] = matmul_result.to(local_scalar_rep_i.dtype)
+
             local_scalar_rep_i = local_scalar_rep_i.transpose(-1, -2)
         else:
+            # This path might need similar treatment if it causes issues
             local_scalar_rep_i = torch.matmul(frames, vector_rep_i).transpose(-1, -2)
 
         # potentially enable E(3)-equivariance and, thereby, chirality-invariance
