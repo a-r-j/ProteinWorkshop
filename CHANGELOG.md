@@ -16,6 +16,7 @@
 * Add support for handling backward OOMs gracefully [#83](https://github.com/a-r-j/ProteinWorkshop/pull/83)
 * Update GCPNet paper link [#85](https://github.com/a-r-j/ProteinWorkshop/pull/85)
 * Add ability for `BenchmarkModel` to have its decoder disabled [#101](https://github.com/a-r-j/ProteinWorkshop/pull/101)
+* Fix dtype mismatch in `gcp.py` that broke Automatic Mixed Precision (AMP) training [#102](https://github.com/a-r-j/ProteinWorkshop/pull/102)
 
 ### Framework
 
