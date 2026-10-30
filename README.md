@@ -85,7 +85,7 @@ export DATA_PATH="where/you/want/data/" # e.g., `export DATA_PATH="proteinworksh
 However, for full exploration we recommend cloning the repository and building from source.
 
 ### Building from source
-With a local virtual environment activated (e.g., one created with `conda create -n proteinworkshop python=3.10`):
+With a local virtual environment activated (e.g., one created with `conda create -n proteinworkshop python=3.11`):
 1. Clone and install the project
 
     ```bash
