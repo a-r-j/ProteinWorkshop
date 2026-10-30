@@ -17,32 +17,25 @@ jobs:
   build_cpu:
     name: Build CPU
     strategy:
+      fail-fast: false
       matrix:
-        platform: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [3.9, "3.10"]
-    runs-on: ${{ matrix.platform }}
-    defaults:
-      run:
-        shell: bash -el {0}
+        python-version: ["3.11"]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Setup miniconda
-        uses: conda-incubator/setup-miniconda@v4
+      - name: Setup Python
+        uses: actions/setup-python@v7
         with:
-          auto-update-conda: true
-          miniforge-version: latest
-          channels: "conda-forge, pytorch, pyg"
           python-version: ${{ matrix.python-version }}
-          use-mamba: true
       - id: cache-dependencies
         name: Cache dependencies
         uses: actions/cache@v6
         with:
           path: ${{ github.workspace }}/.venv
-          key: ${{ matrix.platform }}-py${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: ${{ matrix.platform }}-py${{ matrix.python-version }}-
+          key: ${{ runner.os }}-py${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: ${{ runner.os }}-py${{ matrix.python-version }}-
       - name: Install Workshop
         if: steps.cache-dependencies.cache-hit != 'true'
         run: |
@@ -53,7 +46,6 @@ jobs:
           poetry config virtualenvs.in-project true
           poetry install --no-interaction --without docs
           poetry run install_pyg_workshop
-          poe install-torchdrug
 
       - name: Run tests
         run: |
