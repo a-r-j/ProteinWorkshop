@@ -24,18 +24,18 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
       - name: Setup miniconda
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v4
         with:
           auto-update-conda: true
-          miniforge-variant: Mambaforge
+          miniforge-version: latest
           channels: "conda-forge, pytorch, pyg"
           python-version: ${{ matrix.python-version }}
           use-mamba: true
       - id: cache-dependencies
         name: Cache dependencies
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v6
         with:
           path: ${{ github.workspace }}/.venv
           key: ${{ matrix.os }}-${{ hashFiles('**/poetry.lock') }}
