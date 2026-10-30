@@ -7,20 +7,23 @@ on:
       - "docs/**"
       - "CHANGELOG.md"
 
-    pull_request:
-      paths-ignore:
-        - "README.md"
-        - "docs/**"
-        - "CHANGELOG.md"
+  pull_request:
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+      - "CHANGELOG.md"
 
 jobs:
-  buld_cpu:
+  build_cpu:
     name: Build CPU
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
         python-version: [3.9, "3.10"]
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform }}
+    defaults:
+      run:
+        shell: bash -el {0}
 
     steps:
       - name: Checkout repository
@@ -38,8 +41,8 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ github.workspace }}/.venv
-          key: ${{ matrix.os }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: ${{ matrix.os }}-
+          key: ${{ matrix.platform }}-py${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: ${{ matrix.platform }}-py${{ matrix.python-version }}-
       - name: Install Workshop
         if: steps.cache-dependencies.cache-hit != 'true'
         run: |
