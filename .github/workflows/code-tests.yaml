@@ -17,6 +17,7 @@ jobs:
   build_cpu:
     name: Build CPU
     strategy:
+      fail-fast: false
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
         python-version: [3.9, "3.10"]
