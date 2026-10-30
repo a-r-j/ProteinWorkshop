@@ -32,6 +32,7 @@
 * Update ICLR paper link and citation [#82](https://github.com/a-r-j/ProteinWorkshop/pull/82)
 * Add an optional group for installing plotting and analysis specific libraries to lighten the install of the core framework [#90](https://github.com/a-r-j/ProteinWorkshop/pull/90)
 * Update CI workflow actions to latest versions and replace retired Mambaforge installer with Miniforge; fix CI `pull_request` trigger, run test matrix across all platforms and fix cache key
+* Fix CI: install with `setup-python` instead of conda, test on Linux only (macOS/Windows unsupported), and switch the dummy test dataset from the retired RCSB MMTF service to PDB format
 
 ### 0.2.5 (28/12/2023)
 
