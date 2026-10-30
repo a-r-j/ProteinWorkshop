@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10"]
+        python-version: ["3.11"]
     runs-on: ubuntu-latest
 
     steps:
@@ -46,7 +46,6 @@ jobs:
           poetry config virtualenvs.in-project true
           poetry install --no-interaction --without docs
           poetry run install_pyg_workshop
-          poe install-torchdrug
 
       - name: Run tests
         run: |

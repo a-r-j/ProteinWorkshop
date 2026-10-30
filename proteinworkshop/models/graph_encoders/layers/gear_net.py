@@ -6,7 +6,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch_geometric.data import Batch
 from torch_scatter import scatter_add
-from torchdrug import data, utils
 
 
 class MessagePassingBase(nn.Module):
@@ -52,11 +51,6 @@ class MessagePassingBase(nn.Module):
         """
         message = self.message(graph, input)
         return self.aggregate(graph, message)
-
-    def _message_and_aggregate(self, *tensors):
-        graph = data.Graph.from_tensors(tensors[:-1])
-        input = tensors[-1]
-        return self.message_and_aggregate(graph, input)
 
     def combine(self, input, update):
         """
@@ -161,7 +155,7 @@ class RelationalGraphConv(MessagePassingBase):
             dim_size=graph.num_nodes * graph.num_relation,
         )
         edge_weight = graph.edge_weight / degree_out[node_out]
-        adjacency = utils.sparse_coo_tensor(
+        adjacency = torch.sparse_coo_tensor(
             torch.stack([node_in, node_out]),
             edge_weight,
             (graph.num_nodes, graph.num_nodes * graph.num_relation),
@@ -251,7 +245,7 @@ class GeometricRelationalGraphConv(RelationalGraphConv):
         node_in, node_out, relation = graph.edge_index
         node_out = node_out * self.num_relation + relation
 
-        adjacency = utils.sparse_coo_tensor(
+        adjacency = torch.sparse_coo_tensor(
             torch.stack([node_in, node_out]),
             graph.edge_weight,
             (graph.num_nodes, graph.num_nodes * graph.num_relation),
