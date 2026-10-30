@@ -34,6 +34,7 @@
 * Update CI workflow actions to latest versions and replace retired Mambaforge installer with Miniforge; fix CI `pull_request` trigger, run test matrix across all platforms and fix cache key
 * Fix CI: install with `setup-python` instead of conda, test on Linux only (macOS/Windows unsupported), and switch the dummy test dataset from the retired RCSB MMTF service to PDB format
 * Require Pillow >=13.0.0; this raises the minimum supported Python version to 3.11 (drops 3.9 and 3.10)
+* Remove the `torchdrug` dependency (no release supports Python 3.11): GearNet now uses `torch.sparse_coo_tensor` directly and drops an unused torchdrug-only helper
 
 ### 0.2.5 (28/12/2023)
 
